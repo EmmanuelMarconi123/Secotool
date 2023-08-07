@@ -1,7 +1,11 @@
 #root {
-  margin: 0 auto;
+  width: 100%;
+  margin: 0;
   padding-left: 32px;
   padding-right: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /*Breakpoints & Grids*/
