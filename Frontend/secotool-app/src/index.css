@@ -14,33 +14,8 @@
 
 body {
   margin: 0 px;
-  padding-left: 32px;
-  padding-right: 32px;
   display: flex;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-}
-
-/*Breakpoints & Grids*/
-@media screen and (min-width: 360px){
-  body{
-      padding-left: 32px;
-      padding-right: 32px;
-  }
-}
-
-
-@media screen and (min-width: 768px){
-  body{
-      padding-left: 80px;
-      padding-right: 80px;
-  }
-}
-
-@media screen and (min-width: 1440px){
-  body{
-      padding-left: 72px;
-      padding-right: 72px;
-  }
 }
