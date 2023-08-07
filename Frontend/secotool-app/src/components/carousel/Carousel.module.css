@@ -1,0 +1,39 @@
+.containerCarousel{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.imgProduct{
+    width: 296px;
+    height: 222px;
+}
+
+.slide {
+	max-width: 100%;
+	height: auto;
+	opacity: 0;
+	transition: opacity 0.75s ease-in-out;
+}
+
+.slide.active {
+	opacity: 1;
+}
+
+.boxControlsCarousel{
+    width: calc(100% - 32px);
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+}
+
+.boxControlsCarousel button{
+    background-color: transparent;
+    border: none;
+}
+
+.boxControlsCarousel button i{
+    font-size: 23px;
+}
