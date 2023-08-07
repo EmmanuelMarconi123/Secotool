@@ -47,7 +47,17 @@ body {
   margin-bottom: 24px;
 }
 
+.button-primary{
+  background-color: #242424;
+  color: rgb(245, 245, 245);
+  border: none;
+}
+
 /*Fonts*/
+.font-btn-transparent{
+  font-size: 13px;
+}
+
 .font-sm{
   font-size: 13px;
 }
@@ -64,3 +74,51 @@ body {
   font-weight: 400;
 }
 
+/*Spacings*/
+.pt-24{
+  padding-top: 24px;
+}
+
+.mb-16{
+  margin-bottom: 16px;
+}
+
+.d-flex{
+  display: flex;
+}
+
+.f-dir-colum{
+  flex-direction: column;
+}
+
+@media screen and (min-width: 768px){
+  .title-lg{
+    font-size: 23px;
+  }
+
+  .font-xl{
+    font-size: 28px;
+  }
+}
+
+@media screen and (min-width: 1440px){
+  .title-lg{
+    font-size: 28px;
+  }
+  .font-xl{
+    font-size: 33px;
+  }
+
+  .font-btn-transparent{
+    font-size: 16px;
+  }
+
+  .font-sm{
+    font-size: 19px;
+  }
+
+  .button-lg{
+    width: 296px;
+    align-self: center;
+  }
+}
