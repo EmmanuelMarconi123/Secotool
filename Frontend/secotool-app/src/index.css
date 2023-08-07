@@ -12,30 +12,55 @@
   -webkit-text-size-adjust: 100%;
 }
 
+*{
+  font-family: 'Poppins', sans-serif;
+}
+
 body {
-  margin: 0 32px;
+  margin: 0;
   display: flex;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
 
-/*Breakpoints & Grids*/
-@media screen and (min-width: 360px){
-  body{
-    margin: 0 32px;
-  }
+/*Buttons*/
+.button-transparent{
+  background-color: transparent;
+  border: none;
+  margin-top: 24px;
+  margin-bottom: 24px;
+  padding: 0;
 }
 
-
-@media screen and (min-width: 768px){
-  body{
-    margin: 0 80px;
-  }
+.button-transparent i{
+  padding-right: 8px;
 }
 
-@media screen and (min-width: 1440px){
-  body{
-    margin: 0 72px;
-  }
+.button-lg{
+  padding-top: 12px;
+  padding-bottom: 12px;
+  border-radius: 8px;
+  width: 100%;
+  font-size: 16px;
+  margin-top: 24px;
+  margin-bottom: 24px;
 }
+
+/*Fonts*/
+.font-sm{
+  font-size: 13px;
+}
+
+.title-lg{
+  font-size: 19px;
+}
+
+.font-xl{
+  font-size: 23px;
+}
+
+.font-regular{
+  font-weight: 400;
+}
+

@@ -1,3 +1,32 @@
 #root {
-  margin: 0 auto;
+  width: 100%;
+  margin: 0;
+  padding-left: 32px;
+  padding-right: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/*Breakpoints & Grids*/
+@media screen and (min-width: 360px){
+  #root{
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+}
+
+
+@media screen and (min-width: 768px){
+  #root{
+    padding-left: 80px;
+    padding-right: 80px;
+  }
+}
+
+@media screen and (min-width: 1440px){
+  #root{
+    padding-left: 72px;
+    padding-right: 72px;
+  }
 }
