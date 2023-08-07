@@ -6,7 +6,7 @@
 
 /*Breakpoints & Grids*/
 @media screen and (min-width: 360px){
-  body{
+  #root{
     padding-left: 32px;
     padding-right: 32px;
   }
@@ -14,14 +14,14 @@
 
 
 @media screen and (min-width: 768px){
-  body{
+  #root{
     padding-left: 80px;
     padding-right: 80px;
   }
 }
 
 @media screen and (min-width: 1440px){
-  body{
+  #root{
     padding-left: 72px;
     padding-right: 72px;
   }
