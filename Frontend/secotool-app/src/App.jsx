@@ -10,9 +10,9 @@ import NewProduct from "./components/routes/NewProduct";
 function App() {
   return (
     <>
-    <div>
     <Header />
-      <Routes>
+    <main className="spacing-grid">
+    <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/home" element={<Home />}></Route>
         <Route path="/product/:id" element={<Details />}></Route>
@@ -20,8 +20,8 @@ function App() {
         <Route path="/admin/newproduct" element={<NewProduct />}></Route>
         <Route path="*" element={<div>Error 404</div>}></Route>
       </Routes>
-      <Footer />
-    </div>
+    </main>
+    <Footer/>
     </>
   );
 }
