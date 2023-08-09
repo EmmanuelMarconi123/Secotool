@@ -1,0 +1,103 @@
+.containerCarouselMobile{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.imgProduct{
+    width: 296px;
+    height: 222px;
+}
+
+.slide {
+	max-width: 100%;
+	height: auto;
+	opacity: 0;
+	transition: opacity 0.75s ease-in-out;
+}
+
+.slide.active {
+	opacity: 1;
+}
+
+.boxControlsCarousel{
+    width: calc(100% - 32px);
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+}
+
+.boxControlsCarousel button{
+    background-color: transparent;
+    border: none;
+}
+
+.boxControlsCarousel button i{
+    font-size: 23px;
+}
+
+.containerCarousel{
+    display: none;
+}
+
+.indicadorImg{
+    align-self: end;
+    background-color: rgb(36, 35, 35);
+    color: aliceblue;
+    border-radius: 12px;
+    padding: 4px 8px;
+}
+
+@media screen and (min-width: 768px){
+    .containerCarouselMobile{
+        display: none;
+    }
+
+    .containerCarousel{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding-top: 24px;
+        padding-bottom: 16px;
+    }
+
+    .containerCarousel button{
+        align-self: end;
+    }
+
+    .carouselGrid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        max-height: 640px;
+    }
+
+    .leftColumn {
+        grid-row: span 2;
+    }
+
+    .leftColumn img{
+        width: 100%;
+        height: 100%;
+    }
+
+    .rightColumn {
+        display: grid;
+        grid-template-rows: repeat(2, 1fr);
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .imgProduct {
+        max-width: 100%;
+        height: auto;
+        max-height: 640px;
+    }
+
+    .moreImagesContainer{
+        display: flex
+    }
+}
