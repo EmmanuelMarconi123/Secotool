@@ -1,6 +1,7 @@
 import styles from '../adminHeader/AdminHeader.module.css'
 import LogoDesktop from '../../../assets/img/LogoDesktop.png'
 import { Link } from "react-router-dom";
+import '../../../index.css';
 
 const AdminHeader = () => {
 
@@ -24,8 +25,8 @@ const AdminHeader = () => {
               </Link> 
             </div>
             <Link to="/home" className={styles.closeSesion}>
+                <i className="fa-solid fa-right-from-bracket"></i>
                 Cerrar Sesion
-                <i className="fa-regular fa-right-from-bracket"></i>
               </Link> 
         </div>
     </nav>

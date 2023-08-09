@@ -1,8 +1,6 @@
 import styles from './HomeAdmin.module.css';
 import AdminProductCard from '../../adminProductCard/AdminProductCard';
 import { useEffect, useState } from 'react';
-// import AdminHeader from '../../header/adminHeader/AdminHeader';
-
 
 const HomeAdmin = () => {
 
@@ -74,7 +72,6 @@ const HomeAdmin = () => {
             
             {matches ?
                 <div>
-                    {/* <AdminHeader/> */}
                     <div className={styles.container}>
                         <h1 style={{fontWeight:"400", fontSize: "19px", padding: "16px 0"}}>Todos los productos</h1>
                         <div className={styles.tableContainer}>
