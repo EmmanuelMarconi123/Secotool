@@ -6,7 +6,6 @@
     width: 44%;
     height: auto;
     margin: 0 auto;
-    
 }
 
 form{
@@ -63,7 +62,7 @@ textarea{
 }
 
 .addProduct{
-    border-radius: 4px;
+    border-radius: 8px;
     background-color: rgb(80, 79, 79);
     color: white;
     width: 100%;
