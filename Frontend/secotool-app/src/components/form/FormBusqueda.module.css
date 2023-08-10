@@ -1,0 +1,14 @@
+.container{
+    display: flex;
+    width: 100%;
+    align-content: center;
+    justify-content: center;
+    padding: 5px;
+   
+}
+
+.boton{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
