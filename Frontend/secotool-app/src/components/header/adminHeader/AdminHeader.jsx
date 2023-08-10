@@ -9,7 +9,7 @@ const AdminHeader = () => {
         <div className={styles.leftNavbar}>
           <Link to="/admin/home">
               <img src={LogoDesktop} alt="" />
-          </Link> 
+          </Link>
           <span>Construi facil y rapido</span>
         </div>
         <div className={styles.navbarButtons}>
@@ -17,16 +17,16 @@ const AdminHeader = () => {
               <Link to="/admin/newproduct" className={styles.navLink}>
               <i className="fa-regular fa-plus"></i>
                 Agregar producto
-              </Link> 
+              </Link>
               <Link to="/admin/home" className={styles.navLink}>
                 <i className="fa-regular fa-list"></i>
                 Listar Productos
-              </Link> 
+              </Link>
             </div>
             <Link to="/home" className={styles.closeSesion}>
                 Cerrar Sesion
                 <i className="fa-regular fa-right-from-bracket"></i>
-              </Link> 
+              </Link>
         </div>
     </nav>
   )

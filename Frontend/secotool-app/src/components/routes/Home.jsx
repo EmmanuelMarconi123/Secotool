@@ -75,7 +75,6 @@ const Home = () => {
 
   return (
     <div className={styles.body}>
-      <div className={styles.headerSpacer}></div>
       {/* Div para empujar el contenido hacia abajo */}
       <div className={styles.container}>
         <Typography color="primary" variant="h6" className={styles.titulo}>
