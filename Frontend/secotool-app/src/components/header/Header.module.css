@@ -1,89 +1,39 @@
-/* styles.module.css */
+.imgLogo{
+  width: 91px;
+  height: 16.65px;
+}
 
-.navbar {
-    width: 100%;
-    background-color: #FFDB27;
-    height: 88px;
-    position: fixed;
-    z-index: 1000;/* Asegura que el encabezado tenga un índice z alto */
+.lema{
+  font-size: 8px;
+}
 
-  
+.navbar{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 88px;
+}
+
+.navbarButtons{
+  display: flex;
+  align-items: center;
+}
+
+/*Breakpoints*/
+@media screen and (min-width: 768px){
+  .imgLogo{
+    width: 140px;
+    height: 25.61px;
   }
-  
-  .logoYfrase{
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 91px;
-    padding-top: 18px;
-    padding-left: 32px;
+}
+
+@media screen and (min-width: 1440px){
+  .imgLogo{
+    width: 240px;
+    height: 43.9px;
   }
-  
-  .logo{
-    align-items: center;
-    height: 52px;
-    width: 91px;
+
+  .lema{
+    font-size: 11px;
   }
-  
-  .contenedorBotones{
-    display: flex;
-    align-items: center;
-    padding-top: 18px;
-  }
-  
-  .botonCrearCuenta{
-    display: flex;
-    justify-content: end;
-    width: 115px;
-    height: 28px;
-    padding: 0px;
-  }
-  
-  .loginButton {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 30px;
-    margin-left: 10px; /* Agrega el valor de separación deseado */
-  
-  }
-  
-  .buttonContent {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 28px;
-    width: 105px;
-    font-size: 9px;
-  }
-  
-  /* Media query para pantallas con un ancho mínimo de 768px */
-  @media (min-width: 767px) {
-  
-    .logoYfrase{
-      display: flex;
-      flex-direction: column;
-      height: 55px;
-      width: 140px;
-      padding-top: 22px;
-      padding-left: 80px;
-    }
-  
-    .logo{
-      align-items: center;
-      height: 55px;
-      width: 140px;
-    }
-  
-    .botonCrearCuenta {
-      /* Estilos específicos para dispositivos con un ancho de 768px o más */
-      width: 140px; /* Por ejemplo, puedes ajustar el ancho */
-    }
-  
-    .buttonContent {
-      /* Estilos específicos para dispositivos con un ancho de 768px o más */
-      font-size: 12px; /* Por ejemplo, puedes ajustar el tamaño de fuente */
-    }
-  }
-  
-  
-  
+}

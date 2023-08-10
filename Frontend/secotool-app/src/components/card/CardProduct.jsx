@@ -1,16 +1,14 @@
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { Grid, IconButton } from "@mui/material";
+import { Grid } from "@mui/material";
 import styles from "../card/CardProduct.module.css";
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 
-function CardProduct({ nombre, id, descripcion }) {
+function CardProduct({ nombre }) {
     return (
     <Grid container className={styles.container}>
       <Grid item xs={11} className={styles.img}>
         <img
           className={styles.img}
-          src="src/assets/recursos/photo-1689600570529-0e87f50e4687.avif"
+          src="src/assets/img/taladro-1.png"
           alt=""
         />
       </Grid>
@@ -20,16 +18,10 @@ function CardProduct({ nombre, id, descripcion }) {
             <Typography variant="body1" color="text.secondary">
               {nombre}
             </Typography>
-            <Typography variant="body1" color="text.secondary">
-              {id}
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Button variant="outlined" size="small">
-              <IconButton color="primary" aria-label="add to shopping cart">
-                <AddShoppingCartIcon />
-              </IconButton>
-            </Button>
+            <div className="font-xl">
+                <span>$</span>
+                <span>25.419</span>
+            </div>
           </Grid>
         </Grid>
       </Grid>

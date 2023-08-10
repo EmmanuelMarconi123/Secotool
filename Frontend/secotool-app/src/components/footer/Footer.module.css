@@ -1,19 +1,17 @@
-
-.footer{
-    width: 100%;
-    padding: 5px;
-    background-color: #FFDB27;    
+.footer {
+  width: 100%;
+  padding: 5px;
+  background-color: #ffdb27;
 }
 
-.logoYcopy{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.logoYcopy {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.infoFooter{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
+.infoFooter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
