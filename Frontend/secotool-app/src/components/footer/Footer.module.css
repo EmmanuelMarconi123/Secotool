@@ -1,18 +1,19 @@
 
 .footer{
-    width: 100%;
-    padding: 5px;
-    background-color: #FFDB27;
+  width: 100%;
+  padding: 5px;
+  background-color: #FFDB27;    
 }
 
 .logoYcopy{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .infoFooter{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
 }
