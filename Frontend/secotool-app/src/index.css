@@ -1,0 +1,124 @@
+:root {
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #242424;
+  background-color: rgba(255, 255, 255, 0.87);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+*{
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+/*Buttons*/
+.button-transparent{
+  background-color: transparent;
+  border: none;
+  margin-top: 24px;
+  margin-bottom: 24px;
+  padding: 0;
+}
+
+.button-transparent i{
+  padding-right: 8px;
+}
+
+.button-lg{
+  padding-top: 12px;
+  padding-bottom: 12px;
+  border-radius: 8px;
+  width: 100%;
+  font-size: 16px;
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+.button-primary{
+  background-color: #242424;
+  color: rgb(245, 245, 245);
+  border: none;
+}
+
+/*Fonts*/
+.font-btn-transparent{
+  font-size: 13px;
+}
+
+.font-sm{
+  font-size: 13px;
+}
+
+.title-lg{
+  font-size: 19px;
+}
+
+.font-xl{
+  font-size: 23px;
+}
+
+.font-regular{
+  font-weight: 400;
+}
+
+/*Spacings*/
+.pt-24{
+  padding-top: 24px;
+}
+
+.mb-16{
+  margin-bottom: 16px;
+}
+
+.d-flex{
+  display: flex;
+}
+
+.f-dir-colum{
+  flex-direction: column;
+}
+
+/*Breakpoints*/
+@media screen and (min-width: 768px){
+  .title-lg{
+    font-size: 23px;
+  }
+
+  .font-xl{
+    font-size: 28px;
+  }
+}
+
+@media screen and (min-width: 1440px){
+  .title-lg{
+    font-size: 28px;
+  }
+  .font-xl{
+    font-size: 33px;
+  }
+
+  .font-btn-transparent{
+    font-size: 16px;
+  }
+
+  .font-sm{
+    font-size: 19px;
+  }
+
+  .button-lg{
+    width: 296px;
+    align-self: center;
+  }
+}
