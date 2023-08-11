@@ -3,6 +3,8 @@ import styles from "../routes/home.module.css";
 import Card from "../card/CardProduct";
 import FormBusqueda from "../form/FormBusqueda";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import Pagination from "../pagination/Pagination";
 
 const Home = () => {
   const herramienasDeAlquiler = [
@@ -56,7 +58,39 @@ const Home = () => {
       nombre: "soldadora",
       descripcion: "lakjslkajsdlkj alskhalksdj",
     },
+    {
+      id: 11,
+      nombre: "cortadora",
+      descripcion: "lakjslkajsdlkj alskhalksdj",
+    },
+    {
+      id: 12,
+      nombre: "maderas",
+      descripcion: "lakjslkajsdlkj alskhalksdj",
+    },
+    {
+      id: 13,
+      nombre: "fierros",
+      descripcion: "lakjslkajsdlkj alskhalksdj",
+    },
+    {
+      id: 14,
+      nombre: "grua",
+      descripcion: "lakjslkajsdlkj alskhalksdj",
+    },
+    {
+      id: 15,
+      nombre: "soldadora",
+      descripcion: "lakjslkajsdlkj alskhalksdj",
+    },
   ];
+
+  //-------------- CONFIGURACION DE LA PAGINACION -------------------->
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  const lastPostIndex = currentPage * itemsPerPage;
+  const fistPostIndex = lastPostIndex - itemsPerPage;
+  const currentPost = herramienasDeAlquiler.slice(fistPostIndex, lastPostIndex);
 
   // Función para barajar un array utilizando el algoritmo de Fisher-Yates
   function shuffleArray(array) {
@@ -77,23 +111,30 @@ const Home = () => {
     <section className={styles.sectionBusqueda}>
       <div className={styles.container}>
         <Typography variant="h6" className={styles.titulo}>
-          ¿Qué estas buscando?
+          ¿Qué herramienta necesitas?
         </Typography>
         <FormBusqueda />
       </div>
       <div className={styles.contenedorCards}>
-        <Grid container>
-          {shuffledHerramientas.map((card) => (
-            <Grid key={card.id} item xs={6} md={6} className={styles.card}>
-              <Link to={"/product/" + card.id} key={card.id}>
-                <Card
-                  id={card.id}
-                  nombre={card.nombre}
-                  descripcion={card.descripcion}
-                />
-              </Link>
-            </Grid>
-          ))}
+        <Grid container justifyContent="center" alignItems="center">
+          {shuffledHerramientas &&
+            currentPost.map((card) => (
+              <Grid key={card.id} item xs={6} md={6} className={styles.card}>
+                <Link to={"/product/" + card.id} key={card.id}>
+                  <Card
+                    id={card.id}
+                    nombre={card.nombre}
+                    descripcion={card.descripcion}
+                  />
+                </Link>
+              </Grid>
+            ))}
+          <Pagination
+            totalPosts={herramienasDeAlquiler.length}
+            itemsPerPage={itemsPerPage}
+            setCurrentPage={setCurrentPage}
+            currentPage={currentPage}
+          />
         </Grid>
       </div>
     </section>
