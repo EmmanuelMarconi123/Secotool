@@ -1,5 +1,5 @@
 import "../../index.css";
-
+import styles from "./Pagination.module.css"
 const Pagination = ({
   totalPosts,
   itemsPerPage,
@@ -13,15 +13,7 @@ const Pagination = ({
   }
 
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: "24px",
-        padding: "0 10px",
-      }}
-    >
+    <div className={styles.containerPagination}>
       <i
         className="fa-regular fa-arrow-left-to-line"
         onClick={() => setCurrentPage(1)}
