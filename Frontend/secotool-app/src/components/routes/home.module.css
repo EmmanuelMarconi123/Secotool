@@ -1,0 +1,36 @@
+.sectionBusqueda {
+  width: 100%;
+  padding-top: 32px;
+  padding-bottom: 32px;
+}
+
+.headerSpacer {
+  height: 90px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+}
+.titulo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  font-family: 'Poppins', sans-serif!important;
+  color: #747474;
+}
+
+.contenedorCards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  row-gap: 1rem;
+  margin-block: 3rem;
+}
+
+.card {
+  margin: 8px 0;
+  padding: 8px;
+}
