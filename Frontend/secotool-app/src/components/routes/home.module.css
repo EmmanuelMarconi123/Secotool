@@ -1,4 +1,4 @@
-.body {
+.sectionBusqueda {
   width: 100%;
 }
 
@@ -27,5 +27,6 @@
 }
 
 .card {
-  margin: 3px;
+  margin: 8px 0;
+  padding: 8px;
 }
