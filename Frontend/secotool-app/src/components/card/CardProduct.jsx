@@ -11,9 +11,7 @@ function CardProduct({ nombre }) {
       {/* Contenedor de texto */}
       <Grid container className={styles.textoCard} item xs={12} md={6}>
         <Grid item xs={12} md={12}>
-          <h4 className={styles.titleCard}>
-            {nombre}
-          </h4>
+          <h4 className={styles.titleCard}>{nombre}</h4>
         </Grid>
         <Grid xs={12} md={12} className={styles.textPriceCard}>
           <span>$</span>

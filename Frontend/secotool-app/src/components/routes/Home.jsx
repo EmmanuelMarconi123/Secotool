@@ -1,7 +1,8 @@
-import { Grid,Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import styles from "../routes/home.module.css";
-import Cards from "../card/CardProduct";
+import Card from "../card/CardProduct";
 import FormBusqueda from "../form/FormBusqueda";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const herramienasDeAlquiler = [
@@ -84,11 +85,13 @@ const Home = () => {
         <Grid container>
           {shuffledHerramientas.map((card) => (
             <Grid key={card.id} item xs={6} md={6} className={styles.card}>
-              <Cards
-                id={card.id}
-                nombre={card.nombre}
-                descripcion={card.descripcion}
-              />
+              <Link to={"/product/" + card.id} key={card.id}>
+                <Card
+                  id={card.id}
+                  nombre={card.nombre}
+                  descripcion={card.descripcion}
+                />
+              </Link>
             </Grid>
           ))}
         </Grid>
