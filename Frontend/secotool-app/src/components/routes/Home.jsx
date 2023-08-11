@@ -1,8 +1,7 @@
-import { Typography } from "@mui/material";
+import { Grid,Typography } from "@mui/material";
 import Form from "../form/FormBusqueda";
 import styles from "../routes/home.module.css";
 import Cards from "../card/CardProduct";
-
 
 const Home = () => {
   const herramienasDeAlquiler = [
@@ -74,8 +73,7 @@ const Home = () => {
   const shuffledHerramientas = shuffleArray(herramienasDeAlquiler); //herramienta para hacer aleatoria la forma en que se renderizan las cards
 
   return (
-    <div className={styles.body}>
-      {/* Div para empujar el contenido hacia abajo */}
+    <section className={styles.sectionBusqueda}>
       <div className={styles.container}>
         <Typography color="primary" variant="h6" className={styles.titulo}>
           Buscador de Herramientas
@@ -83,17 +81,19 @@ const Home = () => {
         <Form />
       </div>
       <div className={styles.contenedorCards}>
-        {shuffledHerramientas.map((card) => (
-          <div key={card.id} className={styles.card}>
-            <Cards
-              id={card.id}
-              nombre={card.nombre}
-              descripcion={card.descripcion}
-            />
-          </div>
-        ))}
+        <Grid container>
+          {shuffledHerramientas.map((card) => (
+            <Grid key={card.id} item xs={6} md={6} className={styles.card}>
+              <Cards
+                id={card.id}
+                nombre={card.nombre}
+                descripcion={card.descripcion}
+              />
+            </Grid>
+          ))}
+        </Grid>
       </div>
-    </div>
+    </section>
   );
 };
 
