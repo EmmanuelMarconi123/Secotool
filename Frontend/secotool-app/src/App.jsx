@@ -10,7 +10,7 @@ import AdminHeader from "./components/header/adminHeader/AdminHeader";
 
 function App() {
   return (
-    <>
+    <body>
     {window.location.pathname.includes('/admin') ? <AdminHeader /> : <Header />}
       <main className="spacing-grid">
         <Routes>
@@ -23,7 +23,7 @@ function App() {
           </Routes>
       </main>
     <Footer/>
-    </>
+    </body>
   );
 }
 
