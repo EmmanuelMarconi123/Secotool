@@ -30,6 +30,11 @@ body {
   min-height: 100vh;
 }
 
+/*Header*/
+header {
+  background-color: var(--primary);
+}
+
 /*Buttons*/
 .button-transparent{
   background-color: transparent;
