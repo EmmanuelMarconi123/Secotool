@@ -67,14 +67,13 @@ const NewProduct = () => {
                                 <span>Subir imagen</span>
                             </div>
                         </label>
-                        {newImage && 
+                        {newImage &&
                             <NewImage imageUrl="https://cdn.pixabay.com/photo/2014/12/16/22/25/woman-570883_1280.jpg" deleteImage={handleNewImage} imageName="Prueba 1"/>
                         }
 
                         <button type='submit' className={styles.addProduct}>Agregar Producto</button>
                     </form>
                 </div>
-              </label>
               {newImage && (
                 <NewImage deleteImage={handleNewImage} imageName="Prueba 1" />
               )}
