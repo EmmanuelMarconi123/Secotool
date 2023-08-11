@@ -10,77 +10,77 @@ const Home = () => {
   const herramienasDeAlquiler = [
     {
       id: 1,
-      nombre: "martillo",
+      nombre: "Martillo",
       descripcion: "lakjslkajsdlkj alskhalksdj",
     },
     {
       id: 2,
-      nombre: "taladro",
+      nombre: "Taladro",
       descripcion: "lakjslkajsdlkj alskhalksdj",
     },
     {
       id: 3,
-      nombre: "tornillo",
+      nombre: "Tornillo",
       descripcion: "lakjslkajsdlkj alskhalksdj",
     },
     {
       id: 4,
-      nombre: "pala",
+      nombre: "Pala",
       descripcion: "lakjslkajsdlkj alskhalksdj",
     },
     {
       id: 5,
-      nombre: "retroescabadora",
+      nombre: "Retroescabadora",
       descripcion: "lakjslkajsdlkj alskhalksdj",
     },
     {
       id: 6,
-      nombre: "cortadora",
+      nombre: "Cortadora",
       descripcion: "lakjslkajsdlkj alskhalksdj",
     },
     {
       id: 7,
-      nombre: "maderas",
+      nombre: "Maderas",
       descripcion: "lakjslkajsdlkj alskhalksdj",
     },
     {
       id: 8,
-      nombre: "fierros",
+      nombre: "Fierros",
       descripcion: "lakjslkajsdlkj alskhalksdj",
     },
     {
       id: 9,
-      nombre: "grua",
+      nombre: "Grua",
       descripcion: "lakjslkajsdlkj alskhalksdj",
     },
     {
       id: 10,
-      nombre: "soldadora",
+      nombre: "Soldadora",
       descripcion: "lakjslkajsdlkj alskhalksdj",
     },
     {
       id: 11,
-      nombre: "cortadora",
+      nombre: "Cortadora",
       descripcion: "lakjslkajsdlkj alskhalksdj",
     },
     {
       id: 12,
-      nombre: "maderas",
+      nombre: "Maderas",
       descripcion: "lakjslkajsdlkj alskhalksdj",
     },
     {
       id: 13,
-      nombre: "fierros",
+      nombre: "Fierros",
       descripcion: "lakjslkajsdlkj alskhalksdj",
     },
     {
       id: 14,
-      nombre: "grua",
+      nombre: "Grua",
       descripcion: "lakjslkajsdlkj alskhalksdj",
     },
     {
       id: 15,
-      nombre: "soldadora",
+      nombre: "Soldadora",
       descripcion: "lakjslkajsdlkj alskhalksdj",
     },
   ];
