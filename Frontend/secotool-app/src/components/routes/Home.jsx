@@ -1,7 +1,7 @@
 import { Grid,Typography } from "@mui/material";
-import Form from "../form/FormBusqueda";
 import styles from "../routes/home.module.css";
 import Cards from "../card/CardProduct";
+import FormBusqueda from "../form/FormBusqueda";
 
 const Home = () => {
   const herramienasDeAlquiler = [
@@ -75,10 +75,10 @@ const Home = () => {
   return (
     <section className={styles.sectionBusqueda}>
       <div className={styles.container}>
-        <Typography color="primary" variant="h6" className={styles.titulo}>
-          Buscador de Herramientas
+        <Typography variant="h6" className={styles.titulo}>
+          ¿Qué estas buscando?
         </Typography>
-        <Form />
+        <FormBusqueda />
       </div>
       <div className={styles.contenedorCards}>
         <Grid container>

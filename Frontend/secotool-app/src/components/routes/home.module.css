@@ -1,5 +1,7 @@
 .sectionBusqueda {
   width: 100%;
+  padding-top: 32px;
+  padding-bottom: 32px;
 }
 
 .headerSpacer {
@@ -17,6 +19,8 @@
   align-items: center;
   justify-content: center;
   padding: 15px;
+  font-family: 'Poppins', sans-serif!important;
+  color: #747474;
 }
 
 .contenedorCards {
