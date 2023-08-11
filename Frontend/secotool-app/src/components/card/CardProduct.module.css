@@ -10,7 +10,9 @@
 .textoCard {
   display: flex;
   flex-direction: column;
-  text-align: center;
+  text-align: start;
+  padding-left: 8px;
+  padding-bottom: 8px;
 }
 
 .card {
@@ -29,4 +31,38 @@
   width: 100%;
   height: auto;
   object-fit: cover;
+}
+
+.titleCard{
+  font-size: 13px;
+  align-self: flex-start;
+  font-weight: 400;
+  padding-bottom: 8px;
+  margin-bottom: 0px;
+}
+
+.textPriceCard{
+  font-size: 16px;
+}
+
+@media screen and (min-width: 768px){
+  .titleCard{
+    font-size: 16px;
+  }
+  .textPriceCard{
+    font-size: 19px;
+  }
+}
+
+@media screen and (min-width: 1440px){
+  .titleCard{
+    font-size: 19px;
+  }
+  .textPriceCard{
+    font-size: 23px;
+  }
+  .textoCard{
+    padding-left: 32px;
+    padding-bottom: 0px;
+  }
 }

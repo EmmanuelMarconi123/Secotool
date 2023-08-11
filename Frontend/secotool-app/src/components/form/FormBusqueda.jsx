@@ -3,7 +3,7 @@ import TextField from "@mui/material/TextField";
 import { Button, Grid } from "@mui/material";
 import { useFormik } from "formik";
 
-const Form = () => {
+const FormBusqueda = () => {
   // const [herramienta, setHerramienta] = useState("");
 
   let initialValues = {
@@ -30,7 +30,7 @@ const Form = () => {
           <Grid item xs={12} md={5}>
             <TextField
               type="text"
-              label="Tipo de Herramienta"
+              label="Herramienta"
               variant="outlined"
               fullWidth
               name="herramienta"
@@ -46,8 +46,8 @@ const Form = () => {
               onChange={handleChange}
             />
           </Grid>
-          <Grid className={styles.boton} item xs={12} md={2}>
-            <Button variant="contained" type="submit">
+          <Grid item xs={12} md={2}>
+            <Button className={styles.boton} variant="contained" type="submit">
               Buscar
             </Button>
           </Grid>
@@ -57,4 +57,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default FormBusqueda;
