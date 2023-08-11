@@ -1,6 +1,8 @@
 import styles from "../adminHeader/AdminHeader.module.css";
 import LogoDesktop from "../../../assets/img/LogoDesktop.png";
 import { Link } from "react-router-dom";
+import "../../../index.css";
+import "../../../app.css";
 
 const AdminHeader = () => {
   return (

@@ -5,7 +5,7 @@ import Footer from './components/footer/Footer'
 import Home from "./components/routes/Home";
 import Details from "./components/routes/Details";
 import NewProduct from "./components/routes/newProduct/NewProduct";
-import HomeAdmin from "./components/routes/HomeAdmin/HomeAdmin";
+import HomeAdmin from "./components/routes/homeAdmin/HomeAdmin";
 import AdminHeader from "./components/header/adminHeader/AdminHeader";
 
 function App() {
