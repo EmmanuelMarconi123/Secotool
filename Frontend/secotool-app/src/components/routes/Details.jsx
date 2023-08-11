@@ -33,7 +33,7 @@ function Details() {
                     Habitasse ultrices eros duis hac tortor amet interdum nec turpis at purus pellentesque
                     bibendum.</p>
             </div>
-            <button className="button-lg button-primary">Alquilar</button>
+            <button className="button-lg">Alquilar</button>
         </div>
     )
 }

@@ -1,9 +1,13 @@
+import logo from '../../assets/img/logo-white-desktop.png'
+import '../footer/Footer.module.css'
+
 function Footer() {
     /*aqui va todo referido al footer*/
     return(
         <>
         <footer className="spacing-grid">
-            <h1>Footer</h1>
+            <img src={logo}/>
+            <p style={{ margin: 0 }}>©2023 SecoTool</p>
         </footer>
         </>
     )
