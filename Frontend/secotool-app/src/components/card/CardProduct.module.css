@@ -33,7 +33,7 @@
   object-fit: cover;
 }
 
-.titleCard{
+.titleCard {
   font-size: 13px;
   align-self: flex-start;
   font-weight: 400;
@@ -41,27 +41,27 @@
   margin-bottom: 0px;
 }
 
-.textPriceCard{
+.textPriceCard {
   font-size: 16px;
 }
 
-@media screen and (min-width: 768px){
-  .titleCard{
+@media screen and (min-width: 768px) {
+  .titleCard {
     font-size: 16px;
   }
-  .textPriceCard{
+  .textPriceCard {
     font-size: 19px;
   }
 }
 
-@media screen and (min-width: 1440px){
-  .titleCard{
+@media screen and (min-width: 1440px) {
+  .titleCard {
     font-size: 19px;
   }
-  .textPriceCard{
+  .textPriceCard {
     font-size: 23px;
   }
-  .textoCard{
+  .textoCard {
     padding-left: 32px;
     padding-bottom: 0px;
   }
