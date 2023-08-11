@@ -8,7 +8,7 @@ function Header() {
     <header className="spacing-grid">
           <nav className={stylesHeader.navbar}>
         <div className={styles.leftNavbar}>
-          <Link to="/admin/home">
+          <Link to="/home">
               <img className={stylesHeader.imgLogo} src={LogoDesktop} alt="" />
           </Link>
           <span className={stylesHeader.lema}>Construi facil y rapido</span>
