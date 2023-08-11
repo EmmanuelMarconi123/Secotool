@@ -12,7 +12,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
                         name = "matteo",
                         email = "mateo.chiapponi@gmail.com"
                 ),
-                description = "OpenApi documentation for ",
+                description = "OpenApi documentation for secotool aplication",
                 title = "",
                 version = "1.0",
                 license = @License(
