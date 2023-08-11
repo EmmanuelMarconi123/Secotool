@@ -16,11 +16,18 @@
   font-family: 'Poppins', sans-serif;
 }
 
-body {
+body, html {
   margin: 0;
   display: flex;
+  flex-direction: column;
   min-width: 320px;
   min-height: 100vh;
+  background-color: #F9F9F9;
+  height: 100%;
+}
+
+header{
+  background-color: #F1CF24;
 }
 
 /*Buttons*/
@@ -36,20 +43,24 @@ body {
   padding-right: 8px;
 }
 
+.button-lg,.button-primary{
+  background-color: #242424;
+  color: rgb(245, 245, 245);
+  border: none;
+  border-radius: 8px;
+}
+
+.button-primary{
+  padding: 4px 8px;
+}
+
 .button-lg{
   padding-top: 12px;
   padding-bottom: 12px;
-  border-radius: 8px;
   width: 100%;
   font-size: 16px;
   margin-top: 24px;
   margin-bottom: 24px;
-}
-
-.button-primary{
-  background-color: #242424;
-  color: rgb(245, 245, 245);
-  border: none;
 }
 
 /*Fonts*/
@@ -120,5 +131,9 @@ body {
   .button-lg{
     width: 296px;
     align-self: center;
+  }
+
+  .button-primary{
+    padding: 8px 16px;
   }
 }
