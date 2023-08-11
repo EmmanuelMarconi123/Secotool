@@ -10,6 +10,13 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+
+  --primary: #F1CF24;
+  --secondary: #E61717;
+  --dark: #3A3939;
+  --lightGrey: #EFECEC;
+  --darkGrey: #747474;
+  --white:#F9F9F9;
 }
 
 *{
@@ -21,6 +28,11 @@ body {
   display: flex;
   min-width: 320px;
   min-height: 100vh;
+}
+
+/*Header*/
+header {
+  background-color: var(--primary);
 }
 
 /*Buttons*/
