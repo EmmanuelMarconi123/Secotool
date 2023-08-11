@@ -24,10 +24,10 @@ const NewProduct = () => {
     return(
         <div>
             {matches ?
-            <div> 
+            <div>
                 {/* <AdminHeader/> */}
                 <div className={styles.container}>
-                    <h1 style={{fontWeight:"400", fontSize: "24px", padding: "16px 0"}}>Nuevo Productos</h1>
+                    <h1 style={{fontWeight:"400", fontSize: "24px", padding: "16px 0"}}>Nuevo Producto</h1>
                     <form action="">
                         <label htmlFor="productName">Nombre del Producto
                             <input type="text" id='productName' />
