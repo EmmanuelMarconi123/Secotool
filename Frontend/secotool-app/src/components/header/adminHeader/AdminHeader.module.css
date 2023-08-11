@@ -1,67 +1,67 @@
-.navbar{
-    background-color: var(--primary);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: -webkit-fill-available;
-    height: 88px;
-    top: 0;
-    left: 0;
-    padding: 0 72px;
-    color: var(--secondary);
+header {
+  background-color: var(--primary);
 }
 
-.navbarButtons{
-    display: flex;
-    justify-content: end;
-    align-items: center;
-    padding: 0;
-    gap: 64px;
-    width: 50%;
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 88px;
+  color: var(--dark);
 }
 
-.navbarButtons div{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 32px;
+.navbarButtons {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  padding: 0;
+  gap: 64px;
+  width: 50%;
 }
 
-.leftNavbar{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: auto;
+.navbarButtons div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
 }
 
-.navLink{
-    text-decoration: none;
-    padding: 10px 20px;
-    border-radius: 3px;
-    border: none;
-    color: var(--white);
-    background-color: var(--secondary);
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
+.leftNavbar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: auto;
 }
 
-.navLink:active{
-    background-color: rgb(88, 88, 88);
+.navLink {
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 3px;
+  border: none;
+  color: var(--white);
+  background-color: var(--dark);
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 }
 
-.closeSesion{
-    text-decoration: none;
-    border-radius: 3px;
-    border: none;
-    color: var(--secondary);
-    background: none;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
+.navLink:active {
+  background-color: rgb(88, 88, 88);
+}
+
+.closeSesion {
+  text-decoration: none;
+  border-radius: 3px;
+  border: none;
+  color: var(--dark);
+  background: none;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 }

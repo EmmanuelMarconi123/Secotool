@@ -12,10 +12,10 @@
   -webkit-text-size-adjust: 100%;
 
   --primary: #F1CF24;
-  --secondary: #3A3939;
+  --secondary: #E61717;
+  --dark: #3A3939;
   --lightGrey: #EFECEC;
   --darkGrey: #747474;
-  --details: #E61717;
   --white:#F9F9F9;
 }
 
