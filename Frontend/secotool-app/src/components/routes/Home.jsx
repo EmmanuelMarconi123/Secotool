@@ -116,7 +116,7 @@ const Home = () => {
         <FormBusqueda />
       </div>
       <div className={styles.contenedorCards}>
-        <Grid container>
+        <Grid container justifyContent="center" alignItems="center">
           {shuffledHerramientas &&
             currentPost.map((card) => (
               <Grid key={card.id} item xs={6} md={6} className={styles.card}>
