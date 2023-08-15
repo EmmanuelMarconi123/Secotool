@@ -8,10 +8,13 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -66,10 +69,15 @@ public class ProductController {
             @ApiResponse(responseCode = "400",description = "invalid body fields"),
             @ApiResponse(responseCode = "406",description = "product name already exists on database")
     })
-    public ResponseEntity<String> saveProduct(@Parameter(description = "")@RequestBody @Valid ProductRequestDto productRequestDto){
-        return ResponseEntity.status(201).body(productFacade.save(productRequestDto));
+    public ResponseEntity<String> saveProduct(@Parameter(description = "")
+                                                    @RequestPart("data") @Valid ProductRequestDto productRequestDto,
+                                                    @RequestParam("images")
+                                                    @NotNull(message = "images requerid")
+                                                    @NotEmpty(message = "list can not be empy")
+                                                    @Valid
+                                                    List<MultipartFile> images ){
+        return ResponseEntity.status(201).body(productFacade.save(productRequestDto,images));
     }
-
     @DeleteMapping("/{id}")
     @Operation(summary = "delete a product saved on database")
     @ApiResponses(value = {

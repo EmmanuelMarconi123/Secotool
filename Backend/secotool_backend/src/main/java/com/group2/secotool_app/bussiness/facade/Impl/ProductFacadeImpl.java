@@ -3,6 +3,8 @@ package com.group2.secotool_app.bussiness.facade.Impl;
 import com.group2.secotool_app.bussiness.facade.IProductFacade;
 import com.group2.secotool_app.bussiness.mapper.ProductDtoMapper;
 import com.group2.secotool_app.bussiness.mapper.ProductRequestDtoMapper;
+import com.group2.secotool_app.bussiness.service.IBucketS3Service;
+import com.group2.secotool_app.bussiness.service.IFileService;
 import com.group2.secotool_app.bussiness.service.IImageService;
 import com.group2.secotool_app.bussiness.service.IProductService;
 import com.group2.secotool_app.model.dto.ProductDto;
@@ -10,6 +12,7 @@ import com.group2.secotool_app.model.dto.request.ProductRequestDto;
 import com.group2.secotool_app.model.entity.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +22,11 @@ import java.util.List;
 public class ProductFacadeImpl implements IProductFacade {
 
     private final IProductService productService;
+    private final IFileService fileService;
     private final ProductRequestDtoMapper productRequestDtoMapper;
     private final ProductDtoMapper productDtoMapper;
     private final IImageService imageService;
+    private final IBucketS3Service bucketS3Service;
 
     @Override
     public List<ProductDto> getAllProducts() {
@@ -36,9 +41,14 @@ public class ProductFacadeImpl implements IProductFacade {
     }
 
     @Override
-    public String save(ProductRequestDto productRequestDto) {
+    public String save(ProductRequestDto productRequestDto, List<MultipartFile> images) {
+        fileService.validateFilesAreImages(images);
         var product = productRequestDtoMapper.toProduct(productRequestDto);
-        productService.save(product);
+        var prodId = productService.save(product);
+        var urlImages = bucketS3Service.storeFiles(images);
+        urlImages.forEach(url ->
+                imageService.saveProductImage(url,prodId)
+        );
         return "product saved successfully";
     }
 
@@ -62,9 +72,9 @@ public class ProductFacadeImpl implements IProductFacade {
 
     private List<ProductDto> productToProductsDto(List<Product> products){
         ArrayList<ProductDto> productsDto = new ArrayList<>();
-        for (Product p:products) {
-            productsDto.add(productDtoMapper.toProductDto(p));
-        }
+        products.forEach(product ->
+                productsDto.add(productDtoMapper.toProductDto(product)
+                ));
         return productsDto;
     }
 }

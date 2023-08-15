@@ -8,11 +8,12 @@ public interface IProductService {
     List<Product> getAllProducts();
     List<Product> getTenRandomProducts();
 
-    void save(Product productRequestDto);
+    Long save(Product productRequestDto);
 
     void deleteById(Long id);
 
     List<Product> paginateProducts(int page);
 
     Product findProductById(Long id);
+    boolean existProductById(Long id);
 }
