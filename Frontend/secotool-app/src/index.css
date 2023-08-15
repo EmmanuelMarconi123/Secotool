@@ -36,6 +36,9 @@ html {
 
 header {
   background-color: #f1cf24;
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
 }
 
 a {
@@ -68,6 +71,7 @@ header {
   color: rgb(245, 245, 245);
   border: none;
   border-radius: 8px;
+  cursor: pointer;
 }
 
 .button-primary {

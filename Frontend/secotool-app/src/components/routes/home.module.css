@@ -1,7 +1,8 @@
 .sectionBusqueda {
   width: 100%;
-  padding-top: 32px;
-  padding-bottom: 32px;
+  /* padding-top: 32px; comento esta linea para evitar una gran separacion entre la seccion y el navbar */
+  /* padding-bottom: 32px; comento esto para evitar una gran separacion con el footer*/
+  margin-top: 88px;
 }
 
 .headerSpacer {
