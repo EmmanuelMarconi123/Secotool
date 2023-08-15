@@ -61,7 +61,7 @@ textarea {
 }
 
 .addProduct {
-  border-radius: 4px;
+  border-radius: 8px;
   background-color: #45a42d;
   color: white;
   width: 100%;
@@ -69,15 +69,4 @@ textarea {
   height: 5vh;
   padding: 0 4px;
   margin-top: 32px;
-}
-
-.addProduct{
-    border-radius: 8px;
-    background-color: rgb(80, 79, 79);
-    color: white;
-    width: 100%;
-    border: none;
-    height: 5vh;
-    padding: 0 4px;
-    margin-top: 32px;
 }
