@@ -11,7 +11,7 @@ function Header() {
           <Link to="/home">
               <img className={stylesHeader.imgLogo} src={LogoDesktop} alt="" />
           </Link>
-          <span className={stylesHeader.lema}>Construi facil y rapido</span>
+          <span className={stylesHeader.lema}>Construí fácil y rápido</span>
         </div>
         <div className={stylesHeader.navbarButtons}>
               <Link to="/admin/newproduct">
