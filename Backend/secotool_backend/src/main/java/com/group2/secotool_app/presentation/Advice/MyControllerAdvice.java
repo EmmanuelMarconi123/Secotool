@@ -1,6 +1,7 @@
 package com.group2.secotool_app.presentation.Advice;
 
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -17,7 +18,7 @@ public class MyControllerAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<String> handleRuntimeException(RuntimeException runtimeException){
-        return ResponseEntity.badRequest().body(runtimeException.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(runtimeException.getMessage());
     }
 
     @Override

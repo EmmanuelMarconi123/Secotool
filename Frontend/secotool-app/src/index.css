@@ -2,7 +2,7 @@
   font-family: "Poppins", sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  color: #242424;
+  color: #3A3939;
   background-color: rgba(255, 255, 255, 0.87);
 
   font-synthesis: none;
@@ -10,6 +10,13 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+
+  --primary: #F1CF24;
+  --secondary: #E61717;
+  --dark: #3A3939;
+  --lightGrey: #EFECEC;
+  --darkGrey: #747474;
+  --white:#F9F9F9;
 }
 
 * {
@@ -36,6 +43,11 @@ a {
   color: #242424;
 }
 
+/*Header*/
+header {
+  background-color: var(--primary);
+}
+
 /*Buttons*/
 .button-transparent {
   background-color: transparent;
@@ -43,6 +55,7 @@ a {
   margin-top: 24px;
   margin-bottom: 24px;
   padding: 0;
+  color:#3A3939;
 }
 
 .button-transparent i {
@@ -68,6 +81,7 @@ a {
   font-size: 16px;
   margin-top: 24px;
   margin-bottom: 24px;
+  background-color: #C54B16;
 }
 
 /*Fonts*/

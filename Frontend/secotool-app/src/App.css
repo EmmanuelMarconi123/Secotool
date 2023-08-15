@@ -5,29 +5,28 @@
   flex-direction: column;
 }
 
-.spacing-grid{
+.spacing-grid {
   padding-left: 32px;
   padding-right: 32px;
 }
 
 /*Breakpoints & Grids*/
-@media screen and (min-width: 360px){
-  .spacing-grid{
+@media screen and (min-width: 360px) {
+  .spacing-grid {
     padding-left: 32px;
     padding-right: 32px;
   }
 }
 
-
-@media screen and (min-width: 768px){
-  .spacing-grid{
+@media screen and (min-width: 768px) {
+  .spacing-grid {
     padding-left: 80px;
     padding-right: 80px;
   }
 }
 
-@media screen and (min-width: 1440px){
-  .spacing-grid{
+@media screen and (min-width: 1440px) {
+  .spacing-grid {
     padding-left: 72px;
     padding-right: 72px;
   }
