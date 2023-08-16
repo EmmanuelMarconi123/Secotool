@@ -1,8 +1,8 @@
 .sectionBusqueda {
   width: 100%;
-  /* padding-top: 32px; comento esta linea para evitar una gran separacion entre la seccion y el navbar */
-  /* padding-bottom: 32px; comento esto para evitar una gran separacion con el footer*/
   margin-top: 88px;
+  display: flex;
+  flex-direction: column;
 }
 
 .headerSpacer {
@@ -40,7 +40,8 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
   row-gap: 1rem;
-  margin-block: 3rem;
+  margin-block-end: 3rem;
+  margin-block-start: 3.5rem;
   justify-items: center;
   align-items: center;
 }
@@ -48,4 +49,18 @@
 .card {
   margin: 8px 0;
   padding: 8px;
+}
+
+/*Breakpoints*/
+@media screen and (min-width: 1024px) {
+  .containerBusqueda {
+    width: 60%;
+    align-self: center;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .containerBusqueda {
+    width: 45%;
+  }
 }
