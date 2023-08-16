@@ -1,6 +1,5 @@
+import { Grid } from "@mui/material";
 import styles from "../form/FormBusqueda.module.css";
-import TextField from "@mui/material/TextField";
-import { Button, Grid } from "@mui/material";
 import { useFormik } from "formik";
 
 const FormBusqueda = () => {
@@ -22,35 +21,16 @@ const FormBusqueda = () => {
 
   return (
     <>
-      <form className={styles.container} onSubmit={handleSubmit}>
+      <form className={styles.containerFormBusqueda} onSubmit={handleSubmit}>
         <Grid
           container
           spacing={2}
         >
           <Grid item xs={12} md={12}>
-            <TextField
-              type="text"
-              label="Herramienta"
-              variant="outlined"
-              fullWidth
-              name="herramienta"
-              onChange={handleChange}
-            />
-          </Grid>
-          {/* por el momento comentamos este imput y vemos si sirve mas adelante, tener presente que acomode los grid del input anterior */}
-          {/* <Grid item xs={12} md={5}>
-            <TextField
-              type="date"
-              variant="outlined"
-              fullWidth
-              name="fecha"
-              onChange={handleChange}
-            />
-          </Grid> */}
-          <Grid item xs={12} md={2}>
-            <Button className={styles.boton} variant="contained" type="submit">
-              Buscar
-            </Button>
+            <div className="d-flex">
+            <input className={styles.inputBrowser} type="text" value="" placeholder="Herramienta" />
+            <button className={styles.btnBrowser}><i className="fa-regular fa-magnifying-glass"></i></button>
+            </div>
           </Grid>
         </Grid>
       </form>
