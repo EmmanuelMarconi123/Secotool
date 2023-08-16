@@ -22,7 +22,7 @@ function Header() {
               Crear Cuenta
             </button>
           </Link>
-          <Link to="/home" className={styles.closeSesion}>
+          <Link to="/login" className={styles.closeSesion}>
             <i className="fa-regular fa-right-from-bracket"></i>
           </Link>
         </div>
