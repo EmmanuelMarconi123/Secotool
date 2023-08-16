@@ -14,7 +14,7 @@ function Details() {
         "../src/assets/img/taladro-6.png"
     ]
     return(
-        <div className="d-flex f-dir-colum">
+        <div className="d-flex f-dir-colum pt-large">
             <Link to="/home">
                 <button className="button-transparent font-btn-transparent">
                     <i className="fa-regular fa-arrow-left"></i>Volver atrás

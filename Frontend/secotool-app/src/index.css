@@ -112,6 +112,10 @@ header {
   flex-direction: column;
 }
 
+.pt-large{
+  padding-top: 116px;
+}
+
 /*Breakpoints*/
 @media screen and (min-width: 768px) {
   .title-lg {
