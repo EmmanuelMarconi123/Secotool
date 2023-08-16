@@ -11,8 +11,8 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 
-  --primary: #F1CF24;
-  --secondary: #E61717;
+  --color-primary: #F1CF24;
+  --color-secondary: #E61717;
   --dark: #3A3939;
   --lightGrey: #EFECEC;
   --darkGrey: #747474;
@@ -23,20 +23,6 @@
   font-family: "Poppins", sans-serif;
 }
 
-body,
-html {
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  min-width: 320px;
-  min-height: 100vh;
-  background-color: #f9f9f9;
-  height: 100%;
-}
-
-header {
-  background-color: #f1cf24;
-}
 
 a {
   text-decoration: none;
@@ -45,7 +31,10 @@ a {
 
 /*Header*/
 header {
-  background-color: var(--primary);
+  background-color: var(--color-primary);
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
 }
 
 /*Buttons*/
@@ -63,14 +52,15 @@ header {
 }
 
 .button-lg,
-.button-primary {
-  background-color: #242424;
-  color: rgb(245, 245, 245);
-  border: none;
+.button-primary-transparent {
+  background-color: transparent;
+  color: var(--dark);
+  border: 1px solid var(--dark);
   border-radius: 8px;
+  cursor: pointer;
 }
 
-.button-primary {
+.button-primary-transparent {
   padding: 4px 8px;
 }
 
@@ -122,6 +112,10 @@ header {
   flex-direction: column;
 }
 
+.pt-large{
+  padding-top: 116px;
+}
+
 /*Breakpoints*/
 @media screen and (min-width: 768px) {
   .title-lg {
@@ -154,7 +148,7 @@ header {
     align-self: center;
   }
 
-  .button-primary {
+  .button-primary-transparent {
     padding: 8px 16px;
   }
 }
