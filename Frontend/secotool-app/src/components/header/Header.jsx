@@ -18,7 +18,7 @@ function Header() {
         </div>
         <div className={stylesHeader.navbarButtons}>
           <Link to="/crearCuenta">
-            <button className="button-primary button-small">
+            <button className="button-primary-transparent button-small">
               Crear Cuenta
             </button>
           </Link>
