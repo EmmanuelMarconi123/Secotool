@@ -32,10 +32,11 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public void save(Product product) {
+    public Long save(Product product) {
         if (productValidationService.validateProductNameIsNotAvaible(product.getName()))
             throw new RuntimeException("product name already exists on database");
-        productRepository.save(product);
+        var prod = productRepository.save(product);
+        return prod.getId();
     }
 
     @Override
@@ -56,6 +57,11 @@ public class ProductServiceImpl implements IProductService {
             return product.get();
         }
         throw new RuntimeException("product "+id+ " not found");
+    }
+
+    @Override
+    public boolean existProductById(Long id) {
+        return productRepository.existsById(id);
     }
 
 }
