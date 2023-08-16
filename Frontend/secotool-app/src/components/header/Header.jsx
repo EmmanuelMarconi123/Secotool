@@ -17,7 +17,7 @@ function Header() {
           <span className={stylesHeader.lema}>Construí fácil y rápido</span>
         </div>
         <div className={stylesHeader.navbarButtons}>
-          <Link to="/admin/newproduct">
+          <Link to="/crearCuenta">
             <button className="button-primary button-small">
               Crear Cuenta
             </button>
