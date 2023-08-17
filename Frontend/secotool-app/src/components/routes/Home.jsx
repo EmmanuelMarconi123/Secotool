@@ -8,18 +8,17 @@ import Pagination from "../pagination/Pagination";
 import { useEffect } from "react";
 
 const Home = () => {
-
   const [productsF, setProductsF] = useState([]);
-// "useEffect usado para el fect de los productos (por ahora es necesario correr el back de local)"
+  // "useEffect usado para el fect de los productos (por ahora es necesario correr el back de local)"
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('http://localhost:8080/v1/api/products');
+        const response = await fetch("http://localhost:8080/v1/api/products");
         if (response.ok) {
           const data = await response.json();
           setProductsF(data)
         } else {
-          throw new Error('Error en la solicitud');
+          throw new Error("Error en la solicitud");
         }
       } catch (error) {
         console.error(error);
@@ -53,7 +52,8 @@ const Home = () => {
 
   return (
     <section className={styles.sectionBusqueda}>
-      <div className={styles.container}>
+      <div className={styles.containerBusqueda}>
+        <div className={styles.bgBusqueda}></div>
         <Typography variant="h6" className={styles.titulo}>
           ¿Qué herramienta necesitas?
         </Typography>
