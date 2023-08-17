@@ -16,4 +16,6 @@ public interface IProductService {
 
     Product findProductById(Long id);
     boolean existProductById(Long id);
+
+    void updateProduct(Product prod);
 }

@@ -26,8 +26,12 @@
 
 .container i {
   cursor: pointer;
+<<<<<<< HEAD
   color: var(--secondary);
   padding: 10px;
+=======
+  color: var(--color-secondary);
+>>>>>>> upstream/main
 }
 
 .container i:hover {

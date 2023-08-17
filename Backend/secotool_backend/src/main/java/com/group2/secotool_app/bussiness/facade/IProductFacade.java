@@ -20,4 +20,6 @@ public interface IProductFacade {
     List<ProductDto> paginateProducts(int page);
 
     ProductDto findProductById(Long id);
+
+    void updateProduct(Long id, ProductRequestDto productRequestDto);
 }
