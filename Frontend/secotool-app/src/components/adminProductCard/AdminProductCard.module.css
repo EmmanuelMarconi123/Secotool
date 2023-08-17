@@ -27,8 +27,15 @@
 .container i {
   cursor: pointer;
   color: var(--secondary);
+  padding: 10px;
 }
 
 .container i:hover {
   opacity: 0.5;
 }
+
+.fa-plus-square-o{
+  color: var(--secondary);
+}
+
+
