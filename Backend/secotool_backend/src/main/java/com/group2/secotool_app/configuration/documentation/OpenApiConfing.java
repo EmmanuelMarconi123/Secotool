@@ -1,4 +1,4 @@
-package com.group2.secotool_app.configuration;
+package com.group2.secotool_app.configuration.documentation;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;

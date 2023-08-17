@@ -2,7 +2,7 @@ package com.group2.secotool_app.bussiness.facade.Impl;
 
 import com.group2.secotool_app.bussiness.facade.IProductFacade;
 import com.group2.secotool_app.bussiness.mapper.ProductDtoMapper;
-import com.group2.secotool_app.bussiness.mapper.ProductRequestDtoMapper;
+import com.group2.secotool_app.bussiness.mapper.ProductMapper;
 import com.group2.secotool_app.bussiness.service.IBucketS3Service;
 import com.group2.secotool_app.bussiness.service.IFileService;
 import com.group2.secotool_app.bussiness.service.IImageService;
@@ -23,7 +23,7 @@ public class ProductFacadeImpl implements IProductFacade {
 
     private final IProductService productService;
     private final IFileService fileService;
-    private final ProductRequestDtoMapper productRequestDtoMapper;
+    private final ProductMapper productMapper;
     private final ProductDtoMapper productDtoMapper;
     private final IImageService imageService;
     private final IBucketS3Service bucketS3Service;
@@ -43,7 +43,7 @@ public class ProductFacadeImpl implements IProductFacade {
     @Override
     public String save(ProductRequestDto productRequestDto, List<MultipartFile> images) {
         fileService.validateFilesAreImages(images);
-        var product = productRequestDtoMapper.toProduct(productRequestDto);
+        var product = productMapper.toProduct(productRequestDto);
         var prodId = productService.save(product);
         var urlImages = bucketS3Service.storeFiles(images);
         urlImages.forEach(url ->
@@ -68,6 +68,13 @@ public class ProductFacadeImpl implements IProductFacade {
     public ProductDto findProductById(Long id) {
         var product = productService.findProductById(id);
         return productDtoMapper.toProductDto(product);
+    }
+
+    @Override
+    public void updateProduct(Long id, ProductRequestDto productRequestDto) {
+        var prod = productMapper.toProduct(productRequestDto);
+        prod.setId(id);
+        productService.updateProduct(prod);
     }
 
     private List<ProductDto> productToProductsDto(List<Product> products){

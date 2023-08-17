@@ -18,9 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@CrossOrigin
 @RestController
-@RequestMapping("v1/api/products")
+@RequestMapping("/v1/api/products")
 @RequiredArgsConstructor
 public class ProductController {
     private final IProductFacade productFacade;
@@ -78,6 +77,13 @@ public class ProductController {
                                                     List<MultipartFile> images ){
         return ResponseEntity.status(201).body(productFacade.save(productRequestDto,images));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateProduct(@PathVariable Long id , @RequestBody @Valid ProductRequestDto productRequestDto){
+        productFacade.updateProduct(id,productRequestDto);
+        return ResponseEntity.ok(String.format("product %s succesffully updated",id));
+    }
+
     @DeleteMapping("/{id}")
     @Operation(summary = "delete a product saved on database")
     @ApiResponses(value = {
