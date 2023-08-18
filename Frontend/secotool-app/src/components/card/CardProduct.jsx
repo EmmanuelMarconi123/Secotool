@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material";
 import styles from "../card/CardProduct.module.css";
 
-function CardProduct({ nombre }) {
+function CardProduct({ product }) {
   return (
     <Grid container className={styles.container}>
       {/* Contenedor de imagen */}
@@ -11,11 +11,11 @@ function CardProduct({ nombre }) {
       {/* Contenedor de texto */}
       <Grid container className={styles.textoCard} item xs={12} md={6}>
         <Grid item xs={12} md={12}>
-          <h4 className={styles.titleCard}>{nombre}</h4>
+          <h4 className={styles.titleCard}>{product.name}</h4>
         </Grid>
         <Grid xs={12} md={12} className={styles.textPriceCard}>
           <span>$</span>
-          <span>25.419</span>
+          <span>{product.price}</span>
         </Grid>
       </Grid>
     </Grid>
