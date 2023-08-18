@@ -29,6 +29,10 @@ a {
   color: #242424;
 }
 
+li {
+  list-style: none;
+}
+
 /*Header*/
 header {
   background-color: var(--color-primary);
@@ -118,7 +122,7 @@ header {
 }
 
 .pt-large{
-  padding-top: 116px;
+  padding-top: 88px;
 }
 
 /*Breakpoints*/
@@ -134,7 +138,7 @@ header {
 
 @media screen and (min-width: 1440px) {
   .title-lg {
-    font-size: 28px;
+    font-size: 33px;
   }
   .font-xl {
     font-size: 33px;
@@ -155,5 +159,9 @@ header {
 
   .button-primary-transparent {
     padding: 8px 16px;
+  }
+
+  .button-transparent{
+    font-size: 16px;
   }
 }

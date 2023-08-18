@@ -35,9 +35,16 @@ body{
   }
 }
 
-@media screen and (min-width: 1440px) {
+@media screen and (min-width: 1024px) {
   .spacing-grid {
     padding-left: 72px;
     padding-right: 72px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .spacing-grid {
+    padding-left: 180px;
+    padding-right: 180px;
   }
 }
