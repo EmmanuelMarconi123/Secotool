@@ -1,9 +1,29 @@
 .titleDetails{
     font-size: 16px;
+    font-weight: 500;
+}
+
+.boxInfoProduct{
+    border-radius: 12px;
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+}
+
+@media screen and (min-width: 768px){
+    .boxInfoProduct{
+        margin-bottom: 24px;
+        border: 1px solid #c2c2c2;
+        padding: 0px 24px;
+    }
 }
 
 @media screen and (min-width: 1440px){
     .titleDetails{
         font-size: 23px;
+    }
+
+    .boxInfoProduct{
+        padding: 32px;
     }
 }

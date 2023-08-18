@@ -3,7 +3,7 @@ import Carousel from "../carousel/Carousel";
 import { useState } from "react";
 import { useEffect } from "react";
 import ListCaracteristicas from "../list/ListCaracteristicas";
-import styles from './Details.module.css'
+import styles from "./Details.module.css";
 
 function Details() {
   const params = useParams();
@@ -45,10 +45,10 @@ function Details() {
   ];
 
   const mockCaracteristicas = [
-    {id: 1, nombre: 'Marca Bosh', icono: 'fa-regular fa-tag'},
-    {id: 2, nombre: 'Color Azúl', icono: 'fa-regular fa-palette'},
-    {id: 3, nombre: 'Es inalámbrico', icono: 'fa-regular fa-plug'},
-    {id: 4, nombre: 'Voltaje 220V', icono: 'fa-regular fa-bolt'},
+    { id: 1, nombre: "Marca Bosh", icono: "fa-regular fa-tag" },
+    { id: 2, nombre: "Color Azúl", icono: "fa-regular fa-palette" },
+    { id: 3, nombre: "Es inalámbrico", icono: "fa-regular fa-plug" },
+    { id: 4, nombre: "Voltaje 220V", icono: "fa-regular fa-bolt" },
   ];
 
   return (
@@ -58,21 +58,30 @@ function Details() {
           <i className="fa-regular fa-arrow-left"></i>Volver atrás
         </button>
       </Link>
+      <div className={styles.boxInfoProduct}>
       <Carousel imagenes={productImagenes}></Carousel>
-      <h1 className="title-lg">{productD.name}</h1>
-      <div className="font-xl">
-        <span>$</span>
-        <span>{productD.price}</span>
-      </div>
-      <div className="pt-24">
-        <h4 className={styles.titleDetails + " font-regular mb-16"}>Descripción</h4>
-        <p className="font-sm">{productD.description}</p>
-      </div>
-      <div className="">
-        <h4 className={styles.titleDetails + " font-regular mb-16"}>Características</h4>
-        <ListCaracteristicas caracteris={mockCaracteristicas}></ListCaracteristicas>
-      </div>
-      <button className="button-lg button-cta">Alquilar</button>
+        <h1 className="title-lg">{productD.name}</h1>
+        <div className="font-xl">
+          <span>$</span>
+          <span>{productD.price}</span>
+        </div>
+        <div className="pt-24">
+          <h4 className={styles.titleDetails + " font-regular mb-16"}>
+            Descripción
+          </h4>
+          <p className="font-sm">{productD.description}</p>
+        </div>
+        <div className="">
+          <h4 className={styles.titleDetails + " font-regular mb-16"}>
+            Características
+          </h4>
+          <ListCaracteristicas
+            caracteris={mockCaracteristicas}
+          ></ListCaracteristicas>
+        </div>
+        
+        <button className="button-lg button-cta">Alquilar</button>
+        </div>
     </div>
   );
 }
