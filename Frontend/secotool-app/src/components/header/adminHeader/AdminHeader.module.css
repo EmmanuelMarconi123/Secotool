@@ -24,18 +24,20 @@
 }
 
 @media screen and (max-width: 1024px) {
-  .navbarButtons div{
+  .navbarButtons div {
     display: none;
   }
 }
-
 
 .leftNavbar {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: auto;
+}
+
+.logo {
+  width: 100%;
 }
 
 .navLink {
@@ -62,9 +64,49 @@
   border: none;
   color: var(--dark);
   background: none;
-  font-size: 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
+}
+
+@media screen and (min-width: 0px) and (max-width: 767px) {
+  .leftNavbar {
+    width: 70%;
+  }
+
+  .closeSesion span {
+    display: none;
+  }
+
+  .slogan {
+    font-size: 13px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .leftNavbar {
+    width: 85%;
+  }
+  .navbarButtons a {
+    font-size: 13px;
+  }
+
+  .slogan {
+    font-size: 16px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .leftNavbar {
+    width: 100%;
+  }
+
+  .navbarButtons a {
+    font-size: 16px;
+  }
+
+  .slogan {
+    font-size: 19px;
+  }
 }

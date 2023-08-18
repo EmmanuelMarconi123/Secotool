@@ -8,11 +8,11 @@ const AdminHeader = () => {
   return (
     <header className="spacing-grid">
       <nav className={styles.navbar}>
-        <div className={styles.leftNavbar}>
-          <Link to="/admin/home">
-            <img src={LogoDesktop} alt="" />
+        <div>
+          <Link to="/admin/home" className={styles.leftNavbar}>
+            <img src={LogoDesktop} className={styles.logo} alt="" />
+            <span className={styles.slogan}>Construí fácil y rápido</span>
           </Link>
-          <span>Construi facil y rapido</span>
         </div>
         <div className={styles.navbarButtons}>
           <div>
@@ -26,7 +26,7 @@ const AdminHeader = () => {
             </Link>
           </div>
           <Link to="/home" className={styles.closeSesion}>
-            Cerrar Sesion
+            <span>Cerrar Sesión</span>
             <i className="fa-regular fa-right-from-bracket"></i>
           </Link>
         </div>

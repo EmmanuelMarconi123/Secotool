@@ -103,6 +103,11 @@ const HomeAdmin = () => {
 
   const [products, setProducts] = useState(ArrProducts);
 
+  async function getData() {
+    const response = await (await fetch("URL TO FETCH")).json();
+    setProducts(response);
+  }
+
   function deleteItem(id) {
     console.log("Se ha borrado el item con id " + id);
     const newProducts = products.filter((product) => product.id !== id);
@@ -110,10 +115,19 @@ const HomeAdmin = () => {
     console.log(products);
   }
 
+  //   async function deleteItem(id) {
+  //     const response = await (await fetch("URL TO FETCH")).json()
+  //     setProducts(response);
+  //  }
+
   useEffect(() => {
     window
       .matchMedia("(min-width: 1024px)")
       .addEventListener("change", (e) => setMatches(e.matches));
+  }, []);
+
+  useEffect(() => {
+    getData();
   }, []);
 
   return (
@@ -155,11 +169,12 @@ const HomeAdmin = () => {
           style={{
             display: "flex",
             alignItems: "center",
+            textAlign: "center",
             justifyContent: "center",
             height: "100vh",
           }}
         >
-          Por favor ingrese desde un dispositivo mas grande
+          Por favor ingrese desde un dispositivo más grande
         </span>
       )}
     </div>
