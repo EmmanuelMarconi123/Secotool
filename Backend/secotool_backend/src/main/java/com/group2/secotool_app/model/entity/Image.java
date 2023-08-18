@@ -16,10 +16,10 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    @JoinColumn(name = "product_id", referencedColumnName = "id",nullable = false)
     @JsonIgnore
     private Product product;
-    @Column(name = "url")
+    @Column(name = "url",nullable = false)
     private String url;
 
 }

@@ -5,82 +5,104 @@ import FormBusqueda from "../form/FormBusqueda";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import Pagination from "../pagination/Pagination";
+import { useEffect } from "react";
 
 const Home = () => {
+  const [productsF, setProductsF] = useState([]);
+  // "useEffect usado para el fect de los productos (por ahora es necesario correr el back de local)"
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/v1/api/products");
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data); //Borrar este console.log, mas tarde\
+          setProductsF(data);
+        } else {
+          throw new Error("Error en la solicitud");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
   const herramienasDeAlquiler = [
     {
       id: 1,
-      nombre: "martillo",
+      nombre: "Martillo",
       descripcion: "lakjslkajsdlkj alskhalksdj",
     },
     {
       id: 2,
-      nombre: "taladro",
+      nombre: "Taladro",
       descripcion: "lakjslkajsdlkj alskhalksdj",
     },
     {
       id: 3,
-      nombre: "tornillo",
+      nombre: "Tornillo",
       descripcion: "lakjslkajsdlkj alskhalksdj",
     },
     {
       id: 4,
-      nombre: "pala",
+      nombre: "Pala",
       descripcion: "lakjslkajsdlkj alskhalksdj",
     },
     {
       id: 5,
-      nombre: "retroescabadora",
+      nombre: "Retroescabadora",
       descripcion: "lakjslkajsdlkj alskhalksdj",
     },
     {
       id: 6,
-      nombre: "cortadora",
+      nombre: "Cortadora",
       descripcion: "lakjslkajsdlkj alskhalksdj",
     },
     {
       id: 7,
-      nombre: "maderas",
+      nombre: "Maderas",
       descripcion: "lakjslkajsdlkj alskhalksdj",
     },
     {
       id: 8,
-      nombre: "fierros",
+      nombre: "Fierros",
       descripcion: "lakjslkajsdlkj alskhalksdj",
     },
     {
       id: 9,
-      nombre: "grua",
+      nombre: "Grua",
       descripcion: "lakjslkajsdlkj alskhalksdj",
     },
     {
       id: 10,
-      nombre: "soldadora",
+      nombre: "Soldadora",
       descripcion: "lakjslkajsdlkj alskhalksdj",
     },
     {
       id: 11,
-      nombre: "cortadora",
+      nombre: "Cortadora",
       descripcion: "lakjslkajsdlkj alskhalksdj",
     },
     {
       id: 12,
-      nombre: "maderas",
+      nombre: "Maderas",
       descripcion: "lakjslkajsdlkj alskhalksdj",
     },
     {
       id: 13,
-      nombre: "fierros",
+      nombre: "Fierros",
       descripcion: "lakjslkajsdlkj alskhalksdj",
     },
     {
       id: 14,
-      nombre: "grua",
+      nombre: "Grua",
       descripcion: "lakjslkajsdlkj alskhalksdj",
     },
     {
       id: 15,
-      nombre: "soldadora",
+      nombre: "Soldadora",
       descripcion: "lakjslkajsdlkj alskhalksdj",
     },
   ];
@@ -109,7 +131,8 @@ const Home = () => {
 
   return (
     <section className={styles.sectionBusqueda}>
-      <div className={styles.container}>
+      <div className={styles.containerBusqueda}>
+        <div className={styles.bgBusqueda}></div>
         <Typography variant="h6" className={styles.titulo}>
           ¿Qué herramienta necesitas?
         </Typography>

@@ -47,7 +47,7 @@ const NewProduct = () => {
             <h1
               style={{ fontWeight: "400", fontSize: "24px", padding: "16px 0" }}
             >
-              Nuevo Productos
+              Nuevo Producto
             </h1>
             {newItem && (
               <div className={styles.newItem}>
@@ -70,7 +70,7 @@ const NewProduct = () => {
               </label>
 
               <label htmlFor="productDescription">
-                Descripcion
+                Descripción
                 <textarea
                   type="text"
                   id="productDescription"

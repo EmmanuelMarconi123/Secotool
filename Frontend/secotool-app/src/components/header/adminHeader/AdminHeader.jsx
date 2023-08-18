@@ -13,6 +13,7 @@ const AdminHeader = () => {
             <img src={LogoDesktop} className={styles.logo} alt="" />
             <span className={styles.slogan}>Construí fácil y rápido</span>
           </Link>
+          <span>Construí fácil y rápido</span>
         </div>
         <div className={styles.navbarButtons}>
           <div>

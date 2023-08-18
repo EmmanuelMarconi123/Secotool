@@ -1,40 +1,52 @@
-.imgLogo{
+.imgLogo {
   width: 91px;
   height: 16.65px;
 }
 
-.lema{
+.lema {
   font-size: 8px;
 }
 
-.navbar{
+.navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: 88px;
+  margin-left: 32px;
+  margin-right: 32px;
 }
 
-.navbarButtons{
+.navbarButtons {
   display: flex;
   align-items: center;
   gap: 16px;
 }
 
 /*Breakpoints*/
-@media screen and (min-width: 768px){
-  .imgLogo{
+@media screen and (min-width: 768px) {
+  .navbar {
+    margin-left: 80px;
+    margin-right: 80px;
+  }
+  .imgLogo {
     width: 140px;
     height: 25.61px;
   }
 }
 
-@media screen and (min-width: 1440px){
-  .imgLogo{
+@media screen and (min-width: 1440px) {
+
+.navbar {
+  margin-left: 72px;
+  margin-right: 72px;
+}
+  .imgLogo {
     width: 240px;
     height: 43.9px;
   }
 
-  .lema{
+
+  .lema {
     font-size: 11px;
   }
 }
