@@ -52,6 +52,12 @@
 }
 
 /*Breakpoints*/
+@media screen and (max-width: 360px) {
+  .titulo{
+    font-size: 16px!important;
+  }
+}
+
 @media screen and (min-width: 1024px) {
   .containerBusqueda {
     width: 60%;
