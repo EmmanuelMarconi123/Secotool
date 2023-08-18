@@ -17,7 +17,7 @@
 }
 
 .containerBusqueda .bgBusqueda{
-  background-color: #F1CF24;
+  background-color: var(--color-primary);
   position: absolute;
   width: 100%;
   left: 0px;
