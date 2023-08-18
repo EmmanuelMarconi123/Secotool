@@ -4,7 +4,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 50px;
+    margin-top: 16px;
 }
 
 .imgProduct{
@@ -24,10 +24,11 @@
 }
 
 .boxControlsCarousel{
-    width: calc(100% - 32px);
+    width: calc(100% - 64px);
     position: absolute;
     display: flex;
     justify-content: space-between;
+    top: 318px;
 }
 
 .boxControlsCarousel button{
@@ -45,10 +46,15 @@
 
 .indicadorImg{
     align-self: end;
-    background-color: rgb(36, 35, 35);
+    background-color: var(--dark);
     color: aliceblue;
     border-radius: 12px;
     padding: 4px 8px;
+    margin-bottom: 8px;
+}
+
+.btnChevron i{
+    padding-left: 8px;
 }
 
 @media screen and (min-width: 768px){

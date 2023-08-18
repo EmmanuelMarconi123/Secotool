@@ -1,0 +1,9 @@
+.titleDetails{
+    font-size: 16px;
+}
+
+@media screen and (min-width: 1440px){
+    .titleDetails{
+        font-size: 23px;
+    }
+}
