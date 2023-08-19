@@ -57,17 +57,12 @@ const HomeAdmin = () => {
   //-------------- CONFIGURACION DE LA PAGINACION -------------------->
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
-
-  const lastPostIndex = currentPage * itemsPerPage;
-  const fistPostIndex = lastPostIndex - itemsPerPage;
-  const currentPost = productsAd.slice(fistPostIndex, lastPostIndex);
+  const [products, setProducts] = useState([]);
+  const [currentPost, setCurrentPost] = useState([]);
 
   const [matches, setMatches] = useState(
     window.matchMedia("(min-width: 1024px)").matches
   );
-
-  const [products, setProducts] = useState(productsAd);
 
   function deleteItem(id) {
     console.log("Se ha borrado el item con id " + id);
@@ -76,11 +71,48 @@ const HomeAdmin = () => {
     console.log(products);
   }
 
+  // async function deleteItem(id) {
+  // try {
+  //   const response = await fetch("http://localhost:8080/v1/api/products/{id}");
+  //   if (response.ok) {
+  //     console.log(`Se ha borrado el item con id ${id} correctamente`);
+  //   } else {
+  //     throw new Error("Error en la solicitud");
+  //   }
+  // } catch (error) {
+  //   console.error(error);
+  // }
+  //  }
+
   useEffect(() => {
     window
       .matchMedia("(min-width: 1024px)")
       .addEventListener("change", (e) => setMatches(e.matches));
   }, []);
+
+  useEffect(() => {
+    const fetchProductsAdmin = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/v1/api/products");
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data); //Borrar este console.log, mas tarde\
+          setProducts(data);
+        } else {
+          throw new Error("Error en la solicitud");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchProductsAdmin();
+  }, []);
+
+  useEffect(() => {
+    const lastPostIndex = currentPage * 10;
+    const fistPostIndex = lastPostIndex - 10;
+    setCurrentPost(products.slice(fistPostIndex, lastPostIndex));
+  }, [currentPage, products]);
 
   return (
     <div>
@@ -104,7 +136,7 @@ const HomeAdmin = () => {
                 <span>Nombre</span>
                 <span>Acciones</span>
               </div>
-              {products &&
+              {products.length > 0 ? (
                 currentPost.map((product) => (
                   <AdminProductCard
                     key={product.id}
@@ -113,10 +145,15 @@ const HomeAdmin = () => {
                     title={product.name}
                     editItem={() => handleOpenEp()}
                   />
-                ))}
+                ))
+              ) : (
+                <span className={styles.noProducstMessage}>
+                  No se encontraron resultados
+                </span>
+              )}
               <Pagination
-                totalPosts={productsAd.length}
-                itemsPerPage={itemsPerPage}
+                totalPosts={products.length}
+                itemsPerPage={10}
                 setCurrentPage={setCurrentPage}
                 currentPage={currentPage}
               />
@@ -128,11 +165,12 @@ const HomeAdmin = () => {
           style={{
             display: "flex",
             alignItems: "center",
+            textAlign: "center",
             justifyContent: "center",
             height: "100vh",
           }}
         >
-          Por favor ingrese desde un dispositivo mas grande
+          Por favor ingrese desde un dispositivo más grande
         </span>
       )}
       {/* --------------------------NUEVO PRODUCTO MODAL--------------------------------> */}
