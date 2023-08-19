@@ -11,7 +11,7 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 
-  --color-primary: #F1CF24;
+  --color-primary: #FFDB27;
   --color-secondary: #E61717;
   --dark: #3A3939;
   --lightGrey: #EFECEC;
@@ -64,6 +64,12 @@ header {
   padding: 4px 8px;
 }
 
+.button-cta{
+  background-color: #4a6ac9;
+  border: none;
+  color: var(--white);
+}
+
 .button-lg {
   padding-top: 12px;
   padding-bottom: 12px;
@@ -71,7 +77,6 @@ header {
   font-size: 16px;
   margin-top: 24px;
   margin-bottom: 24px;
-  background-color: #C54B16;
 }
 
 /*Fonts*/

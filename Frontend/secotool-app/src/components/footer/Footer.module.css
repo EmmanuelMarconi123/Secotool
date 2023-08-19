@@ -1,14 +1,13 @@
 /*Aqui van todos los estilos del footer*/
-footer{
-    height: 148px;
-    background:#3a3939;
-    color: #fff;
+footer {
+  height: 148px;
+  background: #3a3939;
+  color: #fff;
 }
 
 footer img {
   padding-top: 38px;
-  width: 25vh;
-  height: 43px;
+  width: 240px;
 }
 
 footer p {
@@ -19,18 +18,16 @@ footer p {
 }
 
 @media screen and (max-width: 360px) {
-    footer {
-      height: 124px;
-    }
-  
-    footer img {
-      width: 91px;
-      height: 16.589px;
-      flex-shrink: 0;
-    }
-    footer p {
-      font-size: 13px;
-      font-weight: 400;
-      font-style: normal;
-    }
+  footer {
+    height: 124px;
   }
+
+  footer img {
+    width: 140px;
+  }
+  footer p {
+    font-size: 13px;
+    font-weight: 400;
+    font-style: normal;
+  }
+}

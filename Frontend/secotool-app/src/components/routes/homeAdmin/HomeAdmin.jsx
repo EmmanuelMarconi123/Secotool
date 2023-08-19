@@ -2,91 +2,57 @@ import styles from "./HomeAdmin.module.css";
 import AdminProductCard from "../../adminProductCard/AdminProductCard";
 import { useEffect, useState } from "react";
 import Pagination from "../../pagination/Pagination";
+import { ButtonToolbar, Button, Uploader, TagPicker } from "rsuite";
+import Modal from "rsuite/Modal";
 
 const HomeAdmin = () => {
-  // const ArrProducts = [
-  //   {
-  //     id: "0001",
-  //     title:
-  //       "Taladro Percutor atornillador Bosch Professional GSB 550 RE Caja de cartón - Azul - 220V",
-  //   },
-  //   {
-  //     id: "0002",
-  //     title: "Martillo Inoxidable Professional Hetcher",
-  //   },
-  //   {
-  //     id: "0003",
-  //     title: "Pinza punzadora profesional Smith",
-  //   },
-  //   {
-  //     id: "0004",
-  //     title: "Sierra sensitiva Bosch ATB 530 V2 - Negra - 220V",
-  //   },
-  //   {
-  //     id: "0005",
-  //     title: "Destornillador electrico Hiui alta durabilidad - Rojo",
-  //   },
-  //   {
-  //     id: "0006",
-  //     title: "Nivel Laser Reifelmenz 10 metros",
-  //   },
-  //   {
-  //     id: "0007",
-  //     title: "Amoladora Steel 5 discos con soporte automatico - 220V",
-  //   },
-  //   {
-  //     id: "0008",
-  //     title: "Gafas de proteccion Sahira de alta resistencia trasparentes",
-  //   },
-  //   {
-  //     id: "0009",
-  //     title: "Sierra Cortadora Sensitiva Metal Yosemite 2100w 355mm 14puLG",
-  //   },
-  //   {
-  //     id: "0010",
-  //     title: "Caja De Herramientas Con 9 Piezas Truper Pinza Alicate",
-  //   },
-  //   {
-  //     id: "0011",
-  //     title: "Set De Chapista Black Jack X 7 Pcs 3 Martillos 4 Aguantadore",
-  //   },
-  //   {
-  //     id: "0012",
-  //     title: "Pinza Pelacables Automatico Frontal Bremen Corta Cable 7725",
-  //   },
-  //   {
-  //     id: "0013",
-  //     title: "Taladro Atornillador Percutor + 2 Baterias Gp By Lusqtoff",
-  //   },
-  //   {
-  //     id: "0014",
-  //     title: "Mini Motosierra Electrosierra Recargable Batería Inalámbrica",
-  //   },
-  //   {
-  //     id: "0015",
-  //     title: "Destornillador electrico Hiui alta durabilidad - Rojo",
-  //   },
-  //   {
-  //     id: "0016",
-  //     title: "Juego De Llaves Combinadas Fija Estriada 12 Piezas 6 A 22 Mm",
-  //   },
-  //   {
-  //     id: "0017",
-  //     title: "Llave Caño Stilson Bahco 142 426 Mm Apertura 65 Mm",
-  //   },
-  //   {
-  //     id: "0018",
-  //     title: "Lijadora Rotoorbital 300w 125mm 5 PuLG Vel Variable + Lijas",
-  //   },
-  //   {
-  //     id: "0019",
-  //     title: "Pinza Sacabocado Profesional Para Perforar Cuero Plástico",
-  //   },
-  //   {
-  //     id: "0020",
-  //     title: "Caja De Herramientas Con 9 Piezas Truper Pinza Alicate",
-  //   },
-  // ];
+  const [productsAd, setProductsAd] = useState([]);
+  // "useEffect usado para el fect de los productos (por ahora es necesario correr el back de local)"
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/v1/api/products");
+        if (response.ok) {
+          const data = await response.json();
+          setProductsAd(data);
+        } else {
+          throw new Error("Error en la solicitud");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  //------------------------------CONFIG MULTICASCADA---------------------->
+  const categories = [
+    "Electrónica",
+    "Ropa",
+    "Hogar",
+    "Deportes",
+    "Alimentos",
+    "Libros",
+  ].map((item) => ({ label: item, value: item }));
+
+  const features = [
+    "Alta calidad",
+    "Resistente al agua",
+    "Conectividad inalámbrica",
+    "Diseño ergonómico",
+    "Batería de larga duración",
+    "Tecnología de última generación",
+  ].map((item) => ({ label: item, value: item }));
+
+  //------------------------------ CONFIG MODALS--------------->
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const [openEp, setOpenEp] = useState(false);
+  const handleOpenEp = () => setOpenEp(true);
+  const handleCloseEp = () => setOpenEp(false);
 
   //-------------- CONFIGURACION DE LA PAGINACION -------------------->
 
@@ -153,11 +119,17 @@ const HomeAdmin = () => {
       {matches ? (
         <div>
           <div className={styles.container}>
-            <h1
-              style={{ fontWeight: "400", fontSize: "19px", padding: "16px 0" }}
-            >
-              Todos los productos
-            </h1>
+            <div className={styles.upTable}>
+              <h1>Todos los productos</h1>
+              <ButtonToolbar className={styles.buttonToolbarRight}>
+                <Button
+                  onClick={handleOpen}
+                  style={{ background: "#45A42D", color: "#F9F9F9" }}
+                >
+                  + Agregar Producto
+                </Button>
+              </ButtonToolbar>
+            </div>
             <div className={styles.tableContainer}>
               <div className={styles.tableHeader}>
                 <span>ID</span>
@@ -171,6 +143,7 @@ const HomeAdmin = () => {
                     deleteItem={() => deleteItem(product.id)}
                     id={product.id}
                     title={product.name}
+                    editItem={() => handleOpenEp()}
                   />
                 ))
               ) : (
@@ -200,6 +173,124 @@ const HomeAdmin = () => {
           Por favor ingrese desde un dispositivo más grande
         </span>
       )}
+      {/* --------------------------NUEVO PRODUCTO MODAL--------------------------------> */}
+      <Modal size="md" open={open} onClose={handleClose} overflow={false}>
+        <Modal.Header>
+          <Modal.Title style={{ textAlign: "center", fontSize: 23 }}>
+            Nuevo Producto
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className={styles.containerModal}>
+          <div className={styles.centeredForm}>
+            <form className={styles.formNewProduct} action="">
+              <label htmlFor="">
+                Nombre del producto
+                <input type="text" />
+              </label>
+              <label htmlFor="">
+                Descripcion
+                <textarea
+                  cols="30"
+                  rows="10"
+                  style={{ height: 120, width: 640 }}
+                ></textarea>
+              </label>
+              <label htmlFor="">
+                Categorias
+                <TagPicker style={{ width: 640 }} data={categories} />
+              </label>
+              <label htmlFor="">
+                Caracteristicas
+                <TagPicker style={{ width: 640 }} data={features} />
+              </label>
+              <label htmlFor="">
+                Precio
+                <input type="number" />
+              </label>
+              <label htmlFor="">
+                Imagenes
+                <Uploader draggable>
+                  <div
+                    style={{
+                      height: 54,
+                      width: 640,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: 10,
+                      borderRadius: 8,
+                    }}
+                  >
+                    <i className="fa-solid fa-cloud-arrow-up"></i>
+                    <span>Subir imagen</span>
+                  </div>
+                </Uploader>
+              </label>
+              <div className={styles.labelSeparator}></div>
+              <button>Agregar Producto</button>
+            </form>
+          </div>
+        </Modal.Body>
+      </Modal>
+      {/* ------------------------------------------EDITAR PRODUCTO MODAL--------------------------> */}
+      <Modal size="md" open={openEp} onClose={handleCloseEp} overflow={false}>
+        <Modal.Header>
+          <Modal.Title style={{ textAlign: "center", fontSize: 23 }}>
+            Editor de productos
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className={styles.containerModal}>
+          <div className={styles.centeredForm}>
+            <form className={styles.formNewProduct} action="">
+              <label htmlFor="">
+                Nombre del producto
+                <input type="text" />
+              </label>
+              <label htmlFor="">
+                Descripcion
+                <textarea
+                  cols="30"
+                  rows="10"
+                  style={{ height: 120, width: 640 }}
+                ></textarea>
+              </label>
+              <label htmlFor="">
+                Categorias
+                <TagPicker style={{ width: 640 }} data={categories} />
+              </label>
+              <label htmlFor="">
+                Caracteristicas
+                <TagPicker style={{ width: 640 }} data={features} />
+              </label>
+              <label htmlFor="">
+                Precio
+                <input type="number" />
+              </label>
+              <label htmlFor="">
+                Imagenes
+                <Uploader draggable>
+                  <div
+                    style={{
+                      height: 54,
+                      width: 640,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: 10,
+                      borderRadius: 8,
+                    }}
+                  >
+                    <i className="fa-solid fa-cloud-arrow-up"></i>
+                    <span>Subir imagen</span>
+                  </div>
+                </Uploader>
+              </label>
+              <div className={styles.labelSeparator}></div>
+              <button>Agregar Producto</button>
+            </form>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };
