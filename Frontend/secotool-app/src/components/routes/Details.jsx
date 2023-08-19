@@ -59,7 +59,7 @@ function Details() {
         </button>
       </Link>
       <div className={styles.boxInfoProduct}>
-      <Carousel imagenes={productImagenes}></Carousel>
+        <Carousel imagenes={productImagenes}></Carousel>
         <h1 className="title-lg">{productD.name}</h1>
         <div className="font-xl">
           <span>$</span>
@@ -79,9 +79,8 @@ function Details() {
             caracteris={mockCaracteristicas}
           ></ListCaracteristicas>
         </div>
-        
         <button className="button-lg button-cta">Alquilar</button>
-        </div>
+      </div>
     </div>
   );
 }
