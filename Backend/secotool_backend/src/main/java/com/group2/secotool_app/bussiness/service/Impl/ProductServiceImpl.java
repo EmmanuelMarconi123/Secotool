@@ -1,6 +1,6 @@
 package com.group2.secotool_app.bussiness.service.Impl;
 
-import com.group2.secotool_app.bussiness.mapper.ProductRequestDtoMapper;
+import com.group2.secotool_app.bussiness.mapper.ProductMapper;
 import com.group2.secotool_app.bussiness.service.IProductValidationService;
 import com.group2.secotool_app.model.entity.Product;
 import com.group2.secotool_app.persistence.ProductRepository;
@@ -18,7 +18,7 @@ public class ProductServiceImpl implements IProductService {
 
     private final ProductRepository productRepository;
     private final IProductValidationService productValidationService;
-    private final ProductRequestDtoMapper productRequestDtoMapper;
+    private final ProductMapper productMapper;
 
 
     @Override
@@ -32,10 +32,11 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public void save(Product product) {
+    public Long save(Product product) {
         if (productValidationService.validateProductNameIsNotAvaible(product.getName()))
             throw new RuntimeException("product name already exists on database");
-        productRepository.save(product);
+        var prod = productRepository.save(product);
+        return prod.getId();
     }
 
     @Override
@@ -58,4 +59,15 @@ public class ProductServiceImpl implements IProductService {
         throw new RuntimeException("product "+id+ " not found");
     }
 
+    @Override
+    public boolean existProductById(Long id) {
+        return productRepository.existsById(id);
+    }
+
+    @Override
+    public void updateProduct(Product prod) {
+        if (!existProductById(prod.getId()))
+            throw new RuntimeException("it is not posible to update a product doesn't exists");
+        productRepository.save(prod);
+    }
 }
