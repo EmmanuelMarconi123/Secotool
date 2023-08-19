@@ -45,17 +45,26 @@
   padding: 10px 20px;
   border-radius: 3px;
   border: none;
-  color: var(--white);
-  background-color: var(--dark);
-  font-size: 16px;
+  color: var(--dark);
+  font-size: 13px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
 }
 
-.navLink:active {
-  background-color: rgb(88, 88, 88);
+.navLinkActive {
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 3px;
+  border: none;
+  color: var(--white);
+  background-color: var(--dark);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 }
 
 .closeSesion {
@@ -68,6 +77,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 8px;
+  font-size: 13px;
 }
 
 @media screen and (min-width: 0px) and (max-width: 767px) {
@@ -75,12 +85,16 @@
     width: 70%;
   }
 
-  .closeSesion span {
-    display: none;
+  .slogan {
+    font-size: 8px;
   }
 
-  .slogan {
-    font-size: 13px;
+  .navbarButtons div {
+    gap: 8px;
+  }
+
+  .closeSesion span {
+    display: none;
   }
 }
 
@@ -88,12 +102,17 @@
   .leftNavbar {
     width: 85%;
   }
-  .navbarButtons a {
-    font-size: 13px;
-  }
 
   .slogan {
-    font-size: 16px;
+    font-size: 11px;
+  }
+
+  .navbarButtons div {
+    gap: 8px;
+  }
+
+  .closeSesion span {
+    display: none;
   }
 }
 
@@ -102,11 +121,11 @@
     width: 100%;
   }
 
-  .navbarButtons a {
-    font-size: 16px;
+  .slogan {
+    font-size: 11px;
   }
 
-  .slogan {
-    font-size: 19px;
+  .navbarButtons div {
+    gap: 32px;
   }
 }
