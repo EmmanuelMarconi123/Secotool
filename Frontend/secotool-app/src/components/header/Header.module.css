@@ -1,43 +1,48 @@
 .headerDefault {
   background-color: var(--color-primary);
-  position: fixed;
+  /*position: fixed;
   width: 100%;
-  z-index: 1000;
+  z-index: 1000;*/
 }
 
-.imgLogo {
+.headerDefault .leftNavbar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+}
+
+.headerDefault .imgLogo {
   width: 91px;
   height: 16.65px;
 }
 
-.lema {
+.headerDefault .lema {
   font-size: 8px;
 }
 
-.navbar {
+.headerDefault .navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: 88px;
-  margin-left: 32px;
-  margin-right: 32px;
 }
 
-.navbarButtons {
+.headerDefault .navbarButtons {
   display: flex;
   align-items: center;
   gap: 40px;
 }
 
-.navbarContainer {
+.headerDefault .navbarContainer {
   overflow: hidden;
-  padding-right: 450px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.navbarContainer a {
+.headerDefault .navbarContainer a {
   font-size: 16px;
   color: var(--dark);
   text-align: center;
@@ -45,12 +50,12 @@
   text-decoration: none;
 }
 
-.dropdown {
+.headerDefault .dropdown {
   float: left;
   overflow: hidden;
 }
 
-.dropdown .dropbtn {
+.headerDefault .dropdown .dropbtn {
   font-size: 16px;
   border: none;
   outline: none;
@@ -61,20 +66,20 @@
   margin: 0;
 }
 
-.dropbtn i {
+.headerDefault .dropbtn i {
   padding-left: 8px;
 }
 
-.navbarContainer a:hover,
+.headerDefault .navbarContainer a:hover,
 .dropdown:hover .dropbtn {
   background-color: var(--color-primary);
 }
 
-.navbarContainer a:hover {
+.headerDefault .navbarContainer a:hover {
   border-radius: 8px;
 }
 
-.dropdownContent {
+.headerDefault .dropdownContent {
   display: none;
   position: absolute;
   background-color: #f9f9f9;
@@ -85,45 +90,37 @@
   padding-bottom: 24px;
 }
 
-.dropdownContent .header {
+.headerDefault .dropdownContent .header {
   background: var(--white);
   padding: 16px 0px;
   color: var(--dark);
 }
 
-.dropdownContent .header h2 {
+.headerDefault .dropdownContent .header h2 {
   font-weight: 500;
   margin-left: 0px;
 }
 
-.dropdown:hover .dropdownContent {
+.headerDefault .dropdown:hover .dropdownContent {
   display: flex;
   flex-direction: column;
 }
 
 /*Breakpoints*/
 @media screen and (min-width: 768px) {
-  .navbar {
-    margin-left: 80px;
-    margin-right: 80px;
-  }
-  .imgLogo {
+  .headerDefault .imgLogo {
     width: 140px;
     height: 25.61px;
   }
 }
 
 @media screen and (min-width: 1440px) {
-  .navbar {
-    margin-left: 180px;
-    margin-right: 180px;
-  }
-  .imgLogo {
+  .headerDefault .imgLogo {
     width: 240px;
     height: 43.9px;
   }
 
-  .lema {
+  .headerDefault .lema {
     font-size: 11px;
   }
 }

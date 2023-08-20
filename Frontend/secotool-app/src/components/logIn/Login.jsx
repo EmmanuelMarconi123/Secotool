@@ -1,13 +1,14 @@
-import FormLogin from "../form/FormLogin";
+import FormLogin from "../form/formLogin/FormLogin";
 import HeaderAuth from "../header/headerAuth/HeaderAuth";
 import styles from '../logIn/Login.module.css'
 
 const Login = () => {
   return (
-    <div className={styles.container}>
+    <section className={styles.sectionLogin + " spacing-grid"}>
+      <div className={styles.bgLogin}></div>
       <HeaderAuth />
       <FormLogin />
-    </div>
+    </section>
   );
 };
 

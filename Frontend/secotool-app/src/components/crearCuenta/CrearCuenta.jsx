@@ -1,14 +1,15 @@
 
-import FormCrearCuenta from "../form/FormCrearCuenta";
+import FormCrearCuenta from "../form/formCrearCuenta/FormCrearCuenta";
 import styles from '../crearCuenta/CrearCuenta.module.css'
 import HeaderAuth from "../header/headerAuth/HeaderAuth";
 
 const CrearCuenta = () => {
   return (
-    <div className={styles.container}>
+    <section className={styles.sectionCrearCuenta + " spacing-grid"}>
+      <div className={styles.bgCrearCuenta}></div>
       <HeaderAuth/>
       <FormCrearCuenta/>
-    </div>
+    </section>
   );
 };
 

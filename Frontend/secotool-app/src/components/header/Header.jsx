@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import LogoDesktop from "../../assets/img/LogoDesktop.png";
-import styles from "./adminHeader/AdminHeader.module.css";
 import stylesHeader from "../header/Header.module.css";
 import { useEffect, useState } from "react";
 import ListCategorias from "../list/ListCategorias";
@@ -26,9 +25,9 @@ function Header() {
   }, []);
 
   return (
-    <header className={stylesHeader.headerDefault}>
+    <header className={stylesHeader.headerDefault + " spacing-grid"}>
       <nav className={stylesHeader.navbar}>
-        <div className={styles.leftNavbar}>
+        <div className={stylesHeader.leftNavbar}>
           <Link to="/home">
             <img
               className={stylesHeader.imgLogo}

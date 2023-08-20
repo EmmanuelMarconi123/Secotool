@@ -1,7 +1,7 @@
 import { Grid, Typography } from "@mui/material";
 import styles from "../routes/home.module.css";
 import Card from "../card/CardProduct";
-import FormBusqueda from "../form/FormBusqueda";
+import FormBusqueda from "../form/formBusqueda/FormBusqueda";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import Pagination from "../pagination/Pagination";
