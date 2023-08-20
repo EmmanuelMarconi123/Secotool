@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
 import LogoDesktop from "../../assets/img/LogoDesktop.png";
-import stylesHeader from "../header/Header.module.css";
+import stylesHeader from "./Header.module.css";
 import { useEffect, useState } from "react";
 import ListCategorias from "../list/ListCategorias";
-/*import ListCategorias from "../list/ListCategorias";*/
 
 function Header() {
   const [isMobile, setIsMobile] = useState(false);
@@ -25,8 +24,8 @@ function Header() {
   }, []);
 
   return (
-    <header className={stylesHeader.headerDefault + " spacing-grid"}>
-      <nav className={stylesHeader.navbar}>
+    <header className={stylesHeader.headerDefault}>
+      <nav className={stylesHeader.headerDefaultNavbar}>
         <div className={stylesHeader.leftNavbar}>
           <Link to="/home">
             <img
@@ -50,12 +49,12 @@ function Header() {
                     <i className="fa-regular fa-chevron-down"></i>
                   </button>
                   <div
-                    className={stylesHeader.dropdownContent + " spacing-grid"}
+                    className={stylesHeader.dropdownContent}
                   >
-                    <div className={stylesHeader.header}>
+                    <div className={stylesHeader.header  + " spacing-grid"}>
                         <h2>Categorías</h2>
                     </div>
-                    <div>
+                    <div className="spacing-grid">
                       <ListCategorias></ListCategorias>
                     </div>
                   </div>

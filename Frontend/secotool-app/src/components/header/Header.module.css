@@ -3,6 +3,10 @@
   /*position: fixed;
   width: 100%;
   z-index: 1000;*/
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
 }
 
 .headerDefault .leftNavbar {
@@ -22,11 +26,13 @@
   font-size: 8px;
 }
 
-.headerDefault .navbar {
+.headerDefaultNavbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: 88px;
+  padding-left: 32px;
+  padding-right: 32px;
 }
 
 .headerDefault .navbarButtons {
@@ -92,7 +98,6 @@
 
 .headerDefault .dropdownContent .header {
   background: var(--white);
-  padding: 16px 0px;
   color: var(--dark);
 }
 
@@ -112,6 +117,11 @@
     width: 140px;
     height: 25.61px;
   }
+
+  .headerDefaultNavbar{
+    padding-left: 80px;
+    padding-right: 80px;
+  }
 }
 
 @media screen and (min-width: 1440px) {
@@ -122,5 +132,10 @@
 
   .headerDefault .lema {
     font-size: 11px;
+  }
+
+  .headerDefaultNavbar{
+    padding-left: 180px;
+    padding-right: 180px;
   }
 }
