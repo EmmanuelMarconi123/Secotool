@@ -1,0 +1,43 @@
+.formularioLog {
+  position: fixed;
+  top: 50%; /* Posiciona en el centro vertical */
+  left: 50%; /* Posiciona en el centro horizontal */
+  transform: translate(-50%, -50%); /* Centra el elemento */
+  z-index: 1000;
+  width: 296px;
+}
+
+.contenedorForm {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  padding: 25px;
+  gap: 30px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  border-radius: 15px;
+}
+
+.customLink{
+  width: 100%;
+  display: block;
+  text-decoration: none;
+}
+
+/*Breakpoints*/
+@media screen and (min-width: 360px) {
+  
+}
+
+@media screen and (min-width: 768px) {
+  .formularioLog{
+    width: 610px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .formulario{
+    width: 610px;
+  }
+}
