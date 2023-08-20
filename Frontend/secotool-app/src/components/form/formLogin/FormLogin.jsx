@@ -3,7 +3,7 @@ import { Button, Grid } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {  NavLink } from "react-router-dom";
-import styles from "../form/FormLogin.module.css";
+import styles from "./FormLogin.module.css";
 
 const FormLogin = () => {
   const handleLogin = () => {
@@ -60,7 +60,7 @@ const FormLogin = () => {
             type="password"
             id="outlined-basic"
             name="password"
-            label="Password"
+            label="Contraseña"
             variant="outlined"
             onBlur={handleBlur}
             onChange={handleChange}
@@ -72,16 +72,15 @@ const FormLogin = () => {
           />
         </Grid>
         <Button
-          className={styles.bononLogin}
+          className={styles.btnLogin}
           variant="contained"
-          style={{backgroundColor: '#FFDB27', color: "black", width:'100%'}}
           type="submit"
           onClick={handleLogin}
         >
           Iniciar Sesión
         </Button>
         <NavLink to="/auth/crearCuenta" className={styles.customLink}>
-        <Button style={{borderColor: '#FFDB27', color: "black", width:'100%'}} variant="outlined"> 
+        <Button style={{ borderColor: "#4a6ac9", color: "#4a6ac9"}} variant="outlined">
           Crear Cuenta
         </Button>
         </NavLink>

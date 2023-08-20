@@ -52,9 +52,9 @@ function Details() {
   ];
 
   return (
-    <div className="d-flex f-dir-colum pt-large">
+    <div className="d-flex f-dir-colum">
       <Link to="/home">
-        <button className="button-transparent font-btn-transparent">
+        <button className="button-transparent font-btn-transparent pt-large">
           <i className="fa-regular fa-arrow-left"></i>Volver atrás
         </button>
       </Link>

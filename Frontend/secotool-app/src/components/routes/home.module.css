@@ -1,6 +1,6 @@
 .sectionBusqueda {
   width: 100%;
-  margin-top: 88px;
+  /*margin-top: 88px;*/
   display: flex;
   flex-direction: column;
 }
@@ -14,6 +14,7 @@
   flex-direction: column;
   width: 100%;
   align-items: center;
+  padding-top: 88px;
 }
 
 .containerBusqueda .bgBusqueda{

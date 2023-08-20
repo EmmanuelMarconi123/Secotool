@@ -96,6 +96,10 @@ li {
   font-weight: 400;
 }
 
+.font-light{
+  font-weight: 300;
+}
+
 /*Spacings*/
 .pt-24 {
   padding-top: 24px;

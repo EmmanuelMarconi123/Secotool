@@ -3,7 +3,7 @@ import TextField from "@mui/material/TextField";
 import { Button, Grid } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import styles from "../form/FormCrearCuenta.module.css";
+import styles from "./FormCrearCuenta.module.css";
 import axios from 'axios'
 import { NavLink } from "react-router-dom";
 
@@ -66,7 +66,7 @@ const FormCrearCuenta = () => {
               type="text"
               id="outlined-basic"
               name="name"
-              label="Name"
+              label="Nombre"
               variant="outlined"
               onBlur={handleBlur}
               onChange={handleChange}
@@ -113,7 +113,7 @@ const FormCrearCuenta = () => {
               type="password"
               id="outlined-basic"
               name="password"
-              label="Password"
+              label="Contraseña"
               variant="outlined"
               onChange={handleChange}
               onBlur={handleBlur} // Evento que se dispara cuando el campo pierde el foco (se deja de seleccionar).
@@ -125,21 +125,15 @@ const FormCrearCuenta = () => {
             />
           </Grid>
           <Button
-            style={{
-              backgroundColor: "#FFDB27",
-              color: "black",
-              width: "100%",
-            }}
-            className={styles.botonFormularioCrear}
+            className={styles.botonCrearCuenta}
             type="submit"
-            variant="contained"
           >
             Crear Cuenta
           </Button>
           <NavLink to="/auth/login" className={styles.customLink}>
             <Button
               variant="outlined"
-              style={{ borderColor: "#FFDB27", color: "black", width: "100%" }}
+              style={{ borderColor: "#4a6ac9", color: "#4a6ac9"}}
             >
               Iniciar Sesión
             </Button>
