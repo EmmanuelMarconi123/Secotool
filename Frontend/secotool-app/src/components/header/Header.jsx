@@ -62,12 +62,12 @@ function Header() {
                   </div>
                 </div>
               </div>
-              <Link to="/crearCuenta">
+              <Link to="/auth/crearCuenta">
                 <button className="button-primary-transparent button-small">
                   Crear Cuenta
                 </button>
               </Link>
-              <Link to="/login">
+              <Link to="/auth/login">
                 <button className="button-transparent">
                   <i className="fa-regular fa-right-from-bracket"></i>Iniciar
                   Sesión
