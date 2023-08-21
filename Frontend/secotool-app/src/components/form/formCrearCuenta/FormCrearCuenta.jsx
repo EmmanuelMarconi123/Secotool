@@ -1,14 +1,13 @@
-import { useState } from "react";
+
 import TextField from "@mui/material/TextField";
 import { Button, Grid } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import styles from "./FormCrearCuenta.module.css";
-import axios from 'axios'
 import { NavLink, useNavigate } from "react-router-dom";
 
 const FormCrearCuenta = () => {
-  const [mensaje2, setMensaje2] = useState(false);
+
   const navigate = useNavigate()
 
   //en estos initial values se me van a guardar luego lo que el usuario escriba en los imputs
@@ -19,43 +18,38 @@ const FormCrearCuenta = () => {
     password: "",
   };
 
-  // al hacer click en el boton del form se envia con este metodo la ingo al back
-  const sendForm = async (data, { resetForm }) => {
-    try {
-      console.log(data);
-      setMensaje2(true);
+  //vaidaciones de los campos usando YUP
+  const validationSchema = Yup.object({
+    name: Yup.string().min(3).required("Tu nombre debe contener más de 3 caracteres"),
+    lastname: Yup.string().min(3).required("Tu apellido debe contener más de 3 caracteres"),
+    email: Yup.string().email().required("Debes ingresar un email válido"),
+    password: Yup.string().min(6, "Tu contraseña debe tener un mínimo de 6 caracteres").required("Debes ingresar una contraseña"),
+  });
 
-      const response = await axios.post("colocar-aca-url-para-push", data);
-
-      console.log("Respuesta del servidor:", response.data);
-
-      localStorage.setItem("userName", data.name);
-      localStorage.setItem("lastname", data.lastname);
-      localStorage.setItem("email", data.email);
-
-      resetForm();
-    } catch (error) {
-      console.error("Error al enviar el formulario:", error);
-    }
-  };
-
-  const { handleChange, handleSubmit, values, errors, touched, handleBlur } =
+  //utilizamos formik desestructurando varias cosas propias de formik
+  const { handleChange, handleSubmit, handleBlur, validateForm, values, errors, touched, isValid } =
     useFormik({
       initialValues: initialValues,
-      onSubmit: sendForm,
-      validationSchema: Yup.object({
-        name: Yup.string()
-          .min(3)
-          .required("tu nombre debe contener mas de 3 caracteres"),
-        lastname: Yup.string()
-          .min(3)
-          .required("tu apellido debe contener mas de 3 caracteres"),
-        email: Yup.string().email().required("Debes ingresar un email valido"),
-        password: Yup.string()
-          .min(6, "tu contraseña debe tener un minimo de 6 caracteres")
-          .required("Debes ingresar una contraseña"),
-      }),
+      onSubmit: async (values) => {
+        try {
+          await validationSchema.validate(values, { abortEarly: false });
+  
+          navigate('/auth/confirmacionNuevoUsuario');
+        } catch (error) {
+          error("Por favor, completa todos los campos correctamente");
+        }
+      },
+      validationSchema: validationSchema,
     });
+
+    const handleCreateAccountClick = () => {
+      validateForm().then(() => {
+        if (isValid) {
+          handleSubmit();
+        }
+      });
+    };
+
 
   return (
     <>
@@ -129,7 +123,7 @@ const FormCrearCuenta = () => {
             className={styles.botonCrearCuenta}
             type="submit"
             variant="contained"
-            onClick={()=>{navigate('/auth/confirmacionNuevoUsuario')}}
+            onClick={handleCreateAccountClick}
           >
             Crear Cuenta
           </Button>
@@ -143,23 +137,8 @@ const FormCrearCuenta = () => {
           </NavLink>
         </Grid>
       </form>
-      {mensaje2 && (
-        <p
-          style={{
-            color: "blue",
-            fontSize: "16px",
-            textAlign: "center",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          {" "}
-          Muchas gracias por crear una cuenta con nosotros
-        </p>
-      )}
     </>
   );
-};
+}
 
 export default FormCrearCuenta;
