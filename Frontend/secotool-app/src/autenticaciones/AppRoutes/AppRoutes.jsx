@@ -1,13 +1,11 @@
-
-import AdminHeader from '../../components/header/adminHeader/AdminHeader'
-import Header from '../../components/header/Header'
-import { Navigate, Route, Routes } from 'react-router-dom'
-import Home from '../../components/routes/Home'
-import Details from '../../components/routes/Details'
-import HomeAdmin from '../../components/routes/homeAdmin/HomeAdmin'
-import NewProduct from '../../components/routes/newProduct/NewProduct'
-import Footer from '../../components/footer/Footer'
-
+import AdminHeader from "../../components/header/adminHeader/AdminHeader";
+import Header from "../../components/header/Header";
+import { Navigate, Route, Routes } from "react-router-dom";
+import Home from "../../components/routes/Home";
+import Details from "../../components/routes/Details";
+import HomeAdmin from "../../components/routes/homeAdmin/HomeAdmin";
+import NewProduct from "../../components/routes/newProduct/NewProduct";
+import Footer from "../../components/footer/Footer";
 
 const AppRoutes = () => {
   return (
@@ -32,7 +30,7 @@ const AppRoutes = () => {
       </main>
       <Footer className="footer" />
     </body>
-  )
-}
+  );
+};
 
-export default AppRoutes
+export default AppRoutes;

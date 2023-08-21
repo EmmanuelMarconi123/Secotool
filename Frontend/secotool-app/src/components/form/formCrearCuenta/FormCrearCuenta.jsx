@@ -5,10 +5,11 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import styles from "./FormCrearCuenta.module.css";
 import axios from 'axios'
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const FormCrearCuenta = () => {
   const [mensaje2, setMensaje2] = useState(false);
+  const navigate = useNavigate()
 
   //en estos initial values se me van a guardar luego lo que el usuario escriba en los imputs
   const initialValues = {
@@ -127,6 +128,8 @@ const FormCrearCuenta = () => {
           <Button
             className={styles.botonCrearCuenta}
             type="submit"
+            variant="contained"
+            onClick={()=>{navigate('/auth/confirmacionNuevoUsuario')}}
           >
             Crear Cuenta
           </Button>
