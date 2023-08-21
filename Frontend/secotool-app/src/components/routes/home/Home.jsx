@@ -1,11 +1,12 @@
 import { Grid, Typography } from "@mui/material";
-import styles from "../routes/home.module.css";
-import Card from "../card/CardProduct";
-import FormBusqueda from "../form/formBusqueda/FormBusqueda";
-import { Link } from "react-router-dom";
+import styles from "./home.module.css";
+//import Card from "../../card/CardProduct";
+import FormBusqueda from "../../form/formBusqueda/FormBusqueda";
+//import { Link } from "react-router-dom";
 import { useState } from "react";
-import Pagination from "../pagination/Pagination";
+//import Pagination from "../../pagination/Pagination";
 import { useEffect } from "react";
+import ListProducts from "../../list/ListProducts";
 
 const Home = () => {
   const [productsF, setProductsF] = useState([]);
@@ -28,7 +29,7 @@ const Home = () => {
     fetchProducts();
   }, []);
 
-  //-------------- CONFIGURACION DE LA PAGINACION -------------------->
+  /*-------------- CONFIGURACION DE LA PAGINACION --------------------
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const lastPostIndex = currentPage * itemsPerPage;
@@ -49,7 +50,7 @@ const Home = () => {
   }
 
   const shuffledHerramientas = shuffleArray(productsF); //herramienta para hacer aleatoria la forma en que se renderizan las cards
-
+*/
   return (
     <section className={styles.sectionBusqueda}>
       <div className={styles.containerBusqueda}>
@@ -61,7 +62,8 @@ const Home = () => {
       </div>
       <div className={styles.contenedorCards}>
         <Grid container justifyContent="center" alignItems="center">
-          {shuffledHerramientas &&
+          <ListProducts products={productsF}/>
+          {/*{shuffledHerramientas &&
             currentPost.map((product) => (
               <Grid key={product.id} item xs={6} md={6} className={styles.card}>
                 <Link to={"/product/" + product.id} key={product.id}>
@@ -76,7 +78,7 @@ const Home = () => {
             itemsPerPage={itemsPerPage}
             setCurrentPage={setCurrentPage}
             currentPage={currentPage}
-          />
+            />*/}
         </Grid>
       </div>
     </section>

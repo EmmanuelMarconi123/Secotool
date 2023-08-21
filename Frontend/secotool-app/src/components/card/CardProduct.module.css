@@ -19,6 +19,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 8px 0;
+  padding: 8px;
 }
 
 .imgContainer {
