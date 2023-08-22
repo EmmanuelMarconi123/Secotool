@@ -20,7 +20,6 @@ const FormLogin = () => {
   const sendForm = (data, { resetForm }) => {
     console.log(data);
     localStorage.setItem("email", data.email);
-    localStorage.setItem("email", data.password);
     resetForm();
   };
 
