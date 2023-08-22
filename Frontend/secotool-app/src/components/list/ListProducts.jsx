@@ -1,8 +1,9 @@
-import { Grid, Pagination } from "@mui/material";
+import { Grid} from "@mui/material";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Card from "../card/CardProduct";
 import style from "./ListProducts.module.css";
+import Pagination from "../pagination/Pagination";
 
 const ListProducts = ({ products }) => {
   //-------------- CONFIGURACION DE LA PAGINACION -------------------->
