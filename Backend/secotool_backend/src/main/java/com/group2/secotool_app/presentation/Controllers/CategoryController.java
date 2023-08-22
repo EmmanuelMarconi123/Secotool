@@ -4,9 +4,12 @@ import com.group2.secotool_app.bussiness.facade.ICategoryFacade;
 import com.group2.secotool_app.model.dto.CategoryDto;
 import com.group2.secotool_app.model.dto.request.CategoryRequestDto;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -24,8 +27,14 @@ public class CategoryController {
 
     // guardar imagen de la categoria
     @PostMapping
-    public ResponseEntity<String> saveCategory(@RequestBody @Valid CategoryRequestDto categoryRequestDto){
-        categoryFacade.saveCategory(categoryRequestDto);
+    public ResponseEntity<String> saveCategory(@RequestPart("data") @Valid
+                                               CategoryRequestDto categoryRequestDto,
+                                               @RequestParam("image")
+                                               @NotNull(message = "image required")
+                                               @Valid
+                                               MultipartFile image
+    ){
+        categoryFacade.saveCategory(categoryRequestDto, image);
         return ResponseEntity.ok("category saved successfully");
     }
 

@@ -1,5 +1,6 @@
 package com.group2.secotool_app.presentation.Advice;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -21,6 +22,12 @@ public class MyControllerAdvice extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(runtimeException.getMessage());
     }
 
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+        System.out.println(ex.getCause().getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: one of the fields already exists");
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         Map<String,Object> clientErrors = new HashMap<>();
@@ -30,4 +37,6 @@ public class MyControllerAdvice extends ResponseEntityExceptionHandler {
         });
         return ResponseEntity.badRequest().body(clientErrors);
     }
+
+
 }

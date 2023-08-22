@@ -18,4 +18,6 @@ public interface ICategoryService {
     void associateProductToCategory(Product product, Category category);
 
     Category findByName(String categoryName);
+
+    Category findById(Long id);
 }

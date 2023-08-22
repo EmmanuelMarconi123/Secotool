@@ -2,6 +2,7 @@ package com.group2.secotool_app.bussiness.service.Impl;
 
 import com.group2.secotool_app.bussiness.mapper.ProductMapper;
 import com.group2.secotool_app.bussiness.service.IProductValidationService;
+import com.group2.secotool_app.model.entity.Image;
 import com.group2.secotool_app.model.entity.Product;
 import com.group2.secotool_app.persistence.ProductRepository;
 import com.group2.secotool_app.bussiness.service.IProductService;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -40,8 +42,11 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public void deleteById(Long id) {
-        productRepository.deleteById(id);
+    public void deleteById(Long id, Set<Image> images) {
+        var prod = new Product();
+        prod.setId(id);
+        prod.setImages(images);
+        productRepository.delete(prod);
     }
 
     @Override
@@ -75,6 +80,10 @@ public class ProductServiceImpl implements IProductService {
     public List<Product> getAllProductsAssociateWithAFeature(String featureName) {
         return productRepository.findAllByFeatureName(featureName);
     }
+    @Override
+    public List<Product> getAllProductsAssociateWithACategory(String category) {
+        return productRepository.findAllByFeatureName(category);
+    }
 
     @Override
     public Product findByName(String prodName) {
@@ -84,4 +93,6 @@ public class ProductServiceImpl implements IProductService {
         }
         throw new RuntimeException("product "+prodName+ " not found");
     }
+
+
 }

@@ -11,6 +11,7 @@ import java.util.List;
 public interface IProductFacade {
     List<ProductDto> getAllProducts();
     List<ProductDto> getTenRandomProducts();
+    List<ProductDto> getAllProductsAssociateWithACategory(String category);
 
     @Transactional(rollbackOn = {RuntimeException.class})
     String save(ProductRequestDto productRequestDto, List<MultipartFile> images);
