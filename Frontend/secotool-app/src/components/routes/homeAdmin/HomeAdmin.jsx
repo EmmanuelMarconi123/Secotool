@@ -12,7 +12,7 @@ const HomeAdmin = () => {
   const [open, setOpen] = useState(false); //NEW PRODUCT MODAL
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  
+
   const [openEp, setOpenEp] = useState(false); // EDIT PRODUCT MODAL
   const [selectedProduct, setSelectedProduct] = useState([]);
   const handleOpenEp = (product) => {
@@ -26,10 +26,9 @@ const HomeAdmin = () => {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [uploadedImages, setUploadedImages] = useState([]); // Estado para las imágenes cargadas
-  
 
   const handleImageChange = (e) => {
-    const selectedImages = Array.from(e.target.files); 
+    const selectedImages = Array.from(e.target.files);
     setUploadedImages(selectedImages);
   };
 
@@ -38,29 +37,27 @@ const HomeAdmin = () => {
     setCategory(tags);
 
     // Mostrar información de las etiquetas seleccionadas
-    console.log('Etiquetas seleccionadas:', tags);
+    console.log("Etiquetas seleccionadas:", tags);
   };
-
 
   const handleNewProductSubmit = async (e) => {
     e.preventDefault();
 
     const dataC = { name, category, description, price };
 
-    const json = JSON.stringify(dataC)
+    const json = JSON.stringify(dataC);
     const blob = new Blob([json], {
-      type: 'application/json'
-    })
+      type: "application/json",
+    });
 
-    
     const formData = new FormData();
-    formData.append("data", blob)
+    formData.append("data", blob);
     uploadedImages.forEach((image) => {
       formData.append("images", image);
     });
 
     console.log(dataC);
-    console.log(formData)
+    console.log(formData);
 
     axios({
       method: "post",
@@ -109,59 +106,54 @@ const HomeAdmin = () => {
   }
 
   //---------------------------------------EDIT PRODUCT-------------------->
-  
-  const [editedName, setEditedName] = useState(selectedProduct.name);
-  const [editedDescription, setEditedDescription] = useState(selectedProduct.description);
-  const [editedPrice, setEditedPrice] = useState(selectedProduct.price)
 
-  console.log(editedName, editedDescription, editedPrice)
+  const [editedName, setEditedName] = useState(selectedProduct.name);
+  const [editedDescription, setEditedDescription] = useState(
+    selectedProduct.description
+  );
+  const [editedPrice, setEditedPrice] = useState(selectedProduct.price);
+
+  console.log(editedName, editedDescription, editedPrice);
 
   const handleNameChange = (event) => {
     setEditedName(event.target.value);
   };
-  
+
   const handleDescriptionChange = (event) => {
     setEditedDescription(event.target.value);
   };
 
   const handlePriceChange = (event) => {
-    setEditedPrice(event.target.value)
-  }
+    setEditedPrice(event.target.value);
+  };
 
-  async function editProduct(productId) {
+  async function editProduct(product) {
     const dataE = {
       name: editedName,
       description: editedDescription,
       price: editedPrice,
-    }
+    };
 
-    const json = JSON.stringify(dataE)
+    const jsonE = JSON.stringify(dataE)
+
+    console.log(jsonE)
 
     try {
-      const response = await axios.put(
-        `http://localhost:8080/v1/api/products/${productId}`, json, {
-          headers: {
-          'Content-Type': 'application/json',
-        },}
-      );
-  
-      if (response.status === 200) {
-        console.log(`Producto con ID ${productId} editado correctamente`);
-        // Cierra el modal de edición
-        handleCloseEp();
+      const res = await axios({
+        method: "put",
+        url: `http://localhost:8080/v1/api/products/${product.id}`,
+        data: jsonE,
+      });
+
+      console.log(editedName, editedDescription, editedPrice);
+      console.log(res);
+    } catch (err) {
+      if (err.response && err.response.status === 404) {
+        console.log("Recurso no encontrado");
       } else {
-        console.error(`Error al editar el producto: ${response.statusText}`);
-      }
-    } catch (error) {
-      if (error.response) {
-        console.error('Respuesta del servidor:', error.response.data);
-      } else if (error.request) {
-        console.error('No se recibió respuesta del servidor');
-      } else {
-        console.error('Error al hacer la solicitud:', error.message);
+        console.log(err.message);
       }
     }
-    
   }
 
   //------------------------------DATOS---------------------->
@@ -183,7 +175,6 @@ const HomeAdmin = () => {
     "Tecnología de última generación",
   ].map((item) => ({ label: item, value: item }));
 
-
   //-------------- CONFIGURACION DE LA PAGINACION -------------------->
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -203,7 +194,9 @@ const HomeAdmin = () => {
   useEffect(() => {
     const fetchProductsAdmin = async () => {
       try {
-        const response = await fetch("http://localhost:8080/v1/api/products/all");
+        const response = await fetch(
+          "http://localhost:8080/v1/api/products/all"
+        );
         if (response.ok) {
           const data = await response.json();
           setProducts(data);
@@ -327,7 +320,11 @@ const HomeAdmin = () => {
               </label>
               <label htmlFor="">
                 Categorias
-                <TagPicker style={{width: 640}} data={categories} onChange={handleTagChange} />
+                <TagPicker
+                  style={{ width: 640 }}
+                  data={categories}
+                  onChange={handleTagChange}
+                />
               </label>
               <label htmlFor="">
                 Caracteristicas
@@ -376,10 +373,16 @@ const HomeAdmin = () => {
         </Modal.Header>
         <Modal.Body className={styles.containerModal}>
           <div className={styles.centeredForm}>
-            <form className={styles.formNewProduct} onSubmit={() => editProduct(selectedProduct.id)}>
+            <form
+              className={styles.formNewProduct}
+            >
               <label htmlFor="editProductName">
                 Nombre del producto
-                <input type="text" defaultValue={selectedProduct.name} onChange={handleNameChange}/>
+                <input
+                  type="text"
+                  defaultValue={selectedProduct.name}
+                  onChange={handleNameChange}
+                />
               </label>
               <label htmlFor="editDescription">
                 Descripcion
@@ -401,7 +404,11 @@ const HomeAdmin = () => {
               </label>
               <label htmlFor="">
                 Precio
-                <input type="number" defaultValue={selectedProduct.price} onChange={handlePriceChange}/>
+                <input
+                  type="number"
+                  defaultValue={selectedProduct.price}
+                  onChange={handlePriceChange}
+                />
               </label>
               <label htmlFor="">
                 Imagenes
@@ -423,7 +430,9 @@ const HomeAdmin = () => {
                 </Uploader>
               </label>
               <div className={styles.labelSeparator}></div>
-              <button>Guardar Cambios</button>
+              <button onClick={() => editProduct(selectedProduct)}>
+                Guardar Cambios
+              </button>
             </form>
           </div>
         </Modal.Body>
