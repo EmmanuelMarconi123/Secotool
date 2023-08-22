@@ -7,8 +7,6 @@ public record ProductRequestDto(
 
         @NotBlank(message = "required name")
         String name,
-        @NotBlank(message = "required category")
-        String category,
         @NotBlank(message = "required description")
         String description,
         @NotNull(message = "required price")

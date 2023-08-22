@@ -24,7 +24,7 @@ import java.util.List;
 public class ProductController {
     private final IProductFacade productFacade;
 
-    @GetMapping
+    @GetMapping("all")
     @Operation(summary = "return a list of all products saved in database")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",description = "list of products")
@@ -60,6 +60,10 @@ public class ProductController {
     public ResponseEntity<List<ProductDto>> productPaginationTenByTen(@Parameter(description = "index of products needed")@PathVariable int page){
         return ResponseEntity.ok(productFacade.paginateProducts(page));
     }
+    @GetMapping("/all/{featureName}")
+    public ResponseEntity<List<ProductDto>> getAllProductsAssociateWithAFeature(@PathVariable String featureName){
+        return ResponseEntity.ok(productFacade.getAllProductsAssociateWithAFeature(featureName));
+    }
 
     @PostMapping
     @Operation(summary = "save a product on database")
@@ -69,12 +73,13 @@ public class ProductController {
             @ApiResponse(responseCode = "406",description = "product name already exists on database")
     })
     public ResponseEntity<String> saveProduct(@Parameter(description = "")
-                                                    @RequestPart("data") @Valid ProductRequestDto productRequestDto,
-                                                    @RequestParam("images")
-                                                    @NotNull(message = "images requerid")
-                                                    @NotEmpty(message = "list can not be empy")
-                                                    @Valid
-                                                    List<MultipartFile> images ){
+                                              @RequestPart("data") @Valid
+                                              ProductRequestDto productRequestDto,
+                                              @RequestParam("images")
+                                              @NotNull(message = "images requerid")
+                                              @NotEmpty(message = "list can not be empy")
+                                              @Valid
+                                              List<MultipartFile> images ){
         return ResponseEntity.status(201).body(productFacade.save(productRequestDto,images));
     }
 
@@ -84,6 +89,8 @@ public class ProductController {
         return ResponseEntity.ok(String.format("product %s succesffully updated",id));
     }
 
+
+    // cuando se elimine un prd hay que borrar las imagenes de la db y del buvket s3 de aws
     @DeleteMapping("/{id}")
     @Operation(summary = "delete a product saved on database")
     @ApiResponses(value = {

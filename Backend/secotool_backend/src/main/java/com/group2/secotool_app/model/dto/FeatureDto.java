@@ -1,9 +1,8 @@
 package com.group2.secotool_app.model.dto;
 
-public record ProductDto(
+public record FeatureDto(
         Long id,
         String name,
-        String description,
-        Double price
-){
+        String icon
+) {
 }

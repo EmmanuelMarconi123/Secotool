@@ -2,6 +2,7 @@ package com.group2.secotool_app.bussiness.service.Impl;
 
 import com.group2.secotool_app.bussiness.service.IUserService;
 import com.group2.secotool_app.model.entity.User;
+import com.group2.secotool_app.model.entity.UserRole;
 import com.group2.secotool_app.persistence.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -54,5 +55,10 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
     @Override
     public List<User> findAllUser() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public void changeUserRole(Long userId, UserRole userRole) {
+        userRepository.updateUserRole(userId,userRole);
     }
 }
