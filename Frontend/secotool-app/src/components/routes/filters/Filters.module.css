@@ -2,6 +2,7 @@
     margin-top: 92px;
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .boxHeader{
@@ -9,4 +10,13 @@
     justify-content: space-between;
     padding-top: 16px;
     padding-bottom: 16px;
+    align-items: center;
+    color: #747474;
+}
+
+@media screen and (min-width: 1024px) {
+    .sectionFilters{
+        flex-direction: row;
+        justify-content: space-between;
+    }
 }
