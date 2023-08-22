@@ -12,7 +12,7 @@ const HomeAdmin = () => {
   const [open, setOpen] = useState(false); //NEW PRODUCT MODAL
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  
   const [openEp, setOpenEp] = useState(false); // EDIT PRODUCT MODAL
   const [selectedProduct, setSelectedProduct] = useState([]);
   const handleOpenEp = (product) => {
@@ -22,22 +22,20 @@ const HomeAdmin = () => {
   const handleCloseEp = () => setOpenEp(false);
   //--------------------------------NEW PRODUCT---------------------->
   const [name, setName] = useState("");
-  const [category, setCategory] = useState([]);
+  const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [uploadedImages, setUploadedImages] = useState([]); // Estado para las imágenes cargadas
+  
 
   const handleImageChange = (e) => {
-    const selectedImages = Array.from(e.target.files);
+    const selectedImages = Array.from(e.target.files); // Convertir FileList a un array
     setUploadedImages(selectedImages);
   };
 
-  const handleTagChange = (tags) => {
-    // Actualizar el estado con los valores de las etiquetas seleccionadas
-    setCategory(tags);
-
-    // Mostrar información de las etiquetas seleccionadas
-    console.log("Etiquetas seleccionadas:", tags);
+  const handleImageChangeD = (fileList) => {
+    // Update the state with the new list of uploaded images
+    setUploadedImages([...uploadedImages, ...fileList]);
   };
 
   const handleNewProductSubmit = async (e) => {
@@ -45,19 +43,20 @@ const HomeAdmin = () => {
 
     const dataC = { name, category, description, price };
 
-    const json = JSON.stringify(dataC);
+    const json = JSON.stringify(dataC)
     const blob = new Blob([json], {
-      type: "application/json",
-    });
+      type: 'application/json'
+    })
 
+    
     const formData = new FormData();
-    formData.append("data", blob);
-    uploadedImages.forEach((image) => {
-      formData.append("images", image);
+    formData.append("data", blob)
+    uploadedImages.forEach((file) => {
+      formData.append('images', file.blobFile); // Use a key like 'images'
     });
 
     console.log(dataC);
-    console.log(formData);
+    console.log(formData)
 
     axios({
       method: "post",
@@ -68,7 +67,7 @@ const HomeAdmin = () => {
       },
     })
       .then(function (response) {
-        //handle success
+        handleClose()
         console.log(response);
       })
       .catch(function (response) {
@@ -106,53 +105,40 @@ const HomeAdmin = () => {
   }
 
   //---------------------------------------EDIT PRODUCT-------------------->
-
+  
   const [editedName, setEditedName] = useState(selectedProduct.name);
-  const [editedDescription, setEditedDescription] = useState(
-    selectedProduct.description
-  );
-  const [editedPrice, setEditedPrice] = useState(selectedProduct.price);
-
-  console.log(editedName, editedDescription, editedPrice);
+  const [editedDescription, setEditedDescription] = useState(selectedProduct.description);
 
   const handleNameChange = (event) => {
     setEditedName(event.target.value);
   };
-
+  
   const handleDescriptionChange = (event) => {
     setEditedDescription(event.target.value);
   };
 
-  const handlePriceChange = (event) => {
-    setEditedPrice(event.target.value);
-  };
-
-  async function editProduct(product) {
-    const dataE = {
-      name: editedName,
-      description: editedDescription,
-      price: editedPrice,
-    };
-
-    const jsonE = JSON.stringify(dataE)
-
-    console.log(jsonE)
-
+  async function editProduct(productId) {
     try {
-      const res = await axios({
-        method: "put",
-        url: `http://localhost:8080/v1/api/products/${product.id}`,
-        data: jsonE,
+      const response = await fetch(`http://localhost:8080/v1/api/products/${productId}`, {
+        method: 'PUT', 
+        headers: {
+          'Content-Type': 'application/json', 
+        },
+        body: JSON.stringify({
+          name: editedName,
+          description: editedDescription,
+        }),
       });
-
-      console.log(editedName, editedDescription, editedPrice);
-      console.log(res);
-    } catch (err) {
-      if (err.response && err.response.status === 404) {
-        console.log("Recurso no encontrado");
+  
+      if (response.ok) {
+        console.log(`Producto con ID ${productId} editado correctamente`);
+        // Cierra el modal de edición
+        handleCloseEp();
       } else {
-        console.log(err.message);
+        throw new Error('Error al editar el producto');
       }
+    } catch (error) {
+      console.error(error);
     }
   }
 
@@ -175,6 +161,7 @@ const HomeAdmin = () => {
     "Tecnología de última generación",
   ].map((item) => ({ label: item, value: item }));
 
+
   //-------------- CONFIGURACION DE LA PAGINACION -------------------->
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -194,9 +181,7 @@ const HomeAdmin = () => {
   useEffect(() => {
     const fetchProductsAdmin = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:8080/v1/api/products/all"
-        );
+        const response = await fetch("http://localhost:8080/v1/api/products/all");
         if (response.ok) {
           const data = await response.json();
           setProducts(data);
@@ -320,11 +305,7 @@ const HomeAdmin = () => {
               </label>
               <label htmlFor="">
                 Categorias
-                <TagPicker
-                  style={{ width: 640 }}
-                  data={categories}
-                  onChange={handleTagChange}
-                />
+                <input type="text" value={category} onChange={(e) => setCategory(e.target.value)} />
               </label>
               <label htmlFor="">
                 Caracteristicas
@@ -341,8 +322,8 @@ const HomeAdmin = () => {
               </label>
               <label htmlFor="">
                 Imagenes
-                <Uploader autoUpload={false} draggable>
-                  <div
+                <Uploader autoUpload={false} draggable onChange={handleImageChangeD}>
+                <div
                     style={{
                       height: 54,
                       width: 640,
@@ -356,6 +337,7 @@ const HomeAdmin = () => {
                     <i className="fa-solid fa-cloud-arrow-up"></i>
                     <span>Subir imagen</span>
                   </div>
+
                 </Uploader>
               </label>
               <div className={styles.labelSeparator}></div>
@@ -373,16 +355,10 @@ const HomeAdmin = () => {
         </Modal.Header>
         <Modal.Body className={styles.containerModal}>
           <div className={styles.centeredForm}>
-            <form
-              className={styles.formNewProduct}
-            >
+            <form className={styles.formNewProduct} action="">
               <label htmlFor="editProductName">
                 Nombre del producto
-                <input
-                  type="text"
-                  defaultValue={selectedProduct.name}
-                  onChange={handleNameChange}
-                />
+                <input type="text" defaultValue={selectedProduct.name} onChange={handleNameChange}/>
               </label>
               <label htmlFor="editDescription">
                 Descripcion
@@ -404,15 +380,11 @@ const HomeAdmin = () => {
               </label>
               <label htmlFor="">
                 Precio
-                <input
-                  type="number"
-                  defaultValue={selectedProduct.price}
-                  onChange={handlePriceChange}
-                />
+                <input type="number" defaultValue={selectedProduct.price} />
               </label>
               <label htmlFor="">
                 Imagenes
-                <Uploader disabled autoUpload={false} draggable>
+                <Uploader draggable>
                   <div
                     style={{
                       height: 54,
@@ -430,9 +402,7 @@ const HomeAdmin = () => {
                 </Uploader>
               </label>
               <div className={styles.labelSeparator}></div>
-              <button onClick={() => editProduct(selectedProduct)}>
-                Guardar Cambios
-              </button>
+              <button onClick={() => editProduct(selectedProduct.id)}>Guardar Cambios</button>
             </form>
           </div>
         </Modal.Body>
