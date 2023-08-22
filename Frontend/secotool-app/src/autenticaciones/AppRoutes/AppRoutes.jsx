@@ -22,7 +22,8 @@ const AppRoutes = () => {
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/product/:id" element={<Details />} />
-          <Route path="/filters/:idCategoria" element={<Filters />} />
+          <Route path="/allFilters" element={<Filters />} />
+          <Route path="/allProducts/:idCateg" element={<Filters />} />
           <Route path="*" element={<Navigate to="/" />} />
 
           {/* Rutas Admin */}

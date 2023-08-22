@@ -1,28 +1,13 @@
 import { Link } from "react-router-dom";
 import styles from "./NavBarHeader.module.css";
 import LogoDesktop from "../../assets/img/LogoDesktop.png";
-import { useEffect, useState } from "react";
 import DropdownMenu from "../dropdown/DropdownMenu";
 import DropdownDesktop from "../dropdown/DropdownDesktop";
+import { useMediaQuery } from "@react-hook/media-query";
 
 const NavBarHeader = () => {
-  const [isMobile, setIsMobile] = useState(false);
 
-  const handleResize = () => {
-    if (window.innerWidth <= 768) {
-      setIsMobile(true);
-    } else {
-      setIsMobile(false);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener("resize", handleResize);
-    // Limpieza del listener cuando el componente se desmonta
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+const isMobile = useMediaQuery("(max-width: 1024px)");
 
   return (
     <nav className={styles.NavBarHeader}>

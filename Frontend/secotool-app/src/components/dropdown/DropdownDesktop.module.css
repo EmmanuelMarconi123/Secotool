@@ -33,6 +33,9 @@
 .dropdownContent .header {
   background: var(--white);
   color: var(--dark);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .dropdownContent .header h2 {
