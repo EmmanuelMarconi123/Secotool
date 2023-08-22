@@ -1,20 +1,43 @@
 import { Link } from "react-router-dom";
 import styles from "./DropdownMenu.module.css"
+import { useEffect, useRef, useState } from "react";
 //import ListCategorias from "../list/ListCategorias";
 
 const DropdownMenu = () => {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
+  const closeDropdown = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setDropdownOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", closeDropdown);
+    return () => {
+      document.removeEventListener("click", closeDropdown);
+    };
+  }, []);
+
     return(
-        <div className={styles.dropdown}>
-        <button className={styles.dropbtn}>
+        <div className={styles.dropdown} ref={dropdownRef}>
+        <button className={styles.dropbtn} onClick={toggleDropdown}>
           <i className="fa-regular fa-bars"></i>
         </button>
-        <div className={styles.dropdownContent + " spacing-grid"}>
+        <div className={`${styles.dropdownContent + " spacing-grid"} ${
+          dropdownOpen ? styles.show : ""
+        }`}>
           <nav className="d-flex f-dir-colum ">
-            <Link to="/">
+            <Link to="/" onClick={toggleDropdown}>
               Inicio
             </Link>
             <div className={styles.subDropdown}>
-              <Link to="/allFilters" className={styles.dropbtn}>
+              <Link to="/allFilters" className={styles.dropbtn} onClick={toggleDropdown}>
                 Herramientas
                 {/*<i className="fa-regular fa-chevron-down"></i>*/}
               </Link>
