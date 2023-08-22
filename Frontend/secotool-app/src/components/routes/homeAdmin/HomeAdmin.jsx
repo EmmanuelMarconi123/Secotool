@@ -6,26 +6,6 @@ import { ButtonToolbar, Button, Uploader, TagPicker } from "rsuite";
 import Modal from "rsuite/Modal";
 
 const HomeAdmin = () => {
-  const [productsAd, setProductsAd] = useState([]);
-  // "useEffect usado para el fect de los productos (por ahora es necesario correr el back de local)"
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch("http://localhost:8080/v1/api/products");
-        if (response.ok) {
-          const data = await response.json();
-          setProductsAd(data);
-        } else {
-          throw new Error("Error en la solicitud");
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchProducts();
-  }, []);
-
   //------------------------------CONFIG MULTICASCADA---------------------->
   const categories = [
     "Electrónica",
@@ -46,13 +26,18 @@ const HomeAdmin = () => {
   ].map((item) => ({ label: item, value: item }));
 
   //------------------------------ CONFIG MODALS--------------->
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false); //NEW PRODUCT MODAL
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const [openEp, setOpenEp] = useState(false);
-  const handleOpenEp = () => setOpenEp(true);
+  const [openEp, setOpenEp] = useState(false); // EDIT PRODUCT MODAL
+  const [selectedProduct, setSelectedProduct] = useState([]);
+  const handleOpenEp = (product) => {
+    setSelectedProduct(product)
+    setOpenEp(true);
+  }
   const handleCloseEp = () => setOpenEp(false);
+
 
   //-------------- CONFIGURACION DE LA PAGINACION -------------------->
 
@@ -143,7 +128,7 @@ const HomeAdmin = () => {
                     deleteItem={() => deleteItem(product.id)}
                     id={product.id}
                     title={product.name}
-                    editItem={() => handleOpenEp()}
+                    editItem={() => handleOpenEp(product)}
                   />
                 ))
               ) : (
@@ -244,13 +229,14 @@ const HomeAdmin = () => {
             <form className={styles.formNewProduct} action="">
               <label htmlFor="">
                 Nombre del producto
-                <input type="text" />
+                <input type="text" defaultValue={selectedProduct.name}/>
               </label>
               <label htmlFor="">
                 Descripcion
                 <textarea
                   cols="30"
                   rows="10"
+                  defaultValue={selectedProduct.description}
                   style={{ height: 120, width: 640 }}
                 ></textarea>
               </label>
@@ -264,7 +250,7 @@ const HomeAdmin = () => {
               </label>
               <label htmlFor="">
                 Precio
-                <input type="number" />
+                <input type="number" defaultValue={selectedProduct.price} />
               </label>
               <label htmlFor="">
                 Imagenes
