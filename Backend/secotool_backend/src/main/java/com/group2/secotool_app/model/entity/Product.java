@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -16,19 +16,31 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name",nullable = false,unique = true)
+    //@Column(nullable = false,unique = true)
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "category",nullable = false)
-    private String category;
-
-    @Column(name = "description",nullable = false)
+    //@Column(nullable = false)
+    @Column(name = "description")
     private String description;
 
-    @Column(name = "price",nullable = false)
+    //@Column(nullable = false)
+    @Column(name = "price")
     private Double price;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = {
+            CascadeType.PERSIST,
+            CascadeType.REMOVE
+    })
     @JsonIgnore
-    private List<Image> images;
+    private Set<Image> images;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST,mappedBy = "products")
+    @JsonIgnore
+    private Set<Feature> productFeatures;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST,mappedBy = "products")
+    @JsonIgnore
+    private Set<Category> productCategories;
+
 }

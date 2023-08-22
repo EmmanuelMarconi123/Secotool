@@ -22,4 +22,6 @@ public interface IProductFacade {
     ProductDto findProductById(Long id);
 
     void updateProduct(Long id, ProductRequestDto productRequestDto);
+
+    List<ProductDto> getAllProductsAssociateWithAFeature(String featureName);
 }

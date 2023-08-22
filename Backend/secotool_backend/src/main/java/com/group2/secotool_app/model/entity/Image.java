@@ -15,11 +15,19 @@ public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    //@Column(nullable = false)
+    @Column(name = "url")
+    private String url;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", referencedColumnName = "id",nullable = false)
     @JsonIgnore
     private Product product;
-    @Column(name = "url",nullable = false)
-    private String url;
 
+    @OneToOne(mappedBy = "image", cascade = {
+            CascadeType.PERSIST,
+            CascadeType.REMOVE
+    },fetch = FetchType.LAZY)
+    private Category category;
 }

@@ -1,6 +1,5 @@
 package com.group2.secotool_app.configuration.security;
 
-import com.group2.secotool_app.model.entity.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,7 +27,8 @@ public class SecurityConfiguration {
         http
                 .authorizeHttpRequests(authorize ->
                     authorize
-                            .requestMatchers("/v1/api/auth/**",
+                            .requestMatchers("/v*/api/**",
+                                    "/v1/api/auth/**",
                                     "/v2/api-docs",
                                     "/v3/api-docs",
                                     "/v3/api-docs/**",
@@ -44,9 +44,9 @@ public class SecurityConfiguration {
                                     "/assets/**",
                                     "/scripts/**",
                                     "/*.js").permitAll()
-                            .requestMatchers("/v1/api/users/**").hasAnyAuthority(UserRole.ADMIN.name(),UserRole.USER.name())
-                            .requestMatchers("/v1/api/products/**").hasAuthority(UserRole.USER.name())
-                            .anyRequest().authenticated()
+                            //.requestMatchers("/v1/api/users/**").hasAnyAuthority(UserRole.ADMIN.name(),UserRole.USER.name())
+                            //.requestMatchers("/v1/api/products/**").hasAuthority(UserRole.USER.name())
+                            //.anyRequest().authenticated()
                 )
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session ->

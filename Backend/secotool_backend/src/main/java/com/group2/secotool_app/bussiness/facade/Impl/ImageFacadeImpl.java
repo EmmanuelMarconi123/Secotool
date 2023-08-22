@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ImageFacade implements IImageFacade {
+public class ImageFacadeImpl implements IImageFacade {
     private final IImageService imageService;
     private final IProductService productService;
 

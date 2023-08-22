@@ -70,4 +70,18 @@ public class ProductServiceImpl implements IProductService {
             throw new RuntimeException("it is not posible to update a product doesn't exists");
         productRepository.save(prod);
     }
+
+    @Override
+    public List<Product> getAllProductsAssociateWithAFeature(String featureName) {
+        return productRepository.findAllByFeatureName(featureName);
+    }
+
+    @Override
+    public Product findByName(String prodName) {
+        var product = productRepository.findByName(prodName);
+        if (product.isPresent()){
+            return product.get();
+        }
+        throw new RuntimeException("product "+prodName+ " not found");
+    }
 }

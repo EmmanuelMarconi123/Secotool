@@ -20,16 +20,25 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, unique = true)
+
+    //@Column(nullable = false, unique = true)
+    @Column(name = "username")
     private String username;
-    @Column(nullable = false)
+
+    //@Column(nullable = false)
+    @Column(name = "first_name")
     private String firstName;
-    @Column(nullable = false)
+
+    //@Column(nullable = false)
+    @Column(name = "last_name")
     private String lastName;
-    @Column(nullable = false)
+
+    //@Column(nullable = false)
+    @Column(name = "password")
     private String password;
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    //@Column(nullable = false)
+    @Column(name = "user_role")
     private UserRole userRole;
 
     @Override

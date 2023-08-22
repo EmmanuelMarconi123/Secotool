@@ -5,6 +5,7 @@ import com.group2.secotool_app.model.dto.UserDto;
 import com.group2.secotool_app.model.dto.UserGetMeDto;
 import com.group2.secotool_app.model.dto.request.UserAuthenticationRequestDto;
 import com.group2.secotool_app.model.dto.request.UserRegistrationRequestDto;
+import com.group2.secotool_app.model.entity.UserRole;
 
 import java.util.List;
 
@@ -15,4 +16,5 @@ public interface IUserFacade {
     UserAuthenticatedResponseDto registerUser(UserRegistrationRequestDto registerRequestDto);
 
     List<UserDto> getAllUsers();
+    void changeUserRole(Long userId, UserRole userRole);
 }

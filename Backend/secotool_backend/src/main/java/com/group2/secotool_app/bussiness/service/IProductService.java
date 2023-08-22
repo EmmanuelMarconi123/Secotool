@@ -18,4 +18,8 @@ public interface IProductService {
     boolean existProductById(Long id);
 
     void updateProduct(Product prod);
+
+    List<Product> getAllProductsAssociateWithAFeature(String featureName);
+
+    Product findByName(String prodName);
 }

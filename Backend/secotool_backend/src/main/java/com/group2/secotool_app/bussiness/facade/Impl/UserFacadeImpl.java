@@ -73,4 +73,9 @@ public class UserFacadeImpl implements IUserFacade {
         users.forEach(user -> userDtos.add(userDtoMapper.toUserDto(user)));
         return userDtos;
     }
+
+    @Override
+    public void changeUserRole(Long userId, UserRole userRole) {
+        userService.changeUserRole(userId, userRole);
+    }
 }
