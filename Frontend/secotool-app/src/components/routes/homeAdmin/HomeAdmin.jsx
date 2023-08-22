@@ -22,15 +22,23 @@ const HomeAdmin = () => {
   const handleCloseEp = () => setOpenEp(false);
   //--------------------------------NEW PRODUCT---------------------->
   const [name, setName] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState([]);
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [uploadedImages, setUploadedImages] = useState([]); // Estado para las imágenes cargadas
   
 
   const handleImageChange = (e) => {
-    const selectedImages = Array.from(e.target.files); // Convertir FileList a un array
+    const selectedImages = Array.from(e.target.files); 
     setUploadedImages(selectedImages);
+  };
+
+  const handleTagChange = (tags) => {
+    // Actualizar el estado con los valores de las etiquetas seleccionadas
+    setCategory(tags);
+
+    // Mostrar información de las etiquetas seleccionadas
+    console.log('Etiquetas seleccionadas:', tags);
   };
 
 
@@ -104,6 +112,9 @@ const HomeAdmin = () => {
   
   const [editedName, setEditedName] = useState(selectedProduct.name);
   const [editedDescription, setEditedDescription] = useState(selectedProduct.description);
+  const [editedPrice, setEditedPrice] = useState(selectedProduct.price)
+
+  console.log(editedName, editedDescription, editedPrice)
 
   const handleNameChange = (event) => {
     setEditedName(event.target.value);
@@ -113,29 +124,44 @@ const HomeAdmin = () => {
     setEditedDescription(event.target.value);
   };
 
+  const handlePriceChange = (event) => {
+    setEditedPrice(event.target.value)
+  }
+
   async function editProduct(productId) {
+    const dataE = {
+      name: editedName,
+      description: editedDescription,
+      price: editedPrice,
+    }
+
+    const json = JSON.stringify(dataE)
+
     try {
-      const response = await fetch(`http://localhost:8080/v1/api/products/${productId}`, {
-        method: 'PUT', 
-        headers: {
-          'Content-Type': 'application/json', 
-        },
-        body: JSON.stringify({
-          name: editedName,
-          description: editedDescription,
-        }),
-      });
+      const response = await axios.put(
+        `http://localhost:8080/v1/api/products/${productId}`, json, {
+          headers: {
+          'Content-Type': 'application/json',
+        },}
+      );
   
-      if (response.ok) {
+      if (response.status === 200) {
         console.log(`Producto con ID ${productId} editado correctamente`);
         // Cierra el modal de edición
         handleCloseEp();
       } else {
-        throw new Error('Error al editar el producto');
+        console.error(`Error al editar el producto: ${response.statusText}`);
       }
     } catch (error) {
-      console.error(error);
+      if (error.response) {
+        console.error('Respuesta del servidor:', error.response.data);
+      } else if (error.request) {
+        console.error('No se recibió respuesta del servidor');
+      } else {
+        console.error('Error al hacer la solicitud:', error.message);
+      }
     }
+    
   }
 
   //------------------------------DATOS---------------------->
@@ -177,7 +203,7 @@ const HomeAdmin = () => {
   useEffect(() => {
     const fetchProductsAdmin = async () => {
       try {
-        const response = await fetch("http://localhost:8080/v1/api/products");
+        const response = await fetch("http://localhost:8080/v1/api/products/all");
         if (response.ok) {
           const data = await response.json();
           setProducts(data);
@@ -301,7 +327,7 @@ const HomeAdmin = () => {
               </label>
               <label htmlFor="">
                 Categorias
-                <input type="text" value={category} onChange={(e) => setCategory(e.target.value)} />
+                <TagPicker style={{width: 640}} data={categories} onChange={handleTagChange} />
               </label>
               <label htmlFor="">
                 Caracteristicas
@@ -318,7 +344,22 @@ const HomeAdmin = () => {
               </label>
               <label htmlFor="">
                 Imagenes
-                <input type="file" onChange={handleImageChange} accept="image/*" multiple  />
+                <Uploader autoUpload={false} draggable>
+                  <div
+                    style={{
+                      height: 54,
+                      width: 640,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: 10,
+                      borderRadius: 8,
+                    }}
+                  >
+                    <i className="fa-solid fa-cloud-arrow-up"></i>
+                    <span>Subir imagen</span>
+                  </div>
+                </Uploader>
               </label>
               <div className={styles.labelSeparator}></div>
               <button>Agregar Producto</button>
@@ -335,7 +376,7 @@ const HomeAdmin = () => {
         </Modal.Header>
         <Modal.Body className={styles.containerModal}>
           <div className={styles.centeredForm}>
-            <form className={styles.formNewProduct} action="">
+            <form className={styles.formNewProduct} onSubmit={() => editProduct(selectedProduct.id)}>
               <label htmlFor="editProductName">
                 Nombre del producto
                 <input type="text" defaultValue={selectedProduct.name} onChange={handleNameChange}/>
@@ -360,11 +401,11 @@ const HomeAdmin = () => {
               </label>
               <label htmlFor="">
                 Precio
-                <input type="number" defaultValue={selectedProduct.price} />
+                <input type="number" defaultValue={selectedProduct.price} onChange={handlePriceChange}/>
               </label>
               <label htmlFor="">
                 Imagenes
-                <Uploader draggable>
+                <Uploader disabled autoUpload={false} draggable>
                   <div
                     style={{
                       height: 54,
@@ -382,7 +423,7 @@ const HomeAdmin = () => {
                 </Uploader>
               </label>
               <div className={styles.labelSeparator}></div>
-              <button onClick={() => editProduct(selectedProduct.id)}>Guardar Cambios</button>
+              <button>Guardar Cambios</button>
             </form>
           </div>
         </Modal.Body>
