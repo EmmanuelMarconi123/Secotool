@@ -5,6 +5,7 @@
   align-items: center;
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
   border-radius: 8px;
+  background-color: white;
 }
 
 .textoCard {
@@ -33,6 +34,8 @@
   width: 100%;
   height: auto;
   object-fit: cover;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
 }
 
 .titleCard {
