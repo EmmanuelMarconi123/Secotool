@@ -12,16 +12,19 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "features")
 public class Feature {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    //@Column(nullable = false, unique = true)
+    @Column(name = "name")
     private String name;
 
-    @Column(nullable = false, unique = true)
+    //@Column(nullable = false, unique = true)
+    @Column(name = "icon")
     private String icon;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {

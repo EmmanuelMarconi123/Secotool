@@ -33,6 +33,7 @@ public class Product {
             CascadeType.REMOVE
     })
     @JsonIgnore
+    @EqualsAndHashCode.Exclude
     private Set<Image> images;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST,mappedBy = "products")

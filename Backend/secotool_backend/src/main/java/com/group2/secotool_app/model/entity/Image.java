@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
@@ -21,8 +22,9 @@ public class Image {
     private String url;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", referencedColumnName = "id",nullable = false)
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
     @JsonIgnore
+    @EqualsAndHashCode.Exclude
     private Product product;
 
     @OneToOne(mappedBy = "image", cascade = {

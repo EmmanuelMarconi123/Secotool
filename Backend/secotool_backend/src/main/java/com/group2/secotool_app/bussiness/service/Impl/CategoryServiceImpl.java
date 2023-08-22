@@ -53,4 +53,13 @@ public class CategoryServiceImpl implements ICategoryService {
         }
         throw new RuntimeException("category "+categoryName+" not found");
     }
+
+    @Override
+    public Category findById(Long id) {
+        var category = categoryRepository.findById(id);
+        if (category.isPresent()){
+            return category.get();
+        }
+        throw new RuntimeException("category "+id+" not found");
+    }
 }

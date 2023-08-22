@@ -9,6 +9,7 @@ import com.group2.secotool_app.bussiness.service.IImageService;
 import com.group2.secotool_app.bussiness.service.IProductService;
 import com.group2.secotool_app.model.dto.ProductDto;
 import com.group2.secotool_app.model.dto.request.ProductRequestDto;
+import com.group2.secotool_app.model.entity.Image;
 import com.group2.secotool_app.model.entity.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
@@ -44,7 +46,7 @@ public class ProductFacadeImpl implements IProductFacade {
     public String save(ProductRequestDto productRequestDto, List<MultipartFile> images) {
         fileService.validateFilesAreImages(images);
         var product = productMapper.toProduct(productRequestDto);
-        var prodId = productService.save(product);
+        Long prodId = productService.save(product);
         var urlImages = bucketS3Service.storeFiles(images);
         urlImages.forEach(url ->
                 imageService.saveProductImage(url,prodId)
@@ -54,7 +56,8 @@ public class ProductFacadeImpl implements IProductFacade {
 
     @Override
     public String deleteById(Long id) {
-        productService.deleteById(id);
+        var images = imageService.getAllImagesByProduct(id);
+        productService.deleteById(id,images);
         return "product "+id+ " successfully deleted";
     }
 
@@ -81,6 +84,13 @@ public class ProductFacadeImpl implements IProductFacade {
     public List<ProductDto> getAllProductsAssociateWithAFeature(String featureName) {
         List<ProductDto> productDtos = new ArrayList<>();
         var prods = productService.getAllProductsAssociateWithAFeature(featureName);
+        prods.forEach(prod -> productDtos.add(productDtoMapper.toProductDto(prod)));
+        return productDtos;
+    }
+    @Override
+    public List<ProductDto> getAllProductsAssociateWithACategory(String category) {
+        List<ProductDto> productDtos = new ArrayList<>();
+        var prods = productService.getAllProductsAssociateWithACategory(category);
         prods.forEach(prod -> productDtos.add(productDtoMapper.toProductDto(prod)));
         return productDtos;
     }
