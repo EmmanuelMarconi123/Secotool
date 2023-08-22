@@ -1,11 +1,12 @@
 import AdminHeader from "../../components/header/adminHeader/AdminHeader";
 import Header from "../../components/header/Header";
 import { Navigate, Route, Routes } from "react-router-dom";
-import Home from "../../components/routes/Home";
-import Details from "../../components/routes/Details";
+import Home from "../../components/routes/home/Home";
+import Details from "../../components/routes/details/Details";
 import HomeAdmin from "../../components/routes/homeAdmin/HomeAdmin";
 import NewProduct from "../../components/routes/newProduct/NewProduct";
 import Footer from "../../components/footer/Footer";
+import Filters from "../../components/routes/filters/Filters";
 
 const AppRoutes = () => {
   return (
@@ -21,6 +22,7 @@ const AppRoutes = () => {
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/product/:id" element={<Details />} />
+          <Route path="/filters/:idCategoria" element={<Filters />} />
           <Route path="*" element={<Navigate to="/" />} />
 
           {/* Rutas Admin */}

@@ -1,8 +1,8 @@
 import { Link, useParams } from "react-router-dom";
-import Carousel from "../carousel/Carousel";
+import Carousel from "../../carousel/Carousel";
 import { useState } from "react";
 import { useEffect } from "react";
-import ListCaracteristicas from "../list/ListCaracteristicas";
+import ListCaracteristicas from "../../list/ListCaracteristicas";
 import styles from "./Details.module.css";
 
 function Details() {
