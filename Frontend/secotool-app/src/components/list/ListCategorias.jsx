@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import style from "./ListCategorias.module.css";
 const ListCategorias = () => {
   const mockListCateg = [
@@ -20,7 +21,7 @@ const ListCategorias = () => {
       <ul className={style.listCategorias}>
         {mockListCateg.map((categ) => (
           <li key={categ}>
-            <a href="">{categ}</a>
+            <Link to={"/allProducts/" + categ}>{categ}</Link>
           </li>
         ))}
       </ul>

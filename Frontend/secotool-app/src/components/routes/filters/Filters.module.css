@@ -12,11 +12,31 @@
     padding-bottom: 16px;
     align-items: center;
     color: #747474;
+    width: 100%;
+}
+
+.boxHeader h4{
+    margin: 0px;
+    padding-top: 24px;
+}
+
+.boxHeader hr{
+    margin-bottom: 16px;
+    width: 100%;
+    color: #747474;
 }
 
 @media screen and (min-width: 1024px) {
     .sectionFilters{
         flex-direction: row;
         justify-content: space-between;
+    }
+
+    .boxHeader{
+        width: 30%;
+        flex-direction: column;
+        align-items: flex-start;
+        padding-bottom: 40px;
+        padding-top: 40px;
     }
 }

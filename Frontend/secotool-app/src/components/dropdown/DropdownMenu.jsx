@@ -10,14 +10,14 @@ const DropdownMenu = () => {
         </button>
         <div className={styles.dropdownContent + " spacing-grid"}>
           <nav className="d-flex f-dir-colum ">
-            <Link to="/home">
-              <a>Inicio</a>
+            <Link to="/">
+              Inicio
             </Link>
             <div className={styles.subDropdown}>
-              <button className={styles.dropbtn}>
+              <Link to="/allFilters" className={styles.dropbtn}>
                 Herramientas
                 {/*<i className="fa-regular fa-chevron-down"></i>*/}
-              </button>
+              </Link>
               {/*<div className={styles.subDropdownContent}>
                 <div className={styles.header + " spacing-grid"}>
                   <h2>Categorías</h2>
@@ -26,7 +26,7 @@ const DropdownMenu = () => {
                   <ListCategorias></ListCategorias>
                 </div>
     </div>*/}
-              <div className={styles.boxButtons + " spacing-grid"}>
+              <div className={styles.boxButtons}>
                 <Link to="/auth/crearCuenta">
                   <button className="button-primary-transparent button-small">
                     Crear Cuenta

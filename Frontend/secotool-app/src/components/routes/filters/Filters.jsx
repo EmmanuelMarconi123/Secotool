@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import style from "./Filters.module.css";
 import ListProducts from "../../list/ListProducts";
 import ModalFilters from "../../modal/ModalFilters";
+import FormFilterDesktop from "../../form/formFilter/FormFilterDesktop";
+import { useMediaQuery } from "@react-hook/media-query";
 
 const Filters = () => {
   const [productsF, setProductsF] = useState([]);
@@ -25,6 +27,9 @@ const Filters = () => {
 
     fetchProducts();
   }, []);
+
+  const isScreenSmall = useMediaQuery("(max-width: 768px)");
+
   return (
     <section className={style.sectionFilters}>
       <div className={style.boxHeader}>
@@ -32,9 +37,17 @@ const Filters = () => {
           <span>120</span>
           <span>/</span>
           <span>200</span>
-          <span> Resultados</span>
+          <span> resultados</span>
         </div>
-        <ModalFilters />
+        {!isScreenSmall ? (
+          <>
+            <h4>Categorías</h4>
+            <hr />
+            <FormFilterDesktop />
+          </>
+        ) : (
+          <ModalFilters />
+        )}
       </div>
       <div className={style.contenedorCards}>
         <h4>Todas las herramientas</h4>
