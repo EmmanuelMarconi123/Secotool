@@ -89,7 +89,9 @@
 .formNewProduct label input {
   height: 40px;
   width: 640px;
+  padding: 8px;
 }
+
 
 .containerModal {
   display: flex;
@@ -108,3 +110,4 @@
   text-align: center;
   height: 60vh;
 }
+

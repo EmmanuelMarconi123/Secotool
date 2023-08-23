@@ -2,10 +2,11 @@ import styles from "./HomeAdmin.module.css";
 import AdminProductCard from "../../adminProductCard/AdminProductCard";
 import { useEffect, useState } from "react";
 import Pagination from "../../pagination/Pagination";
-import { ButtonToolbar, Button, Uploader, TagPicker } from "rsuite";
-import Modal from "rsuite/Modal";
+import { ButtonToolbar, Button, } from "rsuite";
 import { Alert, Snackbar } from "@mui/material";
 import axios from "axios";
+import FormNewProduct from "../../form/FormNewProduct";
+import FormEditProduct from "../../form/FormEditProduct";
 
 const HomeAdmin = () => {
   //------------------------------ CONFIG MODALS--------------->
@@ -87,7 +88,6 @@ const HomeAdmin = () => {
 
       if (response.ok) {
         console.log(`Producto con ID ${productId} eliminado correctamente`);
-        // Aquí podrías actualizar tu lista de productos eliminando el producto con el ID correspondiente
         setProducts(products.filter((product) => product.id !== productId));
         showDeleteSuccessAlert(); // Muestra la alerta de éxito
       } else {
@@ -123,36 +123,34 @@ const HomeAdmin = () => {
 
   const handleUpdateProduct = () => {
     const productId = selectedProduct.id;
-    console.log(productId)
-    console.log(editedProduct)
+  
+    const requestOptions = {
+      method: 'PUT',
+      body: JSON.stringify(editedProduct),
+    };
 
-    axios.put(`http://localhost:8080/v1/api/products/${productId}`, editedProduct)
-    .then((response) => {
-      console.log('Producto actualizado:', response.data)
-    })
-    .catch((error) => {
-      console.error('Error al actualizar el producto: ', error)
-    })
-  }
-
-  //------------------------------DATOS---------------------->
-  const categories = [
-    "Electrónica",
-    "Ropa",
-    "Hogar",
-    "Deportes",
-    "Alimentos",
-    "Libros",
-  ].map((item) => ({ label: item, value: item }));
-
-  const features = [
-    "Alta calidad",
-    "Resistente al agua",
-    "Conectividad inalámbrica",
-    "Diseño ergonómico",
-    "Batería de larga duración",
-    "Tecnología de última generación",
-  ].map((item) => ({ label: item, value: item }));
+    fetch(`http://localhost:8080/v1/api/products/${productId}`, requestOptions)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Error en la solicitud');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log('Producto actualizado:', data);
+        // Limpiar el estado después de la actualización
+        setEditedProduct({
+          name: '',
+          description: '',
+          price: 0,
+        });
+        // Cerrar el modal
+        handleCloseEp();
+      })
+      .catch((error) => {
+        console.error('Error en la solicitud:', error);
+      });
+  };
 
 
   //-------------- CONFIGURACION DE LA PAGINACION -------------------->
@@ -170,6 +168,8 @@ const HomeAdmin = () => {
       .matchMedia("(min-width: 1024px)")
       .addEventListener("change", (e) => setMatches(e.matches));
   }, []);
+
+  //---------------------------------FETCH TODOS LOS PRODUCTOS------------------>
 
   useEffect(() => {
     const fetchProductsAdmin = async () => {
@@ -264,142 +264,28 @@ const HomeAdmin = () => {
         </Alert>
       </Snackbar>
       {/* --------------------------NUEVO PRODUCTO MODAL--------------------------------> */}
-      <Modal size="md" open={open} onClose={handleClose} overflow={false}>
-        <Modal.Header>
-          <Modal.Title style={{ textAlign: "center", fontSize: 23 }}>
-            Nuevo Producto
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body className={styles.containerModal}>
-          <div className={styles.centeredForm}>
-            <form
-              className={styles.formNewProduct}
-              onSubmit={handleNewProductSubmit}
-            >
-              <label htmlFor="">
-                Nombre del producto
-                <input
-                  type="text"
-                  name="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </label>
-              <label htmlFor="">
-                Descripcion
-                <textarea
-                  cols="30"
-                  rows="10"
-                  name="description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  style={{ height: 120, width: 640 }}
-                ></textarea>
-              </label>
-              <label htmlFor="">
-                Categorias
-                <input type="text" value={category} onChange={(e) => setCategory(e.target.value)} />
-              </label>
-              <label htmlFor="">
-                Caracteristicas
-                <TagPicker style={{ width: 640 }} data={features} placeholder="Seleccionar caracteristicas"/>
-              </label>
-              <label htmlFor="">
-                Precio
-                <input
-                  type="text"
-                  name="price"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                />
-              </label>
-              <label htmlFor="">
-                Imagenes
-                <Uploader autoUpload={false} draggable onChange={handleImageChangeD}>
-                <div
-                    style={{
-                      height: 54,
-                      width: 640,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: 10,
-                      borderRadius: 8,
-                    }}
-                  >
-                    <i className="fa-solid fa-cloud-arrow-up"></i>
-                    <span>Subir imagen</span>
-                  </div>
-
-                </Uploader>
-              </label>
-              <div className={styles.labelSeparator}></div>
-              <button>Agregar Producto</button>
-            </form>
-          </div>
-        </Modal.Body>
-      </Modal>
+      <FormNewProduct
+        open={open}
+        handleClose={handleClose}
+        handleNewProductSubmit={handleNewProductSubmit}
+        name={name}
+        setName={setName}
+        description={description}
+        setDescription={setDescription}
+        category={category}
+        setCategory={setCategory}
+        price={price}
+        setPrice={setPrice}
+        handleImageChangeD={handleImageChangeD}
+      />
       {/* ------------------------------------------EDITAR PRODUCTO MODAL--------------------------> */}
-      <Modal size="md" open={openEp} onClose={handleCloseEp} overflow={false}>
-        <Modal.Header>
-          <Modal.Title style={{ textAlign: "center", fontSize: 23 }}>
-            Editor de productos
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body className={styles.containerModal}>
-          <div className={styles.centeredForm}>
-            <form className={styles.formNewProduct} action="">
-              <label htmlFor="editProductName">
-                Nombre del producto
-                <input type="text" value={editedProduct.name} onChange={(event) => handleFieldChange('name', event.target.value)}/>
-              </label>
-              <label htmlFor="editDescription">
-                Descripcion
-                <textarea
-                  cols="30"
-                  rows="10"
-                  value={editedProduct.description}
-                  onChange={(event) => handleFieldChange('description', event.target.value)}
-                  style={{ height: 120, width: 640 }}
-                ></textarea>
-              </label>
-              <label htmlFor="">
-                Categorias
-                <TagPicker style={{ width: 640 }} data={categories} placeholder="Seleccionar categoria" />
-              </label>
-              <label htmlFor="">
-                Caracteristicas
-                <TagPicker style={{ width: 640 }} data={features} placeholder="Seleccionar caracteristica" />
-              </label>
-              <label htmlFor="">
-                Precio
-                <input type="number" value={editedProduct.price} onChange={(event) => handleFieldChange('price', event.target.value)} />
-              </label>
-              <label htmlFor="">
-                Imagenes
-                <Uploader draggable>
-                  <div
-                    style={{
-                      height: 54,
-                      width: 640,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: 10,
-                      borderRadius: 8,
-                    }}
-                  >
-                    <i className="fa-solid fa-cloud-arrow-up"></i>
-                    <span>Subir imagen</span>
-                  </div>
-                </Uploader>
-              </label>
-              <div className={styles.labelSeparator}></div>
-              <button onClick={() => handleUpdateProduct()}>Guardar Cambios</button>
-            </form>
-          </div>
-        </Modal.Body>
-      </Modal>
+      <FormEditProduct
+        openEp={openEp}
+        handleCloseEp={handleCloseEp}
+        editedProduct={editedProduct}
+        handleFieldChange={handleFieldChange}
+        handleUpdateProduct={handleUpdateProduct}
+      />
     </div>
   );
 };
