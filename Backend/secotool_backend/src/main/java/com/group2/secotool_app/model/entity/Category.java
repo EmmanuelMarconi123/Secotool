@@ -2,14 +2,13 @@ package com.group2.secotool_app.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "categories")
@@ -37,6 +36,5 @@ public class Category {
     )
     @JsonIgnore
     private List<Product> products;
-
 
 }

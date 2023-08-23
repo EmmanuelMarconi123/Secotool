@@ -2,7 +2,6 @@ package com.group2.secotool_app.presentation.Controllers;
 
 import com.group2.secotool_app.bussiness.facade.IFeatureFacade;
 import com.group2.secotool_app.model.dto.FeatureDto;
-import com.group2.secotool_app.model.dto.ProductDto;
 import com.group2.secotool_app.model.dto.request.FeatureRequestDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

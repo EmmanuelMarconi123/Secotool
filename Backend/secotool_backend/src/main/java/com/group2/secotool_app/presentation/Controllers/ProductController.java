@@ -66,8 +66,8 @@ public class ProductController {
     }
 
     @GetMapping("/all/categories/{categoryName}")
-    public ResponseEntity<List<ProductDto>> getAllProductsAssociateWithACategory(@PathVariable String category){
-        return ResponseEntity.ok(productFacade.getAllProductsAssociateWithACategory(category));
+    public ResponseEntity<List<ProductDto>> getAllProductsAssociateWithACategory(@PathVariable String categoryName){
+        return ResponseEntity.ok(productFacade.getAllProductsAssociateWithACategory(categoryName));
     }
 
     @PostMapping

@@ -8,7 +8,9 @@ import com.group2.secotool_app.persistence.ImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -34,8 +36,8 @@ public class ImageServiceImpl implements IImageService {
     }
 
     @Override
-    public Set<Image> getAllImagesByProduct(Long productId) {
-        Set<Image> images = new HashSet<>();
+    public List<Image> getAllImagesByProduct(Long productId) {
+        List<Image> images = new ArrayList<>();
         var imagesDto = imageRepository.findAllByProductId(productId);
         System.out.println(imagesDto.toString());
         imagesDto.forEach(image -> images.add(imageMapper.toImage(image)));

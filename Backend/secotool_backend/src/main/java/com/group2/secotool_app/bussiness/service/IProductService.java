@@ -13,7 +13,7 @@ public interface IProductService {
 
     Long save(Product productRequestDto);
 
-    void deleteById(Long id, Set<Image> images);
+    void deleteById(Long id, List<Image> images);
 
     List<Product> paginateProducts(int page);
 

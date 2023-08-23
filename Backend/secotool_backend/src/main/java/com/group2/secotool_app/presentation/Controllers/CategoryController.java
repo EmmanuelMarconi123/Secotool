@@ -4,7 +4,6 @@ import com.group2.secotool_app.bussiness.facade.ICategoryFacade;
 import com.group2.secotool_app.model.dto.CategoryDto;
 import com.group2.secotool_app.model.dto.request.CategoryRequestDto;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

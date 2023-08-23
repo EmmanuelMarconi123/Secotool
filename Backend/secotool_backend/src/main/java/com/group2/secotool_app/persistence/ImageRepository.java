@@ -7,12 +7,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Set;
+import java.util.List;
 
 @Repository
 public interface ImageRepository extends JpaRepository<Image,Long> {
 
     @Query("SELECT new com.group2.secotool_app.model.dto.ImageDto(i.id) FROM Image i WHERE i.product.id = :productId")
-    Set<ImageDto> findAllByProductId(@Param("productId") Long productId);
+    List<ImageDto> findAllByProductId(@Param("productId") Long productId);
 
 }
