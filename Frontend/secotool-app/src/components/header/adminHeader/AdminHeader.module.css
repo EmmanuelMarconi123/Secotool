@@ -24,18 +24,20 @@
 }
 
 @media screen and (max-width: 1024px) {
-  .navbarButtons div{
+  .navbarButtons div {
     display: none;
   }
 }
-
 
 .leftNavbar {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: auto;
+}
+
+.logo {
+  width: 100%;
 }
 
 .navLink {
@@ -43,17 +45,26 @@
   padding: 10px 20px;
   border-radius: 3px;
   border: none;
-  color: var(--white);
-  background-color: var(--dark);
-  font-size: 16px;
+  color: var(--dark);
+  font-size: 13px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
 }
 
-.navLink:active {
-  background-color: rgb(88, 88, 88);
+.navLinkActive {
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 3px;
+  border: none;
+  color: var(--white);
+  background-color: var(--dark);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 }
 
 .closeSesion {
@@ -62,9 +73,59 @@
   border: none;
   color: var(--dark);
   background: none;
-  font-size: 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
+  font-size: 13px;
+}
+
+@media screen and (min-width: 0px) and (max-width: 767px) {
+  .leftNavbar {
+    width: 70%;
+  }
+
+  .slogan {
+    font-size: 8px;
+  }
+
+  .navbarButtons div {
+    gap: 8px;
+  }
+
+  .closeSesion span {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .leftNavbar {
+    width: 85%;
+  }
+
+  .slogan {
+    font-size: 11px;
+  }
+
+  .navbarButtons div {
+    gap: 8px;
+  }
+
+  .closeSesion span {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .leftNavbar {
+    width: 100%;
+  }
+
+  .slogan {
+    font-size: 11px;
+  }
+
+  .navbarButtons div {
+    gap: 32px;
+  }
 }

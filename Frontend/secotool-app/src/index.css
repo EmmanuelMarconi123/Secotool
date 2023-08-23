@@ -32,9 +32,9 @@ a {
 /*Header*/
 header {
   background-color: var(--color-primary);
-  position: fixed;
+  /* position: fixed;
   width: 100%;
-  z-index: 1000;
+  z-index: 1000; */
 }
 
 /*Buttons*/

@@ -9,6 +9,7 @@ import HomeAdmin from "./components/routes/homeAdmin/HomeAdmin";
 import AdminHeader from "./components/header/adminHeader/AdminHeader";
 import CrearCuenta from "./components/routes/crearCuenta/CrearCuenta";
 import LogIn from "./components/routes/logIn/LogIn";
+import "rsuite/dist/rsuite.min.css";
 
 function App() {
   return (
