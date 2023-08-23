@@ -20,6 +20,10 @@
     padding-top: 24px;
 }
 
+.boxHeader span{
+    font-size: 13px;
+}
+
 .boxHeader hr{
     margin-bottom: 16px;
     width: 100%;
@@ -50,6 +54,11 @@
 
     .titleContenedorCards{
         font-size: 23px;
-        margin: 0;
+        margin-top: 0;
+        margin-bottom: 16px;
+    }
+
+    .boxHeader span{
+        font-size: 16px;
     }
 }
