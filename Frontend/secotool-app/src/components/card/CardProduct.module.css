@@ -45,6 +45,13 @@
   font-weight: 400;
   padding-bottom: 8px;
   margin-bottom: 0px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.5;
+  height: 48px;
 }
 
 .textPriceCard {
@@ -61,9 +68,6 @@
 }
 
 @media screen and (min-width: 1440px) {
-  .titleCard {
-    font-size: 19px;
-  }
   .textPriceCard {
     font-size: 23px;
   }
