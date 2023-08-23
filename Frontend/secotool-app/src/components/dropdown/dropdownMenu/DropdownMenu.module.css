@@ -14,11 +14,11 @@
   background-color: transparent;
 }
 
-.dropdownContent{
+.dropdownContent {
   padding-top: 24px;
 }
 
-.dropdownContent nav{
+.dropdownContent nav {
   gap: 32px;
 }
 
@@ -44,12 +44,6 @@
   margin-left: 0px;
 }
 
-/*.dropdown:hover .dropdownContent,
-.subDropdown:hover .subDropdownContent {
-  display: flex;
-  flex-direction: column;
-}*/
-
 .subDropdownContent {
   margin-top: 20px;
 }
@@ -58,7 +52,7 @@
   padding-left: 8px;
 }
 
-.subDropdown .dropbtn{
+.subDropdown .dropbtn {
   background-color: transparent;
 }
 
@@ -69,7 +63,7 @@
   padding-top: 24px;
 }
 
-.show{
+.show {
   display: flex;
   flex-direction: column;
 }

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import ListCategorias from "../list/ListCategorias";
+import ListCategorias from "../../list/ListCategorias";
 import styles from "./DropdownDesktop.module.css";
 import { useEffect, useRef, useState } from "react";
 

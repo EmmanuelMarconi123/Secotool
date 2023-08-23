@@ -7,6 +7,7 @@ import HomeAdmin from "../../components/routes/homeAdmin/HomeAdmin";
 import NewProduct from "../../components/routes/newProduct/NewProduct";
 import Footer from "../../components/footer/Footer";
 import Filters from "../../components/routes/filters/Filters";
+import Profile from "../../components/routes/profile/Profile";
 
 const AppRoutes = () => {
   return (
@@ -24,6 +25,7 @@ const AppRoutes = () => {
           <Route path="/product/:id" element={<Details />} />
           <Route path="/allFilters" element={<Filters />} />
           <Route path="/allProducts/:idCateg" element={<Filters />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<Navigate to="/" />} />
 
           {/* Rutas Admin */}
