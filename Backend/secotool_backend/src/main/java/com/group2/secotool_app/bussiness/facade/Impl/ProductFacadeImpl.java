@@ -9,7 +9,6 @@ import com.group2.secotool_app.bussiness.service.IImageService;
 import com.group2.secotool_app.bussiness.service.IProductService;
 import com.group2.secotool_app.model.dto.ProductDto;
 import com.group2.secotool_app.model.dto.request.ProductRequestDto;
-import com.group2.secotool_app.model.entity.Image;
 import com.group2.secotool_app.model.entity.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -17,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
@@ -81,16 +79,16 @@ public class ProductFacadeImpl implements IProductFacade {
     }
 
     @Override
-    public List<ProductDto> getAllProductsAssociateWithAFeature(String featureName) {
+    public List<ProductDto> getAllProductsAssociateWithAFeature(Long featureId) {
         List<ProductDto> productDtos = new ArrayList<>();
-        var prods = productService.getAllProductsAssociateWithAFeature(featureName);
+        var prods = productService.getAllProductsAssociateWithAFeature(featureId);
         prods.forEach(prod -> productDtos.add(productDtoMapper.toProductDto(prod)));
         return productDtos;
     }
     @Override
-    public List<ProductDto> getAllProductsAssociateWithACategory(String category) {
+    public List<ProductDto> getAllProductsAssociateWithACategory(Long categoryId) {
         List<ProductDto> productDtos = new ArrayList<>();
-        var prods = productService.getAllProductsAssociateWithACategory(category);
+        var prods = productService.getAllProductsAssociateWithACategory(categoryId);
         prods.forEach(prod -> productDtos.add(productDtoMapper.toProductDto(prod)));
         return productDtos;
     }

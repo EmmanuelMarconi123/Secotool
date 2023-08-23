@@ -17,4 +17,6 @@ public interface IFeatureService {
     void associateProductToFeature(Product product, Feature feature);
 
     Feature findByName(String featureName);
+
+    Feature findById(Long featureId);
 }

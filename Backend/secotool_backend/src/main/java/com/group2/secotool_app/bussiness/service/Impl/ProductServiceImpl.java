@@ -12,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -42,7 +41,7 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public void deleteById(Long id, Set<Image> images) {
+    public void deleteById(Long id, List<Image> images) {
         var prod = new Product();
         prod.setId(id);
         prod.setImages(images);
@@ -77,12 +76,12 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public List<Product> getAllProductsAssociateWithAFeature(String featureName) {
-        return productRepository.findAllByFeatureName(featureName);
+    public List<Product> getAllProductsAssociateWithAFeature(Long featureId) {
+        return productRepository.findAllByFeatureId(featureId);
     }
     @Override
-    public List<Product> getAllProductsAssociateWithACategory(String category) {
-        return productRepository.findAllByFeatureName(category);
+    public List<Product> getAllProductsAssociateWithACategory(Long categoryId) {
+        return productRepository.findAllByCategoryId(categoryId);
     }
 
     @Override

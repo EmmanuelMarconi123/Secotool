@@ -21,7 +21,6 @@ public class BucketS3ServiceImpl implements IBucketS3Service {
     @Override
     public List<String> storeFiles(List<MultipartFile> files) throws RuntimeException{
         List<String> urls = new ArrayList<>();
-
         files.forEach(file -> {
             var metadata = imageValidationService.getFileMetadata(file);
             var bucketName = BucketName.BUCKET_NAME.getBucketName();

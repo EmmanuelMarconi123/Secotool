@@ -15,5 +15,5 @@ public interface ICategoryFacade {
 
     void deleteCategory(Long id);
 
-    void associateProductToCategory(String prodName, String categoryName);
+    void associateProductToCategory(Long prodId, Long categoryId);
 }

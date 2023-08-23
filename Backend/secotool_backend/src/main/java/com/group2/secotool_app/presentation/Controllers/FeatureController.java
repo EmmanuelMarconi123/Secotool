@@ -2,7 +2,6 @@ package com.group2.secotool_app.presentation.Controllers;
 
 import com.group2.secotool_app.bussiness.facade.IFeatureFacade;
 import com.group2.secotool_app.model.dto.FeatureDto;
-import com.group2.secotool_app.model.dto.ProductDto;
 import com.group2.secotool_app.model.dto.request.FeatureRequestDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,10 +27,12 @@ public class FeatureController {
         featureFacade.saveFeature(featureRequestDto);
         return ResponseEntity.ok("feature saved successfully");
     }
+
+    // puede ir en el controller de productos
     @PostMapping("/{prodId}/{featureId}")
-    public ResponseEntity<String> associateProductToFeature(@PathVariable("prodId") String prodName, @PathVariable("featureId") String featureName){
-        featureFacade.associateProductToFeature(prodName,featureName);
-        return ResponseEntity.ok(String.format("product: %s successfully associated with feature: %s", prodName,featureName));
+    public ResponseEntity<String> associateProductToFeature(@PathVariable("prodId") Long prodId, @PathVariable("featureId") Long featureId){
+        featureFacade.associateProductToFeature(prodId,featureId);
+        return ResponseEntity.ok(String.format("product: %s successfully associated with feature: %s", prodId,featureId));
     }
     @PutMapping("/{id}")
     public ResponseEntity<String> updateFeature(@RequestBody @Valid FeatureRequestDto featureRequestDto, @PathVariable Long id){

@@ -48,9 +48,9 @@ public class FeatureFacadeImpl implements IFeatureFacade {
 
 
     @Override
-    public void associateProductToFeature(String prodName, String featureName) {
-        var feature = featureService.findByName(featureName);
-        var prod = productService.findByName(prodName);
+    public void associateProductToFeature(Long prodId, Long featureId) {
+        var prod = productService.findProductById(prodId);
+        var feature = featureService.findById(featureId);
         featureService.associateProductToFeature(prod,feature);
     }
 }

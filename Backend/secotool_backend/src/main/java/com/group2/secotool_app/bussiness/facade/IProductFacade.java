@@ -11,7 +11,7 @@ import java.util.List;
 public interface IProductFacade {
     List<ProductDto> getAllProducts();
     List<ProductDto> getTenRandomProducts();
-    List<ProductDto> getAllProductsAssociateWithACategory(String category);
+    List<ProductDto> getAllProductsAssociateWithACategory(Long categoryId);
 
     @Transactional(rollbackOn = {RuntimeException.class})
     String save(ProductRequestDto productRequestDto, List<MultipartFile> images);
@@ -24,5 +24,5 @@ public interface IProductFacade {
 
     void updateProduct(Long id, ProductRequestDto productRequestDto);
 
-    List<ProductDto> getAllProductsAssociateWithAFeature(String featureName);
+    List<ProductDto> getAllProductsAssociateWithAFeature(Long featureId);
 }

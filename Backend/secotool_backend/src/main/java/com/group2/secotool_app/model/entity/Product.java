@@ -4,9 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Set;
+import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -33,15 +34,14 @@ public class Product {
             CascadeType.REMOVE
     })
     @JsonIgnore
-    @EqualsAndHashCode.Exclude
-    private Set<Image> images;
+    private List<Image> images;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST,mappedBy = "products")
     @JsonIgnore
-    private Set<Feature> productFeatures;
+    private List<Feature> productFeatures;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST,mappedBy = "products")
     @JsonIgnore
-    private Set<Category> productCategories;
+    private List<Category> productCategories;
 
 }

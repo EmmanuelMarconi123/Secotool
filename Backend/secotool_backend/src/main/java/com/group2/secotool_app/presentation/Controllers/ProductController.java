@@ -24,6 +24,7 @@ import java.util.List;
 public class ProductController {
     private final IProductFacade productFacade;
 
+
     @GetMapping("/all")
     @Operation(summary = "return a list of all products saved in database")
     @ApiResponses(value = {
@@ -60,14 +61,17 @@ public class ProductController {
     public ResponseEntity<List<ProductDto>> productPaginationTenByTen(@Parameter(description = "index of products needed")@PathVariable int page){
         return ResponseEntity.ok(productFacade.paginateProducts(page));
     }
-    @GetMapping("/all/features/{featureName}")
-    public ResponseEntity<List<ProductDto>> getAllProductsAssociateWithAFeature(@PathVariable String featureName){
-        return ResponseEntity.ok(productFacade.getAllProductsAssociateWithAFeature(featureName));
+
+
+    @GetMapping("/all/feature/{featureId}")
+    public ResponseEntity<List<ProductDto>> getAllProductsAssociateWithAFeature(@PathVariable Long featureId){
+        return ResponseEntity.ok(productFacade.getAllProductsAssociateWithAFeature(featureId));
     }
 
-    @GetMapping("/all/categories/{categoryName}")
-    public ResponseEntity<List<ProductDto>> getAllProductsAssociateWithACategory(@PathVariable String category){
-        return ResponseEntity.ok(productFacade.getAllProductsAssociateWithACategory(category));
+
+    @GetMapping("/all/category/{categoryId}")
+    public ResponseEntity<List<ProductDto>> getAllProductsAssociateWithACategory(@PathVariable Long categoryId){
+        return ResponseEntity.ok(productFacade.getAllProductsAssociateWithACategory(categoryId));
     }
 
     @PostMapping

@@ -9,7 +9,7 @@ public record UserAuthenticationRequestDto (
         @NotBlank(message = "required username")
         String username,
         @Pattern(regexp = "^(?=.*[0-9])(?=.*[A-Z]).{6,}$",
-                message = "Password must have at least 6 characters and one uppercase.")
+                message = "Password must have at least 6 characters and one uppercase and one number.")
         @NotBlank(message = "required password")
         String password
 ){
