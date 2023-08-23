@@ -14,7 +14,7 @@ const HomeAdmin = () => {
   const handleClose = () => setOpen(false);
   
   const [openEp, setOpenEp] = useState(false); // EDIT PRODUCT MODAL
-  const [selectedProduct, setSelectedProduct] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState({});
   const handleOpenEp = (product) => {
     setSelectedProduct(product);
     setOpenEp(true);
@@ -26,15 +26,9 @@ const HomeAdmin = () => {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [uploadedImages, setUploadedImages] = useState([]); // Estado para las imágenes cargadas
-  
 
-  const handleImageChange = (e) => {
-    const selectedImages = Array.from(e.target.files); // Convertir FileList a un array
-    setUploadedImages(selectedImages);
-  };
 
   const handleImageChangeD = (fileList) => {
-    // Update the state with the new list of uploaded images
     setUploadedImages([...uploadedImages, ...fileList]);
   };
 
@@ -105,41 +99,40 @@ const HomeAdmin = () => {
   }
 
   //---------------------------------------EDIT PRODUCT-------------------->
-  
-  const [editedName, setEditedName] = useState(selectedProduct.name);
-  const [editedDescription, setEditedDescription] = useState(selectedProduct.description);
 
-  const handleNameChange = (event) => {
-    setEditedName(event.target.value);
-  };
+  useEffect(() => {
+    setEditedProduct({
+      name: selectedProduct.name,
+      description: selectedProduct.description,
+      price: selectedProduct.price,
+    });
+  }, [selectedProduct]);
   
-  const handleDescriptionChange = (event) => {
-    setEditedDescription(event.target.value);
+  const [editedProduct, setEditedProduct] = useState({
+    name: '',
+    description: '',
+    price: 0,
+  });
+
+  const handleFieldChange = (field, value) => {
+    setEditedProduct((prevProduct) => ({
+      ...prevProduct,
+      [field]: value,
+    }));
   };
 
-  async function editProduct(productId) {
-    try {
-      const response = await fetch(`http://localhost:8080/v1/api/products/${productId}`, {
-        method: 'PUT', 
-        headers: {
-          'Content-Type': 'application/json', 
-        },
-        body: JSON.stringify({
-          name: editedName,
-          description: editedDescription,
-        }),
-      });
-  
-      if (response.ok) {
-        console.log(`Producto con ID ${productId} editado correctamente`);
-        // Cierra el modal de edición
-        handleCloseEp();
-      } else {
-        throw new Error('Error al editar el producto');
-      }
-    } catch (error) {
-      console.error(error);
-    }
+  const handleUpdateProduct = () => {
+    const productId = selectedProduct.id;
+    console.log(productId)
+    console.log(editedProduct)
+
+    axios.put(`http://localhost:8080/v1/api/products/${productId}`, editedProduct)
+    .then((response) => {
+      console.log('Producto actualizado:', response.data)
+    })
+    .catch((error) => {
+      console.error('Error al actualizar el producto: ', error)
+    })
   }
 
   //------------------------------DATOS---------------------->
@@ -309,7 +302,7 @@ const HomeAdmin = () => {
               </label>
               <label htmlFor="">
                 Caracteristicas
-                <TagPicker style={{ width: 640 }} data={features} />
+                <TagPicker style={{ width: 640 }} data={features} placeholder="Seleccionar caracteristicas"/>
               </label>
               <label htmlFor="">
                 Precio
@@ -358,29 +351,29 @@ const HomeAdmin = () => {
             <form className={styles.formNewProduct} action="">
               <label htmlFor="editProductName">
                 Nombre del producto
-                <input type="text" defaultValue={selectedProduct.name} onChange={handleNameChange}/>
+                <input type="text" value={editedProduct.name} onChange={(event) => handleFieldChange('name', event.target.value)}/>
               </label>
               <label htmlFor="editDescription">
                 Descripcion
                 <textarea
                   cols="30"
                   rows="10"
-                  defaultValue={selectedProduct.description}
-                  onChange={handleDescriptionChange}
+                  value={editedProduct.description}
+                  onChange={(event) => handleFieldChange('description', event.target.value)}
                   style={{ height: 120, width: 640 }}
                 ></textarea>
               </label>
               <label htmlFor="">
                 Categorias
-                <TagPicker style={{ width: 640 }} data={categories} />
+                <TagPicker style={{ width: 640 }} data={categories} placeholder="Seleccionar categoria" />
               </label>
               <label htmlFor="">
                 Caracteristicas
-                <TagPicker style={{ width: 640 }} data={features} />
+                <TagPicker style={{ width: 640 }} data={features} placeholder="Seleccionar caracteristica" />
               </label>
               <label htmlFor="">
                 Precio
-                <input type="number" defaultValue={selectedProduct.price} />
+                <input type="number" value={editedProduct.price} onChange={(event) => handleFieldChange('price', event.target.value)} />
               </label>
               <label htmlFor="">
                 Imagenes
@@ -402,7 +395,7 @@ const HomeAdmin = () => {
                 </Uploader>
               </label>
               <div className={styles.labelSeparator}></div>
-              <button onClick={() => editProduct(selectedProduct.id)}>Guardar Cambios</button>
+              <button onClick={() => handleUpdateProduct()}>Guardar Cambios</button>
             </form>
           </div>
         </Modal.Body>
