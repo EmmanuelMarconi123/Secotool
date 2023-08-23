@@ -44,11 +44,11 @@
   margin-left: 0px;
 }
 
-.dropdown:hover .dropdownContent,
+/*.dropdown:hover .dropdownContent,
 .subDropdown:hover .subDropdownContent {
   display: flex;
   flex-direction: column;
-}
+}*/
 
 .subDropdownContent {
   margin-top: 20px;
@@ -67,4 +67,9 @@
   justify-content: space-between;
   align-items: center;
   padding-top: 24px;
+}
+
+.show{
+  display: flex;
+  flex-direction: column;
 }

@@ -43,8 +43,7 @@
   margin-left: 0px;
 }
 
-.dropdown:hover .dropdownContent,
-.subDropdown:hover .subDropdownContent {
+.show{
   display: flex;
   flex-direction: column;
 }
