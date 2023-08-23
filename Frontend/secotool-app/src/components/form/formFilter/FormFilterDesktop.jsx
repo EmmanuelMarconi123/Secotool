@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import style from "./FormFilterDesktop.module.css"
+import axios from "axios";
 
 const FormFilterDesktop = () => {
-      //mock listado de categorias
+  /*mock listado de categorias
   const mockListCateg = [
     "Categoría 1",
     "Categoría 2",
@@ -16,10 +17,23 @@ const FormFilterDesktop = () => {
     "Categoría 10",
     "Categoría 11",
     "Categoría 12",
-  ];
+  ];*/
+
+  const [categoryData, setCategoryData] = useState([]);
 
     // Estado para mantener el registro de checkboxes seleccionados
     const [selectedCategories, setSelectedCategories] = useState([]);
+
+    useEffect(() => {
+      // Realizar la solicitud Fetch al endpoint usando Axios
+      axios.get("http://localhost:8080/v1/api/categories")
+        .then(response => {
+          setCategoryData(response.data);
+        })
+        .catch(error => {
+          console.error("Error fetching categories:", error);
+        });
+    }, []);
 
     // Función para manejar el cambio en la selección de checkboxes
     const handleCheckboxChange = (event) => {
@@ -42,15 +56,15 @@ const FormFilterDesktop = () => {
 
     return(
         <form onSubmit={handleSubmit} className={style.form}>
-        {mockListCateg.map((categ) => (
-          <div key={categ} className={style.boxInputCheck}>
+        {categoryData.map((categ) => (
+          <div key={categ.id} className={style.boxInputCheck}>
             <input
               type="checkbox"
-              value={categ}
+              value={categ.name}
               onChange={handleCheckboxChange}
-              checked={selectedCategories.includes(categ)}
+              checked={selectedCategories.includes(categ.name)}
             />
-            <label>{categ}</label>
+            <label>{categ.name}</label>
           </div>
         ))}
       </form>

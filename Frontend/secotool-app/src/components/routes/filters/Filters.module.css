@@ -26,10 +26,13 @@
     color: #747474;
 }
 
+
 @media screen and (min-width: 1024px) {
     .sectionFilters{
         flex-direction: row;
         justify-content: space-between;
+        align-items: start;
+        gap: 40px;
     }
 
     .boxHeader{
@@ -38,5 +41,15 @@
         align-items: flex-start;
         padding-bottom: 40px;
         padding-top: 40px;
+    }
+
+    .contenedorCards{
+        width: 70%;
+        padding-top: 32px;
+    }
+
+    .titleContenedorCards{
+        font-size: 23px;
+        margin: 0;
     }
 }

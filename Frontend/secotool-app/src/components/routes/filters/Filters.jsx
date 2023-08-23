@@ -4,24 +4,20 @@ import ListProducts from "../../list/ListProducts";
 import ModalFilters from "../../modal/ModalFilters";
 import FormFilterDesktop from "../../form/formFilter/FormFilterDesktop";
 import { useMediaQuery } from "@react-hook/media-query";
+import axios from "axios";
 
 const Filters = () => {
   const [productsF, setProductsF] = useState([]);
-  // "useEffect usado para el fect de los productos (por ahora es necesario correr el back de local)"
+  // "useEffect usado para el fetch de los productos (por ahora es necesario correr el back de local)"
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:8080/v1/api/products"
-        ); /*aqui hay que cambiar a fetch de categorias*/
-        if (response.ok) {
-          const data = await response.json();
-          setProductsF(data);
-        } else {
-          throw new Error("Error en la solicitud");
-        }
+        const response = await axios.get(
+          "http://localhost:8080/v1/api/products/random"
+        );
+        setProductsF(response.data);
       } catch (error) {
-        console.error(error);
+        console.error("Error fetching products:", error);
       }
     };
 
@@ -34,9 +30,9 @@ const Filters = () => {
     <section className={style.sectionFilters}>
       <div className={style.boxHeader}>
         <div>
-          <span>120</span>
-          <span>/</span>
-          <span>200</span>
+          <span>5 </span>
+          <span>de </span>
+          <span>{productsF.length}</span>
           <span> resultados</span>
         </div>
         {!isScreenSmall ? (
@@ -50,7 +46,7 @@ const Filters = () => {
         )}
       </div>
       <div className={style.contenedorCards}>
-        <h4>Todas las herramientas</h4>
+        <h4 className={style.titleContenedorCards}>Todas las herramientas</h4>
         <ListProducts products={productsF} />
       </div>
     </section>
