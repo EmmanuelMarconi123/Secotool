@@ -6,6 +6,12 @@
   width: auto;
 }
 
+.rightNavbar{
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
 .imgLogo {
   width: 91px;
   height: 16.65px;
