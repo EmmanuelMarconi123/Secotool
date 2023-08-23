@@ -24,7 +24,6 @@ public class CategoryController {
         return ResponseEntity.ok(categoryFacade.getAllCategory());
     }
 
-    // guardar imagen de la categoria
     @PostMapping
     public ResponseEntity<String> saveCategory(@RequestPart("data") @Valid
                                                CategoryRequestDto categoryRequestDto,
@@ -37,10 +36,11 @@ public class CategoryController {
         return ResponseEntity.ok("category saved successfully");
     }
 
-    @PostMapping("/{prodName}/{categoryName}")
-    public ResponseEntity<String> associateProductToCategory(@PathVariable("prodName") String prodName, @PathVariable("categoryName") String categoryName){
-        categoryFacade.associateProductToCategory(prodName,categoryName);
-        return ResponseEntity.ok(String.format("product: %s successfully associated with feature: %s", prodName,categoryName));
+    // puede ir en el controller de prod
+    @PostMapping("/{prodId}/{categoryId}")
+    public ResponseEntity<String> associateProductToCategory(@PathVariable("prodId") Long prodId, @PathVariable("categoryId") Long categoryId){
+        categoryFacade.associateProductToCategory(prodId,categoryId);
+        return ResponseEntity.ok(String.format("product: %s successfully associated with feature: %s", prodId,categoryId));
     }
 
     @PutMapping("/{id}")

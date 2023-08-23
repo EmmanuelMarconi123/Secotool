@@ -14,5 +14,5 @@ public interface IFeatureFacade {
 
     void deleteFeature(Long id);
 
-    void associateProductToFeature(String prodName, String featureName);
+    void associateProductToFeature(Long prodId, Long featureId);
 }

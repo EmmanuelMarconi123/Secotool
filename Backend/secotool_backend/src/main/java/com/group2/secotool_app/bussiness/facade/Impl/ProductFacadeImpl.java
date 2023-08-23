@@ -79,17 +79,16 @@ public class ProductFacadeImpl implements IProductFacade {
     }
 
     @Override
-    public List<ProductDto> getAllProductsAssociateWithAFeature(String featureName) {
+    public List<ProductDto> getAllProductsAssociateWithAFeature(Long featureId) {
         List<ProductDto> productDtos = new ArrayList<>();
-        var prods = productService.getAllProductsAssociateWithAFeature(featureName);
+        var prods = productService.getAllProductsAssociateWithAFeature(featureId);
         prods.forEach(prod -> productDtos.add(productDtoMapper.toProductDto(prod)));
         return productDtos;
     }
     @Override
-    public List<ProductDto> getAllProductsAssociateWithACategory(String category) {
+    public List<ProductDto> getAllProductsAssociateWithACategory(Long categoryId) {
         List<ProductDto> productDtos = new ArrayList<>();
-        var prods = productService.getAllProductsAssociateWithACategory(category);
-        System.out.println(prods);
+        var prods = productService.getAllProductsAssociateWithACategory(categoryId);
         prods.forEach(prod -> productDtos.add(productDtoMapper.toProductDto(prod)));
         return productDtos;
     }

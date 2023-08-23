@@ -76,12 +76,12 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public List<Product> getAllProductsAssociateWithAFeature(String featureName) {
-        return productRepository.findAllByFeatureName(featureName);
+    public List<Product> getAllProductsAssociateWithAFeature(Long featureId) {
+        return productRepository.findAllByFeatureId(featureId);
     }
     @Override
-    public List<Product> getAllProductsAssociateWithACategory(String category) {
-        return productRepository.findAllByCategory(category);
+    public List<Product> getAllProductsAssociateWithACategory(Long categoryId) {
+        return productRepository.findAllByCategoryId(categoryId);
     }
 
     @Override

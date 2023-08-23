@@ -59,9 +59,9 @@ public class CategoryFacadeImpl implements ICategoryFacade {
     }
 
     @Override
-    public void associateProductToCategory(String prodName, String categoryName) {
-        var prod = productService.findByName(prodName);
-        var category = categoryService.findByName(categoryName);
+    public void associateProductToCategory(Long prodId, Long categoryId) {
+        var prod = productService.findProductById(prodId);
+        var category = categoryService.findById(categoryId);
         categoryService.associateProductToCategory(prod,category);
     }
 }

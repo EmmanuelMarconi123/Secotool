@@ -53,4 +53,13 @@ public class FeatureServiceImpl implements IFeatureService {
         throw new RuntimeException("feature "+featureName+ " not found");
     }
 
+    @Override
+    public Feature findById(Long featureId) {
+        var feature = featureRepository.findById(featureId);
+        if (feature.isPresent()){
+            return feature.get();
+        }
+        throw new RuntimeException("feature "+featureId+ " not found");
+    }
+
 }
