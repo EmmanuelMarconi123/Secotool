@@ -2,12 +2,11 @@ package com.group2.secotool_app.bussiness.facade.Impl;
 
 import com.group2.secotool_app.bussiness.facade.IProductFacade;
 import com.group2.secotool_app.bussiness.mapper.ProductDtoMapper;
+import com.group2.secotool_app.bussiness.mapper.ProductFullDtoMapper;
 import com.group2.secotool_app.bussiness.mapper.ProductMapper;
-import com.group2.secotool_app.bussiness.service.IBucketS3Service;
-import com.group2.secotool_app.bussiness.service.IFileService;
-import com.group2.secotool_app.bussiness.service.IImageService;
-import com.group2.secotool_app.bussiness.service.IProductService;
+import com.group2.secotool_app.bussiness.service.*;
 import com.group2.secotool_app.model.dto.ProductDto;
+import com.group2.secotool_app.model.dto.ProductFullDto;
 import com.group2.secotool_app.model.dto.request.ProductRequestDto;
 import com.group2.secotool_app.model.entity.Product;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +24,12 @@ public class ProductFacadeImpl implements IProductFacade {
     private final IFileService fileService;
     private final ProductMapper productMapper;
     private final ProductDtoMapper productDtoMapper;
+    private final ProductFullDtoMapper productFullDtoMapper;
     private final IImageService imageService;
+    private final ICategoryService categoryService;
+    private final IFeatureService featureService;
     private final IBucketS3Service bucketS3Service;
+
 
     @Override
     public List<ProductDto> getAllProducts() {
@@ -66,9 +69,16 @@ public class ProductFacadeImpl implements IProductFacade {
     }
 
     @Override
-    public ProductDto findProductById(Long id) {
+    public ProductFullDto findProductById(Long id) {
         var product = productService.findProductById(id);
-        return productDtoMapper.toProductDto(product);
+        Long prodId = product.getId();
+        var images = imageService.getAllImagesByProduct(prodId);
+        var categories = categoryService.getAllCategoriesByProduct(prodId);
+        var features = featureService.getAllFeaturesByProduct(prodId);
+        product.setImages(images);
+        product.setProductCategories(categories);
+        product.setProductFeatures(features);
+        return productFullDtoMapper.toProductFullDto(product);
     }
 
     @Override

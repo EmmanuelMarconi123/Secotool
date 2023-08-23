@@ -2,6 +2,7 @@ package com.group2.secotool_app.presentation.Controllers;
 
 import com.group2.secotool_app.bussiness.facade.IProductFacade;
 import com.group2.secotool_app.model.dto.ProductDto;
+import com.group2.secotool_app.model.dto.ProductFullDto;
 import com.group2.secotool_app.model.dto.request.ProductRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -40,7 +41,7 @@ public class ProductController {
             @ApiResponse(responseCode = "200",description = "product found"),
             @ApiResponse(responseCode = "400",description = "product not found")
     })
-    public ResponseEntity<ProductDto> getProductById(@Parameter(description = "id of product ") @PathVariable Long id){
+    public ResponseEntity<ProductFullDto> getProductById(@Parameter(description = "id of product ") @PathVariable Long id){
         return ResponseEntity.ok(productFacade.findProductById(id));
     }
 
