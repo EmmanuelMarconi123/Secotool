@@ -21,15 +21,14 @@ import java.util.List;
 public class ProductFacadeImpl implements IProductFacade {
 
     private final IProductService productService;
-    private final IFileService fileService;
-    private final ProductMapper productMapper;
-    private final ProductDtoMapper productDtoMapper;
-    private final ProductFullDtoMapper productFullDtoMapper;
     private final IImageService imageService;
     private final ICategoryService categoryService;
     private final IFeatureService featureService;
+    private final IFileService fileService;
     private final IBucketS3Service bucketS3Service;
-
+    private final ProductMapper productMapper;
+    private final ProductDtoMapper productDtoMapper;
+    private final ProductFullDtoMapper productFullDtoMapper;
 
     @Override
     public List<ProductDto> getAllProducts() {
