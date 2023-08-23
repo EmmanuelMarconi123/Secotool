@@ -16,8 +16,7 @@ function FormNewProduct({
   handleImageChangeD,
 }) {
   const [categories, setCategories] = useState([]);
-  const [features, setFeatures] = useState([]);
-  
+
   useEffect(() => {
     async function fetchCategories() {
       try {
@@ -42,6 +41,8 @@ function FormNewProduct({
 
     fetchCategories();
   }, []);
+
+  const [features, setFeatures] = useState([]);
 
   useEffect(() => {
     async function fetchFeatures() {
