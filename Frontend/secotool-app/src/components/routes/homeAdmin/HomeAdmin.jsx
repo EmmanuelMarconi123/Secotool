@@ -242,7 +242,7 @@ const HomeAdmin = () => {
               </label>
               <label htmlFor="">
                 Categorias
-                <TagPicker style={{ width: 640}} data={categories}/>
+                <TagPicker style={{ width: 640 }} data={categories} />
               </label>
               <label htmlFor="">
                 Caracteristicas

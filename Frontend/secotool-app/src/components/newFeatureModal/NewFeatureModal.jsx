@@ -1,19 +1,16 @@
 import { Modal } from "rsuite";
-import styles from "./NewCharacteristicModal.module.css";
+import styles from "./NewFeatureModal.module.css";
 import Select, { components } from "react-select";
 import { useState } from "react";
 
 const icons = [
-  { value: "fa-solid fa-palette" },
-  { value: "fa-solid fa-battery-bolt" },
-  { value: "fa-solid fa-gear" },
-  { value: "fa-solid fa-magnet" },
-  { value: "fa-solid fa-toolbox" },
-  { value: "fa-solid fa-scissors" },
-  { value: "fa-solid fa-solid fa-user-helmet-safety" },
   { value: "fa-solid fa-wifi" },
-  { value: "fa-solid fa-paint-roller" },
-  { value: "fa-solid fa-microchip" },
+  { value: "fa-solid fa-bullseye-arrow" },
+  { value: "fa-solid fa-battery-bolt" },
+  { value: "fa-solid fa-user-helmet-safety" },
+  { value: "fa-solid fa-water-arrow-down" },
+  { value: "fa-solid fa-circle-bolt" },
+  { value: "fa-solid fa-shield-halved" },
 ];
 
 const Option = (props) => (
@@ -22,12 +19,9 @@ const Option = (props) => (
   </components.Option>
 );
 
-const NewCharacteristicModal = ({ handleClose, open }) => {
+const NewFeatureModal = ({ handleClose, open, getData }) => {
   const [selectedIcon, setSelectedIcon] = useState(icons[0]);
-
-  const handleChange = (value) => {
-    setSelectedIcon(value);
-  };
+  const [newFeature, setNewFeature] = useState({ name: "", icon: icons[0] });
 
   const SingleValue = ({ ...props }) => (
     <components.SingleValue {...props}>
@@ -39,8 +33,51 @@ const NewCharacteristicModal = ({ handleClose, open }) => {
     </components.SingleValue>
   );
 
+  const handleChange = (value) => {
+    setSelectedIcon(value);
+    setNewFeature({...newFeature, icon: value.value})
+    console.log(newFeature)
+  };
+
+  const handleSubmit = () => {
+    addFeaturesAdmin();
+    handleClose();
+  };
+
+  const addFeaturesAdmin = async () => {
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newFeature),
+    };
+
+    try {
+      const response = await fetch(
+        "http://localhost:8080/v1/api/products/features",
+        options
+      );
+      if (response.ok) {
+        const data = await response.json();
+        console.log("La característica se ha agregado correctamente", data); //Borrar este console.log, mas tarde\
+      } else {
+        throw new Error("Error en la solicitud");
+      }
+    } catch (error) {
+      console.error(error);
+      getData(); // LO PUSE TEMPORALMENTE ACA PORQUE ENTRA EN ERROR
+    }
+  };
+
   return (
-    <Modal size="md" open={open} onClose={handleClose} overflow={false} className={"rs-modal-wrapper"}>
+    <Modal
+      size="md"
+      open={open}
+      onClose={handleClose}
+      overflow={false}
+      className={"rs-modal-wrapper"}
+    >
       <Modal.Header>
         <Modal.Title style={{ textAlign: "center", fontSize: 23 }}>
           Nueva Característica
@@ -50,12 +87,12 @@ const NewCharacteristicModal = ({ handleClose, open }) => {
         <form className={styles.formNewCharacteristic} action="">
           <label htmlFor="">
             Nombre de la características
-            <input type="text" />
+            <input type="text" onChange={(e)=> setNewFeature({...newFeature,name: e.target.value})} />
           </label>
 
           <label htmlFor="" style={{ width: "30%" }}>
             Icono asociado
-            <div style={{ width: "100%", textAlign:"center"}}>
+            <div style={{ width: "100%", textAlign: "center" }}>
               <Select
                 value={selectedIcon}
                 options={icons}
@@ -65,17 +102,17 @@ const NewCharacteristicModal = ({ handleClose, open }) => {
                     ...baseStyles,
                     height: "5vh",
                     borderRadius: "7px",
-                    borderColor: "var(--darkGrey)"
+                    borderColor: "var(--darkGrey)",
                   }),
                   valueContainer: (baseStyles) => ({
                     ...baseStyles,
                     height: "5vh",
                     padding: "0",
                   }),
-                  input:(baseStyles) => ({
+                  input: (baseStyles) => ({
                     ...baseStyles,
                     padding: "0",
-                    margin: "0"
+                    margin: "0",
                   }),
                 }}
                 components={{
@@ -89,7 +126,7 @@ const NewCharacteristicModal = ({ handleClose, open }) => {
       </Modal.Body>
       <Modal.Footer>
         <div className={styles.buttonsContainer}>
-          <button>Añadir</button>
+          <button onClick={()=> handleSubmit()}>Añadir</button>
           <button onClick={handleClose}>Cancelar</button>
         </div>
       </Modal.Footer>
@@ -97,4 +134,4 @@ const NewCharacteristicModal = ({ handleClose, open }) => {
   );
 };
 
-export default NewCharacteristicModal;
+export default NewFeatureModal;

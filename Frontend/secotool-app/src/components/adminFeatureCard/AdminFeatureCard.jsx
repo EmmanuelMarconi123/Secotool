@@ -1,6 +1,6 @@
-import styles from './AdminCharacteristicCard.module.css';
+import styles from './AdminFeatureCard.module.css';
 
-const AdminCharacteristicCard = (props) => {
+const AdminFeatureCard = (props) => {
   return (
     <div className={styles.container}>
       <span>{props.name}</span>
@@ -16,4 +16,4 @@ const AdminCharacteristicCard = (props) => {
   )
 }
 
-export default AdminCharacteristicCard
+export default AdminFeatureCard

@@ -1,9 +1,10 @@
-import styles from "./Characteristics.module.css";
+import styles from "./Features.module.css";
 import { useEffect, useState } from "react";
 import Pagination from "../../pagination/Pagination";
 import { ButtonToolbar, Button } from "rsuite";
-import NewCharacteristicModal from "../../newCharacteristicModal/NewCharacteristicModal";
-import AdminCharacteristicCard from "../../adminCharacteristicCard/AdminCharacteristicCard";
+import NewFeatureModal from "../../newFeatureModal/NewFeatureModal";
+import AdminFeatureCard from "../../adminFeatureCard/AdminFeatureCard";
+import EditFeatureModal from "../../editFeatureModal/EditFeatureModal";
 
 // const icons = [
 //   {
@@ -27,38 +28,38 @@ import AdminCharacteristicCard from "../../adminCharacteristicCard/AdminCharacte
 //     icon: "fa-solid fa-filter",
 //   },
 //   {
-//     id: 1,
+//     id: 5,
 //     name: "Colours",
 //     icon: "fa-solid fa-umbrella",
 //   },
 //   {
-//     id: 1,
+//     id: 6,
 //     name: "Colours",
 //     icon: "fa-solid fa-ghost",
 //   },
 //   {
-//     id: 1,
+//     id: 7,
 //     name: "Colours",
 //     icon: "fa-solid fa-palette",
 //   },
 //   {
-//     id: 1,
+//     id: 8,
 //     name: "Colours",
 //     icon: "fa-solid fa-palette",
 //   },
 //   {
-//     id: 1,
+//     id: 9,
 //     name: "Colours",
 //     icon: "fa-solid fa-palette",
 //   },
 //   {
-//     id: 1,
+//     id: 10,
 //     name: "Colours",
 //     icon: "fa-solid fa-palette",
 //   },
 // ];
 
-const Characteristics = () => {
+const Features = () => {
   //------------------------------ CONFIG MODALS--------------->
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -71,34 +72,53 @@ const Characteristics = () => {
   //-------------- CONFIGURACION DE LA PAGINACION -------------------->
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [characteristics, setCharacteristics] = useState([]);
+  const [features, setFeatures] = useState([]);
   const [currentPost, setCurrentPost] = useState([]);
-
+  const [selectedFeature, setSelectedFeature] = useState({});
   const [matches, setMatches] = useState(
     window.matchMedia("(min-width: 1024px)").matches
   );
 
-  function deleteItem(id) {
-    console.log("Se ha borrado el item con id " + id);
-    const newCharacteristics = characteristics.filter(
-      (characteistic) => characteistic.id !== id
-    );
-    setCharacteristics(newCharacteristics);
-    console.log(Characteristics);
+
+  function handleEdit(feature){
+    handleOpenEp()
+    setSelectedFeature(feature)
   }
 
-  // async function deleteItem(id) {
-  // try {
-  //   const response = await fetch("http://localhost:8080/v1/api/products/{id}");
-  //   if (response.ok) {
-  //     console.log(`Se ha borrado el item con id ${id} correctamente`);
-  //   } else {
-  //     throw new Error("Error en la solicitud");
-  //   }
-  // } catch (error) {
-  //   console.error(error);
-  // }
-  //  }
+  async function deleteFeature(id) {
+    console.log(id);
+    try {
+      const response = await fetch(
+        `http://localhost:8080/v1/api/products/features/${id}`,
+        { method: "DELETE" }
+      );
+      if (response.ok) {
+        console.log(`Se ha borrado el item con id ${id} correctamente`);
+        fetchFeaturesAdmin();
+      } else {
+        throw new Error("Error en la solicitud");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const fetchFeaturesAdmin = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:8080/v1/api/products/features"
+      );
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data); //Borrar este console.log, mas tarde\
+        setFeatures(data);
+      } else {
+        throw new Error("Error en la solicitud");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     window
@@ -107,28 +127,14 @@ const Characteristics = () => {
   }, []);
 
   useEffect(() => {
-    const fetchCharacteristicsAdmin = async () => {
-      try {
-        const response = await fetch("http://localhost:8080/v1/api/products/features");
-        if (response.ok) {
-          const data = await response.json();
-          console.log(data); //Borrar este console.log, mas tarde\
-          setCharacteristics(data);
-        } else {
-          throw new Error("Error en la solicitud");
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchCharacteristicsAdmin();
+    fetchFeaturesAdmin();
   }, []);
 
   useEffect(() => {
     const lastPostIndex = currentPage * 10;
     const fistPostIndex = lastPostIndex - 10;
-    setCurrentPost(characteristics.slice(fistPostIndex, lastPostIndex));
-  }, [currentPage, characteristics]);
+    setCurrentPost(features.slice(fistPostIndex, lastPostIndex));
+  }, [currentPage, features]);
 
   return (
     <div>
@@ -152,14 +158,14 @@ const Characteristics = () => {
                 <span>Icono</span>
                 <span>Acciones</span>
               </div>
-              {characteristics.length > 0 ? (
-                currentPost.map((characteristic) => (
-                  <AdminCharacteristicCard
-                    key={characteristic.id}
-                    deleteItem={() => deleteItem(characteristic.id)}
-                    name={characteristic.name}
-                    icon={characteristic.icon}
-                    editItem={() => handleOpenEp()}
+              {features.length > 0 ? (
+                currentPost.map((feature) => (
+                  <AdminFeatureCard
+                    key={feature.id}
+                    deleteItem={() => deleteFeature(feature.id)}
+                    name={feature.name}
+                    icon={feature.icon}
+                    editItem={() => handleEdit(feature)}
                   />
                 ))
               ) : (
@@ -168,7 +174,7 @@ const Characteristics = () => {
                 </span>
               )}
               <Pagination
-                totalPosts={characteristics.length}
+                totalPosts={features.length}
                 itemsPerPage={10}
                 setCurrentPage={setCurrentPage}
                 currentPage={currentPage}
@@ -191,11 +197,20 @@ const Characteristics = () => {
       )}
       {/* --------------------------NUEVA CARACTERÍSTICA MODAL--------------------------------> */}
 
-      <NewCharacteristicModal handleClose={handleClose} open={open}/>
+      <NewFeatureModal
+        handleClose={handleClose}
+        open={open}
+        getData={() => fetchFeaturesAdmin()}
+      />
 
       {/* ------------------------------------------EDITAR PRODUCTO MODAL--------------------------> */}
-      <NewCharacteristicModal handleClose={handleCloseEp} open={openEp}/>
+      <EditFeatureModal
+        handleClose={handleCloseEp}
+        open={openEp}
+        getData={() => fetchFeaturesAdmin()}
+        selectedFeature={selectedFeature}
+      />
     </div>
   );
 };
-export default Characteristics;
+export default Features;

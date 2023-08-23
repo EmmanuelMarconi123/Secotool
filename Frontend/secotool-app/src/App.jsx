@@ -11,7 +11,7 @@ import HomeAdmin from "./components/routes/homeAdmin/HomeAdmin";
 import AdminHeader from "./components/header/adminHeader/AdminHeader";
 import CrearCuenta from "./components/routes/crearCuenta/CrearCuenta";
 import LogIn from "./components/routes/logIn/LogIn";
-import Characteristics from "./components/routes/characteristics/Characteristics";
+import Features from "./components/routes/features/Features";
 
 function App() {
   return (
@@ -31,8 +31,8 @@ function App() {
           <Route path="/admin/home" element={<HomeAdmin />}></Route>
           <Route path="/admin/newproduct" element={<NewProduct />}></Route>
           <Route
-            path="/admin/characteristics"
-            element={<Characteristics />}
+            path="/admin/features"
+            element={<Features />}
           ></Route>
           <Route path="*" element={<div>Error 404</div>}></Route>
         </Routes>
