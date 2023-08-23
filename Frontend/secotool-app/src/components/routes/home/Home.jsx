@@ -11,7 +11,7 @@ const Home = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("http://localhost:8080/v1/api/products");
+        const response = await fetch("http://localhost:8080/v1/api/products/random");
         if (response.ok) {
           const data = await response.json();
           setProductsF(data);
