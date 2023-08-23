@@ -1,27 +1,31 @@
 import { Link } from "react-router-dom";
 import style from "./ListCategorias.module.css";
+import { useEffect, useState } from "react";
+import axios from "axios";
 const ListCategorias = () => {
-  const mockListCateg = [
-    "Categoria 1",
-    "Categoria 2",
-    "Categoria 3",
-    "Categoria 4",
-    "Categoria 5",
-    "Categoria 6",
-    "Categoria 7",
-    "Categoria 8",
-    "Categoria 9",
-    "Categoria 10",
-    "Categoria 11",
-    "Categoria 12",
-  ];
+  const [categorias, setCategorias] = useState([]);
+
+  useEffect(() => {
+    const fetchCategorias = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/v1/api/categories"
+        );
+        setCategorias(response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategorias();
+  }, []);
 
   return (
     <>
       <ul className={style.listCategorias}>
-        {mockListCateg.map((categ) => (
-          <li key={categ}>
-            <Link to={"/allProducts/" + categ}>{categ}</Link>
+        {categorias.map((categ) => (
+          <li key={categ.id}>
+            <Link to={"/allProducts/" + categ.name}>{categ.name}</Link>
           </li>
         ))}
       </ul>
