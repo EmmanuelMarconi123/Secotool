@@ -1,5 +1,5 @@
 import { Modal } from "rsuite";
-import styles from './EditFeatureModal.module.css'
+import styles from "./EditFeatureModal.module.css";
 import Select, { components } from "react-select";
 import { useEffect, useState } from "react";
 
@@ -11,6 +11,13 @@ const icons = [
   { value: "fa-solid fa-water-arrow-down" },
   { value: "fa-solid fa-circle-bolt" },
   { value: "fa-solid fa-shield-halved" },
+  { value: "fa-solid fa-toolbox" },
+  { value: "fa-solid fa-gear" },
+  { value: "fa-solid fa-magnet" },
+  { value: "fa-solid fa-screwdriver" },
+  { value: "fa-solid fa-block-brick-fire" },
+  { value: "fa-solid fa-helmet-safety" },
+  { value: "fa-solid fa-stopwatch" },
 ];
 
 const Option = (props) => (
@@ -20,7 +27,7 @@ const Option = (props) => (
 );
 
 const EditFeatureModal = ({ handleClose, open, getData, selectedFeature }) => {
-  const [selectedIcon, setSelectedIcon] = useState(icons[3]);
+  const [selectedIcon, setSelectedIcon] = useState({});
   const [newFeature, setNewFeature] = useState({});
 
   const SingleValue = ({ ...props }) => (
@@ -47,13 +54,17 @@ const EditFeatureModal = ({ handleClose, open, getData, selectedFeature }) => {
     const options = {
       method: "PUT",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify(newFeature),
+      body: JSON.stringify({
+        "name": newFeature.name,
+        "icon": newFeature.icon,
+      })
     };
 
     try {
-      const response = await fetch(`http://localhost:8080/v1/api/products/features/${selectedFeature.id}`,
+      const response = await fetch(
+        `http://localhost:8080/v1/api/products/features/${selectedFeature.id}`,
         options
       );
       if (response.ok) {
@@ -68,11 +79,11 @@ const EditFeatureModal = ({ handleClose, open, getData, selectedFeature }) => {
     }
   };
 
-  useEffect(()=>{
-    console.log(selectedFeature)
+  useEffect(() => {
+    console.log(selectedFeature);
     setNewFeature(selectedFeature);
-    console.log(selectedFeature.id)
-  },[selectedFeature])
+    setSelectedIcon({ value: selectedFeature.icon });
+  }, [selectedFeature]);
 
   return (
     <Modal

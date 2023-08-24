@@ -11,6 +11,13 @@ const icons = [
   { value: "fa-solid fa-water-arrow-down" },
   { value: "fa-solid fa-circle-bolt" },
   { value: "fa-solid fa-shield-halved" },
+  { value: "fa-solid fa-toolbox" },
+  { value: "fa-solid fa-gear" },
+  { value: "fa-solid fa-magnet" },
+  { value: "fa-solid fa-screwdriver" },
+  { value: "fa-solid fa-block-brick-fire" },
+  { value: "fa-solid fa-helmet-safety" },
+  { value: "fa-solid fa-stopwatch" },
 ];
 
 const Option = (props) => (
@@ -35,8 +42,8 @@ const NewFeatureModal = ({ handleClose, open, getData }) => {
 
   const handleChange = (value) => {
     setSelectedIcon(value);
-    setNewFeature({...newFeature, icon: value.value})
-    console.log(newFeature)
+    setNewFeature({ ...newFeature, icon: value.value });
+    console.log(newFeature);
   };
 
   const handleSubmit = () => {
@@ -48,9 +55,12 @@ const NewFeatureModal = ({ handleClose, open, getData }) => {
     const options = {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify(newFeature),
+      body: JSON.stringify({
+        "name": newFeature.name,
+        "icon": newFeature.icon
+      })
     };
 
     try {
@@ -61,6 +71,7 @@ const NewFeatureModal = ({ handleClose, open, getData }) => {
       if (response.ok) {
         const data = await response.json();
         console.log("La característica se ha agregado correctamente", data); //Borrar este console.log, mas tarde\
+        getData();
       } else {
         throw new Error("Error en la solicitud");
       }
@@ -87,7 +98,12 @@ const NewFeatureModal = ({ handleClose, open, getData }) => {
         <form className={styles.formNewCharacteristic} action="">
           <label htmlFor="">
             Nombre de la características
-            <input type="text" onChange={(e)=> setNewFeature({...newFeature,name: e.target.value})} />
+            <input
+              type="text"
+              onChange={(e) =>
+                setNewFeature({ ...newFeature, name: e.target.value })
+              }
+            />
           </label>
 
           <label htmlFor="" style={{ width: "30%" }}>
@@ -126,7 +142,7 @@ const NewFeatureModal = ({ handleClose, open, getData }) => {
       </Modal.Body>
       <Modal.Footer>
         <div className={styles.buttonsContainer}>
-          <button onClick={()=> handleSubmit()}>Añadir</button>
+          <button onClick={() => handleSubmit()}>Añadir</button>
           <button onClick={handleClose}>Cancelar</button>
         </div>
       </Modal.Footer>
