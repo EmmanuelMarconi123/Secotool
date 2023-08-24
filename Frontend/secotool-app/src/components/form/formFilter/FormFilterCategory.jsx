@@ -67,10 +67,11 @@ const FormFilterCategory = ({close, updateFilteredProducts}) => {
       {categorias.map((categ) => (
         <div key={categ.id} className={style.boxInputCheck}>
           <input
+            id={categ.id}
             type="checkbox"
             value={categ.name}
             onChange={handleCheckboxChange}
-            checked={selectedCategories.includes(categ.name)}
+            checked={selectedCategories.includes(categ.id)}
           />
           <label>{categ.name}</label>
         </div>

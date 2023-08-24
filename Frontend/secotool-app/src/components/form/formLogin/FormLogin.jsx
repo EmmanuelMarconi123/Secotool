@@ -2,13 +2,12 @@ import TextField from "@mui/material/TextField";
 import { Button, Grid } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import {  NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import styles from "./FormLogin.module.css";
+import { useState } from "react";
+import axios from "axios";
 
 const FormLogin = () => {
-  const handleLogin = () => {
-    localStorage.setItem("accesToken", "true");
-  };
 
   //en estos initial values se me van a guardar luego lo que el usuario escriba en los imputs
   const initialValues = {
@@ -16,23 +15,52 @@ const FormLogin = () => {
     password: "",
   };
 
+  const navigate = useNavigate();
+  const [mensajeError, setMensajeError] = useState(false);
+
   // formulario que se ejecuta cuando se hace click en el boton de iniciar sesion
-  const sendForm = (data, { resetForm }) => {
-    console.log(data);
-    localStorage.setItem("email", data.email);
-    resetForm();
+  const sendForm = async (values) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/v1/api/auth/login",
+        {
+          username: values.email,
+          password: values.password,
+        }
+      );
+      console.log(response);
+      if (response.data.jwt) {
+        console.log(response.data);
+        setMensajeError(false);
+        localStorage.setItem('tokenUserLog', response.data.jwt)
+        navigate("/home");
+      } else {
+        setMensajeError(true);
+      }
+    } catch (error) {
+      setMensajeError(true);
+      // console.log(error);
+    }
   };
+
+  const validationSchema = Yup.object({
+    email: Yup.string()
+      .email("Debes ingresar un email válido")
+      .required("Debes ingresar un email"),
+    password: Yup.string()
+      .min(6, "Tu contraseña debe tener un mínimo de 6 caracteres")
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+        "Tu contraseña debe contener al menos una letra mayúscula y un número"
+      )
+      .required("Debes ingresar una contraseña"),
+  });
 
   const { handleChange, handleSubmit, values, errors, touched, handleBlur } =
     useFormik({
       initialValues: initialValues,
       onSubmit: sendForm,
-      validationSchema: Yup.object({
-        email: Yup.string().email().required("Debes ingresar un email valido"),
-        password: Yup.string()
-          .min(6, "la contraseña debe contener como minimo 6 caracteres")
-          .required("Debes ingresar una contraseña"),
-      }),
+      validationSchema: validationSchema,
     });
 
   return (
@@ -74,15 +102,20 @@ const FormLogin = () => {
           className={styles.btnLogin}
           variant="contained"
           type="submit"
-          onClick={handleLogin}
         >
           Iniciar Sesión
         </Button>
         <NavLink to="/auth/crearCuenta" className={styles.customLink}>
-        <Button style={{ borderColor: "#4a6ac9", color: "#4a6ac9"}} variant="outlined">
-          Crear Cuenta
-        </Button>
+        <Button
+            style={{ borderColor: "#4a6ac9", color: "#4a6ac9" }}
+            variant="outlined"
+          >
+            Crear Cuenta
+          </Button>
         </NavLink>
+        {mensajeError === true ? (
+          <h5>Tu usuario o contraseña no es correcta.</h5>
+        ) : null}
       </Grid>
     </form>
   );
