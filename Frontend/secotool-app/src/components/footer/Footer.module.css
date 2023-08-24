@@ -7,7 +7,7 @@ footer {
 
 footer img {
   padding-top: 38px;
-  width: 240px;
+  width: 25vh;
 }
 
 footer p {
@@ -23,7 +23,9 @@ footer p {
   }
 
   footer img {
-    width: 140px;
+    width: 91px;
+    height: 16.589px;
+    flex-shrink: 0;
   }
   footer p {
     font-size: 13px;

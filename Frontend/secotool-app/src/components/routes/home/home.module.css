@@ -1,6 +1,5 @@
 .sectionBusqueda {
   width: 100%;
-  margin-top: 88px;
   display: flex;
   flex-direction: column;
 }
@@ -14,6 +13,7 @@
   flex-direction: column;
   width: 100%;
   align-items: center;
+  padding-top: 88px;
 }
 
 .containerBusqueda .bgBusqueda{
@@ -40,15 +40,10 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
   row-gap: 1rem;
-  margin-block-end: 3rem;
-  margin-block-start: 3.5rem;
   justify-items: center;
   align-items: center;
-}
-
-.card {
-  margin: 8px 0;
-  padding: 8px;
+  margin-block-end: 2rem;
+    margin-block-start: 3.5rem;
 }
 
 /*Breakpoints*/

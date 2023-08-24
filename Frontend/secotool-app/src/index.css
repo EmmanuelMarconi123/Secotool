@@ -28,12 +28,8 @@ a {
   color: #242424;
 }
 
-/*Header*/
-header {
-  background-color: var(--color-primary);
-  /* position: fixed;
-  width: 100%;
-  z-index: 1000; */
+li {
+  list-style: none;
 }
 
 /*Buttons*/
@@ -99,6 +95,10 @@ header {
   font-weight: 400;
 }
 
+.font-light{
+  font-weight: 300;
+}
+
 /*Spacings*/
 .pt-24 {
   padding-top: 24px;
@@ -117,7 +117,7 @@ header {
 }
 
 .pt-large{
-  padding-top: 116px;
+  padding-top: 88px;
 }
 
 /*Breakpoints*/
@@ -133,7 +133,7 @@ header {
 
 @media screen and (min-width: 1440px) {
   .title-lg {
-    font-size: 28px;
+    font-size: 33px;
   }
   .font-xl {
     font-size: 33px;
@@ -154,6 +154,10 @@ header {
 
   .button-primary-transparent {
     padding: 8px 16px;
+  }
+
+  .button-transparent{
+    font-size: 16px;
   }
 }
 

@@ -1,11 +1,11 @@
 import { Grid } from "@mui/material";
-import styles from "../form/FormBusqueda.module.css";
-import { useFormik } from "formik";
+import styles from "./FormBusqueda.module.css";
+/*import { useFormik } from "formik";*/
 
 const FormBusqueda = () => {
   // const [herramienta, setHerramienta] = useState("");
 
-  let initialValues = {
+  /*let initialValues = {
     herramienta: "",
     fecha: "",
   };
@@ -17,11 +17,11 @@ const FormBusqueda = () => {
   const { handleSubmit, handleChange } = useFormik({
     initialValues: initialValues,
     onSubmit: sendForm,
-  });
+  });*/
 
   return (
     <>
-      <form className={styles.containerFormBusqueda} onSubmit={handleSubmit}>
+      <form className={styles.containerFormBusqueda}>
         <Grid
           container
           spacing={2}
