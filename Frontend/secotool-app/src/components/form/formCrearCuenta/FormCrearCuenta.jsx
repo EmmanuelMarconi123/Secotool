@@ -1,16 +1,15 @@
-
 import TextField from "@mui/material/TextField";
 import { Button, Grid } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import styles from "./FormCrearCuenta.module.css";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
+import { useState } from "react";
+import axios from "axios";
+import { NavLink } from "react-router-dom";
 
 const FormCrearCuenta = () => {
-
-  const navigate = useNavigate()
-
-  //en estos initial values se me van a guardar luego lo que el usuario escriba en los imputs
+  //en estos initial values se me van a guardar luego lo que el usuario escriba en los inputs
   const initialValues = {
     name: "",
     lastname: "",
@@ -19,37 +18,58 @@ const FormCrearCuenta = () => {
   };
 
   //vaidaciones de los campos usando YUP
+  const navigate = useNavigate();
+  const [mensajeError, setMensajeError] = useState(false);
+
   const validationSchema = Yup.object({
-    name: Yup.string().min(3).required("Tu nombre debe contener más de 3 caracteres"),
-    lastname: Yup.string().min(3).required("Tu apellido debe contener más de 3 caracteres"),
-    email: Yup.string().email().required("Debes ingresar un email válido"),
-    password: Yup.string().min(6, "Tu contraseña debe tener un mínimo de 6 caracteres").required("Debes ingresar una contraseña"),
+    name: Yup.string()
+      .min(6, "Tu nombre debe contener más de 6 caracteres")
+      .required("Debes ingresar un nombre"),
+    lastname: Yup.string()
+      .min(6, "Tu apellido debe contener más de 6 caracteres")
+      .required("Debes ingresar un apellido"),
+    email: Yup.string()
+      .email("Debes ingresar un email válido")
+      .required("Debes ingresar un email"),
+    password: Yup.string()
+      .min(6, "Tu contraseña debe tener un mínimo de 6 caracteres")
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+        "Tu contraseña debe contener al menos una letra mayúscula y un número"
+      )
+      .required("Debes ingresar una contraseña"),
   });
 
   //utilizamos formik desestructurando varias cosas propias de formik
-  const { handleChange, handleSubmit, handleBlur, validateForm, values, errors, touched, isValid } =
+  const { handleChange, handleSubmit, handleBlur, values, errors, touched } =
     useFormik({
       initialValues: initialValues,
       onSubmit: async (values) => {
         try {
-          await validationSchema.validate(values, { abortEarly: false });
-  
-          navigate('/auth/confirmacionNuevoUsuario');
+          setMensajeError(false);
+          // console.log(values);
+          const response = await axios.post(
+            "http://localhost:8080/v1/api/auth/singup",
+            {
+              firstName: values.name,
+              lastName: values.lastname,
+              username: values.email,
+              password: values.password,
+            }
+          );
+
+          if (response.status === 200) {
+            console.log(response);
+            navigate("/auth/confirmacionNuevoUsuario");
+          }
         } catch (error) {
-          error("Por favor, completa todos los campos correctamente");
+          setMensajeError(true);
+          console.error("Error al crear el usuario:", error);
+          // Maneja el error aquí
         }
       },
       validationSchema: validationSchema,
     });
-
-    const handleCreateAccountClick = () => {
-      validateForm().then(() => {
-        if (isValid) {
-          handleSubmit();
-        }
-      });
-    };
-
 
   return (
     <>
@@ -66,7 +86,7 @@ const FormCrearCuenta = () => {
               onBlur={handleBlur}
               onChange={handleChange}
               value={values.name}
-              error={touched.name && errors.name}
+              error={touched.name && errors.name ? true : false}
               helperText={touched.name && errors.name ? errors.name : ""}
             />
           </Grid>
@@ -81,7 +101,7 @@ const FormCrearCuenta = () => {
               onBlur={handleBlur}
               onChange={handleChange}
               value={values.lastname}
-              error={touched.name && errors.lastname}
+              error={touched.lastname && errors.lastname ? true : false}
               helperText={
                 touched.lastname && errors.lastname ? errors.lastname : ""
               }
@@ -98,7 +118,7 @@ const FormCrearCuenta = () => {
               onBlur={handleBlur}
               onChange={handleChange}
               value={values.email}
-              error={touched.email && errors.email}
+              error={touched.email && errors.email ? true : false}
               helperText={touched.email && errors.email ? errors.email : ""}
             />
           </Grid>
@@ -111,34 +131,36 @@ const FormCrearCuenta = () => {
               label="Contraseña"
               variant="outlined"
               onChange={handleChange}
-              onBlur={handleBlur} // Evento que se dispara cuando el campo pierde el foco (se deja de seleccionar).
+              value={values.password}
+              onBlur={handleBlur}
               error={touched.password && errors.password ? true : false}
               helperText={
                 touched.password && errors.password ? errors.password : ""
               }
-              value={values.password}
             />
           </Grid>
           <Button
             className={styles.botonCrearCuenta}
             type="submit"
             variant="contained"
-            onClick={handleCreateAccountClick}
           >
             Crear Cuenta
           </Button>
           <NavLink to="/auth/login" className={styles.customLink}>
             <Button
               variant="outlined"
-              style={{ borderColor: "#4a6ac9", color: "#4a6ac9"}}
+              style={{ borderColor: "#4a6ac9", color: "#4a6ac9" }}
             >
               Iniciar Sesión
             </Button>
           </NavLink>
+          {mensajeError === true ? (
+            <h5>Ya exíste una cuenta relacionada al email que ingresaste.</h5>
+          ) : null}
         </Grid>
       </form>
     </>
   );
-}
+};
 
 export default FormCrearCuenta;
