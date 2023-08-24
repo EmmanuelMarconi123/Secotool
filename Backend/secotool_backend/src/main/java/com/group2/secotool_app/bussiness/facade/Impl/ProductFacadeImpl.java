@@ -57,6 +57,7 @@ public class ProductFacadeImpl implements IProductFacade {
     @Override
     public String deleteById(Long id) {
         var images = imageService.getAllImagesByProduct(id);
+        productService.deleteRelationsWithCategoryAndFeatures(id);
         productService.deleteById(id,images);
         return "product "+id+ " successfully deleted";
     }

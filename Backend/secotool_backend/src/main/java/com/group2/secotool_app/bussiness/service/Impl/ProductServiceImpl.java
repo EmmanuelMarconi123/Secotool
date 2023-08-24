@@ -93,5 +93,10 @@ public class ProductServiceImpl implements IProductService {
         throw new RuntimeException("product "+prodName+ " not found");
     }
 
+    @Override
+    public void deleteRelationsWithCategoryAndFeatures(Long id) {
+        productRepository.deleteRelationsWithCategoryAndFeatures(id);
+    }
+
 
 }

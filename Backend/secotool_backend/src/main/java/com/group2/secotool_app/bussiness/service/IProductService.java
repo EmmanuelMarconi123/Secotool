@@ -24,4 +24,6 @@ public interface IProductService {
     List<Product> getAllProductsAssociateWithAFeature(Long featureId);
 
     Product findByName(String prodName);
+
+    void deleteRelationsWithCategoryAndFeatures(Long id);
 }
