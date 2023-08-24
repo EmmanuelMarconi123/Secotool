@@ -81,7 +81,13 @@ const EditFeatureModal = ({ handleClose, open, getData, selectedFeature }) => {
       open={open}
       onClose={handleClose}
       overflow={false}
-      className={"rs-modal-wrapper"}
+      style={{
+        display: "flex",
+        height: "100vh",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+      dialogClassName={styles.dialogClassName}
     >
       <Modal.Header>
         <Modal.Title style={{ textAlign: "center", fontSize: 23 }}>

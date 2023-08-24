@@ -42,3 +42,7 @@ button {
 input {
   padding-left: 8px;
 }
+
+.dialogClassName {
+  width: 100%;
+}
