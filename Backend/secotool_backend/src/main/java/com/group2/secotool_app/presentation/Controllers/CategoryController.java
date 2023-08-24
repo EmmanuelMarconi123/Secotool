@@ -39,7 +39,7 @@ public class CategoryController {
     // puede ir en el controller de prod
     @PostMapping("/{prodId}/{categoryId}")
     public ResponseEntity<String> associateProductToCategory(@PathVariable("prodId") Long prodId, @PathVariable("categoryId") Long categoryId){
-        categoryFacade.associateProductToCategory(prodId,categoryId);
+        //categoryFacade.associateProductToCategory(prodId,categoryId);
         return ResponseEntity.ok(String.format("product: %s successfully associated with feature: %s", prodId,categoryId));
     }
 

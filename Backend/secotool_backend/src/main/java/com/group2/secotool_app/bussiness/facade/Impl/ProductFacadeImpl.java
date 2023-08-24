@@ -10,8 +10,6 @@ import com.group2.secotool_app.model.dto.ProductFullDto;
 import com.group2.secotool_app.model.dto.request.AssignProductToCategoryDto;
 import com.group2.secotool_app.model.dto.request.AssignProductToFeatureDto;
 import com.group2.secotool_app.model.dto.request.ProductRequestDto;
-import com.group2.secotool_app.model.entity.Category;
-import com.group2.secotool_app.model.entity.Feature;
 import com.group2.secotool_app.model.entity.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -51,18 +49,34 @@ public class ProductFacadeImpl implements IProductFacade {
     }
 
     @Override
+    public void updateProduct(Long id, ProductRequestDto productRequestDto, AssignProductToCategoryDto assignProductToCategoryDto, AssignProductToFeatureDto assignProductToFeatureDto) {
+        var product = productMapper.toProduct(productRequestDto);
+        product.setId(id);
+
+        productService.updateProduct(product);
+
+        assignProductToFeatureDto.idsFeatures().forEach(featureId -> {
+            featureFacade.associateProductToFeature(product,featureId);
+        });
+        assignProductToCategoryDto.idsCategories().forEach(categoryId -> {
+            categoryFacade.associateProductToCategory(product,categoryId);
+        });
+    }
+
+    @Override
     public String save(ProductRequestDto productRequestDto, AssignProductToCategoryDto assignProductToCategoryDto, AssignProductToFeatureDto assignProductToFeatureDto, List<MultipartFile> images) {
         fileService.validateFilesAreImages(images);
 
         var product = productMapper.toProduct(productRequestDto);
         Long prodId = productService.save(product);
+        product.setId(prodId);
 
         assignProductToFeatureDto.idsFeatures().forEach(id -> {
-            featureFacade.associateProductToFeature(prodId,id);
+            featureFacade.associateProductToFeature(product,id);
         });
 
         assignProductToCategoryDto.idsCategories().forEach(id -> {
-            categoryFacade.associateProductToCategory(prodId,id);
+            categoryFacade.associateProductToCategory(product,id);
         });
 
         var urlImages = bucketS3Service.storeFiles(images);
@@ -98,13 +112,6 @@ public class ProductFacadeImpl implements IProductFacade {
         product.setProductCategories(categories);
         product.setProductFeatures(features);
         return productFullDtoMapper.toProductFullDto(product);
-    }
-
-    @Override
-    public void updateProduct(Long id, ProductRequestDto productRequestDto) {
-        var prod = productMapper.toProduct(productRequestDto);
-        prod.setId(id);
-        productService.updateProduct(prod);
     }
 
     @Override

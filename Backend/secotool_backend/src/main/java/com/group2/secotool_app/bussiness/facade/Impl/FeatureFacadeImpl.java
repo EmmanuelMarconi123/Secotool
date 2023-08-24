@@ -8,6 +8,7 @@ import com.group2.secotool_app.bussiness.service.IProductService;
 import com.group2.secotool_app.model.dto.FeatureDto;
 import com.group2.secotool_app.model.dto.request.FeatureRequestDto;
 import com.group2.secotool_app.model.entity.Feature;
+import com.group2.secotool_app.model.entity.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -50,9 +51,9 @@ public class FeatureFacadeImpl implements IFeatureFacade {
 
     //buscar todas las features aasociadas
     @Override
-    public void associateProductToFeature(Long prodId, Long featureId) {
-        var prod = productService.findProductById(prodId);
+    public void associateProductToFeature(Product product, Long featureId) {
+        product.setProductFeatures(featureService.getAllFeaturesByProduct(product.getId()));
         var feature = featureService.findById(featureId);
-        featureService.associateProductToFeature(prod,feature);
+        featureService.associateProductToFeature(product,feature);
     }
 }

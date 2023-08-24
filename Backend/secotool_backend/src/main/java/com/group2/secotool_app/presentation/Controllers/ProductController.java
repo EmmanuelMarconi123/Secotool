@@ -85,7 +85,7 @@ public class ProductController {
     public ResponseEntity<String> saveProduct(@Parameter(description = "")
                                               @RequestPart("product-data") @Valid
                                               ProductRequestDto productRequestDto,
-                                              @RequestPart("categories")
+                                              @RequestPart("categories") @Valid
                                               AssignProductToCategoryDto assignProductToCategoryDto,
                                               @RequestPart("features") @Valid
                                               AssignProductToFeatureDto assignProductToFeatureDto,
@@ -98,8 +98,14 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateProduct(@PathVariable Long id , @RequestBody @Valid ProductRequestDto productRequestDto){
-        productFacade.updateProduct(id,productRequestDto);
+    public ResponseEntity<?> updateProduct(@PathVariable Long id ,
+                                           @RequestPart("product-data") @Valid
+                                           ProductRequestDto productRequestDto,
+                                           @RequestPart("categories") @Valid
+                                           AssignProductToCategoryDto assignProductToCategoryDto,
+                                           @RequestPart("features") @Valid
+                                           AssignProductToFeatureDto assignProductToFeatureDto){
+        productFacade.updateProduct(id, productRequestDto, assignProductToCategoryDto, assignProductToFeatureDto);
         return ResponseEntity.ok(String.format("product %s succesffully updated",id));
     }
 

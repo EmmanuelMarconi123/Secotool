@@ -7,6 +7,7 @@ import com.group2.secotool_app.bussiness.service.*;
 import com.group2.secotool_app.model.dto.CategoryDto;
 import com.group2.secotool_app.model.dto.request.CategoryRequestDto;
 import com.group2.secotool_app.model.entity.Category;
+import com.group2.secotool_app.model.entity.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -59,9 +60,9 @@ public class CategoryFacadeImpl implements ICategoryFacade {
 
     //buscar todas las category aasociadas
     @Override
-    public void associateProductToCategory(Long prodId, Long categoryId) {
-        var prod = productService.findProductById(prodId);
+    public void associateProductToCategory(Product product, Long categoryId) {
+        product.setProductCategories(categoryService.getAllCategoriesByProduct(product.getId()));
         var category = categoryService.findById(categoryId);
-        categoryService.associateProductToCategory(prod,category);
+        categoryService.associateProductToCategory(product,category);
     }
 }

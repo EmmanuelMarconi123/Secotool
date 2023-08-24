@@ -72,6 +72,7 @@ public class ProductServiceImpl implements IProductService {
     public void updateProduct(Product prod) {
         if (!existProductById(prod.getId()))
             throw new RuntimeException("it is not posible to update a product doesn't exists");
+        productRepository.deleteRelationsWithCategoryAndFeatures(prod.getId());
         productRepository.save(prod);
     }
 
