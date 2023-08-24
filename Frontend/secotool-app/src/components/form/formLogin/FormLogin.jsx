@@ -6,8 +6,11 @@ import { NavLink, useNavigate } from "react-router-dom";
 import styles from "./FormLogin.module.css";
 import { useState } from "react";
 import axios from "axios";
+import { useAuth } from "../../../contexts/AuthContext";
 
 const FormLogin = () => {
+
+  const { login } = useAuth();
 
   //en estos initial values se me van a guardar luego lo que el usuario escriba en los imputs
   const initialValues = {
@@ -30,9 +33,8 @@ const FormLogin = () => {
       );
       console.log(response);
       if (response.data.jwt) {
-        console.log(response.data);
+        login(response.data.jwt);
         setMensajeError(false);
-        localStorage.setItem('tokenUserLog', response.data.jwt)
         navigate("/home");
       } else {
         setMensajeError(true);

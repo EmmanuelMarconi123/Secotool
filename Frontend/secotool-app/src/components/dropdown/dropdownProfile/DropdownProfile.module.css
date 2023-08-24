@@ -62,4 +62,7 @@
 }
 
 @media screen and (min-width: 1440px){
+  .show {
+    left: 75%;
+  }
 }

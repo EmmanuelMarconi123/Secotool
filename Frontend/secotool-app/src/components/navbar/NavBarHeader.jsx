@@ -5,9 +5,11 @@ import DropdownMenu from "../dropdown/dropdownMenu/DropdownMenu";
 import DropdownDesktop from "../dropdown/dropdownDesktop/DropdownDesktop";
 import { useMediaQuery } from "@react-hook/media-query";
 import DropdownProfile from "../dropdown/dropdownProfile/DropdownProfile";
+import { useAuth } from "../../contexts/AuthContext";
 
 const NavBarHeader = () => {
   const isMobile = useMediaQuery("(max-width: 1024px)");
+  const { isLoggedIn } = useAuth();
 
   return (
     <nav className={styles.NavBarHeader}>
@@ -23,7 +25,7 @@ const NavBarHeader = () => {
       </div>
       {isMobile ? (
         <div className={styles.rightNavbar}>
-          <DropdownProfile></DropdownProfile>
+          {isLoggedIn && <DropdownProfile />}
           <DropdownMenu />
         </div>
       ) : (
@@ -35,17 +37,23 @@ const NavBarHeader = () => {
             <DropdownDesktop />
           </div>
           <div className={styles.boxButtons}>
-            <Link to="/auth/crearCuenta">
-              <button className="button-primary-transparent button-small">
-                Crear Cuenta
-              </button>
-            </Link>
-            <Link to="/auth/login">
-              <button className="button-transparent">
-                <i className="fa-regular fa-right-from-bracket"></i>Iniciar
-                Sesión
-              </button>
-            </Link>
+            {isLoggedIn ? (
+              <DropdownProfile />
+            ) : (
+              <>
+                <Link to="/auth/crearCuenta">
+                  <button className="button-primary-transparent button-small">
+                    Crear Cuenta
+                  </button>
+                </Link>
+                <Link to="/auth/login">
+                  <button className="button-transparent">
+                    <i className="fa-regular fa-right-to-bracket"></i>Iniciar
+                    Sesión
+                  </button>
+                </Link>
+              </>
+            )}
           </div>
         </>
       )}
