@@ -54,8 +54,7 @@ public class CategoryFacadeImpl implements ICategoryFacade {
 
     @Override
     public void deleteCategory(Long id) {
-        Category category = categoryService.findById(id);
-        imageService.deleteImage(category.getImage().getId());
+        categoryService.delete(id);
     }
 
     @Override

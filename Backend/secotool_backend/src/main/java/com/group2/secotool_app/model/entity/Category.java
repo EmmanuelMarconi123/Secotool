@@ -22,7 +22,10 @@ public class Category {
     @Column(name = "name")
     private String name;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = {
+            CascadeType.PERSIST,
+            CascadeType.REMOVE
+    })
     @JoinColumn(name = "image_id", referencedColumnName = "id")
     private Image image;
 
