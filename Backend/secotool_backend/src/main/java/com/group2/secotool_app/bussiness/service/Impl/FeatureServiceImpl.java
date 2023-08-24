@@ -67,4 +67,9 @@ public class FeatureServiceImpl implements IFeatureService {
         return featureRepository.getAllFeaturesByProduct(prodId);
     }
 
+    @Override
+    public boolean existsById(Long id) {
+        return featureRepository.existsById(id);
+    }
+
 }

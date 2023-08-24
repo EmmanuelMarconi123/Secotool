@@ -47,6 +47,8 @@ public class FeatureFacadeImpl implements IFeatureFacade {
     }
 
 
+
+    //buscar todas las features aasociadas
     @Override
     public void associateProductToFeature(Long prodId, Long featureId) {
         var prod = productService.findProductById(prodId);

@@ -68,4 +68,9 @@ public class CategoryServiceImpl implements ICategoryService {
         return categoryRepository.getAllCategoriesByProduct(prodId);
     }
 
+    @Override
+    public boolean existsById(Long id) {
+        return categoryRepository.existsById(id);
+    }
+
 }

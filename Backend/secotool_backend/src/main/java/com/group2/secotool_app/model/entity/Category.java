@@ -29,9 +29,7 @@ public class Category {
     @JoinColumn(name = "image_id", referencedColumnName = "id")
     private Image image;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {
-            CascadeType.PERSIST
-    })
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "products_categories",
             joinColumns = @JoinColumn(name = "category_id",referencedColumnName = "id"),

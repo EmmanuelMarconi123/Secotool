@@ -1,13 +1,17 @@
 package com.group2.secotool_app.bussiness.facade.Impl;
 
+import com.group2.secotool_app.bussiness.facade.ICategoryFacade;
+import com.group2.secotool_app.bussiness.facade.IFeatureFacade;
 import com.group2.secotool_app.bussiness.facade.IProductFacade;
-import com.group2.secotool_app.bussiness.mapper.ProductDtoMapper;
-import com.group2.secotool_app.bussiness.mapper.ProductFullDtoMapper;
-import com.group2.secotool_app.bussiness.mapper.ProductMapper;
+import com.group2.secotool_app.bussiness.mapper.*;
 import com.group2.secotool_app.bussiness.service.*;
 import com.group2.secotool_app.model.dto.ProductDto;
 import com.group2.secotool_app.model.dto.ProductFullDto;
+import com.group2.secotool_app.model.dto.request.AssignProductToCategoryDto;
+import com.group2.secotool_app.model.dto.request.AssignProductToFeatureDto;
 import com.group2.secotool_app.model.dto.request.ProductRequestDto;
+import com.group2.secotool_app.model.entity.Category;
+import com.group2.secotool_app.model.entity.Feature;
 import com.group2.secotool_app.model.entity.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -20,6 +24,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductFacadeImpl implements IProductFacade {
 
+    private final IFeatureFacade featureFacade;
+    private final ICategoryFacade categoryFacade;
     private final IProductService productService;
     private final IImageService imageService;
     private final ICategoryService categoryService;
@@ -28,6 +34,8 @@ public class ProductFacadeImpl implements IProductFacade {
     private final IBucketS3Service bucketS3Service;
     private final ProductMapper productMapper;
     private final ProductDtoMapper productDtoMapper;
+    private final CategoryMapper categoryMapper;
+    private final FeatureMapper featureMapper;
     private final ProductFullDtoMapper productFullDtoMapper;
 
     @Override
@@ -43,11 +51,22 @@ public class ProductFacadeImpl implements IProductFacade {
     }
 
     @Override
-    public String save(ProductRequestDto productRequestDto, List<MultipartFile> images) {
+    public String save(ProductRequestDto productRequestDto, AssignProductToCategoryDto assignProductToCategoryDto, AssignProductToFeatureDto assignProductToFeatureDto, List<MultipartFile> images) {
         fileService.validateFilesAreImages(images);
+
         var product = productMapper.toProduct(productRequestDto);
         Long prodId = productService.save(product);
+
+        assignProductToFeatureDto.idsFeatures().forEach(id -> {
+            featureFacade.associateProductToFeature(prodId,id);
+        });
+
+        assignProductToCategoryDto.idsCategories().forEach(id -> {
+            categoryFacade.associateProductToCategory(prodId,id);
+        });
+
         var urlImages = bucketS3Service.storeFiles(images);
+
         urlImages.forEach(url ->
                 imageService.saveProductImage(url,prodId)
         );

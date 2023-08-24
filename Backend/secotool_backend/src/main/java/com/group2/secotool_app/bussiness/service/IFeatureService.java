@@ -21,4 +21,6 @@ public interface IFeatureService {
     Feature findById(Long featureId);
 
     List<Feature> getAllFeaturesByProduct(Long prodId);
+
+    boolean existsById(Long id);
 }

@@ -57,6 +57,7 @@ public class CategoryFacadeImpl implements ICategoryFacade {
         categoryService.delete(id);
     }
 
+    //buscar todas las category aasociadas
     @Override
     public void associateProductToCategory(Long prodId, Long categoryId) {
         var prod = productService.findProductById(prodId);

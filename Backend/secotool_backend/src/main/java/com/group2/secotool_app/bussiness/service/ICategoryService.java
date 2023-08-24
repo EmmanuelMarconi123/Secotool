@@ -22,4 +22,6 @@ public interface ICategoryService {
     Category findById(Long id);
 
     List<Category> getAllCategoriesByProduct(Long prodId);
+
+    boolean existsById(Long id);
 }

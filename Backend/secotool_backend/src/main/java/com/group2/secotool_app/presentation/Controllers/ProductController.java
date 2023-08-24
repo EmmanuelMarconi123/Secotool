@@ -3,7 +3,7 @@ package com.group2.secotool_app.presentation.Controllers;
 import com.group2.secotool_app.bussiness.facade.IProductFacade;
 import com.group2.secotool_app.model.dto.ProductDto;
 import com.group2.secotool_app.model.dto.ProductFullDto;
-import com.group2.secotool_app.model.dto.request.ProductRequestDto;
+import com.group2.secotool_app.model.dto.request.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -83,14 +83,18 @@ public class ProductController {
             @ApiResponse(responseCode = "406",description = "product name already exists on database")
     })
     public ResponseEntity<String> saveProduct(@Parameter(description = "")
-                                              @RequestPart("data") @Valid
+                                              @RequestPart("product-data") @Valid
                                               ProductRequestDto productRequestDto,
+                                              @RequestPart("categories")
+                                              AssignProductToCategoryDto assignProductToCategoryDto,
+                                              @RequestPart("features") @Valid
+                                              AssignProductToFeatureDto assignProductToFeatureDto,
                                               @RequestParam("images")
                                               @NotNull(message = "images requerid")
                                               @NotEmpty(message = "list can not be empy")
                                               @Valid
                                               List<MultipartFile> images ){
-        return ResponseEntity.status(201).body(productFacade.save(productRequestDto,images));
+        return ResponseEntity.status(201).body(productFacade.save(productRequestDto,assignProductToCategoryDto,assignProductToFeatureDto,images));
     }
 
     @PutMapping("/{id}")
