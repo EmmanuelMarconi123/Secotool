@@ -53,6 +53,10 @@
   gap: 8px;
 }
 
+.navLink :hover {
+  text-decoration: none;
+}
+
 .navLinkActive {
   text-decoration: none;
   padding: 10px 20px;
