@@ -80,7 +80,7 @@ function FormNewProduct({
   const handleOptionChangeF = (newSelectedOptionsF) => {
     console.log(newSelectedOptionsF)
     setIdsFeatures(newSelectedOptionsF);
-    console.log(idsCategories)
+    console.log(idsFeatures)
   };
 
 

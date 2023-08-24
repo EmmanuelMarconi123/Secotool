@@ -4,24 +4,56 @@ import { useEffect, useState } from "react";
 import Pagination from "../../pagination/Pagination";
 import { ButtonToolbar, Button, } from "rsuite";
 import { Alert, Snackbar } from "@mui/material";
-import axios from "axios";
 import FormNewProduct from "../../form/FormNewProduct";
 import FormEditProduct from "../../form/FormEditProduct";
 
 const HomeAdmin = () => {
+  //----------------------------TRAE TODOS LOS PRODUCTOS----------------------------->
+  const fetchProductsAdmin = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/v1/api/products/all");
+      if (response.ok) {
+        const data = await response.json();
+        setProducts(data);
+      } else {
+        throw new Error("Error en la solicitud");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProductsAdmin();
+  }, []);
+
   //------------------------------ CONFIG MODALS--------------->
   const [open, setOpen] = useState(false); //NEW PRODUCT MODAL
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   
   const [openEp, setOpenEp] = useState(false); // EDIT PRODUCT MODAL
-  const [selectedProduct, setSelectedProduct] = useState({});
+  const [selectedProduct, setSelectedProduct] = useState([]);
   const handleOpenEp = (product) => {
     setSelectedProduct(product);
     setOpenEp(true);
   };
   const handleCloseEp = () => setOpenEp(false);
 
+  //---------------------------EDIT PRODUCT------------------------------------>
+  const handleProductUpdate = (updatedProduct) => {
+    // Buscar el índice del producto en la lista
+    const productIndex = products.findIndex(p => p.id === updatedProduct.id);
+
+    if (productIndex !== -1) {
+      // Crear una nueva lista de productos con el producto actualizado
+      const updatedProducts = [...products];
+      updatedProducts[productIndex] = updatedProduct;
+
+      // Actualizar el estado de la lista de productos
+      setProducts(updatedProducts);
+    }
+  }
   //---------------------------------DELETE PRODUCT------------------------------->
 
   const [alertOpen, setAlertOpen] = useState(false);
@@ -49,61 +81,6 @@ const HomeAdmin = () => {
     }
   }
 
-  //---------------------------------------EDIT PRODUCT-------------------->
-
-  useEffect(() => {
-    setEditedProduct({
-      name: selectedProduct.name,
-      description: selectedProduct.description,
-      price: selectedProduct.price,
-    });
-  }, [selectedProduct]);
-  
-  const [editedProduct, setEditedProduct] = useState({
-    name: '',
-    description: '',
-    price: 0,
-  });
-
-  const handleFieldChange = (field, value) => {
-    setEditedProduct((prevProduct) => ({
-      ...prevProduct,
-      [field]: value,
-    }));
-  };
-
-  const handleUpdateProduct = () => {
-    const productId = selectedProduct.id;
-  
-    const requestOptions = {
-      method: 'PUT',
-      body: JSON.stringify(editedProduct),
-    };
-
-    fetch(`http://localhost:8080/v1/api/products/${productId}`, requestOptions)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Error en la solicitud');
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log('Producto actualizado:', data);
-        // Limpiar el estado después de la actualización
-        setEditedProduct({
-          name: '',
-          description: '',
-          price: 0,
-        });
-        // Cerrar el modal
-        handleCloseEp();
-      })
-      .catch((error) => {
-        console.error('Error en la solicitud:', error);
-      });
-  };
-
-
   //-------------- CONFIGURACION DE LA PAGINACION -------------------->
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -122,22 +99,6 @@ const HomeAdmin = () => {
 
   //---------------------------------FETCH TODOS LOS PRODUCTOS------------------>
 
-  useEffect(() => {
-    const fetchProductsAdmin = async () => {
-      try {
-        const response = await fetch("http://localhost:8080/v1/api/products/all");
-        if (response.ok) {
-          const data = await response.json();
-          setProducts(data);
-        } else {
-          throw new Error("Error en la solicitud");
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchProductsAdmin();
-  }, []);
 
   useEffect(() => {
     const lastPostIndex = currentPage * 10;
@@ -223,11 +184,10 @@ const HomeAdmin = () => {
       <FormEditProduct
         openEp={openEp}
         handleCloseEp={handleCloseEp}
-        editedProduct={editedProduct}
-        handleFieldChange={handleFieldChange}
-        handleUpdateProduct={handleUpdateProduct}
+        selectedProduct={selectedProduct}
+        onProductUpdate={handleProductUpdate}
       />
     </div>
   );
 };
-export default HomeAdmin;
+export default HomeAdmin
