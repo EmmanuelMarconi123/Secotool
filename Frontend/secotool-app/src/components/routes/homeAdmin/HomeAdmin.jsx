@@ -2,41 +2,155 @@ import styles from "./HomeAdmin.module.css";
 import AdminProductCard from "../../adminProductCard/AdminProductCard";
 import { useEffect, useState } from "react";
 import Pagination from "../../pagination/Pagination";
-import { ButtonToolbar, Button, Uploader, TagPicker } from "rsuite";
-import Modal from "rsuite/Modal";
+import { ButtonToolbar, Button, } from "rsuite";
+import { Alert, Snackbar } from "@mui/material";
+import axios from "axios";
+import FormNewProduct from "../../form/FormNewProduct";
+import FormEditProduct from "../../form/FormEditProduct";
 
 const HomeAdmin = () => {
-  //------------------------------CONFIG MULTICASCADA---------------------->
-  const categories = [
-    "Electrónica",
-    "Ropa",
-    "Hogar",
-    "Deportes",
-    "Alimentos",
-    "Libros",
-  ].map((item) => ({ label: item, value: item }));
-
-  const features = [
-    "Alta calidad",
-    "Resistente al agua",
-    "Conectividad inalámbrica",
-    "Diseño ergonómico",
-    "Batería de larga duración",
-    "Tecnología de última generación",
-  ].map((item) => ({ label: item, value: item }));
-
   //------------------------------ CONFIG MODALS--------------->
   const [open, setOpen] = useState(false); //NEW PRODUCT MODAL
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  
   const [openEp, setOpenEp] = useState(false); // EDIT PRODUCT MODAL
-  const [selectedProduct, setSelectedProduct] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState({});
   const handleOpenEp = (product) => {
-    setSelectedProduct(product)
+    setSelectedProduct(product);
     setOpenEp(true);
-  }
+  };
   const handleCloseEp = () => setOpenEp(false);
+  //--------------------------------NEW PRODUCT---------------------->
+  const [name, setName] = useState("");
+  const [category, setCategory] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [uploadedImages, setUploadedImages] = useState([]); // Estado para las imágenes cargadas
+
+
+  const handleImageChangeD = (fileList) => {
+    setUploadedImages([...uploadedImages, ...fileList]);
+  };
+
+  const handleNewProductSubmit = async (e) => {
+    e.preventDefault();
+
+    const dataC = { name, category, description, price };
+
+    const json = JSON.stringify(dataC)
+    const blob = new Blob([json], {
+      type: 'application/json'
+    })
+
+    
+    const formData = new FormData();
+    formData.append("data", blob)
+    uploadedImages.forEach((file) => {
+      formData.append('images', file.blobFile); // Use a key like 'images'
+    });
+
+    console.log(dataC);
+    console.log(formData)
+
+    axios({
+      method: "post",
+      url: "http://localhost:8080/v1/api/products",
+      data: formData,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+      .then(function (response) {
+        handleClose()
+        console.log(response);
+      })
+      .catch(function (response) {
+        //handle error
+        console.log(response);
+      });
+  };
+
+  //---------------------------------DELETE PRODUCT------------------------------->
+
+  const [alertOpen, setAlertOpen] = useState(false);
+  const showDeleteSuccessAlert = () => {
+    setAlertOpen(true);
+  };
+  async function deleteProduct(productId) {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/v1/api/products/${productId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (response.ok) {
+        console.log(`Producto con ID ${productId} eliminado correctamente`);
+        setProducts(products.filter((product) => product.id !== productId));
+        showDeleteSuccessAlert(); // Muestra la alerta de éxito
+      } else {
+        throw new Error("Error al eliminar el producto");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  //---------------------------------------EDIT PRODUCT-------------------->
+
+  useEffect(() => {
+    setEditedProduct({
+      name: selectedProduct.name,
+      description: selectedProduct.description,
+      price: selectedProduct.price,
+    });
+  }, [selectedProduct]);
+  
+  const [editedProduct, setEditedProduct] = useState({
+    name: '',
+    description: '',
+    price: 0,
+  });
+
+  const handleFieldChange = (field, value) => {
+    setEditedProduct((prevProduct) => ({
+      ...prevProduct,
+      [field]: value,
+    }));
+  };
+
+  const handleUpdateProduct = () => {
+    const productId = selectedProduct.id;
+  
+    const requestOptions = {
+      method: 'PUT',
+      body: JSON.stringify(editedProduct),
+    };
+
+    fetch(`http://localhost:8080/v1/api/products/${productId}`, requestOptions)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Error en la solicitud');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log('Producto actualizado:', data);
+        // Limpiar el estado después de la actualización
+        setEditedProduct({
+          name: '',
+          description: '',
+          price: 0,
+        });
+        // Cerrar el modal
+        handleCloseEp();
+      })
+      .catch((error) => {
+        console.error('Error en la solicitud:', error);
+      });
+  };
 
 
   //-------------- CONFIGURACION DE LA PAGINACION -------------------->
@@ -49,39 +163,20 @@ const HomeAdmin = () => {
     window.matchMedia("(min-width: 1024px)").matches
   );
 
-  function deleteItem(id) {
-    console.log("Se ha borrado el item con id " + id);
-    const newProducts = products.filter((product) => product.id !== id);
-    setProducts(newProducts);
-    console.log(products);
-  }
-
-  // async function deleteItem(id) {
-  // try {
-  //   const response = await fetch("http://localhost:8080/v1/api/products/{id}");
-  //   if (response.ok) {
-  //     console.log(`Se ha borrado el item con id ${id} correctamente`);
-  //   } else {
-  //     throw new Error("Error en la solicitud");
-  //   }
-  // } catch (error) {
-  //   console.error(error);
-  // }
-  //  }
-
   useEffect(() => {
     window
       .matchMedia("(min-width: 1024px)")
       .addEventListener("change", (e) => setMatches(e.matches));
   }, []);
 
+  //---------------------------------FETCH TODOS LOS PRODUCTOS------------------>
+
   useEffect(() => {
     const fetchProductsAdmin = async () => {
       try {
-        const response = await fetch("http://localhost:8080/v1/api/products");
+        const response = await fetch("http://localhost:8080/v1/api/products/all");
         if (response.ok) {
           const data = await response.json();
-          console.log(data); //Borrar este console.log, mas tarde\
           setProducts(data);
         } else {
           throw new Error("Error en la solicitud");
@@ -125,7 +220,7 @@ const HomeAdmin = () => {
                 currentPost.map((product) => (
                   <AdminProductCard
                     key={product.id}
-                    deleteItem={() => deleteItem(product.id)}
+                    deleteItem={() => deleteProduct(product.id)}
                     id={product.id}
                     title={product.name}
                     editItem={() => handleOpenEp(product)}
@@ -158,125 +253,39 @@ const HomeAdmin = () => {
           Por favor ingrese desde un dispositivo más grande
         </span>
       )}
+      {/* -----------------------DELETE ALERT---------------------> */}
+      <Snackbar
+        open={alertOpen}
+        autoHideDuration={3000} // Duración en milisegundos
+        onClose={() => setAlertOpen(false)}
+      >
+        <Alert onClose={() => setAlertOpen(false)} severity="success">
+          Producto eliminado correctamente.
+        </Alert>
+      </Snackbar>
       {/* --------------------------NUEVO PRODUCTO MODAL--------------------------------> */}
-      <Modal size="md" open={open} onClose={handleClose} overflow={false}>
-        <Modal.Header>
-          <Modal.Title style={{ textAlign: "center", fontSize: 23 }}>
-            Nuevo Producto
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body className={styles.containerModal}>
-          <div className={styles.centeredForm}>
-            <form className={styles.formNewProduct} action="">
-              <label htmlFor="">
-                Nombre del producto
-                <input type="text" />
-              </label>
-              <label htmlFor="">
-                Descripcion
-                <textarea
-                  cols="30"
-                  rows="10"
-                  style={{ height: 120, width: 640 }}
-                ></textarea>
-              </label>
-              <label htmlFor="">
-                Categorias
-                <TagPicker style={{ width: 640 }} data={categories} />
-              </label>
-              <label htmlFor="">
-                Caracteristicas
-                <TagPicker style={{ width: 640 }} data={features} />
-              </label>
-              <label htmlFor="">
-                Precio
-                <input type="number" />
-              </label>
-              <label htmlFor="">
-                Imagenes
-                <Uploader draggable>
-                  <div
-                    style={{
-                      height: 54,
-                      width: 640,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: 10,
-                      borderRadius: 8,
-                    }}
-                  >
-                    <i className="fa-solid fa-cloud-arrow-up"></i>
-                    <span>Subir imagen</span>
-                  </div>
-                </Uploader>
-              </label>
-              <div className={styles.labelSeparator}></div>
-              <button>Agregar Producto</button>
-            </form>
-          </div>
-        </Modal.Body>
-      </Modal>
+      <FormNewProduct
+        open={open}
+        handleClose={handleClose}
+        handleNewProductSubmit={handleNewProductSubmit}
+        name={name}
+        setName={setName}
+        description={description}
+        setDescription={setDescription}
+        category={category}
+        setCategory={setCategory}
+        price={price}
+        setPrice={setPrice}
+        handleImageChangeD={handleImageChangeD}
+      />
       {/* ------------------------------------------EDITAR PRODUCTO MODAL--------------------------> */}
-      <Modal size="md" open={openEp} onClose={handleCloseEp} overflow={false}>
-        <Modal.Header>
-          <Modal.Title style={{ textAlign: "center", fontSize: 23 }}>
-            Editor de productos
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body className={styles.containerModal}>
-          <div className={styles.centeredForm}>
-            <form className={styles.formNewProduct} action="">
-              <label htmlFor="">
-                Nombre del producto
-                <input type="text" defaultValue={selectedProduct.name}/>
-              </label>
-              <label htmlFor="">
-                Descripcion
-                <textarea
-                  cols="30"
-                  rows="10"
-                  defaultValue={selectedProduct.description}
-                  style={{ height: 120, width: 640 }}
-                ></textarea>
-              </label>
-              <label htmlFor="">
-                Categorias
-                <TagPicker style={{ width: 640 }} data={categories} />
-              </label>
-              <label htmlFor="">
-                Caracteristicas
-                <TagPicker style={{ width: 640 }} data={features} />
-              </label>
-              <label htmlFor="">
-                Precio
-                <input type="number" defaultValue={selectedProduct.price} />
-              </label>
-              <label htmlFor="">
-                Imagenes
-                <Uploader draggable>
-                  <div
-                    style={{
-                      height: 54,
-                      width: 640,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: 10,
-                      borderRadius: 8,
-                    }}
-                  >
-                    <i className="fa-solid fa-cloud-arrow-up"></i>
-                    <span>Subir imagen</span>
-                  </div>
-                </Uploader>
-              </label>
-              <div className={styles.labelSeparator}></div>
-              <button>Agregar Producto</button>
-            </form>
-          </div>
-        </Modal.Body>
-      </Modal>
+      <FormEditProduct
+        openEp={openEp}
+        handleCloseEp={handleCloseEp}
+        editedProduct={editedProduct}
+        handleFieldChange={handleFieldChange}
+        handleUpdateProduct={handleUpdateProduct}
+      />
     </div>
   );
 };
