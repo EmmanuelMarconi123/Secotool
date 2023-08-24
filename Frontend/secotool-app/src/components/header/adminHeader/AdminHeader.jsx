@@ -35,7 +35,7 @@ const AdminHeader = () => {
               Usuarios
             </NavLink>
             <NavLink
-              to="/admin/characteristics"
+              to="/admin/features"
               className={({ isActive }) =>
                 isActive ? styles.navLinkActive : styles.navLink
               }
