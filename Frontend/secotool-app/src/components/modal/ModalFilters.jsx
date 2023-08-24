@@ -4,7 +4,7 @@ import 'rsuite/dist/rsuite-no-reset.min.css';
 import FormFilterCategory from '../form/formFilter/FormFilterCategory';
 import style from "./ModalFilters.module.css";
 
-const ModalFilters = () => {
+const ModalFilters = ({updateFilteredProducts}) => {
     const [open, setOpen] = useState(false);
     const [size, setSize] = useState();
     const handleOpen = value => {
@@ -23,7 +23,7 @@ const ModalFilters = () => {
       <Modal.Title>Filtrar resultados</Modal.Title>
     </Modal.Header>
     <Modal.Body>
-      <FormFilterCategory close={handleClose}></FormFilterCategory>
+      <FormFilterCategory close={handleClose} updateFilteredProducts={updateFilteredProducts}></FormFilterCategory>
     </Modal.Body>
     <Modal.Footer>
       <Button onClick={handleClose} appearance="subtle">

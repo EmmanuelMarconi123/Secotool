@@ -8,6 +8,7 @@ import axios from "axios";
 
 const Filters = () => {
   const [productsF, setProductsF] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   // "useEffect usado para el fetch de los productos (por ahora es necesario correr el back de local)"
   useEffect(() => {
     const fetchProducts = async () => {
@@ -24,7 +25,11 @@ const Filters = () => {
     fetchProducts();
   }, []);
 
-  const isScreenSmall = useMediaQuery("(max-width: 768px)");
+  const isScreenSmall = useMediaQuery("(max-width: 1024px)");
+
+  const updateFilteredProducts = (filteredProducts) => {
+    setFilteredProducts(filteredProducts);
+  };
 
   return (
     <section className={style.sectionFilters}>
@@ -42,12 +47,12 @@ const Filters = () => {
             <FormFilterDesktop />
           </>
         ) : (
-          <ModalFilters />
+          <ModalFilters updateFilteredProducts={updateFilteredProducts}/>
         )}
       </div>
       <div className={style.contenedorCards}>
         <h4 className={style.titleContenedorCards}>Todas las herramientas</h4>
-        <ListProducts products={productsF} />
+        <ListProducts products={filteredProducts.length > 0 ? filteredProducts : productsF} />
       </div>
     </section>
   );
