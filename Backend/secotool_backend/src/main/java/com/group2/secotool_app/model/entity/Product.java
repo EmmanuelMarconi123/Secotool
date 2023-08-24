@@ -36,11 +36,11 @@ public class Product {
     @JsonIgnore
     private List<Image> images;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST,mappedBy = "products")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "products")
     @JsonIgnore
     private List<Feature> productFeatures;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST,mappedBy = "products")
+    @ManyToMany(fetch = FetchType.LAZY,mappedBy = "products")
     @JsonIgnore
     private List<Category> productCategories;
 

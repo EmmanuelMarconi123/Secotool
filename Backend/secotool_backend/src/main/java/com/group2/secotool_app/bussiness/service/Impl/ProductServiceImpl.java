@@ -72,6 +72,7 @@ public class ProductServiceImpl implements IProductService {
     public void updateProduct(Product prod) {
         if (!existProductById(prod.getId()))
             throw new RuntimeException("it is not posible to update a product doesn't exists");
+        productRepository.deleteRelationsWithCategoryAndFeatures(prod.getId());
         productRepository.save(prod);
     }
 
@@ -91,6 +92,11 @@ public class ProductServiceImpl implements IProductService {
             return product.get();
         }
         throw new RuntimeException("product "+prodName+ " not found");
+    }
+
+    @Override
+    public void deleteRelationsWithCategoryAndFeatures(Long id) {
+        productRepository.deleteRelationsWithCategoryAndFeatures(id);
     }
 
 

@@ -26,9 +26,7 @@ public class Feature {
     @Column(name = "icon")
     private String icon;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {
-            CascadeType.PERSIST
-    })
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "products_features",
             joinColumns = @JoinColumn(name = "feature_id",referencedColumnName = "id"),

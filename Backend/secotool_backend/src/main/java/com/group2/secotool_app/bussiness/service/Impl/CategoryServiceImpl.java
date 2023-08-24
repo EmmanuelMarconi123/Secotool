@@ -63,4 +63,14 @@ public class CategoryServiceImpl implements ICategoryService {
         throw new RuntimeException("category "+id+" not found");
     }
 
+    @Override
+    public List<Category> getAllCategoriesByProduct(Long prodId) {
+        return categoryRepository.getAllCategoriesByProduct(prodId);
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return categoryRepository.existsById(id);
+    }
+
 }

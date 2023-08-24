@@ -22,9 +22,6 @@ public class Image {
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
-    @OneToOne(mappedBy = "image", cascade = {
-            CascadeType.PERSIST,
-            CascadeType.REMOVE
-    },fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "image",fetch = FetchType.LAZY)
     private Category category;
 }

@@ -1,13 +1,14 @@
 package com.group2.secotool_app.bussiness.facade.Impl;
 
+import com.group2.secotool_app.bussiness.facade.ICategoryFacade;
+import com.group2.secotool_app.bussiness.facade.IFeatureFacade;
 import com.group2.secotool_app.bussiness.facade.IProductFacade;
-import com.group2.secotool_app.bussiness.mapper.ProductDtoMapper;
-import com.group2.secotool_app.bussiness.mapper.ProductMapper;
-import com.group2.secotool_app.bussiness.service.IBucketS3Service;
-import com.group2.secotool_app.bussiness.service.IFileService;
-import com.group2.secotool_app.bussiness.service.IImageService;
-import com.group2.secotool_app.bussiness.service.IProductService;
+import com.group2.secotool_app.bussiness.mapper.*;
+import com.group2.secotool_app.bussiness.service.*;
 import com.group2.secotool_app.model.dto.ProductDto;
+import com.group2.secotool_app.model.dto.ProductFullDto;
+import com.group2.secotool_app.model.dto.request.AssignProductToCategoryDto;
+import com.group2.secotool_app.model.dto.request.AssignProductToFeatureDto;
 import com.group2.secotool_app.model.dto.request.ProductRequestDto;
 import com.group2.secotool_app.model.entity.Product;
 import lombok.RequiredArgsConstructor;
@@ -21,12 +22,19 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductFacadeImpl implements IProductFacade {
 
+    private final IFeatureFacade featureFacade;
+    private final ICategoryFacade categoryFacade;
     private final IProductService productService;
+    private final IImageService imageService;
+    private final ICategoryService categoryService;
+    private final IFeatureService featureService;
     private final IFileService fileService;
+    private final IBucketS3Service bucketS3Service;
     private final ProductMapper productMapper;
     private final ProductDtoMapper productDtoMapper;
-    private final IImageService imageService;
-    private final IBucketS3Service bucketS3Service;
+    private final CategoryMapper categoryMapper;
+    private final FeatureMapper featureMapper;
+    private final ProductFullDtoMapper productFullDtoMapper;
 
     @Override
     public List<ProductDto> getAllProducts() {
@@ -41,11 +49,38 @@ public class ProductFacadeImpl implements IProductFacade {
     }
 
     @Override
-    public String save(ProductRequestDto productRequestDto, List<MultipartFile> images) {
+    public void updateProduct(Long id, ProductRequestDto productRequestDto, AssignProductToCategoryDto assignProductToCategoryDto, AssignProductToFeatureDto assignProductToFeatureDto) {
+        var product = productMapper.toProduct(productRequestDto);
+        product.setId(id);
+
+        productService.updateProduct(product);
+
+        assignProductToFeatureDto.idsFeatures().forEach(featureId -> {
+            featureFacade.associateProductToFeature(product,featureId);
+        });
+        assignProductToCategoryDto.idsCategories().forEach(categoryId -> {
+            categoryFacade.associateProductToCategory(product,categoryId);
+        });
+    }
+
+    @Override
+    public String save(ProductRequestDto productRequestDto, AssignProductToCategoryDto assignProductToCategoryDto, AssignProductToFeatureDto assignProductToFeatureDto, List<MultipartFile> images) {
         fileService.validateFilesAreImages(images);
+
         var product = productMapper.toProduct(productRequestDto);
         Long prodId = productService.save(product);
+        product.setId(prodId);
+
+        assignProductToFeatureDto.idsFeatures().forEach(id -> {
+            featureFacade.associateProductToFeature(product,id);
+        });
+
+        assignProductToCategoryDto.idsCategories().forEach(id -> {
+            categoryFacade.associateProductToCategory(product,id);
+        });
+
         var urlImages = bucketS3Service.storeFiles(images);
+
         urlImages.forEach(url ->
                 imageService.saveProductImage(url,prodId)
         );
@@ -55,6 +90,7 @@ public class ProductFacadeImpl implements IProductFacade {
     @Override
     public String deleteById(Long id) {
         var images = imageService.getAllImagesByProduct(id);
+        productService.deleteRelationsWithCategoryAndFeatures(id);
         productService.deleteById(id,images);
         return "product "+id+ " successfully deleted";
     }
@@ -66,16 +102,16 @@ public class ProductFacadeImpl implements IProductFacade {
     }
 
     @Override
-    public ProductDto findProductById(Long id) {
+    public ProductFullDto findProductById(Long id) {
         var product = productService.findProductById(id);
-        return productDtoMapper.toProductDto(product);
-    }
-
-    @Override
-    public void updateProduct(Long id, ProductRequestDto productRequestDto) {
-        var prod = productMapper.toProduct(productRequestDto);
-        prod.setId(id);
-        productService.updateProduct(prod);
+        Long prodId = product.getId();
+        var images = imageService.getAllImagesByProduct(prodId);
+        var categories = categoryService.getAllCategoriesByProduct(prodId);
+        var features = featureService.getAllFeaturesByProduct(prodId);
+        product.setImages(images);
+        product.setProductCategories(categories);
+        product.setProductFeatures(features);
+        return productFullDtoMapper.toProductFullDto(product);
     }
 
     @Override

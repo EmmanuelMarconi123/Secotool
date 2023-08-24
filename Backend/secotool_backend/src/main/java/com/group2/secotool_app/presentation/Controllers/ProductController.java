@@ -2,7 +2,8 @@ package com.group2.secotool_app.presentation.Controllers;
 
 import com.group2.secotool_app.bussiness.facade.IProductFacade;
 import com.group2.secotool_app.model.dto.ProductDto;
-import com.group2.secotool_app.model.dto.request.ProductRequestDto;
+import com.group2.secotool_app.model.dto.ProductFullDto;
+import com.group2.secotool_app.model.dto.request.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -40,7 +41,7 @@ public class ProductController {
             @ApiResponse(responseCode = "200",description = "product found"),
             @ApiResponse(responseCode = "400",description = "product not found")
     })
-    public ResponseEntity<ProductDto> getProductById(@Parameter(description = "id of product ") @PathVariable Long id){
+    public ResponseEntity<ProductFullDto> getProductById(@Parameter(description = "id of product ") @PathVariable Long id){
         return ResponseEntity.ok(productFacade.findProductById(id));
     }
 
@@ -82,19 +83,29 @@ public class ProductController {
             @ApiResponse(responseCode = "406",description = "product name already exists on database")
     })
     public ResponseEntity<String> saveProduct(@Parameter(description = "")
-                                              @RequestPart("data") @Valid
+                                              @RequestPart("product-data") @Valid
                                               ProductRequestDto productRequestDto,
+                                              @RequestPart("categories") @Valid
+                                              AssignProductToCategoryDto assignProductToCategoryDto,
+                                              @RequestPart("features") @Valid
+                                              AssignProductToFeatureDto assignProductToFeatureDto,
                                               @RequestParam("images")
                                               @NotNull(message = "images requerid")
                                               @NotEmpty(message = "list can not be empy")
                                               @Valid
                                               List<MultipartFile> images ){
-        return ResponseEntity.status(201).body(productFacade.save(productRequestDto,images));
+        return ResponseEntity.status(201).body(productFacade.save(productRequestDto,assignProductToCategoryDto,assignProductToFeatureDto,images));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateProduct(@PathVariable Long id , @RequestBody @Valid ProductRequestDto productRequestDto){
-        productFacade.updateProduct(id,productRequestDto);
+    public ResponseEntity<?> updateProduct(@PathVariable Long id ,
+                                           @RequestPart("product-data") @Valid
+                                           ProductRequestDto productRequestDto,
+                                           @RequestPart("categories") @Valid
+                                           AssignProductToCategoryDto assignProductToCategoryDto,
+                                           @RequestPart("features") @Valid
+                                           AssignProductToFeatureDto assignProductToFeatureDto){
+        productFacade.updateProduct(id, productRequestDto, assignProductToCategoryDto, assignProductToFeatureDto);
         return ResponseEntity.ok(String.format("product %s succesffully updated",id));
     }
 

@@ -39,7 +39,6 @@ public class ImageServiceImpl implements IImageService {
     public List<Image> getAllImagesByProduct(Long productId) {
         List<Image> images = new ArrayList<>();
         var imagesDto = imageRepository.findAllByProductId(productId);
-        System.out.println(imagesDto.toString());
         imagesDto.forEach(image -> images.add(imageMapper.toImage(image)));
         return images;
     }

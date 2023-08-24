@@ -19,4 +19,8 @@ public interface IFeatureService {
     Feature findByName(String featureName);
 
     Feature findById(Long featureId);
+
+    List<Feature> getAllFeaturesByProduct(Long prodId);
+
+    boolean existsById(Long id);
 }
