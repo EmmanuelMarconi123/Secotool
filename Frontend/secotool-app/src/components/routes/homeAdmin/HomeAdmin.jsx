@@ -21,55 +21,6 @@ const HomeAdmin = () => {
     setOpenEp(true);
   };
   const handleCloseEp = () => setOpenEp(false);
-  //--------------------------------NEW PRODUCT---------------------->
-  const [name, setName] = useState("");
-  const [category, setCategory] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
-  const [uploadedImages, setUploadedImages] = useState([]); // Estado para las imágenes cargadas
-
-
-  const handleImageChangeD = (fileList) => {
-    setUploadedImages([...uploadedImages, ...fileList]);
-  };
-
-  const handleNewProductSubmit = async (e) => {
-    e.preventDefault();
-
-    const dataC = { name, category, description, price };
-
-    const json = JSON.stringify(dataC)
-    const blob = new Blob([json], {
-      type: 'application/json'
-    })
-
-    
-    const formData = new FormData();
-    formData.append("data", blob)
-    uploadedImages.forEach((file) => {
-      formData.append('images', file.blobFile); // Use a key like 'images'
-    });
-
-    console.log(dataC);
-    console.log(formData)
-
-    axios({
-      method: "post",
-      url: "http://localhost:8080/v1/api/products",
-      data: formData,
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    })
-      .then(function (response) {
-        handleClose()
-        console.log(response);
-      })
-      .catch(function (response) {
-        //handle error
-        console.log(response);
-      });
-  };
 
   //---------------------------------DELETE PRODUCT------------------------------->
 
@@ -267,16 +218,6 @@ const HomeAdmin = () => {
       <FormNewProduct
         open={open}
         handleClose={handleClose}
-        handleNewProductSubmit={handleNewProductSubmit}
-        name={name}
-        setName={setName}
-        description={description}
-        setDescription={setDescription}
-        category={category}
-        setCategory={setCategory}
-        price={price}
-        setPrice={setPrice}
-        handleImageChangeD={handleImageChangeD}
       />
       {/* ------------------------------------------EDITAR PRODUCTO MODAL--------------------------> */}
       <FormEditProduct
