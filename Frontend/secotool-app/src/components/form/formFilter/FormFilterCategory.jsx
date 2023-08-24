@@ -1,22 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import style from "./FormFilterCategory.module.css";
+import axios from "axios";
 
-const FormFilterCategory = ({close}) => {
-  //mock listado de categorias
-  const mockListCateg = [
-    "Categoría 1",
-    "Categoría 2",
-    "Categoría 3",
-    "Categoría 4",
-    "Categoría 5",
-    "Categoría 6",
-    "Categoría 7",
-    "Categoría 8",
-    "Categoría 9",
-    "Categoría 10",
-    "Categoría 11",
-    "Categoría 12",
-  ];
+const FormFilterCategory = ({close, updateFilteredProducts}) => {
+  const [categorias, setCategorias] = useState([]);
+
+  useEffect(() => {
+    const fetchCategorias = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/v1/api/categories"
+        );
+        setCategorias(response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategorias();
+  }, []);
 
   // Estado para mantener el registro de checkboxes seleccionados
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -34,10 +36,24 @@ const FormFilterCategory = ({close}) => {
   };
 
   // Función para manejar el envío del formulario
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
+    /*event.preventDefault();
+    // Aquí puedes hacer lo que se necesite con las categorías seleccionadas
+    console.log("Categorías seleccionadas:", selectedCategories);*/
     event.preventDefault();
-    // Aquí puedes hacer lo que necesites con las categorías seleccionadas
-    console.log("Categorías seleccionadas:", selectedCategories);
+    try {
+      if (selectedCategories.length > 0) {
+        const categoryId = selectedCategories[0];
+        const response = await axios.get(
+          `http://localhost:8080/v1/api/products/all/category/${categoryId}`
+        );
+        updateFilteredProducts(response.data); // Actualizar productos filtrados en el componente Filters
+      } else {
+        updateFilteredProducts([]); // Si no hay categorías seleccionadas, muestra todos los productos
+      }
+    } catch (error) {
+      console.error("Error fetching filtered products:", error);
+    }
   };
 
     // Función para limpiar los filtros
@@ -48,15 +64,15 @@ const FormFilterCategory = ({close}) => {
   return (
     <form onSubmit={handleSubmit} className={style.form}>
       <h4>Categorías</h4>
-      {mockListCateg.map((categ) => (
-        <div key={categ} className={style.boxInputCheck}>
+      {categorias.map((categ) => (
+        <div key={categ.id} className={style.boxInputCheck}>
           <input
             type="checkbox"
-            value={categ}
+            value={categ.name}
             onChange={handleCheckboxChange}
-            checked={selectedCategories.includes(categ)}
+            checked={selectedCategories.includes(categ.name)}
           />
-          <label>{categ}</label>
+          <label>{categ.name}</label>
         </div>
       ))}
       <button type="submit" onClick={close} className={style.btnFilter}>Aplicar filtros</button>
