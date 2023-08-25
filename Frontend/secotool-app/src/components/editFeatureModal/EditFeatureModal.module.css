@@ -38,3 +38,11 @@ button {
   flex-direction: row;
   align-items: center;
 }
+
+input {
+  padding-left: 8px;
+}
+
+.dialogClassName {
+  width: 100%;
+}

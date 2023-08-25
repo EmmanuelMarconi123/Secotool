@@ -12,6 +12,7 @@ import AdminHeader from "./components/header/adminHeader/AdminHeader";
 import CrearCuenta from "./components/routes/crearCuenta/CrearCuenta";
 import LogIn from "./components/routes/logIn/LogIn";
 import Features from "./components/routes/features/Features";
+import Categories from "./components/routes/categories/Categories";
 
 function App() {
   return (
@@ -33,6 +34,10 @@ function App() {
           <Route
             path="/admin/features"
             element={<Features />}
+          ></Route>
+          <Route
+            path="/admin/categories"
+            element={<Categories />}
           ></Route>
           <Route path="*" element={<div>Error 404</div>}></Route>
         </Routes>

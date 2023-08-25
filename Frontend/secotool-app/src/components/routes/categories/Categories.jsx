@@ -1,65 +1,12 @@
-import styles from "./Features.module.css";
+import styles from "./Categories.module.css";
 import { useEffect, useState } from "react";
-import Pagination from "../../pagination/Pagination";
 import { ButtonToolbar, Button } from "rsuite";
-import NewFeatureModal from "../../newFeatureModal/NewFeatureModal";
-import AdminFeatureCard from "../../adminFeatureCard/AdminFeatureCard";
-import EditFeatureModal from "../../editFeatureModal/EditFeatureModal";
+import AdminCategoryCard from "../../adminCategoryCard/AdminCategoryCard";
+import Pagination from "../../pagination/Pagination";
+import NewCategoryModal from "../../newCategoryModal/NewCategoryModal";
+import EditCategoryModal from "../../editCategoryModal/EditCategoryModal";
 
-// const icons = [
-//   {
-//     id: 1,
-//     name: "Colours",
-//     icon: "fa-solid fa-palette",
-//   },
-//   {
-//     id: 2,
-//     name: "Home",
-//     icon: "fa-solid fa-house",
-//   },
-//   {
-//     id: 3,
-//     name: "Umbrella",
-//     icon: "fa-solid fa-cloud",
-//   },
-//   {
-//     id: 4,
-//     name: "Tree",
-//     icon: "fa-solid fa-filter",
-//   },
-//   {
-//     id: 5,
-//     name: "Colours",
-//     icon: "fa-solid fa-umbrella",
-//   },
-//   {
-//     id: 6,
-//     name: "Colours",
-//     icon: "fa-solid fa-ghost",
-//   },
-//   {
-//     id: 7,
-//     name: "Colours",
-//     icon: "fa-solid fa-palette",
-//   },
-//   {
-//     id: 8,
-//     name: "Colours",
-//     icon: "fa-solid fa-palette",
-//   },
-//   {
-//     id: 9,
-//     name: "Colours",
-//     icon: "fa-solid fa-palette",
-//   },
-//   {
-//     id: 10,
-//     name: "Colours",
-//     icon: "fa-solid fa-palette",
-//   },
-// ];
-
-const Features = () => {
+const Categories = () => {
   //------------------------------ CONFIG MODALS--------------->
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -72,28 +19,28 @@ const Features = () => {
   //-------------- CONFIGURACION DE LA PAGINACION -------------------->
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [features, setFeatures] = useState([]);
+  const [categories, serCategories] = useState([]);
   const [currentPost, setCurrentPost] = useState([]);
-  const [selectedFeature, setSelectedFeature] = useState({});
+  const [selectedCategory, setSelectedCategory] = useState({});
   const [matches, setMatches] = useState(
     window.matchMedia("(min-width: 1024px)").matches
   );
 
-  function handleEdit(feature) {
+  function handleEdit(category) {
     handleOpenEp();
-    setSelectedFeature(feature);
+    setSelectedCategory(category);
   }
 
-  async function deleteFeature(id) {
-    if (confirm("¿Está seguro que desea borrar esta característica?"))
+  async function deleteCategory(id) {
+    if (confirm("¿Está seguro que desea borrar esta categoría?"))
       try {
         const response = await fetch(
-          `http://localhost:8080/v1/api/products/features/${id}`,
+          `http://localhost:8080/v1/api/categories/${id}`,
           { method: "DELETE" }
         );
         if (response.ok) {
           console.log(`Se ha borrado el item con id ${id} correctamente`);
-          fetchFeaturesAdmin();
+          fetchCategoriesAdmin();
         } else {
           throw new Error("Error en la solicitud");
         }
@@ -102,15 +49,13 @@ const Features = () => {
       }
   }
 
-  const fetchFeaturesAdmin = async () => {
+  const fetchCategoriesAdmin = async () => {
     try {
-      const response = await fetch(
-        "http://localhost:8080/v1/api/products/features"
-      );
+      const response = await fetch("http://localhost:8080/v1/api/categories");
       if (response.ok) {
         const data = await response.json();
         console.log(data); //Borrar este console.log, mas tarde\
-        setFeatures(data);
+        serCategories(data);
       } else {
         throw new Error("Error en la solicitud");
       }
@@ -126,14 +71,14 @@ const Features = () => {
   }, []);
 
   useEffect(() => {
-    fetchFeaturesAdmin();
+    fetchCategoriesAdmin();
   }, []);
 
   useEffect(() => {
     const lastPostIndex = currentPage * 10;
     const fistPostIndex = lastPostIndex - 10;
-    setCurrentPost(features.slice(fistPostIndex, lastPostIndex));
-  }, [currentPage, features]);
+    setCurrentPost(categories.slice(fistPostIndex, lastPostIndex));
+  }, [currentPage, categories]);
 
   return (
     <div>
@@ -141,30 +86,33 @@ const Features = () => {
         <div>
           <div className={styles.container}>
             <div className={styles.upTable}>
-              <h1>Todos las características</h1>
+              <h1>Todos las categorías</h1>
               <ButtonToolbar className={styles.buttonToolbarRight}>
                 <Button
                   onClick={handleOpen}
                   style={{ background: "#45A42D", color: "#F9F9F9" }}
                 >
-                  + Añadir nueva
+                  + Agregar categoría
                 </Button>
               </ButtonToolbar>
             </div>
             <div className={styles.tableContainer}>
               <div className={styles.tableHeader}>
                 <span>Nombre</span>
-                <span>Icono</span>
+                <span>Descripción</span>
+                <span>Imagen</span>
                 <span>Acciones</span>
               </div>
-              {features.length > 0 ? (
-                currentPost.map((feature) => (
-                  <AdminFeatureCard
-                    key={feature.id}
-                    deleteItem={() => deleteFeature(feature.id)}
-                    name={feature.name}
-                    icon={feature.icon}
-                    editItem={() => handleEdit(feature)}
+              {categories.length > 0 ? (
+                currentPost.map((category) => (
+                  <AdminCategoryCard
+                    key={category.id}
+                    deleteItem={() => deleteCategory(category.id)}
+                    name={category.name}
+                    icon={category.name}
+                    desc={category.name}
+                    img={category.name}
+                    editItem={() => handleEdit(category)}
                   />
                 ))
               ) : (
@@ -173,7 +121,7 @@ const Features = () => {
                 </span>
               )}
               <Pagination
-                totalPosts={features.length}
+                totalPosts={categories.length}
                 itemsPerPage={10}
                 setCurrentPage={setCurrentPage}
                 currentPage={currentPage}
@@ -196,20 +144,20 @@ const Features = () => {
       )}
       {/* --------------------------NUEVA CARACTERÍSTICA MODAL--------------------------------> */}
 
-      <NewFeatureModal
+      <NewCategoryModal
         handleClose={handleClose}
         open={open}
-        getData={() => fetchFeaturesAdmin()}
+        getData={() => fetchCategoriesAdmin()}
       />
 
       {/* ------------------------------------------EDITAR PRODUCTO MODAL--------------------------> */}
-      <EditFeatureModal
+      <EditCategoryModal
         handleClose={handleCloseEp}
         open={openEp}
-        getData={() => fetchFeaturesAdmin()}
-        selectedFeature={selectedFeature}
+        getData={() => fetchCategoriesAdmin()}
+        selectedCategory={selectedCategory}
       />
     </div>
   );
 };
-export default Features;
+export default Categories;
