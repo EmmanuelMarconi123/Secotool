@@ -155,7 +155,7 @@ const FormCrearCuenta = () => {
             </Button>
           </NavLink>
           {mensajeError === true ? (
-            <h5>Ya exíste una cuenta relacionada al email que ingresaste.</h5>
+            <h5>Hubo un error. Intentalo más tarde.</h5>
           ) : null}
         </Grid>
       </form>
