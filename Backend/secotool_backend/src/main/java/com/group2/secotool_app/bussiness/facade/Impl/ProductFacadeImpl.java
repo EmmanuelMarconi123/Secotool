@@ -7,8 +7,8 @@ import com.group2.secotool_app.bussiness.mapper.*;
 import com.group2.secotool_app.bussiness.service.*;
 import com.group2.secotool_app.model.dto.ProductDto;
 import com.group2.secotool_app.model.dto.ProductFullDto;
-import com.group2.secotool_app.model.dto.request.AssignProductToCategoryDto;
-import com.group2.secotool_app.model.dto.request.AssignProductToFeatureDto;
+import com.group2.secotool_app.model.dto.request.ListOfCategoriesIdRequestDto;
+import com.group2.secotool_app.model.dto.request.ListOfFeaturesidRequestDto;
 import com.group2.secotool_app.model.dto.request.ProductRequestDto;
 import com.group2.secotool_app.model.entity.Product;
 import lombok.RequiredArgsConstructor;
@@ -49,33 +49,33 @@ public class ProductFacadeImpl implements IProductFacade {
     }
 
     @Override
-    public void updateProduct(Long id, ProductRequestDto productRequestDto, AssignProductToCategoryDto assignProductToCategoryDto, AssignProductToFeatureDto assignProductToFeatureDto) {
+    public void updateProduct(Long id, ProductRequestDto productRequestDto, ListOfCategoriesIdRequestDto listOfCategoriesIdRequestDto, ListOfFeaturesidRequestDto listOfFeaturesidRequestDto) {
         var product = productMapper.toProduct(productRequestDto);
         product.setId(id);
 
         productService.updateProduct(product);
 
-        assignProductToFeatureDto.idsFeatures().forEach(featureId -> {
+        listOfFeaturesidRequestDto.idsFeatures().forEach(featureId -> {
             featureFacade.associateProductToFeature(product,featureId);
         });
-        assignProductToCategoryDto.idsCategories().forEach(categoryId -> {
+        listOfCategoriesIdRequestDto.idsCategories().forEach(categoryId -> {
             categoryFacade.associateProductToCategory(product,categoryId);
         });
     }
-
+//se puede refactorizar
     @Override
-    public String save(ProductRequestDto productRequestDto, AssignProductToCategoryDto assignProductToCategoryDto, AssignProductToFeatureDto assignProductToFeatureDto, List<MultipartFile> images) {
+    public String save(ProductRequestDto productRequestDto, ListOfCategoriesIdRequestDto listOfCategoriesIdRequestDto, ListOfFeaturesidRequestDto listOfFeaturesidRequestDto, List<MultipartFile> images) {
         fileService.validateFilesAreImages(images);
 
         var product = productMapper.toProduct(productRequestDto);
         Long prodId = productService.save(product);
         product.setId(prodId);
 
-        assignProductToFeatureDto.idsFeatures().forEach(id -> {
+        listOfFeaturesidRequestDto.idsFeatures().forEach(id -> {
             featureFacade.associateProductToFeature(product,id);
         });
 
-        assignProductToCategoryDto.idsCategories().forEach(id -> {
+        listOfCategoriesIdRequestDto.idsCategories().forEach(id -> {
             categoryFacade.associateProductToCategory(product,id);
         });
 
@@ -122,10 +122,12 @@ public class ProductFacadeImpl implements IProductFacade {
         return productDtos;
     }
     @Override
-    public List<ProductDto> getAllProductsAssociateWithACategory(Long categoryId) {
+    public List<ProductDto> getAllProductsAssociateWithACategory(ListOfCategoriesIdRequestDto categoriesId) {
         List<ProductDto> productDtos = new ArrayList<>();
-        var prods = productService.getAllProductsAssociateWithACategory(categoryId);
-        prods.forEach(prod -> productDtos.add(productDtoMapper.toProductDto(prod)));
+        categoriesId.idsCategories().forEach(categoryId -> {
+            var prods = productService.getAllProductsAssociateWithACategory(categoryId);
+            prods.forEach(prod -> productDtos.add(productDtoMapper.toProductDto(prod)));
+        });
         return productDtos;
     }
 

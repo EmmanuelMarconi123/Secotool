@@ -4,8 +4,8 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
-public record AssignProductToCategoryDto(
+public record ListOfFeaturesidRequestDto(
         @NotNull
-        List<Long> idsCategories
+        List<Long> idsFeatures
 ) {
 }
