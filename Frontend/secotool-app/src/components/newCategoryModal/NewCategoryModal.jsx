@@ -17,19 +17,23 @@ function NewCategoryModal({
     handleClose();
   };
 
-  const addCategoryAdmin = async () => {
-    const json = JSON.stringify(newCategory);
-    const blob = new Blob([json], {
-      type: "application/json",
-    });
+  const handleChangeImage = (file) => {
+    setNewImage(file);
+  };
 
+  const addCategoryAdmin = async () => {
     const formData = new FormData();
-    formData.append("data", blob);
+    formData.append(
+      "data",
+      new Blob([JSON.stringify(newCategory)], { type: "application/json" })
+    );
     formData.append("image", newImage.blobFile);
-    
+
+    console.log(formData);
+
     axios({
       method: "post",
-      url: "http://localhost:8080/v1/api/products",
+      url: "http://localhost:8080/v1/api/categories",
       data: formData,
       headers: {
         "Content-Type": "multipart/form-data",
@@ -38,7 +42,6 @@ function NewCategoryModal({
       .then(function (response) {
         handleClose();
         console.log(response);
-        setNewImage("");
         getData();
       })
       .catch(function (response) {
@@ -103,7 +106,7 @@ function NewCategoryModal({
               <Uploader
                 autoUpload={false}
                 draggable
-                // onChange={handleImageChangeD}
+                onChange={handleChangeImage}
               >
                 <div
                   style={{

@@ -1,30 +1,36 @@
 import { Modal, TagPicker, Uploader } from "rsuite";
 import styles from "./FormNewProduct.module.css";
 import { useState, useEffect } from "react";
-import axios from "axios";
 
 function FormNewProduct({
   open,
   handleClose,
+  handleNewProductSubmit,
+  name,
+  setName,
+  description,
+  setDescription,
+  setCategory,
+  price,
+  setPrice,
+  handleImageChangeD,
 }) {
-
-  //-----------------------------DATOS(CATEGORIAS Y FEATURES)----------------------------------->
   const [categories, setCategories] = useState([]);
   const [features, setFeatures] = useState([]);
-
+  
   useEffect(() => {
     async function fetchCategories() {
       try {
         const response = await fetch("http://localhost:8080/v1/api/categories");
         if (response.ok) {
           const dataC = await response.json();
-  
+
           // Transforma los datos a la estructura de TagPicker
           const transformedData = dataC.map((category) => ({
             label: category.name,
             value: category.id,
           }));
-  
+
           setCategories(transformedData);
         } else {
           console.error("Error fetching categories:", response.statusText);
@@ -33,106 +39,34 @@ function FormNewProduct({
         console.error("Error fetching categories:", error);
       }
     }
-  
+
     fetchCategories();
   }, []);
-  
+
   useEffect(() => {
     async function fetchFeatures() {
       try {
         const response = await fetch("http://localhost:8080/v1/api/products/features");
         if (response.ok) {
-          const data = await response.json();
-          const transformedData = data.map((category) => ({
-            label: category.name,
-            value: category.id,
+          const dataF = await response.json();
+
+          // Transforma los datos a la estructura de TagPicker
+          const transformedData = dataF.map((feature) => ({
+            label: feature.name,
+            value: feature.id,
           }));
+
           setFeatures(transformedData);
         } else {
-          console.error("Error fetching features:", response.statusText);
+          console.error("Error fetching categories:", response.statusText);
         }
       } catch (error) {
-        console.error("Error fetching features:", error);
+        console.error("Error fetching categories:", error);
       }
     }
-  
+
     fetchFeatures();
   }, []);
-
-  //--------------------------------NEW PRODUCT---------------------->
-
-  
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
-  const [uploadedImages, setUploadedImages] = useState([]); // Estado para las imágenes cargadas
-
-  const [idsCategories, setIdsCategories] = useState(); //Agarra las categorias
-  const [idsFeatures, setIdsFeatures] = useState([]);
-
-
-  const handleOptionChange = (newSelectedOptions) => {
-    console.log(newSelectedOptions)
-    setIdsCategories(newSelectedOptions);
-    console.log(idsCategories)
-  };
-
-  const handleOptionChangeF = (newSelectedOptionsF) => {
-    console.log(newSelectedOptionsF)
-    setIdsFeatures(newSelectedOptionsF);
-    console.log(idsFeatures)
-  };
-
-
-  const handleImageChangeD = (fileList) => {
-    setUploadedImages([...uploadedImages, ...fileList]);
-  };
-
-  const handleNewProductSubmit = async (e) => {
-    e.preventDefault();
-    const formData = new FormData(); //Creando el form DATA
-
-    const productData = {
-      name: name,
-      description: description,
-      price: price
-    };
-
-    const categoriasId = {
-      idsCategories: idsCategories,
-    }
-
-    const featuresId = {
-      idsFeatures: idsFeatures,
-    }
-    formData.append("product-data", new Blob([JSON.stringify(productData)], { type: "application/json" }));
-    formData.append("categories", new Blob([JSON.stringify(categoriasId)], { type: "application/json" }));
-    formData.append("features", new Blob([JSON.stringify(featuresId)], { type: "application/json" }));
-    //-----------------------APPENDS------------------>
-    uploadedImages.forEach((file) => {
-      formData.append('images', file.blobFile); 
-    });
-
-    console.log(formData)
-
-    axios({
-      method: "post",
-      url: "http://localhost:8080/v1/api/products",
-      data: formData,
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    })
-      .then(function (response) {
-        handleClose()
-        console.log(response);
-      })
-      .catch(function (response) {
-        //handle error
-        console.log(response);
-      });
-  };
-  
   /*Aqui va el formulario para agregar un nuevo producto como admin*/
   return (
     <Modal size="md" open={open} onClose={handleClose} overflow={false}>
@@ -172,8 +106,7 @@ function FormNewProduct({
               <TagPicker
                 data={categories}
                 style={{ width: 640 }}
-                value={idsCategories}
-                onChange={handleOptionChange}
+                onChange={(e) => setCategory(e.target.value)}
                 placeholder="Seleccionar categorias"
               />
             </label>
@@ -183,7 +116,6 @@ function FormNewProduct({
                 style={{ width: 640 }}
                 data={features}
                 placeholder="Seleccionar caracteristicas"
-                onChange={handleOptionChangeF}
               />
             </label>
             <label htmlFor="">
