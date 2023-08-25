@@ -2,113 +2,94 @@ import styles from "./HomeAdmin.module.css";
 import AdminProductCard from "../../adminProductCard/AdminProductCard";
 import { useEffect, useState } from "react";
 import Pagination from "../../pagination/Pagination";
+import { ButtonToolbar, Button, } from "rsuite";
+import { Alert, Snackbar } from "@mui/material";
+import FormNewProduct from "../../form/FormNewProduct";
+import FormEditProduct from "../../form/FormEditProduct";
 
 const HomeAdmin = () => {
-  const ArrProducts = [
-    {
-      id: "0001",
-      title:
-        "Taladro Percutor atornillador Bosch Professional GSB 550 RE Caja de cartón - Azul - 220V",
-    },
-    {
-      id: "0002",
-      title: "Martillo Inoxidable Professional Hetcher",
-    },
-    {
-      id: "0003",
-      title: "Pinza punzadora profesional Smith",
-    },
-    {
-      id: "0004",
-      title: "Sierra sensitiva Bosch ATB 530 V2 - Negra - 220V",
-    },
-    {
-      id: "0005",
-      title: "Destornillador electrico Hiui alta durabilidad - Rojo",
-    },
-    {
-      id: "0006",
-      title: "Nivel Laser Reifelmenz 10 metros",
-    },
-    {
-      id: "0007",
-      title: "Amoladora Steel 5 discos con soporte automatico - 220V",
-    },
-    {
-      id: "0008",
-      title: "Gafas de proteccion Sahira de alta resistencia trasparentes",
-    },
-    {
-      id: "0009",
-      title: "Sierra Cortadora Sensitiva Metal Yosemite 2100w 355mm 14puLG",
-    },
-    {
-      id: "0010",
-      title: "Caja De Herramientas Con 9 Piezas Truper Pinza Alicate",
-    },
-    {
-      id: "0011",
-      title: "Set De Chapista Black Jack X 7 Pcs 3 Martillos 4 Aguantadore",
-    },
-    {
-      id: "0012",
-      title: "Pinza Pelacables Automatico Frontal Bremen Corta Cable 7725",
-    },
-    {
-      id: "0013",
-      title: "Taladro Atornillador Percutor + 2 Baterias Gp By Lusqtoff",
-    },
-    {
-      id: "0014",
-      title: "Mini Motosierra Electrosierra Recargable Batería Inalámbrica",
-    },
-    {
-      id: "0015",
-      title: "Destornillador electrico Hiui alta durabilidad - Rojo",
-    },
-    {
-      id: "0016",
-      title: "Juego De Llaves Combinadas Fija Estriada 12 Piezas 6 A 22 Mm",
-    },
-    {
-      id: "0017",
-      title: "Llave Caño Stilson Bahco 142 426 Mm Apertura 65 Mm",
-    },
-    {
-      id: "0018",
-      title: "Lijadora Rotoorbital 300w 125mm 5 PuLG Vel Variable + Lijas",
-    },
-    {
-      id: "0019",
-      title: "Pinza Sacabocado Profesional Para Perforar Cuero Plástico",
-    },
-    {
-      id: "0020",
-      title: "Caja De Herramientas Con 9 Piezas Truper Pinza Alicate",
-    },
-  ];
+  //----------------------------TRAE TODOS LOS PRODUCTOS----------------------------->
+  const fetchProductsAdmin = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/v1/api/products/all");
+      if (response.ok) {
+        const data = await response.json();
+        setProducts(data);
+      } else {
+        throw new Error("Error en la solicitud");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProductsAdmin();
+  }, []);
+
+  //------------------------------ CONFIG MODALS--------------->
+  const [open, setOpen] = useState(false); //NEW PRODUCT MODAL
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  
+  const [openEp, setOpenEp] = useState(false); // EDIT PRODUCT MODAL
+  const [selectedProduct, setSelectedProduct] = useState([]);
+  const handleOpenEp = (product) => {
+    setSelectedProduct(product);
+    setOpenEp(true);
+  };
+  const handleCloseEp = () => setOpenEp(false);
+
+  //---------------------------EDIT PRODUCT------------------------------------>
+  const handleProductUpdate = (updatedProduct) => {
+    // Buscar el índice del producto en la lista
+    const productIndex = products.findIndex(p => p.id === updatedProduct.id);
+
+    if (productIndex !== -1) {
+      // Crear una nueva lista de productos con el producto actualizado
+      const updatedProducts = [...products];
+      updatedProducts[productIndex] = updatedProduct;
+
+      // Actualizar el estado de la lista de productos
+      setProducts(updatedProducts);
+    }
+  }
+  //---------------------------------DELETE PRODUCT------------------------------->
+
+  const [alertOpen, setAlertOpen] = useState(false);
+  const showDeleteSuccessAlert = () => {
+    setAlertOpen(true);
+  };
+  async function deleteProduct(productId) {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/v1/api/products/${productId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (response.ok) {
+        console.log(`Producto con ID ${productId} eliminado correctamente`);
+        setProducts(products.filter((product) => product.id !== productId));
+        showDeleteSuccessAlert(); // Muestra la alerta de éxito
+      } else {
+        throw new Error("Error al eliminar el producto");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   //-------------- CONFIGURACION DE LA PAGINACION -------------------->
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
-
-  const lastPostIndex = currentPage * itemsPerPage;
-  const fistPostIndex = lastPostIndex - itemsPerPage;
-  const currentPost = ArrProducts.slice(fistPostIndex, lastPostIndex);
+  const [products, setProducts] = useState([]);
+  const [currentPost, setCurrentPost] = useState([]);
 
   const [matches, setMatches] = useState(
     window.matchMedia("(min-width: 1024px)").matches
   );
-
-  const [products, setProducts] = useState(ArrProducts);
-
-  function deleteItem(id) {
-    console.log("Se ha borrado el item con id " + id);
-    const newProducts = products.filter((product) => product.id !== id);
-    setProducts(newProducts);
-    console.log(products);
-  }
 
   useEffect(() => {
     window
@@ -116,34 +97,55 @@ const HomeAdmin = () => {
       .addEventListener("change", (e) => setMatches(e.matches));
   }, []);
 
+  //---------------------------------FETCH TODOS LOS PRODUCTOS------------------>
+
+
+  useEffect(() => {
+    const lastPostIndex = currentPage * 10;
+    const fistPostIndex = lastPostIndex - 10;
+    setCurrentPost(products.slice(fistPostIndex, lastPostIndex));
+  }, [currentPage, products]);
+
   return (
     <div>
       {matches ? (
         <div>
           <div className={styles.container}>
-            <h1
-              style={{ fontWeight: "400", fontSize: "19px", padding: "16px 0" }}
-            >
-              Todos los productos
-            </h1>
+            <div className={styles.upTable}>
+              <h1>Todos los productos</h1>
+              <ButtonToolbar className={styles.buttonToolbarRight}>
+                <Button
+                  onClick={handleOpen}
+                  style={{ background: "#45A42D", color: "#F9F9F9" }}
+                >
+                  + Agregar Producto
+                </Button>
+              </ButtonToolbar>
+            </div>
             <div className={styles.tableContainer}>
               <div className={styles.tableHeader}>
                 <span>ID</span>
                 <span>Nombre</span>
                 <span>Acciones</span>
               </div>
-              {products &&
+              {products.length > 0 ? (
                 currentPost.map((product) => (
                   <AdminProductCard
                     key={product.id}
-                    deleteItem={() => deleteItem(product.id)}
+                    deleteItem={() => deleteProduct(product.id)}
                     id={product.id}
-                    title={product.title}
+                    title={product.name}
+                    editItem={() => handleOpenEp(product)}
                   />
-                ))}
+                ))
+              ) : (
+                <span className={styles.noProducstMessage}>
+                  No se encontraron resultados
+                </span>
+              )}
               <Pagination
-                totalPosts={ArrProducts.length}
-                itemsPerPage={itemsPerPage}
+                totalPosts={products.length}
+                itemsPerPage={10}
                 setCurrentPage={setCurrentPage}
                 currentPage={currentPage}
               />
@@ -155,14 +157,37 @@ const HomeAdmin = () => {
           style={{
             display: "flex",
             alignItems: "center",
+            textAlign: "center",
             justifyContent: "center",
             height: "100vh",
           }}
         >
-          Por favor ingrese desde un dispositivo mas grande
+          Por favor ingrese desde un dispositivo más grande
         </span>
       )}
+      {/* -----------------------DELETE ALERT---------------------> */}
+      <Snackbar
+        open={alertOpen}
+        autoHideDuration={3000} // Duración en milisegundos
+        onClose={() => setAlertOpen(false)}
+      >
+        <Alert onClose={() => setAlertOpen(false)} severity="success">
+          Producto eliminado correctamente.
+        </Alert>
+      </Snackbar>
+      {/* --------------------------NUEVO PRODUCTO MODAL--------------------------------> */}
+      <FormNewProduct
+        open={open}
+        handleClose={handleClose}
+      />
+      {/* ------------------------------------------EDITAR PRODUCTO MODAL--------------------------> */}
+      <FormEditProduct
+        openEp={openEp}
+        handleCloseEp={handleCloseEp}
+        selectedProduct={selectedProduct}
+        onProductUpdate={handleProductUpdate}
+      />
     </div>
   );
 };
-export default HomeAdmin;
+export default HomeAdmin

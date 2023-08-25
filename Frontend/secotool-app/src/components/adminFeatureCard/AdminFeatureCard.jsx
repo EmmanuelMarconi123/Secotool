@@ -1,10 +1,10 @@
-import styles from "./AdminProductCard.module.css";
+import styles from "./AdminFeatureCard.module.css";
 
-const AdminProductCard = (props) => {
+const AdminFeatureCard = (props) => {
   return (
     <div className={styles.container}>
-      <span>{props.id}</span>
-      <span>{props.title}</span>
+      <span>{props.name}</span>
+      <i className={props.icon} style={{ color: "var(--Dark)" }}></i>
       <div className={styles.iconAd}>
         <i
           className="fa-regular fa-pencil-square fa-lg"
@@ -20,4 +20,4 @@ const AdminProductCard = (props) => {
   );
 };
 
-export default AdminProductCard;
+export default AdminFeatureCard;

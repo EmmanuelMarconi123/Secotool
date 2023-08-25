@@ -7,7 +7,11 @@ footer {
 
 footer img {
   padding-top: 38px;
+<<<<<<< HEAD
   width: 25vh;
+=======
+  width: 240px;
+>>>>>>> ef2144de4a4264e414d2a7aef3a6f17c19f11053
 }
 
 footer p {
@@ -23,9 +27,13 @@ footer p {
   }
 
   footer img {
+<<<<<<< HEAD
     width: 91px;
     height: 16.589px;
     flex-shrink: 0;
+=======
+    width: 140px;
+>>>>>>> ef2144de4a4264e414d2a7aef3a6f17c19f11053
   }
   footer p {
     font-size: 13px;

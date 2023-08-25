@@ -1,16 +1,26 @@
 import { Modal, TagPicker, Uploader } from "rsuite";
 import styles from "./FormNewProduct.module.css";
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useEffect, useState } from "react";
 
-function FormNewProduct({
-  open,
-  handleClose,
+function FormEditProduct({
+  openEp,
+  handleCloseEp,
+  selectedProduct,
+  onProductUpdate,
 }) {
-
-  //-----------------------------DATOS(CATEGORIAS Y FEATURES)----------------------------------->
+  useEffect(() => {
+    setEditedName(selectedProduct.name);
+    setEditedDescription(selectedProduct.description);
+    setEditedPrice(selectedProduct.price);
+  }, [selectedProduct]);
+  //---------------------------------DATOS------------------------------>
   const [categories, setCategories] = useState([]);
   const [features, setFeatures] = useState([]);
+  const [editedName, setEditedName] = useState(selectedProduct.name);
+  const [editedDescription, setEditedDescription] = useState(
+    selectedProduct.description
+  );
+  const [editedPrice, setEditedPrice] = useState(selectedProduct.price);
 
   useEffect(() => {
     async function fetchCategories() {
@@ -18,13 +28,13 @@ function FormNewProduct({
         const response = await fetch("http://localhost:8080/v1/api/categories");
         if (response.ok) {
           const dataC = await response.json();
-  
+
           // Transforma los datos a la estructura de TagPicker
           const transformedData = dataC.map((category) => ({
             label: category.name,
             value: category.id,
           }));
-  
+
           setCategories(transformedData);
         } else {
           console.error("Error fetching categories:", response.statusText);
@@ -33,14 +43,16 @@ function FormNewProduct({
         console.error("Error fetching categories:", error);
       }
     }
-  
+
     fetchCategories();
   }, []);
 
   useEffect(() => {
     async function fetchFeatures() {
       try {
-        const response = await fetch("http://localhost:8080/v1/api/products/features");
+        const response = await fetch(
+          "http://localhost:8080/v1/api/products/features"
+        );
         if (response.ok) {
           const data = await response.json();
           const transformedData = data.map((category) => ({
@@ -55,126 +67,123 @@ function FormNewProduct({
         console.error("Error fetching features:", error);
       }
     }
-  
+
     fetchFeatures();
   }, []);
 
-  //--------------------------------NEW PRODUCT---------------------->
-
-  
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
-  const [uploadedImages, setUploadedImages] = useState([]); // Estado para las imágenes cargadas
-
+  //-------------------------------------------EDITAR---------------------->
   const [idsCategories, setIdsCategories] = useState(); //Agarra las categorias
   const [idsFeatures, setIdsFeatures] = useState([]);
 
-
   const handleOptionChange = (newSelectedOptions) => {
-    console.log(newSelectedOptions)
+    console.log(newSelectedOptions);
     setIdsCategories(newSelectedOptions);
-    console.log(idsCategories)
+    console.log(idsCategories);
   };
 
   const handleOptionChangeF = (newSelectedOptionsF) => {
-    console.log(newSelectedOptionsF)
+    console.log(newSelectedOptionsF);
     setIdsFeatures(newSelectedOptionsF);
-    console.log(idsFeatures)
+    console.log(idsFeatures);
   };
 
-
-  const handleImageChangeD = (fileList) => {
-    setUploadedImages([...uploadedImages, ...fileList]);
-  };
-
-  const handleNewProductSubmit = async (e) => {
+  const handleUpdateProduct = async (e) => {
     e.preventDefault();
-    const formData = new FormData(); //Creando el form DATA
-
-    const productData = {
-      name: name,
-      description: description,
-      price: price
+    const formData = new FormData();
+    const updatedProduct = {
+      name: editedName,
+      description: editedDescription,
+      price: editedPrice,
     };
 
     const categoriasId = {
       idsCategories: idsCategories,
-    }
+    };
 
     const featuresId = {
       idsFeatures: idsFeatures,
+    };
+
+    formData.append(
+      "product-data",
+      new Blob([JSON.stringify(updatedProduct)], { type: "application/json" })
+    );
+    formData.append(
+      "categories",
+      new Blob([JSON.stringify(categoriasId)], { type: "application/json" })
+    );
+    formData.append(
+      "features",
+      new Blob([JSON.stringify(featuresId)], { type: "application/json" })
+    );
+
+    try {
+      const response = await fetch(
+        `http://localhost:8080/v1/api/products/${selectedProduct.id}`,
+        {
+          method: "PUT",
+          body: formData,
+        }
+      );
+
+      if (response.ok) {
+        console.log("El producto se actualizo correctamente");
+        // El producto se actualizó correctamente
+        handleCloseEp(); // Cerrar el modal después de la actualización
+        const updatedProductR = {
+          ...selectedProduct,
+          name: editedName,
+          description: editedDescription,
+          price: editedPrice,
+        };
+        onProductUpdate(updatedProductR); // Llamar a la función de actualización del padre
+      } else {
+        console.error("Error updating product:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error updating product:", error);
     }
-    formData.append("product-data", new Blob([JSON.stringify(productData)], { type: "application/json" }));
-    formData.append("categories", new Blob([JSON.stringify(categoriasId)], { type: "application/json" }));
-    formData.append("features", new Blob([JSON.stringify(featuresId)], { type: "application/json" }));
-    //-----------------------APPENDS------------------>
-    uploadedImages.forEach((file) => {
-      formData.append('images', file.blobFile); 
-    });
-
-    console.log(formData)
-
-    axios({
-      method: "post",
-      url: "http://localhost:8080/v1/api/products",
-      data: formData,
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    })
-      .then(function (response) {
-        handleClose()
-        console.log(response);
-      })
-      .catch(function (response) {
-        //handle error
-        console.log(response);
-      });
   };
-  
-  /*Aqui va el formulario para agregar un nuevo producto como admin*/
+
   return (
-    <Modal size="md" open={open} onClose={handleClose} overflow={false}>
+    <Modal size="md" open={openEp} onClose={handleCloseEp} overflow={false}>
       <Modal.Header>
         <Modal.Title style={{ textAlign: "center", fontSize: 23 }}>
-          Nuevo Producto
+          Editor de productos
         </Modal.Title>
       </Modal.Header>
       <Modal.Body className={styles.containerModal}>
         <div className={styles.centeredForm}>
           <form
             className={styles.formNewProduct}
-            onSubmit={handleNewProductSubmit}
+            onSubmit={handleUpdateProduct}
+            action=""
           >
-            <label htmlFor="">
+            <label htmlFor="editProductName">
               Nombre del producto
               <input
                 type="text"
-                name="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={editedName}
+                onChange={(event) => setEditedName(event.target.value)}
               />
             </label>
-            <label htmlFor="">
+            <label htmlFor="editDescription">
               Descripcion
               <textarea
                 cols="30"
                 rows="10"
-                name="description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                value={editedDescription}
+                onChange={(event) => setEditedDescription(event.target.value)}
                 style={{ height: 120, width: 640, padding: 8 }}
               ></textarea>
             </label>
             <label htmlFor="">
               Categorias
               <TagPicker
-                data={categories}
                 style={{ width: 640 }}
-                value={idsCategories}
+                data={categories}
                 onChange={handleOptionChange}
-                placeholder="Seleccionar categorias"
+                placeholder="Seleccionar categoria"
               />
             </label>
             <label htmlFor="">
@@ -182,26 +191,21 @@ function FormNewProduct({
               <TagPicker
                 style={{ width: 640 }}
                 data={features}
-                placeholder="Seleccionar caracteristicas"
                 onChange={handleOptionChangeF}
+                placeholder="Seleccionar caracteristica"
               />
             </label>
             <label htmlFor="">
               Precio
               <input
-                type="text"
-                name="price"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
+                type="number"
+                value={editedPrice}
+                onChange={(event) => setEditedPrice(event.target.value)}
               />
             </label>
             <label htmlFor="">
               Imagenes
-              <Uploader
-                autoUpload={false}
-                draggable
-                onChange={handleImageChangeD}
-              >
+              <Uploader autoUpload={false} disabled draggable>
                 <div
                   style={{
                     height: 54,
@@ -220,11 +224,12 @@ function FormNewProduct({
               </Uploader>
             </label>
             <div className={styles.labelSeparator}></div>
-            <button>Agregar Producto</button>
+            <button>Guardar Cambios</button>
           </form>
         </div>
       </Modal.Body>
     </Modal>
   );
 }
-export default FormNewProduct;
+
+export default FormEditProduct;
