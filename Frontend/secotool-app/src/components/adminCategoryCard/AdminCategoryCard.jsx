@@ -4,8 +4,8 @@ const AdminCategoryCard = (props) => {
   return (
     <div className={styles.container}>
       <span>{props.name}</span>
-      <span>{props.descripcion}</span>
-      <a href={props.imagen} target="blank">
+      <span>{props.description}</span>
+      <a href={props.image} target="blank">
         <i
           className="fa-regular fa-image"
           style={{ color: "var(--darkGrey)" }}

@@ -29,7 +29,7 @@ function NewCategoryModal({
     );
     formData.append("image", newImage.blobFile);
 
-    console.log(formData);
+    console.log(newImage);
 
     axios({
       method: "post",
@@ -75,7 +75,7 @@ function NewCategoryModal({
             onSubmit={handleNewProductSubmit}
           >
             <label htmlFor="">
-              Nombre del producto
+              Nombre de la categoría
               <input
                 type="text"
                 name="name"
