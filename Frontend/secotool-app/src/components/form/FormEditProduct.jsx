@@ -21,6 +21,7 @@ function FormEditProduct({
     selectedProduct.description
   );
   const [editedPrice, setEditedPrice] = useState(selectedProduct.price);
+  console.log(selectedProduct)
 
   useEffect(() => {
     async function fetchCategories() {
