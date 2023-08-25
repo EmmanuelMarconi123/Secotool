@@ -2,10 +2,19 @@ import { Link } from "react-router-dom";
 import AvatarSm from "../../avatar/AvatarSm";
 import style from "./DropdownProfile.module.css";
 import { useEffect, useRef, useState } from "react";
+import { useAuth } from "../../../contexts/AuthContext";
+import { useFunction } from "../../../contexts/FunctionsContext";
 
 const DropdownProfile = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const { logout, token } = useAuth();
+  const {fetchUser, user } = useFunction();
+
+  useEffect(() => {
+    fetchUser(token);
+  },[]);
+
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -25,20 +34,20 @@ const DropdownProfile = () => {
   }, []);
   return (
     <div className={style.dropdown} ref={dropdownRef}>
-      <AvatarSm className={style.avatarDropdown} toggle={toggleDropdown}></AvatarSm>
+      <AvatarSm className={style.avatarDropdown} toggle={toggleDropdown} user={user}></AvatarSm>
       <div
         className={`${style.dropdownContent} ${
           dropdownOpen ? style.show : ""
         }`}
       >
-        <span>Marcelo Gonzalez</span>
+        <span>{user.firstName + " " + user.lastName}</span>
         <hr />
         <nav className="d-flex f-dir-colum ">
           <Link to="/Profile" onClick={toggleDropdown}>
           <i className="fa-regular fa-user"></i>
             Ver Perfil
           </Link>
-          <Link to="/">
+          <Link to="/" onClick={logout}>
             <i className="fa-regular fa-arrow-right-from-bracket"></i> Cerrar Sesión
           </Link>
         </nav>

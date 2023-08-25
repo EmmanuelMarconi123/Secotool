@@ -1,28 +1,37 @@
+import { useEffect} from "react";
 import AvatarLg from "../../avatar/AvatarLg";
 import style from "./Profile.module.css";
+import { useFunction } from "../../../contexts/FunctionsContext";
 
 const Profile = () => {
-    return(
-        <section className={style.sectionProfile + " spacing-grid"}>
-            <h3>Mi perfil</h3>
-            <AvatarLg/>
-            <h4>Marcelo Gonzalez</h4>
-            <div className={style.containerInfo}>
-                <div className={style.boxInfo}>
-                    <span>Nombre</span>
-                    <p>Marcelo</p>
-                </div>
-                <div className={style.boxInfo}>
-                    <span>Apellido</span>
-                    <p>Gonzalez</p>
-                </div>
-                <div className={style.boxInfo}>
-                    <span>Email</span>
-                    <p>marcegonzales@gmail.com</p>
-                </div>
-            </div>
-        </section>
-    );
+
+  const {fetchUser, user } = useFunction();
+
+  useEffect(() => {
+    fetchUser();
+  },[]);
+
+  return (
+    <section className={style.sectionProfile + " spacing-grid"}>
+      <h3>Mi perfil</h3>
+      <AvatarLg user={user}/>
+      <h4>{user.firstName + " " + user.lastName}</h4>
+      <div className={style.containerInfo}>
+        <div className={style.boxInfo}>
+          <span>Nombre</span>
+          <p>{user.firstName}</p>
+        </div>
+        <div className={style.boxInfo}>
+          <span>Apellido</span>
+          <p>{user.lastName}</p>
+        </div>
+        <div className={style.boxInfo}>
+          <span>Email</span>
+          <p>{user.username}</p>
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default Profile;

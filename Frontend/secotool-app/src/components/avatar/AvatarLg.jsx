@@ -1,11 +1,19 @@
 import style from "./Avatar.module.css";
 
-const AvatarLg = () => {
+const AvatarLg = ({ user }) => {
+  const firstLetterName = user.firstName
+    ? user.firstName.charAt(0).toUpperCase()
+    : "";
+
+  const firstLetterLastName = user.lastName
+    ? user.lastName.charAt(0).toUpperCase()
+    : "";
+
   return (
     <div className={style.avatarLg}>
       <div className={style.iniciales}>
-        <span>M</span>
-        <span>G</span>
+        <span>{firstLetterName}</span>
+        <span>{firstLetterLastName}</span>
       </div>
     </div>
   );
