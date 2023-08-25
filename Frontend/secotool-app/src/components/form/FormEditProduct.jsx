@@ -16,6 +16,7 @@ function FormEditProduct({
   //---------------------------------DATOS------------------------------>
   const [categories, setCategories] = useState([]);
   const [features, setFeatures] = useState([]);
+
   const [editedName, setEditedName] = useState(selectedProduct.name);
   const [editedDescription, setEditedDescription] = useState(
     selectedProduct.description

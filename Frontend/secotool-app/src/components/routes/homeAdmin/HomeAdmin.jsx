@@ -194,6 +194,7 @@ const HomeAdmin = () => {
       <FormNewProduct
         open={open}
         handleClose={handleClose}
+        onProductCreated={fetchProductsAdmin}
       />
       {/* ------------------------------------------EDITAR PRODUCTO MODAL--------------------------> */}
       <FormEditProduct
