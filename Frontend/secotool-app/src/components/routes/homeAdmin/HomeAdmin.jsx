@@ -5,7 +5,7 @@ import Pagination from "../../pagination/Pagination";
 import { ButtonToolbar, Button, } from "rsuite";
 import { Alert, Snackbar } from "@mui/material";
 import axios from "axios";
-import FormNewProduct from "../../form/FormNewProduct";
+import FormNewProduct from "../../form/formNewProduct/FormNewProduct"
 import FormEditProduct from "../../form/FormEditProduct";
 
 const HomeAdmin = () => {

@@ -1,5 +1,5 @@
 import { Modal, TagPicker, Uploader } from "rsuite";
-import styles from "./FormNewProduct.module.css";
+import styles from './formNewProduct/FormNewProduct.module.css'
 
 function FormEditProduct({
   openEp,

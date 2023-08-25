@@ -1,5 +1,5 @@
+import styles from './FormNewProduct.module.css'
 import { Modal, TagPicker, Uploader } from "rsuite";
-import styles from "./FormNewProduct.module.css";
 import { useState, useEffect } from "react";
 
 function FormNewProduct({
