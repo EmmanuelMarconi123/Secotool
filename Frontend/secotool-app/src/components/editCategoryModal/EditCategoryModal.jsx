@@ -48,7 +48,7 @@ function EditCategoryModal({ handleClose, open, getData, selectedCategory }) {
       name: selectedCategory.name,
       description: selectedCategory.description,
     });
-    setCurrentImage("asdasdas");
+    setCurrentImage(selectedCategory.image);
   }, [selectedCategory]);
 
   return (
@@ -119,7 +119,7 @@ function EditCategoryModal({ handleClose, open, getData, selectedCategory }) {
           >
             <img
               style={{ width: "50%", borderRadius: 8 }}
-              src="https://blog.unid.edu.mx/hubfs/tendencias%20del%20lenguaje%202022.jpg"
+              src={currentImage.url}
               alt=""
             />
             <div
@@ -131,7 +131,7 @@ function EditCategoryModal({ handleClose, open, getData, selectedCategory }) {
                 cursor: "pointer",
               }}
             >
-              <a href={currentImage} target="blank">
+              <a href={currentImage.url} target="blank">
                 <i className="fa-solid fa-arrow-up-right-from-square"></i>
               </a>
             </div>

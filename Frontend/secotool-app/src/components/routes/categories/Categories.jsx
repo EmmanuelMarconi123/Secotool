@@ -110,8 +110,8 @@ const Categories = () => {
                     deleteItem={() => deleteCategory(category.id)}
                     name={category.name}
                     icon={category.name}
-                    desc={category.name}
-                    img={category.name}
+                    description={category.description}
+                    image={category.image.url}
                     editItem={() => handleEdit(category)}
                   />
                 ))
