@@ -3,8 +3,8 @@ package com.group2.secotool_app.bussiness.facade;
 
 import com.group2.secotool_app.model.dto.ProductDto;
 import com.group2.secotool_app.model.dto.ProductFullDto;
-import com.group2.secotool_app.model.dto.request.AssignProductToCategoryDto;
-import com.group2.secotool_app.model.dto.request.AssignProductToFeatureDto;
+import com.group2.secotool_app.model.dto.request.ListOfCategoriesIdRequestDto;
+import com.group2.secotool_app.model.dto.request.ListOfFeaturesidRequestDto;
 import com.group2.secotool_app.model.dto.request.ProductRequestDto;
 import jakarta.transaction.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,10 +14,10 @@ import java.util.List;
 public interface IProductFacade {
     List<ProductDto> getAllProducts();
     List<ProductDto> getTenRandomProducts();
-    List<ProductDto> getAllProductsAssociateWithACategory(Long categoryId);
+    List<ProductDto> getAllProductsAssociateWithACategory(ListOfCategoriesIdRequestDto categoriesId);
 
     @Transactional(rollbackOn = {RuntimeException.class})
-    String save(ProductRequestDto productRequestDto, AssignProductToCategoryDto assignProductToCategoryDto, AssignProductToFeatureDto assignProductToFeatureDto, List<MultipartFile> images);
+    String save(ProductRequestDto productRequestDto, ListOfCategoriesIdRequestDto listOfCategoriesIdRequestDto, ListOfFeaturesidRequestDto listOfFeaturesidRequestDto, List<MultipartFile> images);
 
     String deleteById(Long id);
 
@@ -25,7 +25,7 @@ public interface IProductFacade {
 
     ProductFullDto findProductById(Long id);
 
-    void updateProduct(Long id, ProductRequestDto productRequestDto, AssignProductToCategoryDto assignProductToCategoryDto, AssignProductToFeatureDto assignProductToFeatureDto);
+    void updateProduct(Long id, ProductRequestDto productRequestDto, ListOfCategoriesIdRequestDto listOfCategoriesIdRequestDto, ListOfFeaturesidRequestDto listOfFeaturesidRequestDto);
 
     List<ProductDto> getAllProductsAssociateWithAFeature(Long featureId);
 }

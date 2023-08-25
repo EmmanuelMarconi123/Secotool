@@ -2,9 +2,10 @@ package com.group2.secotool_app.bussiness.facade.Impl;
 
 import com.group2.secotool_app.bussiness.facade.ICategoryFacade;
 import com.group2.secotool_app.bussiness.mapper.CategoryDtoMapper;
+import com.group2.secotool_app.bussiness.mapper.CategoryFullDtoMapper;
 import com.group2.secotool_app.bussiness.mapper.CategoryMapper;
 import com.group2.secotool_app.bussiness.service.*;
-import com.group2.secotool_app.model.dto.CategoryDto;
+import com.group2.secotool_app.model.dto.CategoryFullDto;
 import com.group2.secotool_app.model.dto.request.CategoryRequestDto;
 import com.group2.secotool_app.model.entity.Category;
 import com.group2.secotool_app.model.entity.Product;
@@ -22,16 +23,19 @@ public class CategoryFacadeImpl implements ICategoryFacade {
     private final ICategoryService categoryService;
     private final IImageService imageService;
     private final IFileService fileService;
-    private final IProductService productService;
     private final CategoryDtoMapper categoryDtoMapper;
     private final CategoryMapper categoryMapper;
+    private final CategoryFullDtoMapper categoryFullDtoMapper;
     private final IBucketS3Service bucketS3Service;
     @Override
-    public List<CategoryDto> getAllCategory() {
-        List<CategoryDto> categoryDtos = new ArrayList<>();
+    public List<CategoryFullDto> getAllCategory() {
+        List<CategoryFullDto> categoryFullDtos = new ArrayList<>();
         List<Category> categories = categoryService.findAll();
-        categories.forEach(category -> categoryDtos.add(categoryDtoMapper.toCategoryDto(category)));
-        return categoryDtos;
+        categories.forEach(category -> {
+            category.setImage(imageService.getImageByCategoryId(category.getId()));
+            categoryFullDtos.add(categoryFullDtoMapper.toCategoryFullDto(category));
+        });
+        return categoryFullDtos;
     }
 
     @Override

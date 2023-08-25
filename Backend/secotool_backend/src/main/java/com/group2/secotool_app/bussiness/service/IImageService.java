@@ -9,4 +9,6 @@ public interface IImageService {
     Image saveCategoryImage(String imageUrl);
     List<Image> getAllImagesByProduct(Long productId);
     void deleteImage(Long imageId);
+
+    Image getImageByCategoryId(Long id);
 }

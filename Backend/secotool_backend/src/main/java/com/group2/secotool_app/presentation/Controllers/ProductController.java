@@ -70,9 +70,9 @@ public class ProductController {
     }
 
 
-    @GetMapping("/all/category/{categoryId}")
-    public ResponseEntity<List<ProductDto>> getAllProductsAssociateWithACategory(@PathVariable Long categoryId){
-        return ResponseEntity.ok(productFacade.getAllProductsAssociateWithACategory(categoryId));
+    @GetMapping("/all/category")
+    public ResponseEntity<List<ProductDto>> getAllProductsAssociateWithACategory(@RequestBody ListOfCategoriesIdRequestDto categoriesIdRequestDto){
+        return ResponseEntity.ok(productFacade.getAllProductsAssociateWithACategory(categoriesIdRequestDto));
     }
 
     @PostMapping
@@ -86,15 +86,15 @@ public class ProductController {
                                               @RequestPart("product-data") @Valid
                                               ProductRequestDto productRequestDto,
                                               @RequestPart("categories") @Valid
-                                              AssignProductToCategoryDto assignProductToCategoryDto,
+                                                  ListOfCategoriesIdRequestDto listOfCategoriesIdRequestDto,
                                               @RequestPart("features") @Valid
-                                              AssignProductToFeatureDto assignProductToFeatureDto,
+                                                  ListOfFeaturesidRequestDto listOfFeaturesidRequestDto,
                                               @RequestParam("images")
                                               @NotNull(message = "images requerid")
                                               @NotEmpty(message = "list can not be empy")
                                               @Valid
                                               List<MultipartFile> images ){
-        return ResponseEntity.status(201).body(productFacade.save(productRequestDto,assignProductToCategoryDto,assignProductToFeatureDto,images));
+        return ResponseEntity.status(201).body(productFacade.save(productRequestDto, listOfCategoriesIdRequestDto, listOfFeaturesidRequestDto,images));
     }
 
     @PutMapping("/{id}")
@@ -102,10 +102,10 @@ public class ProductController {
                                            @RequestPart("product-data") @Valid
                                            ProductRequestDto productRequestDto,
                                            @RequestPart("categories") @Valid
-                                           AssignProductToCategoryDto assignProductToCategoryDto,
+                                               ListOfCategoriesIdRequestDto listOfCategoriesIdRequestDto,
                                            @RequestPart("features") @Valid
-                                           AssignProductToFeatureDto assignProductToFeatureDto){
-        productFacade.updateProduct(id, productRequestDto, assignProductToCategoryDto, assignProductToFeatureDto);
+                                           ListOfFeaturesidRequestDto listOfFeaturesidRequestDto){
+        productFacade.updateProduct(id, productRequestDto, listOfCategoriesIdRequestDto, listOfFeaturesidRequestDto);
         return ResponseEntity.ok(String.format("product %s succesffully updated",id));
     }
 

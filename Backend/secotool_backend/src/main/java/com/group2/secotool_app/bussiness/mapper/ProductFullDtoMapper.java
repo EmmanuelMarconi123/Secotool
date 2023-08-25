@@ -9,6 +9,7 @@ import org.mapstruct.Mapping;
 public interface ProductFullDtoMapper {
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
+    @Mapping(source = "description", target = "description")
     @Mapping(source = "price", target = "price")
     @Mapping(source = "images", target = "images")
     @Mapping(source = "productFeatures", target = "productFeatures")

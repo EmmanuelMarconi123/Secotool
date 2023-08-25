@@ -1,6 +1,6 @@
 package com.group2.secotool_app.bussiness.facade;
 
-import com.group2.secotool_app.model.dto.CategoryDto;
+import com.group2.secotool_app.model.dto.CategoryFullDto;
 import com.group2.secotool_app.model.dto.request.CategoryRequestDto;
 import com.group2.secotool_app.model.entity.Product;
 import org.springframework.web.multipart.MultipartFile;
@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface ICategoryFacade {
-    List<CategoryDto> getAllCategory();
+    List<CategoryFullDto> getAllCategory();
 
     void saveCategory(CategoryRequestDto categoryRequestDto, MultipartFile image);
 
