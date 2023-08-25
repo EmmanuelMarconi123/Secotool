@@ -46,4 +46,9 @@ public class ImageServiceImpl implements IImageService {
     public void deleteImage(Long imageId) {
         imageRepository.deleteById(imageId);
     }
+
+    @Override
+    public Image getImageByCategoryId(Long id) {
+        return imageRepository.findByCategoryId(id);
+    }
 }

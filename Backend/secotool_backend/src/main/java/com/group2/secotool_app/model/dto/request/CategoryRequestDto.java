@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 
 public record CategoryRequestDto(
         @NotBlank(message = "required name")
-        String name
+        String name,
+        @NotBlank(message = "required description")
+        String description
 ) {
 }

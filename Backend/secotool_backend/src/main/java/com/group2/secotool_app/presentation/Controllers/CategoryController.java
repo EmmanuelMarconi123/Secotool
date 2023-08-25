@@ -2,6 +2,7 @@ package com.group2.secotool_app.presentation.Controllers;
 
 import com.group2.secotool_app.bussiness.facade.ICategoryFacade;
 import com.group2.secotool_app.model.dto.CategoryDto;
+import com.group2.secotool_app.model.dto.CategoryFullDto;
 import com.group2.secotool_app.model.dto.request.CategoryRequestDto;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -20,7 +21,7 @@ public class CategoryController {
     private final ICategoryFacade categoryFacade;
 
     @GetMapping
-    public ResponseEntity<List<CategoryDto>> getAllCategories(){
+    public ResponseEntity<List<CategoryFullDto>> getAllCategories(){
         return ResponseEntity.ok(categoryFacade.getAllCategory());
     }
 
