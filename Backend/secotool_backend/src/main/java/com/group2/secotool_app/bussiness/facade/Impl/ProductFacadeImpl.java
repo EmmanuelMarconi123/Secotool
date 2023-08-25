@@ -32,20 +32,18 @@ public class ProductFacadeImpl implements IProductFacade {
     private final IBucketS3Service bucketS3Service;
     private final ProductMapper productMapper;
     private final ProductDtoMapper productDtoMapper;
-    private final CategoryMapper categoryMapper;
-    private final FeatureMapper featureMapper;
     private final ProductFullDtoMapper productFullDtoMapper;
 
     @Override
     public List<ProductDto> getAllProducts() {
         var prods = productService.getAllProducts();
-        return productToProductsDto(prods);
+        return productsToProductsDto(prods);
     }
 
     @Override
     public List<ProductDto> getTenRandomProducts() {
         var randomProds = productService.getTenRandomProducts();
-        return productToProductsDto(randomProds);
+        return productsToProductsDto(randomProds);
     }
 
     @Override
@@ -98,7 +96,7 @@ public class ProductFacadeImpl implements IProductFacade {
     @Override
     public List<ProductDto> paginateProducts(int page) {
         var products = productService.paginateProducts(page);
-        return productToProductsDto(products);
+        return productsToProductsDto(products);
     }
 
     @Override
@@ -123,19 +121,28 @@ public class ProductFacadeImpl implements IProductFacade {
     }
     @Override
     public List<ProductDto> getAllProductsAssociateWithACategory(ListOfCategoriesIdRequestDto categoriesId) {
-        List<ProductDto> productDtos = new ArrayList<>();
+        List<List<ProductDto>> productDtosMatriz = new ArrayList<>();
+        List<ProductDto> productDtoList = new ArrayList<>();
+
         categoriesId.idsCategories().forEach(categoryId -> {
             var prods = productService.getAllProductsAssociateWithACategory(categoryId);
-            prods.forEach(prod -> productDtos.add(productDtoMapper.toProductDto(prod)));
+            productDtosMatriz.add(productsToProductsDto(prods));
         });
-        return productDtos;
+
+        productDtosMatriz.forEach(arrayProd -> {
+            arrayProd.forEach(product -> productDtoList.add(product));
+        });
+
+        return productDtoList;
     }
 
-    private List<ProductDto> productToProductsDto(List<Product> products){
+    private List<ProductDto> productsToProductsDto(List<Product> products){
         ArrayList<ProductDto> productsDto = new ArrayList<>();
-        products.forEach(product ->
-                productsDto.add(productDtoMapper.toProductDto(product)
-                ));
+        products.forEach(product -> {
+                    product.setProductCategories(categoryService.getAllCategoriesByProduct(product.getId()));
+                    product.setImages(imageService.getAllImagesByProduct(product.getId()));
+                    productsDto.add(productDtoMapper.toProductDto(product));
+                });
         return productsDto;
     }
 }
