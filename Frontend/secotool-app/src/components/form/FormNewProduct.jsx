@@ -46,7 +46,7 @@ function FormNewProduct({
   useEffect(() => {
     async function fetchFeatures() {
       try {
-        const response = await fetch("http://localhost:8080/v1/api/features");
+        const response = await fetch("http://localhost:8080/v1/api/products/features");
         if (response.ok) {
           const dataF = await response.json();
 
