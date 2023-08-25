@@ -1,38 +1,46 @@
-import { Modal, Uploader } from "rsuite";
+import { Modal } from "rsuite";
 import styles from "./EditCategoryModal.module.css";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 function EditCategoryModal({ handleClose, open, getData, selectedCategory }) {
   const [currentCategory, setCurrentCategory] = useState({
     name: "",
     description: "",
   });
-  const [newImage, setNewImage] = useState("");
+  const [currentImage, setCurrentImage] = useState("");
 
   const handleSubmit = () => {
     editCategoryAdmin();
-    setNewImage("");
     handleClose();
   };
 
   const editCategoryAdmin = async () => {
-    // axios
-    //   .put(
-    //     `http://localhost:8080/v1/api/category/${selectedCategory.id}`,
-    //     {
-    //       name: newFeature.name,
-    //       icon: newFeature.icon,
-    //     }
-    //   )
-    //   .then(function (response) {
-    //     console.log(response);
-    //     getData();
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
-    getData();
-    console.log(newImage);
+    const formData = new FormData();
+    formData.append(
+      "data",
+      new Blob([JSON.stringify(currentCategory)], { type: "application/json" })
+    );
+    formData.append("image", currentImage.blobFile);
+
+    console.log(formData);
+
+    axios({
+      method: "put",
+      url: "http://localhost:8080/v1/api/categories",
+      data: formData,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+      .then(function (response) {
+        handleClose();
+        console.log(response);
+        getData();
+      })
+      .catch(function (response) {
+        console.log(response);
+      });
   };
 
   useEffect(() => {
@@ -40,6 +48,7 @@ function EditCategoryModal({ handleClose, open, getData, selectedCategory }) {
       name: selectedCategory.name,
       description: selectedCategory.description,
     });
+    setCurrentImage("asdasdas");
   }, [selectedCategory]);
 
   return (
@@ -91,36 +100,43 @@ function EditCategoryModal({ handleClose, open, getData, selectedCategory }) {
                     description: e.target.value,
                   })
                 }
-                // onChange={(e) => setNewCategory({...newCategory,data:{description: e.target.value}})}
                 style={{ height: 120, width: 640, padding: 8 }}
               ></textarea>
             </label>
-            <label htmlFor="">
-              Imagenes
-              <Uploader
-                autoUpload={false}
-                draggable
-                // onChange={handleImageChangeD}
-              >
-                <div
-                  style={{
-                    height: 54,
-                    width: 640,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: 10,
-                    borderRadius: 8,
-                    border: "1px dashed #666",
-                  }}
-                >
-                  <i className="fa-solid fa-cloud-arrow-up"></i>
-                  <span>Subir imagen</span>
-                </div>
-              </Uploader>
-            </label>
           </form>
         </div>
+        {currentImage && (
+          <div
+            style={{
+              height: 54,
+              width: 640,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              border: "none",
+              overflow: "hidden",
+            }}
+          >
+            <img
+              style={{ width: "50%", borderRadius: 8 }}
+              src="https://blog.unid.edu.mx/hubfs/tendencias%20del%20lenguaje%202022.jpg"
+              alt=""
+            />
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "8px",
+                cursor: "pointer",
+              }}
+            >
+              <a href={currentImage} target="blank">
+                <i className="fa-solid fa-arrow-up-right-from-square"></i>
+              </a>
+            </div>
+          </div>
+        )}
       </Modal.Body>
       <Modal.Footer>
         <div className={styles.buttonsContainer}>
