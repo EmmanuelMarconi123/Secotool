@@ -1,0 +1,6 @@
+.listCategorias {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Crea 4 columnas de igual ancho */
+  gap: 20px;
+  padding-left: 0px;
+}

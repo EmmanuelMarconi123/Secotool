@@ -11,7 +11,7 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 
-  --color-primary: #F1CF24;
+  --color-primary: #FFDB27;
   --color-secondary: #E61717;
   --dark: #3A3939;
   --lightGrey: #EFECEC;
@@ -29,12 +29,8 @@ a {
   color: #242424;
 }
 
-/*Header*/
-header {
-  background-color: var(--color-primary);
-  position: fixed;
-  width: 100%;
-  z-index: 1000;
+li {
+  list-style: none;
 }
 
 /*Buttons*/
@@ -64,6 +60,12 @@ header {
   padding: 4px 8px;
 }
 
+.button-cta{
+  background-color: #4a6ac9;
+  border: none;
+  color: var(--white);
+}
+
 .button-lg {
   padding-top: 12px;
   padding-bottom: 12px;
@@ -71,7 +73,6 @@ header {
   font-size: 16px;
   margin-top: 24px;
   margin-bottom: 24px;
-  background-color: #C54B16;
 }
 
 /*Fonts*/
@@ -95,6 +96,10 @@ header {
   font-weight: 400;
 }
 
+.font-light{
+  font-weight: 300;
+}
+
 /*Spacings*/
 .pt-24 {
   padding-top: 24px;
@@ -113,7 +118,7 @@ header {
 }
 
 .pt-large{
-  padding-top: 116px;
+  padding-top: 88px;
 }
 
 /*Breakpoints*/
@@ -129,7 +134,7 @@ header {
 
 @media screen and (min-width: 1440px) {
   .title-lg {
-    font-size: 28px;
+    font-size: 33px;
   }
   .font-xl {
     font-size: 33px;
@@ -150,5 +155,9 @@ header {
 
   .button-primary-transparent {
     padding: 8px 16px;
+  }
+
+  .button-transparent{
+    font-size: 16px;
   }
 }
