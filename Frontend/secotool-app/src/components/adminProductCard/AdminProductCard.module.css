@@ -27,8 +27,23 @@
 .container i {
   cursor: pointer;
   color: var(--color-secondary);
+  padding-left: 10px;
+  font-size: 20px;
 }
 
 .container i:hover {
   opacity: 0.5;
 }
+
+.fa-plus-square-o {
+  color: var(--secondary);
+}
+
+.iconAd {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+
+
