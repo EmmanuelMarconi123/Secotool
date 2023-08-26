@@ -1,0 +1,17 @@
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.form .boxInputCheck {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.form .boxInputCheck input {
+    height: 16px;
+    width: 16px;
+    margin-right: 8px;
+ }

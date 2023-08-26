@@ -1,12 +1,10 @@
 package com.group2.secotool_app.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -15,11 +13,15 @@ public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", referencedColumnName = "id",nullable = false)
-    @JsonIgnore
-    private Product product;
-    @Column(name = "url",nullable = false)
+
+    //@Column(nullable = false)
+    @Column(name = "url")
     private String url;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    private Product product;
+
+    @OneToOne(mappedBy = "image",fetch = FetchType.LAZY)
+    private Category category;
 }
