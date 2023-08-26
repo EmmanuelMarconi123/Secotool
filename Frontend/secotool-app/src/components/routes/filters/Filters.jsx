@@ -3,8 +3,8 @@ import style from "./Filters.module.css";
 import ListProducts from "../../list/ListProducts";
 import ModalFilters from "../../modal/ModalFilters";
 import FormFilterDesktop from "../../form/formFilter/FormFilterDesktop";
-import { useMediaQuery } from "@react-hook/media-query";
 import axios from "axios";
+import { useMediaQuery } from "@react-hook/media-query";
 
 const Filters = () => {
   const [productsF, setProductsF] = useState([]);
@@ -13,10 +13,20 @@ const Filters = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+       if(filteredProducts===0){
         const response = await axios.get(
           "http://localhost:8080/v1/api/products/random"
         );
         setProductsF(response.data);
+        }else{
+          const response = await axios.post(
+            "http://localhost:8080/v1/api/products/all/category",
+            {
+                idsCategories: filteredProducts
+            }
+          );
+          setProductsF(response.data);
+        }
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -35,8 +45,8 @@ const Filters = () => {
     <section className={style.sectionFilters}>
       <div className={style.boxHeader}>
         <div>
-          <span>5 </span>
-          <span>de </span>
+          <span>{filteredProducts.length}</span>
+          <span> de </span>
           <span>{productsF.length}</span>
           <span> resultados</span>
         </div>
@@ -44,7 +54,7 @@ const Filters = () => {
           <>
             <h4>Categorías</h4>
             <hr />
-            <FormFilterDesktop />
+            <FormFilterDesktop updateFilteredProducts={updateFilteredProducts}/>
           </>
         ) : (
           <ModalFilters updateFilteredProducts={updateFilteredProducts}/>

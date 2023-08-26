@@ -9,6 +9,9 @@ import Footer from "../../components/footer/Footer";
 import Filters from "../../components/routes/filters/Filters";
 import Profile from "../../components/routes/profile/Profile";
 import { useAuth } from "../../contexts/AuthContext";
+import Features from "../../components/routes/features/Features";
+import Categories from "../../components/routes/categories/Categories";
+import UsersAdmin from "../../components/routes/usersAdmin/UsersAdmin";
 
 const AppRoutes = () => {
   const { isLoggedIn } = useAuth();
@@ -33,6 +36,9 @@ const AppRoutes = () => {
           {/* Rutas Admin */}
           <Route path="/admin/home" element={<HomeAdmin />} />
           <Route path="/admin/newproduct" element={<NewProduct />} />
+          <Route path="/admin/categories" element={<Categories />}></Route>
+          <Route path="/admin/features" element={<Features />}></Route>
+          <Route path="/admin/users" element={<UsersAdmin />}></Route>
         </Routes>
       </main>
       <Footer className="footer" />

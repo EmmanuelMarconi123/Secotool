@@ -7,7 +7,7 @@ import styles from "./Details.module.css";
 
 function Details() {
   const params = useParams();
-  const [productD, setProductsD] = useState("");
+  const [productD, setProductsD] = useState({});
 
   console.log(params);
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import style from "./FormFilterCategory.module.css";
 import axios from "axios";
 
-const FormFilterCategory = ({close, updateFilteredProducts}) => {
+const FormFilterCategory = ({ close, updateFilteredProducts }) => {
   const [categorias, setCategorias] = useState([]);
 
   useEffect(() => {
@@ -43,23 +43,40 @@ const FormFilterCategory = ({close, updateFilteredProducts}) => {
     event.preventDefault();
     try {
       if (selectedCategories.length > 0) {
-        const categoryId = selectedCategories[0];
-        const response = await axios.get(
-          `http://localhost:8080/v1/api/products/all/category/${categoryId}`
+        /* const categoryId = selectedCategories[0];*/
+        const response = await fetch(
+          `http://localhost:8080/v1/api/products/all/category`,
+          {
+            method: "POST",
+            headers: {
+              'Content-type':'application/json'
+            },
+            body: {
+              idsCategories: selectedCategories
+            }
+          }
         );
-        updateFilteredProducts(response.data); // Actualizar productos filtrados en el componente Filters
-      } else {
+
+        if(response.ok){
+          const data = await response.json();
+          updateFilteredProducts(data);
+          console.log(data)
+        }
+       else {
         updateFilteredProducts([]); // Si no hay categorías seleccionadas, muestra todos los productos
+         throw new Error("Error en la solicitud");
       }
-    } catch (error) {
-      console.error("Error fetching filtered products:", error);
-    }
+      }}
+      catch (error) {
+        console.error("Error fetching filtered products:", error);
+      }
   };
 
-    // Función para limpiar los filtros
-    const handleClearFilters = () => {
-      setSelectedCategories([]);
-    };
+  // Función para limpiar los filtros
+  const handleClearFilters = () => {
+    setSelectedCategories([]);
+    updateFilteredProducts([]);
+  };
 
   return (
     <form onSubmit={handleSubmit} className={style.form}>
@@ -71,13 +88,17 @@ const FormFilterCategory = ({close, updateFilteredProducts}) => {
             type="checkbox"
             value={categ.name}
             onChange={handleCheckboxChange}
-            checked={selectedCategories.includes(categ.id)}
+            checked={selectedCategories.includes(categ.name)}
           />
           <label>{categ.name}</label>
         </div>
       ))}
-      <button type="submit" onClick={close} className={style.btnFilter}>Aplicar filtros</button>
-      <button onClick={handleClearFilters} className={style.btnClear}>Limpiar filtros</button>
+      <button type="submit" onClick={close} className={style.btnFilter}>
+        Aplicar filtros
+      </button>
+      <button onClick={handleClearFilters} className={style.btnClear}>
+        Limpiar filtros
+      </button>
     </form>
   );
 };

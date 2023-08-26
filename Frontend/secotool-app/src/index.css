@@ -28,17 +28,16 @@ a {
   color: #242424;
 }
 
-<<<<<<< HEAD
 li {
   list-style: none;
-=======
+}
+
 /*Header*/
 header {
   background-color: var(--color-primary);
   /* position: fixed;
   width: 100%;
   z-index: 1000; */
->>>>>>> ef2144de4a4264e414d2a7aef3a6f17c19f11053
 }
 
 /*Buttons*/
@@ -125,13 +124,8 @@ header {
   flex-direction: column;
 }
 
-<<<<<<< HEAD
 .pt-large{
   padding-top: 88px;
-=======
-.pt-large {
-  padding-top: 116px;
->>>>>>> ef2144de4a4264e414d2a7aef3a6f17c19f11053
 }
 
 /*React suite styles*/
