@@ -35,8 +35,15 @@
   opacity: 0.5;
 }
 
-.fa-plus-square-o{
+.fa-plus-square-o {
   color: var(--secondary);
+}
+
+.iconAd {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
 }
 
 

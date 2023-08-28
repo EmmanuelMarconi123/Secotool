@@ -3,8 +3,10 @@ import LogoDesktop from "../../../assets/img/LogoDesktop.png";
 import { NavLink } from "react-router-dom";
 import "../../../index.css";
 import "../../../app.css";
+import { useAuth } from "../../../contexts/AuthContext";
 
 const AdminHeader = () => {
+  const { logout } = useAuth();
   return (
     <header className="spacing-grid">
       <nav className={styles.navbar}>
@@ -35,7 +37,7 @@ const AdminHeader = () => {
               Usuarios
             </NavLink>
             <NavLink
-              to="/admin/characteristics"
+              to="/admin/features"
               className={({ isActive }) =>
                 isActive ? styles.navLinkActive : styles.navLink
               }
@@ -53,7 +55,7 @@ const AdminHeader = () => {
               Categorías
             </NavLink>
           </div>
-          <NavLink to="/home" className={styles.closeSesion}>
+          <NavLink className={styles.closeSesion} to="/" onClick={logout}>
             <i className="fa-regular fa-right-from-bracket"></i>
           </NavLink>
         </div>
