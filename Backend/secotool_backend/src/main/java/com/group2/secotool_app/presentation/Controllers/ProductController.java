@@ -70,8 +70,9 @@ public class ProductController {
     }
 
 
-    @PostMapping("/all/category")
-    public ResponseEntity<List<ProductDto>> filterProductsByCategories(@RequestBody ListOfCategoriesIdRequestDto categoriesIdRequestDto){
+    @GetMapping("/all/category")
+    public ResponseEntity<List<ProductDto>> filterProductsByCategories(@RequestParam("idCategory") List<Long> categoriesId){
+        ListOfCategoriesIdRequestDto categoriesIdRequestDto = new ListOfCategoriesIdRequestDto(categoriesId);
         return ResponseEntity.ok(productFacade.getAllProductsAssociateWithACategory(categoriesIdRequestDto));
     }
 
