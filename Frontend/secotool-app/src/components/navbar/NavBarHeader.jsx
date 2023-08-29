@@ -9,7 +9,7 @@ import { useAuth } from "../../contexts/AuthContext";
 
 const NavBarHeader = () => {
   const isMobile = useMediaQuery("(max-width: 1024px)");
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, user } = useAuth();
 
   return (
     <nav className={styles.NavBarHeader}>
@@ -37,6 +37,13 @@ const NavBarHeader = () => {
             <DropdownDesktop />
           </div>
           <div className={styles.boxButtons}>
+            {user.userRole && isLoggedIn ? (
+              <Link to="/admin/home">
+                <button className="button-primary-transparent button-small">
+                  Panel admin
+                </button>
+              </Link>
+            ):(<span></span>)}
             {isLoggedIn ? (
               <DropdownProfile />
             ) : (

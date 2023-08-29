@@ -6,7 +6,7 @@ import { useAuth } from "../../../contexts/AuthContext";
 const DropdownMenu = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const { isLoggedIn, logout } = useAuth();
+  const { isLoggedIn, logout, user } = useAuth();
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -48,6 +48,13 @@ const DropdownMenu = () => {
               Herramientas
             </Link>
             <div className={styles.boxButtons}>
+            {user.userRole && (
+              <Link to="/admin/home">
+                <button className="button-primary-transparent button-small">
+                  Panel admin
+                </button>
+              </Link>
+            )}
               {isLoggedIn ? (
                 <Link to="/">
                   <button className="button-transparent" onClick={logout}>
