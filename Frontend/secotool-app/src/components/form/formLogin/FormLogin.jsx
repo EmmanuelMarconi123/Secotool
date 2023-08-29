@@ -10,7 +10,7 @@ import { useAuth } from "../../../contexts/AuthContext";
 
 const FormLogin = () => {
 
-  const { login } = useAuth();
+  const { login, userLog } = useAuth();
 
   //en estos initial values se me van a guardar luego lo que el usuario escriba en los imputs
   const initialValues = {
@@ -34,6 +34,7 @@ const FormLogin = () => {
       console.log(response);
       if (response.data.jwt) {
         login(response.data.jwt);
+        userLog(response.data.userInfo);
         setMensajeError(false);
         navigate("/home");
       } else {

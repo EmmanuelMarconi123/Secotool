@@ -35,40 +35,6 @@ const FormFilterDesktop = ({ updateFilteredProducts }) => {
     updateFilteredProducts(selectedCategories);
   };
 
-
-
-  // Función para manejar el envío del formulario
-  /*const handleSubmit = async () => {
-    try {
-      if (selectedCategories.length > 0) {
-        /* const categoryId = selectedCategories[0];
-        const response = await fetch(
-          `http://localhost:8080/v1/api/products/all/category`,
-          {
-            method: "POST",
-            headers: {
-              "Content-type": "application/json",
-            },
-            body: {
-              idsCategories: selectedCategories,
-            },
-          }
-        );
-
-        if (response.ok) {
-          const data = await response.json();
-          updateFilteredProducts(data);
-          console.log(data);
-        } else {
-          updateFilteredProducts([]);
-          throw new Error("Error en la solicitud");
-        }
-      }
-    } catch (error) {
-      console.error("Error fetching filtered products:", error);
-    }
-  };*/
-
   return (
     <form className={style.form}>
       {categoryData.map((categ) => (
@@ -78,7 +44,8 @@ const FormFilterDesktop = ({ updateFilteredProducts }) => {
             type="checkbox"
             value={categ.name}
             onChange={handleCheckboxChange}
-            checked={selectedCategories.includes(categ.name)}
+            checked={selectedCategories.includes(categ.id)}
+            onClick={updateFilteredProducts(selectedCategories)}
           />
           <label>{categ.name}</label>
         </div>
