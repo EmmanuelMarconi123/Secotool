@@ -2,8 +2,10 @@ import { Modal } from "rsuite";
 import styles from "./EditCategoryModal.module.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useAuth } from "../../contexts/AuthContext";
 
 function EditCategoryModal({ handleClose, open, getData, selectedCategory }) {
+  const { token } = useAuth();
   const [currentCategory, setCurrentCategory] = useState({
     name: "",
     description: "",
@@ -30,6 +32,7 @@ function EditCategoryModal({ handleClose, open, getData, selectedCategory }) {
       url: "http://localhost:8080/v1/api/categories",
       data: formData,
       headers: {
+        'Authorization': 'Bearer ' + token,
         "Content-Type": "multipart/form-data",
       },
     })

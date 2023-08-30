@@ -6,12 +6,19 @@ import { ButtonToolbar, Button, } from "rsuite";
 import { Alert, Snackbar } from "@mui/material";
 import FormNewProduct from "../../form/formNewProduct/FormNewProduct";
 import FormEditProduct from "../../form/FormEditProduct";
+import { useAuth } from "../../../contexts/AuthContext";
 
 const HomeAdmin = () => {
   //----------------------------TRAE TODOS LOS PRODUCTOS----------------------------->
+  const { token } = useAuth();
+
   const fetchProductsAdmin = async () => {
     try {
-      const response = await fetch("http://localhost:8080/v1/api/products/all");
+      const response = await fetch("http://localhost:8080/v1/api/products/all",{
+        headers: {
+          'Authorization': 'Bearer ' + token,
+        }
+      })
       if (response.ok) {
         const data = await response.json();
         setProducts(data);
@@ -39,7 +46,11 @@ const HomeAdmin = () => {
   //---------------------------EDIT PRODUCT------------------------------------>
   const fetchProductDetails = async (productId) => {
     try {
-      const response = await fetch(`http://localhost:8080/v1/api/products/${productId}`);
+      const response = await fetch(`http://localhost:8080/v1/api/products/${productId}`,{
+        headers:{
+          'Authorization': 'Bearer ' + token,
+        }
+      });
       if (response.ok) {
         const productDetails = await response.json();
         return productDetails;
@@ -81,6 +92,9 @@ const HomeAdmin = () => {
         `http://localhost:8080/v1/api/products/${productId}`,
         {
           method: "DELETE",
+          headers: {
+            'Authorization': 'Bearer ' + token,
+          }
         }
       );
 
