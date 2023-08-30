@@ -2,8 +2,10 @@ import { Toggle } from "rsuite";
 import styles from "./UsersAdminCard.module.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useAuth } from "../../contexts/AuthContext";
 
 const UsersAdminCard = ({ selectedUser,getData }) => {
+  const { token } = useAuth();
   const [newUserBody, setNewUserBody] = useState(selectedUser);
 
   const handleRole = () => {
@@ -30,7 +32,12 @@ const UsersAdminCard = ({ selectedUser,getData }) => {
     axios
       .post(
         `http://localhost:8080/v1/api/users/admin/${selectedUser.id}/${newUserBody.userRole}`,
-        newUserBody
+        newUserBody,
+        {
+          headers: {
+            'Authorization': 'Bearer ' + token,
+          }
+        }
       )
       .then(function (response) {
         console.log(response);
