@@ -44,12 +44,12 @@ function Details() {
     "../src/assets/img/taladro-6.png",
   ];
 
-  const mockCaracteristicas = [
+  /*const mockCaracteristicas = [
     { id: 1, nombre: "Marca Bosh", icono: "fa-regular fa-tag" },
     { id: 2, nombre: "Color Azúl", icono: "fa-regular fa-palette" },
     { id: 3, nombre: "Es inalámbrico", icono: "fa-regular fa-plug" },
     { id: 4, nombre: "Voltaje 220V", icono: "fa-regular fa-bolt" },
-  ];
+  ];*/
 
   return (
     <div className="d-flex f-dir-colum">
@@ -75,9 +75,13 @@ function Details() {
           <h4 className={styles.titleDetails + " font-regular mb-16"}>
             Características
           </h4>
-          <ListCaracteristicas
-            caracteris={mockCaracteristicas}
-          ></ListCaracteristicas>
+          {productD.productFeatures ? (
+             <ListCaracteristicas
+             caracteris={productD.productFeatures}
+           ></ListCaracteristicas>
+          ):(
+            <span>El producto no posee características.</span>
+          )}
         </div>
         <button className="button-lg button-cta">Alquilar</button>
       </div>

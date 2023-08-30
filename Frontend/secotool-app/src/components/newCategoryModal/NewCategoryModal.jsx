@@ -10,26 +10,38 @@ function NewCategoryModal({
   getData,
 }) {
   const [newCategory, setNewCategory] = useState({ name: "", description: "" });
-  const [newImage, setNewImage] = useState("");
+  const [uploadedImages, setUploadedImages] = useState([]); // Estado para las imágenes cargadas
+  const handleImageChangeD = (fileList) => {
+    setUploadedImages([...uploadedImages, ...fileList]);
+  };
 
   const handleSubmit = () => {
     addCategoryAdmin();
     handleClose();
   };
 
-  const handleChangeImage = (file) => {
-    setNewImage(file);
-  };
-
   const addCategoryAdmin = async () => {
-    const formData = new FormData();
-    formData.append(
-      "data",
-      new Blob([JSON.stringify(newCategory)], { type: "application/json" })
-    );
-    formData.append("image", newImage.blobFile);
 
-    console.log(newImage);
+
+    const nuevaCategoria = {
+      name: newCategory.name,
+      description: newCategory.description,
+    }
+    const formData = new FormData();
+    console.log(nuevaCategoria)
+
+    const json = JSON.stringify(nuevaCategoria)
+    console.log(json)
+    const blob = new Blob([json],{
+      type: 'application/json'
+    })
+
+    formData.append("data", blob)
+    uploadedImages.forEach((file) => {
+      formData.append("image", file.blobFile);
+    });
+
+    console.log(formData);
 
     axios({
       method: "post",
@@ -106,7 +118,7 @@ function NewCategoryModal({
               <Uploader
                 autoUpload={false}
                 draggable
-                onChange={handleChangeImage}
+                onChange={handleImageChangeD}
               >
                 <div
                   style={{

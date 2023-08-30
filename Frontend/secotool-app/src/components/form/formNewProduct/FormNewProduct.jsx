@@ -1,13 +1,9 @@
-import { Modal, TagPicker, Uploader } from "rsuite";
+import { Modal, TagPicker, Uploader, Button } from "rsuite";
 import styles from "./FormNewProduct.module.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-function FormNewProduct({
-  open,
-  handleClose,
-}) {
-
+function FormNewProduct({ open, handleClose, onProductCreated }) {
   //-----------------------------DATOS(CATEGORIAS Y FEATURES)----------------------------------->
   const [categories, setCategories] = useState([]);
   const [features, setFeatures] = useState([]);
@@ -18,13 +14,13 @@ function FormNewProduct({
         const response = await fetch("http://localhost:8080/v1/api/categories");
         if (response.ok) {
           const dataC = await response.json();
-  
+
           // Transforma los datos a la estructura de TagPicker
           const transformedData = dataC.map((category) => ({
             label: category.name,
             value: category.id,
           }));
-  
+
           setCategories(transformedData);
         } else {
           console.error("Error fetching categories:", response.statusText);
@@ -33,14 +29,16 @@ function FormNewProduct({
         console.error("Error fetching categories:", error);
       }
     }
-  
+
     fetchCategories();
   }, []);
 
   useEffect(() => {
     async function fetchFeatures() {
       try {
-        const response = await fetch("http://localhost:8080/v1/api/products/features");
+        const response = await fetch(
+          "http://localhost:8080/v1/api/products/features"
+        );
         if (response.ok) {
           const data = await response.json();
           const transformedData = data.map((category) => ({
@@ -55,13 +53,14 @@ function FormNewProduct({
         console.error("Error fetching features:", error);
       }
     }
-  
+
     fetchFeatures();
   }, []);
 
   //--------------------------------NEW PRODUCT---------------------->
+  const[isLoading, setIsLoading] = useState(false);
 
-  
+
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
@@ -70,19 +69,17 @@ function FormNewProduct({
   const [idsCategories, setIdsCategories] = useState(); //Agarra las categorias
   const [idsFeatures, setIdsFeatures] = useState([]);
 
-
   const handleOptionChange = (newSelectedOptions) => {
-    console.log(newSelectedOptions)
+    console.log(newSelectedOptions);
     setIdsCategories(newSelectedOptions);
-    console.log(idsCategories)
+    console.log(idsCategories);
   };
 
   const handleOptionChangeF = (newSelectedOptionsF) => {
-    console.log(newSelectedOptionsF)
+    console.log(newSelectedOptionsF);
     setIdsFeatures(newSelectedOptionsF);
-    console.log(idsFeatures)
+    console.log(idsFeatures);
   };
-
 
   const handleImageChangeD = (fileList) => {
     setUploadedImages([...uploadedImages, ...fileList]);
@@ -90,30 +87,40 @@ function FormNewProduct({
 
   const handleNewProductSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true)
     const formData = new FormData(); //Creando el form DATA
 
     const productData = {
       name: name,
       description: description,
-      price: price
+      price: price,
     };
 
     const categoriasId = {
       idsCategories: idsCategories,
-    }
+    };
 
     const featuresId = {
       idsFeatures: idsFeatures,
-    }
-    formData.append("product-data", new Blob([JSON.stringify(productData)], { type: "application/json" }));
-    formData.append("categories", new Blob([JSON.stringify(categoriasId)], { type: "application/json" }));
-    formData.append("features", new Blob([JSON.stringify(featuresId)], { type: "application/json" }));
+    };
+    formData.append(
+      "product-data",
+      new Blob([JSON.stringify(productData)], { type: "application/json" })
+    );
+    formData.append(
+      "categories",
+      new Blob([JSON.stringify(categoriasId)], { type: "application/json" })
+    );
+    formData.append(
+      "features",
+      new Blob([JSON.stringify(featuresId)], { type: "application/json" })
+    );
     //-----------------------APPENDS------------------>
     uploadedImages.forEach((file) => {
-      formData.append('images', file.blobFile); 
+      formData.append("images", file.blobFile);
     });
 
-    console.log(formData)
+    console.log(formData);
 
     axios({
       method: "post",
@@ -124,7 +131,16 @@ function FormNewProduct({
       },
     })
       .then(function (response) {
-        handleClose()
+        handleClose();
+        onProductCreated();
+        setIsLoading(false)
+
+        setName("");
+        setDescription("");
+        setPrice("");
+        setUploadedImages([]);
+        setIdsCategories([]);
+        setIdsFeatures([]);
         console.log(response);
       })
       .catch(function (response) {
@@ -132,7 +148,7 @@ function FormNewProduct({
         console.log(response);
       });
   };
-  
+
   /*Aqui va el formulario para agregar un nuevo producto como admin*/
   return (
     <Modal size="md" open={open} onClose={handleClose} overflow={false}>
@@ -220,7 +236,9 @@ function FormNewProduct({
               </Uploader>
             </label>
             <div className={styles.labelSeparator}></div>
-            <button>Agregar Producto</button>
+            <Button type='submit' appearance="default" loading={isLoading} disabled={isLoading}>
+            {isLoading ? "Cargando..." : "Agregar Producto"}
+            </Button>
           </form>
         </div>
       </Modal.Body>

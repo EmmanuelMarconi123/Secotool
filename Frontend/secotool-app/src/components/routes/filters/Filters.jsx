@@ -9,23 +9,25 @@ import { useMediaQuery } from "@react-hook/media-query";
 const Filters = () => {
   const [productsF, setProductsF] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
+
   // "useEffect usado para el fetch de los productos (por ahora es necesario correr el back de local)"
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-       if(filteredProducts===0){
-        const response = await axios.get(
-          "http://localhost:8080/v1/api/products/random"
-        );
-        setProductsF(response.data);
-        }else{
-          const response = await axios.post(
-            "http://localhost:8080/v1/api/products/all/category",
-            {
-                idsCategories: filteredProducts
-            }
+        let url = "http://localhost:8080/v1/api/products/all";
+
+        if (filteredProducts.length > 0) {
+          const categoryIds = filteredProducts.map(
+            (product) => product.idCategory
           );
-          setProductsF(response.data);
+
+          url +=
+            "/category?" +
+            categoryIds.map((id) => `idCategory=${id}`).join("&");
+        }
+
+        const response = await axios.get(url);
+        setProductsF(response.data);
         }
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -54,15 +56,17 @@ const Filters = () => {
           <>
             <h4>Categorías</h4>
             <hr />
-            <FormFilterDesktop updateFilteredProducts={updateFilteredProducts}/>
+            <FormFilterDesktop
+              updateFilteredProducts={updateFilteredProducts}
+            />
           </>
         ) : (
-          <ModalFilters updateFilteredProducts={updateFilteredProducts}/>
+          <ModalFilters updateFilteredProducts={updateFilteredProducts} />
         )}
       </div>
       <div className={style.contenedorCards}>
         <h4 className={style.titleContenedorCards}>Todas las herramientas</h4>
-        <ListProducts products={filteredProducts.length > 0 ? filteredProducts : productsF} />
+        <ListProducts products={productsF} />
       </div>
     </section>
   );
