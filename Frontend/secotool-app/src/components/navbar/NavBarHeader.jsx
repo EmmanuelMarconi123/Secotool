@@ -3,9 +3,9 @@ import styles from "./NavBarHeader.module.css";
 import LogoDesktop from "../../assets/img/LogoDesktop.png";
 import DropdownMenu from "../dropdown/dropdownMenu/DropdownMenu";
 import DropdownDesktop from "../dropdown/dropdownDesktop/DropdownDesktop";
-import { useMediaQuery } from "@react-hook/media-query";
 import DropdownProfile from "../dropdown/dropdownProfile/DropdownProfile";
 import { useAuth } from "../../contexts/AuthContext";
+import { useMediaQuery } from "@react-hook/media-query";
 
 const NavBarHeader = () => {
   const isMobile = useMediaQuery("(max-width: 1024px)");

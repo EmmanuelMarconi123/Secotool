@@ -18,6 +18,12 @@ const DropdownMenu = () => {
     }
   };
 
+  const isAdmin = () => {
+    if(user.userRole === "ADMIN"){
+      setUserAdmin(true);
+    }
+  }
+
   useEffect(() => {
     document.addEventListener("click", closeDropdown);
     return () => {
