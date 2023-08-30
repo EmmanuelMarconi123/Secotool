@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import style from "./FormFilterCategory.module.css";
 import axios from "axios";
+import { RestorePageRounded } from "@mui/icons-material";
 
 const FormFilterCategory = ({ close, updateFilteredProducts }) => {
   const [categorias, setCategorias] = useState([]);
