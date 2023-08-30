@@ -28,6 +28,7 @@ const Filters = () => {
 
         const response = await axios.get(url);
         setProductsF(response.data);
+        }
       } catch (error) {
         console.error("Error fetching products:", error);
       }

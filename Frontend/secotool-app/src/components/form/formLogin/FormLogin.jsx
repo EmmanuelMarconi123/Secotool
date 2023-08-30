@@ -31,7 +31,7 @@ const FormLogin = () => {
           password: values.password,
         }
       );
-      console.log(response);
+      console.log(response.data);
       if (response.data.jwt) {
         login(response.data.jwt);
         userLog(response.data.userInfo);
