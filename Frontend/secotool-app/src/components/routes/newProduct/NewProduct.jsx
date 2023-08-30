@@ -114,11 +114,12 @@ const NewProduct = () => {
           style={{
             display: "flex",
             alignItems: "center",
+            textAlign: "center",
             justifyContent: "center",
             height: "100vh",
           }}
         >
-          Por favor ingrese desde un dispositivo mas grande
+          Por favor ingrese desde un dispositivo más grande
         </span>
       )}
     </div>
