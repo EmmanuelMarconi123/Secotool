@@ -3,13 +3,13 @@ import styles from "./NavBarHeader.module.css";
 import LogoDesktop from "../../assets/img/LogoDesktop.png";
 import DropdownMenu from "../dropdown/dropdownMenu/DropdownMenu";
 import DropdownDesktop from "../dropdown/dropdownDesktop/DropdownDesktop";
-import { useMediaQuery } from "@react-hook/media-query";
 import DropdownProfile from "../dropdown/dropdownProfile/DropdownProfile";
 import { useAuth } from "../../contexts/AuthContext";
+import { useMediaQuery } from "@react-hook/media-query";
 
 const NavBarHeader = () => {
   const isMobile = useMediaQuery("(max-width: 1024px)");
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, user } = useAuth();
 
   return (
     <nav className={styles.NavBarHeader}>
@@ -37,6 +37,13 @@ const NavBarHeader = () => {
             <DropdownDesktop />
           </div>
           <div className={styles.boxButtons}>
+            {user.userRole && isLoggedIn ? (
+              <Link to="/admin/home">
+                <button className="button-primary-transparent button-small">
+                  Panel admin
+                </button>
+              </Link>
+            ):(<span></span>)}
             {isLoggedIn ? (
               <DropdownProfile />
             ) : (
