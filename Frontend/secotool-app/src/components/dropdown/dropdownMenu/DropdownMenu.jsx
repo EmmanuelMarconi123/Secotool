@@ -7,7 +7,6 @@ const DropdownMenu = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const { isLoggedIn, logout, user } = useAuth();
-  const [userAdmin, setUserAdmin] = useState(false);
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -55,9 +54,11 @@ const DropdownMenu = () => {
               Herramientas
             </Link>
             <div className={styles.boxButtons}>
-            {userAdmin && (
-              <Link to="/home/admin">
-                <button className="button-primary">Panel admin</button>
+            {user.userRole && (
+              <Link to="/admin/home">
+                <button className="button-primary-transparent button-small">
+                  Panel admin
+                </button>
               </Link>
             )}
               {isLoggedIn ? (

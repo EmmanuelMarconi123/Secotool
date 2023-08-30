@@ -8,6 +8,7 @@ footer {
 footer img {
   padding-top: 38px;
   width: 25vh;
+  /*width: 240px;*/
 }
 
 footer p {
@@ -27,6 +28,7 @@ footer p {
     height: 16.589px;
     flex-shrink: 0;
   }
+
   footer p {
     font-size: 13px;
     font-weight: 400;

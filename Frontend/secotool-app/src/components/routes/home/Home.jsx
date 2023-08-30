@@ -7,11 +7,12 @@ import { Typography } from "@mui/material";
 
 const Home = () => {
   const [productsF, setProductsF] = useState([]);
-  // "useEffect usado para el fect de los productos (por ahora es necesario correr el back de local)"
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("http://localhost:8080/v1/api/products/random");
+        const response = await fetch(
+          "http://localhost:8080/v1/api/products/random"
+        );
         if (response.ok) {
           const data = await response.json();
           setProductsF(data);
