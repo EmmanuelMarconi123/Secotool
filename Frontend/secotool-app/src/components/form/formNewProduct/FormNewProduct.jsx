@@ -93,7 +93,8 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
   };
 
   const handleImageChangeD = (fileList) => {
-    setUploadedImages([...uploadedImages, ...fileList]);
+    setUploadedImages(fileList);
+    console.log(fileList)
   };
 
   const handleNewProductSubmit = async (e) => {
@@ -228,6 +229,7 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
               <Uploader
                 autoUpload={false}
                 draggable
+                multiple={true}
                 onChange={handleImageChangeD}
               >
                 <div
