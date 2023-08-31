@@ -5,7 +5,6 @@ function Carousel({ imagenes }) {
   const [imagenActual, setImagenActual] = useState(0);
   const [showMore, setShowMore] = useState(false);
   const indicadorImagenes = `${imagenActual + 1}/${imagenes.length}`;
-
   const toggleShowMore = () => {
     setShowMore(!showMore);
   };
@@ -28,7 +27,7 @@ function Carousel({ imagenes }) {
     <>
       <div className={styles.containerCarouselMobile}>
         <div className={styles.indicadorImg}>{indicadorImagenes}</div>
-        {imagenes.map((imagen, index) => {
+        {imagenes.map((url, index) => {
           return (
             // eslint-disable-next-line react/jsx-key
             <div
@@ -42,7 +41,7 @@ function Carousel({ imagenes }) {
                 <img
                   key={index}
                   className={styles.imgProduct}
-                  src={imagen}
+                  src={url}
                   alt=""
                 />
               )}
@@ -61,21 +60,21 @@ function Carousel({ imagenes }) {
       <div className={styles.containerCarousel}>
         <div className={styles.carouselGrid}>
           <div className={styles.leftColumn}>
-            <img className={styles.imgProduct} src={imagenes[0]} alt="" />
+            <img className={styles.imgProduct} src={imagenes[0].url} alt="" />
           </div>
           <div className={styles.rightColumn}>
-            {imagenes.slice(1, 5).map((imagen, index) => (
+            {imagenes.slice(1, 5).map((url, index) => (
               <div key={index}>
-                <img className={styles.imgProduct} src={imagen} alt="" />
+                <img className={styles.imgProduct} src={url} alt="" />
               </div>
             ))}
           </div>
         </div>
         {showMore && (
           <div className={styles.moreImagesContainer}>
-            {imagenes.slice(5).map((imagen, index) => (
+            {imagenes.slice(5).map((url, index) => (
               <div key={index}>
-                <img className={styles.imgProduct} src={imagen} alt="" />
+                <img className={styles.imgProduct} src={url} alt="" />
               </div>
             ))}
           </div>

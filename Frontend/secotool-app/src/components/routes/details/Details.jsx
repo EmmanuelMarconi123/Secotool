@@ -8,7 +8,6 @@ import styles from "./Details.module.css";
 function Details() {
   const params = useParams();
   const [productD, setProductsD] = useState({});
-
   console.log(params);
 
   useEffect(() => {
@@ -49,7 +48,10 @@ function Details() {
     { id: 2, nombre: "Color Azúl", icono: "fa-regular fa-palette" },
     { id: 3, nombre: "Es inalámbrico", icono: "fa-regular fa-plug" },
     { id: 4, nombre: "Voltaje 220V", icono: "fa-regular fa-bolt" },
-  ];*/
+  ];
+
+ /* let images = productD.images;
+  console.log(images);*/
 
   return (
     <div className="d-flex f-dir-colum">
