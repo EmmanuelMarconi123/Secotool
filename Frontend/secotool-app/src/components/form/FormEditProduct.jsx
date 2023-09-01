@@ -16,12 +16,14 @@ function FormEditProduct({
   const [editedPrice, setEditedPrice] = useState();
   const [editedCategories, setEditedCategories] = useState([]);
   const [editedFeatures, setEditedFeatures] = useState([]);
+  const [editedImages, setEditedImages] = useState()
 
   useEffect(() => {
     if (selectedProduct) {
       setEditedName(selectedProduct.name);
       setEditedDescription(selectedProduct.description);
       setEditedPrice(selectedProduct.price);
+      setEditedImages(selectedProduct.images)
       
       if (selectedProduct.productCategories) {
         const categoryIds = selectedProduct.productCategories.map((category) => category.id);
@@ -41,9 +43,6 @@ function FormEditProduct({
   //---------------------------------DATOS------------------------------>
   const [categories, setCategories] = useState([]);
   const [features, setFeatures] = useState([]);
-
-
-  
 
   useEffect(() => {
     async function fetchCategories() {
@@ -244,7 +243,7 @@ function FormEditProduct({
             </label>
             <label htmlFor="">
               Imagenes
-              <Uploader listType="picture-text" autoUpload={false} draggable onChange={handleImageChangeE}>
+              <Uploader listType="picture-text" fileList={editedImages} autoUpload={false} draggable onChange={handleImageChangeE}>
                 <div
                   style={{
                     height: 54,
