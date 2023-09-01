@@ -51,6 +51,16 @@
   padding-left: 0px;
 }
 
+.boxShareProduct{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.boxShareProduct i{
+  font-size: 19px;
+}
+
 @media screen and (min-width: 768px) {
   .boxInfoProduct {
     margin-bottom: 24px;
@@ -97,5 +107,9 @@
     left: 58%;
     z-index: 1;
     width: 27%;
+  }
+
+  .boxShareProduct i{
+    font-size: 27px;
   }
 }
