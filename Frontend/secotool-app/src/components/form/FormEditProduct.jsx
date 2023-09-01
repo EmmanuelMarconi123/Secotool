@@ -18,14 +18,25 @@ function FormEditProduct({
   const [editedFeatures, setEditedFeatures] = useState([]);
 
   useEffect(() => {
-
+    if (selectedProduct) {
       setEditedName(selectedProduct.name);
       setEditedDescription(selectedProduct.description);
       setEditedPrice(selectedProduct.price);
-      const categoryIds = selectedProduct.productCategories.map((category) => category.id);
-      setEditedCategories( categoryIds|| []);
-      const featureIds = selectedProduct.productFeatures.map((feature) => feature.id);
-      setEditedFeatures(featureIds || []);
+      
+      if (selectedProduct.productCategories) {
+        const categoryIds = selectedProduct.productCategories.map((category) => category.id);
+        setEditedCategories(categoryIds || []);
+      } else {
+        setEditedCategories([]); // Si productCategories no está definido, asigna un array vacío
+      }
+  
+      if (selectedProduct.productFeatures) {
+        const featureIds = selectedProduct.productFeatures.map((feature) => feature.id);
+        setEditedFeatures(featureIds || []);
+      } else {
+        setEditedFeatures([]); // Si productFeatures no está definido, asigna un array vacío
+      }
+    }
   }, [selectedProduct]);
   //---------------------------------DATOS------------------------------>
   const [categories, setCategories] = useState([]);
