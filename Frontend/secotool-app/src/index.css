@@ -148,6 +148,15 @@ header {
   border-radius: 8px;
 }
 
+/*Calendar*/
+.rs-picker-daterange-menu .rs-picker-daterange-panel-show-one-calendar .rs-picker-toolbar {
+  max-width: none!important;
+}
+
+.rs-picker-daterange-header{
+  text-align: center;
+}
+
 /*Breakpoints*/
 @media screen and (min-width: 768px) {
   .title-lg {
@@ -173,11 +182,6 @@ header {
 
   .font-sm {
     font-size: 19px;
-  }
-
-  .button-lg {
-    width: 296px;
-    align-self: center;
   }
 
   .button-primary-transparent {
