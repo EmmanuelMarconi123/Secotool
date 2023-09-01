@@ -91,7 +91,7 @@ function Details() {
           <div>
             <div className={styles.boxShareProduct}>
               <h1 className="title-lg">{data.name}</h1>
-              <ModalShare></ModalShare>
+              <ModalShare product={data}></ModalShare>
             </div>
             <Carousel images={data.images}></Carousel>
           </div>
