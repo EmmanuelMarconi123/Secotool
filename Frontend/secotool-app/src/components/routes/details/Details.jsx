@@ -6,35 +6,28 @@ import ListCaracteristicas from "../../list/ListCaracteristicas";
 import styles from "./Details.module.css";
 import { DateRangePicker } from "rsuite";
 import { useMediaQuery } from "@react-hook/media-query";
+import { Loader } from "rsuite";
+import { useFetch, statuses } from "../../../customHooks/useFetch";
+
+const LoadingIndicator = () => <Loader size="md" content="CARGANDO" />;
+
+const NetworkError = () => <p>Network Error</p>;
 
 function Details() {
   const params = useParams();
-  const [productD, setProductsD] = useState({});
   const isScreenSmall = useMediaQuery("(max-width: 767px)");
   const [isSticky, setIsSticky] = useState(false);
+  const [images, setImages] = useState([]);
 
-  //console.log(params);
+  const URL_API = `http://localhost:8080/v1/api/products/${params.id}`;
+  const { data, status } = useFetch(URL_API, {});
 
   useEffect(() => {
-    const fetchProductsD = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:8080/v1/api/products/${params.id}`
-        );
-        if (response.ok) {
-          const dataD = await response.json();
-          setProductsD(dataD);
-          console.log(dataD);
-        } else {
-          throw new Error("Error en la solicitud");
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchProductsD();
-  }, []);
+    if( status !== statuses.ERROR && data){
+      console.log(data)
+      setImages(data.images);
+    }
+  },[])
 
   function handleScroll() {
     const scrollPosition = window.scrollY;
@@ -54,28 +47,6 @@ function Details() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
-  const productImagenes = [
-    "../src/assets/img/taladro-1.png",
-    "../src/assets/img/taladro-2.png",
-    "../src/assets/img/taladro-3.png",
-    "../src/assets/img/taladro-4.png",
-    "../src/assets/img/taladro-5.png",
-    "../src/assets/img/taladro-6.png",
-    "../src/assets/img/taladro-6.png",
-    "../src/assets/img/taladro-6.png",
-    "../src/assets/img/taladro-6.png",
-  ];
-
-  /*const mockCaracteristicas = [
-    { id: 1, nombre: "Marca Bosh", icono: "fa-regular fa-tag" },
-    { id: 2, nombre: "Color Azúl", icono: "fa-regular fa-palette" },
-    { id: 3, nombre: "Es inalámbrico", icono: "fa-regular fa-plug" },
-    { id: 4, nombre: "Voltaje 220V", icono: "fa-regular fa-bolt" },
-  ];
-
- /* let images = productD.images;
-  console.log(images);*/
 
   const mockPoliticas = [
     {
@@ -116,88 +87,109 @@ function Details() {
     },
   ];
 
-  return (
-    <div className="d-flex f-dir-colum">
-      <Link to="/home">
-        <button className="button-transparent font-btn-transparent pt-large">
-          <i className="fa-regular fa-arrow-left"></i>Volver atrás
-        </button>
-      </Link>
-      <div className={styles.boxInfoProduct}>
-        <div>
-          <h1 className="title-lg">{productD.name}</h1>
-          <Carousel imagenes={productImagenes}></Carousel>
-        </div>
-        <div className={styles.boxInfoProductBottom}>
-          <div className={styles.boxInfoProductBottomStart}>
-            <div className="pt-24">
-              <h4 className={styles.titleDetails + " font-regular mb-16"}>
-                Descripción
-              </h4>
-              <p className="font-sm">{productD.description}</p>
-            </div>
-            <div className="">
-              <h4 className={styles.titleDetails + " font-regular mb-16"}>
-                Características
-              </h4>
-              {productD.productFeature ? (
-                <ListCaracteristicas
-                  caracteris={productD.productFeatures}
-                ></ListCaracteristicas>
-              ) : (
-                <p className="font-sm">El producto no posee características.</p>
-              )}
-            </div>
+  const ComponentDetailProduct =
+    status !== statuses.ERROR && data ? (
+      <div className="d-flex f-dir-colum">
+        <Link to="/home">
+          <button className="button-transparent font-btn-transparent pt-large">
+            <i className="fa-regular fa-arrow-left"></i>Volver atrás
+          </button>
+        </Link>
+        <div className={styles.boxInfoProduct}>
+          <div>
+            <h1 className="title-lg">{data.name}</h1>
+            <Carousel images={images}></Carousel>
           </div>
-          <div
-            className={
-              styles.boxInfoProductBottomEnd +
-              (isSticky ? " " + styles.stickyEnd : "")
-            }
-          >
-            <div className={styles.boxPrecioFechas}>
-              <div className={styles.boxCalendarTop}>
-                <div className={styles.boxTexts}>
-                  <span className={styles.titleSm}>Precio total</span>
-                  <div className={styles.textPrecio}>
-                    <span>$</span>
-                    <span>{productD.price}</span>
-                  </div>
-                </div>
+          <div className={styles.boxInfoProductBottom}>
+            <div className={styles.boxInfoProductBottomStart}>
+              <div className="pt-24">
+                <h4 className={styles.titleDetails + " font-regular mb-16"}>
+                  Descripción
+                </h4>
+                <p className="font-sm">{data.description}</p>
               </div>
-              <div className={styles.boxCalendar}>
-                <span className={styles.titleSm}>Desde - Hasta</span>
-                {isScreenSmall ? (
-                  <DateRangePicker
-                    appearance="subtle"
-                    placeholder="Seleccione fechas"
-                    showOneCalendar
-                  />
+              <div className="">
+                <h4 className={styles.titleDetails + " font-regular mb-16"}>
+                  Características
+                </h4>
+                {data.productFeature ? (
+                  <ListCaracteristicas
+                    caracteris={data.productFeatures}
+                  ></ListCaracteristicas>
                 ) : (
-                  <DateRangePicker
-                    appearance="subtle"
-                    placeholder="Seleccione fechas"
-                  />
+                  <p className="font-sm">
+                    El producto no posee características.
+                  </p>
                 )}
               </div>
             </div>
-            <button className="button-lg button-cta">Alquilar</button>
+            <div
+              className={
+                styles.boxInfoProductBottomEnd +
+                (isSticky ? " " + styles.stickyEnd : "")
+              }
+            >
+              <div className={styles.boxPrecioFechas}>
+                <div className={styles.boxCalendarTop}>
+                  <div className={styles.boxTexts}>
+                    <span className={styles.titleSm}>Precio total</span>
+                    <div className={styles.textPrecio}>
+                      <span>$</span>
+                      <span>{data.price}</span>
+                    </div>
+                  </div>
+                </div>
+                <div className={styles.boxCalendar}>
+                  <span className={styles.titleSm}>Desde - Hasta</span>
+                  {isScreenSmall ? (
+                    <DateRangePicker
+                      appearance="subtle"
+                      placeholder="Seleccione fechas"
+                      showOneCalendar
+                    />
+                  ) : (
+                    <DateRangePicker
+                      appearance="subtle"
+                      placeholder="Seleccione fechas"
+                    />
+                  )}
+                </div>
+              </div>
+              <button className="button-lg button-cta">Alquilar</button>
+            </div>
+          </div>
+          <div className={styles.boxList}>
+            <ul className={styles.listPoliticas}>
+              {mockPoliticas.map((politica) => (
+                <li key={politica.id}>
+                  <h4 className={styles.titleDetails + " font-regular mb-16"}>
+                    {politica.name}
+                  </h4>
+                  <p className="font-sm">{politica.description}</p>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
-        <div className={styles.boxList}>
-          <ul className={styles.listPoliticas}>
-            {mockPoliticas.map((politica) => (
-              <li key={politica.id}>
-                <h4 className={styles.titleDetails + " font-regular mb-16"}>
-                  {politica.name}
-                </h4>
-                <p className="font-sm">{politica.description}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
       </div>
-    </div>
+    ) : null;
+
+  /*const mockCaracteristicas = [
+    { id: 1, nombre: "Marca Bosh", icono: "fa-regular fa-tag" },
+    { id: 2, nombre: "Color Azúl", icono: "fa-regular fa-palette" },
+    { id: 3, nombre: "Es inalámbrico", icono: "fa-regular fa-plug" },
+    { id: 4, nombre: "Voltaje 220V", icono: "fa-regular fa-bolt" },
+  ];*/
+
+  return (
+    <>
+      {status === statuses.LOADING ? (
+        <LoadingIndicator />
+      ) : (
+        ComponentDetailProduct
+      )}
+      {status === statuses.ERROR && <NetworkError />}
+    </>
   );
 }
 
