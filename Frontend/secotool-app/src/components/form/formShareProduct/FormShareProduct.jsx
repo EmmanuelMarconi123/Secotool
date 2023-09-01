@@ -1,14 +1,14 @@
-import { Checkbox, CheckboxGroup, Input  } from "rsuite";
+import { Checkbox, CheckboxGroup, Input } from "rsuite";
 import styles from "./FormShareProduct.module.css";
 import { useState } from "react";
 import CardProductShare from "../../card/CardProductShare";
 
-const FormShareProduct = () => {
+const FormShareProduct = ({ product }) => {
   const [value, setValue] = useState([]);
 
   return (
     <form className={styles.formShare}>
-    <p>Elije la red social</p>
+      <p>Elije alguna red social</p>
       <CheckboxGroup
         inline
         name="checkboxList"
@@ -20,23 +20,27 @@ const FormShareProduct = () => {
         className={styles.checkboxGroup}
       >
         <div className={styles.checkbox}>
-        <i className="fa-brands fa-facebook-f"></i>
-        <Checkbox value="facebook"  />
+          <i className="fa-brands fa-facebook-f"></i>
+          <Checkbox value="facebook" />
         </div>
         <div className={styles.checkbox}>
-        <i className="fa-brands fa-instagram"></i>
-        <Checkbox value="instagram"  />
+          <i className="fa-brands fa-instagram"></i>
+          <Checkbox value="instagram" />
         </div>
         <div className={styles.checkbox}>
-        <i className="fa-brands fa-twitter"></i>
-        <Checkbox value="twitter"  />
+          <i className="fa-brands fa-twitter"></i>
+          <Checkbox value="twitter" />
         </div>
       </CheckboxGroup>
       <div className={styles.boxEndForm}>
-      <CardProductShare></CardProductShare>
-      <Input as="textarea" rows={3} placeholder="Escribe algún mensaje para acompañar al contenido" />
+        <CardProductShare product={product}></CardProductShare>
+        <Input
+          as="textarea"
+          rows={3}
+          placeholder="Escribe aquí algún mensaje para acompañar al contenido"
+        />
       </div>
-      <button>Compartir</button>
+      <button className="button-cta">Compartir</button>
     </form>
   );
 };

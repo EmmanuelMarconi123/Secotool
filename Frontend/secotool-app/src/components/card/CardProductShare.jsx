@@ -1,13 +1,14 @@
 import { Link } from "react-router-dom";
 import styles from './CardProductShare.module.css';
 
-const CardProductShare = () => {
+const CardProductShare = ({ product }) => {
+
   return (
     <div className={styles.cardProductShare}>
       {/*<img src={product.images[0]}></img>
             <p>{product.description}</p>
-    <Link></Link>*/}
-      <img src="../src/assets/img/taladro-2.png" />
+    */}
+      <img src={product.images[0].url} />
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua. Est sit amet
@@ -15,7 +16,7 @@ const CardProductShare = () => {
         accumsan. Molestie nunc non blandit massa enim nec dui nunc mattis. Enim
         nec dui nunc mattis.
       </p>
-      <Link>Enlace a la pagina del producto</Link>
+      <Link to={`/product/${product.id}`} >Enlace a la pagina del producto</Link>
     </div>
   );
 };
