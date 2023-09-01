@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import style from "./FormFilterDesktop.module.css";
 import axios from "axios";
 
-const FormFilterDesktop = ({ updateFilteredProducts }) => {
+const FormFilterDesktop = ({ updatefilterProducts }) => {
   const [categoryData, setCategoryData] = useState([]);
 
   // Estado para mantener el registro de checkboxes seleccionados
@@ -20,19 +20,24 @@ const FormFilterDesktop = ({ updateFilteredProducts }) => {
       });
   }, []);
 
+  useEffect(() => {
+    // Llama a la función de actualización cuando cambie la selección de categorías
+    updatefilterProducts(selectedCategories);
+  }, [selectedCategories, updatefilterProducts]);
 
+console.log(selectedCategories)
 
   // Función para manejar el cambio en la selección de checkboxes
   const handleCheckboxChange = (event) => {
-    const categoryName = event.target.value;
+    const categoryID = parseInt(event.target.value);
     if (event.target.checked) {
-      setSelectedCategories((prevSelected) => [...prevSelected, categoryName]);
+      setSelectedCategories((prevSelected) => [...prevSelected, categoryID]);
     } else {
       setSelectedCategories((prevSelected) =>
-        prevSelected.filter((category) => category !== categoryName)
+        prevSelected.filter((category) => category !== categoryID)
       );
     }
-    updateFilteredProducts(selectedCategories);
+    updatefilterProducts(selectedCategories);
   };
 
   return (
@@ -42,10 +47,8 @@ const FormFilterDesktop = ({ updateFilteredProducts }) => {
           <input
           id={categ.id}
             type="checkbox"
-            value={categ.name}
+            value={categ.id}
             onChange={handleCheckboxChange}
-            checked={selectedCategories.includes(categ.id)}
-            onClick={updateFilteredProducts(selectedCategories)}
           />
           <label>{categ.name}</label>
         </div>

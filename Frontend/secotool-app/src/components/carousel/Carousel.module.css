@@ -99,11 +99,19 @@
 
     .imgProduct {
         max-width: 100%;
-        height: auto;
+        height: 100%;
         max-height: 640px;
     }
 
     .moreImagesContainer{
-        display: flex
+        display: flex;
+        max-height: 249px;
+        gap: 8px;
+        width: 100%;
     }
+
+    .moreImagesContainer img{
+        width: 332px;
+    }
+
 }
