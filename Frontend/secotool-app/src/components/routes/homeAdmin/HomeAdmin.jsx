@@ -79,10 +79,8 @@ const HomeAdmin = () => {
 
     if (productIndex !== -1) {
       // Crear una nueva lista de productos con el producto actualizado
-      //hola(borrar)
       const updatedProducts = [...products];
       updatedProducts[productIndex] = updatedProduct;
-
       // Actualizar el estado de la lista de productos
       setProducts(updatedProducts);
     }
