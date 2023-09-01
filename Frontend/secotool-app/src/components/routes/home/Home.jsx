@@ -4,9 +4,14 @@ import { useState } from "react";
 import { useEffect } from "react";
 import ListProducts from "../../list/ListProducts";
 import { Typography } from "@mui/material";
+import { useFunction } from "../../../contexts/FunctionsContext";
 
 const Home = () => {
+
+  const {isLiked} = useFunction()
+
   const [productsF, setProductsF] = useState([]);
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -25,7 +30,7 @@ const Home = () => {
     };
 
     fetchProducts();
-  }, []);
+  }, [isLiked]);
 
   return (
     <section className={styles.sectionBusqueda}>
@@ -37,7 +42,7 @@ const Home = () => {
         <FormBusqueda />
       </div>
       <div className={styles.contenedorCards}>
-        <ListProducts products={productsF} />
+        <ListProducts products={productsF}/>
       </div>
     </section>
   );

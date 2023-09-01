@@ -1,8 +1,6 @@
-.container {
+.card {
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
+  align-items: flex-start;
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
   border-radius: 8px;
   background-color: white;
@@ -11,18 +9,11 @@
 .textoCard {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   text-align: start;
   padding-left: 8px;
   padding-right: 8px;
   padding-bottom: 8px;
-}
-
-.card {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 8px 0;
-  padding: 8px;
 }
 
 .imgContainer {
@@ -56,6 +47,18 @@
 
 .textPriceCard {
   font-size: 16px;
+}
+
+.contenedorCorazon {
+  position: relative;
+}
+
+.corazon {
+  z-index: 500;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
 }
 
 @media screen and (min-width: 768px) {

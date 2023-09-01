@@ -1,4 +1,4 @@
-import { Grid} from "@mui/material";
+import { Grid } from "@mui/material";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Card from "../card/CardProduct";
@@ -34,9 +34,7 @@ const ListProducts = ({ products }) => {
         {shuffledHerramientas &&
           currentPost.map((product) => (
             <Grid key={product.id}>
-              <Link to={"/product/" + product.id} key={product.id}>
-                <Card product={product} />
-              </Link>
+              <Card product={product} />
             </Grid>
           ))}
       </div>
