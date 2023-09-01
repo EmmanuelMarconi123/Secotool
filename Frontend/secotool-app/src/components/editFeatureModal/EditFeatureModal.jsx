@@ -3,6 +3,7 @@ import styles from "./EditFeatureModal.module.css";
 import Select, { components } from "react-select";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useAuth } from "../../contexts/AuthContext";
 
 const icons = [
   { value: "fa-solid fa-wifi" },
@@ -28,6 +29,7 @@ const Option = (props) => (
 );
 
 const EditFeatureModal = ({ handleClose, open, getData, selectedFeature }) => {
+  const { token } = useAuth;
   const [selectedIcon, setSelectedIcon] = useState({});
   const [newFeature, setNewFeature] = useState({});
 
@@ -58,6 +60,11 @@ const EditFeatureModal = ({ handleClose, open, getData, selectedFeature }) => {
         {
           name: newFeature.name,
           icon: newFeature.icon,
+        },
+        {
+          headers: {
+            'Authorization': 'Bearer ' + token,
+          }
         }
       )
       .then(function (response) {

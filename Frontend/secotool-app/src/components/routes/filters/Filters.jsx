@@ -8,45 +8,52 @@ import { useMediaQuery } from "@react-hook/media-query";
 
 const Filters = () => {
   const [productsF, setProductsF] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [filterProducts, setfilterProducts] = useState([]);
+  const [filteredProductsF, setFilteredProductsF] = useState([]);
 
-  // "useEffect usado para el fetch de los productos (por ahora es necesario correr el back de local)"
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchData = async () => {
       try {
-        let url = "http://localhost:8080/v1/api/products/all";
-
-        if (filteredProducts.length > 0) {
-          const categoryIds = filteredProducts.map(
-            (product) => product.idCategory
-          );
-
-          url +=
-            "/category?" +
-            categoryIds.map((id) => `idCategory=${id}`).join("&");
-        }
-
-        const response = await axios.get(url);
+        // Realiza la solicitud para obtener todos los productos sin filtros
+        const response = await axios.get(
+          "http://localhost:8080/v1/api/products/all"
+        );
         setProductsF(response.data);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
     };
 
-    fetchProducts();
+    fetchData();
   }, []);
 
   const isScreenSmall = useMediaQuery("(max-width: 1024px)");
 
-  const updateFilteredProducts = (filteredProducts) => {
-    setFilteredProducts(filteredProducts);
-  };
+  useEffect(() => {
+    // Filtra los productos basados en los filtros seleccionados
+    if (filterProducts.length > 0) {
+      let filteredProducts = productsF.filter((product) => {
+        // Verifica si al menos un valor de productCategories.id está en filterProducts
+        return product.productCategories.some((category) =>
+          filterProducts.includes(category.id)
+        );
+      });
+      setFilteredProductsF(filteredProducts);
+    } else {
+      // Si no hay filtros seleccionados, muestra todos los productos
+      setFilteredProductsF(productsF);
+    }
+  }, [filterProducts, productsF]);
 
+  const updatefilterProducts = (filterProducts) => {
+    setfilterProducts(filterProducts);
+  };
+  console.log(filteredProductsF);
   return (
     <section className={style.sectionFilters}>
       <div className={style.boxHeader}>
         <div>
-          <span>{filteredProducts.length}</span>
+          <span>{filteredProductsF.length}</span>
           <span> de </span>
           <span>{productsF.length}</span>
           <span> resultados</span>
@@ -55,19 +62,18 @@ const Filters = () => {
           <>
             <h4>Categorías</h4>
             <hr />
-            <FormFilterDesktop
-              updateFilteredProducts={updateFilteredProducts}
-            />
+            <FormFilterDesktop updatefilterProducts={updatefilterProducts} />
           </>
         ) : (
-          <ModalFilters updateFilteredProducts={updateFilteredProducts} />
+          <ModalFilters updatefilterProducts={updatefilterProducts} />
         )}
       </div>
       <div className={style.contenedorCards}>
         <h4 className={style.titleContenedorCards}>Todas las herramientas</h4>
-        <ListProducts products={productsF} />
+        <ListProducts products={filteredProductsF} />
       </div>
     </section>
   );
 };
+
 export default Filters;

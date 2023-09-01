@@ -11,6 +11,7 @@ import com.group2.secotool_app.model.dto.request.ListOfCategoriesIdRequestDto;
 import com.group2.secotool_app.model.dto.request.ListOfFeaturesidRequestDto;
 import com.group2.secotool_app.model.dto.request.ProductRequestDto;
 import com.group2.secotool_app.model.entity.Product;
+import com.group2.secotool_app.util.ProductUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,6 +34,7 @@ public class ProductFacadeImpl implements IProductFacade {
     private final ProductMapper productMapper;
     private final ProductDtoMapper productDtoMapper;
     private final ProductFullDtoMapper productFullDtoMapper;
+    private final ProductUtils productUtils;
 
     @Override
     public List<ProductDto> getAllProducts() {
@@ -133,19 +135,7 @@ public class ProductFacadeImpl implements IProductFacade {
             arrayProd.forEach(product -> productDtoList.add(product));
         });
 
-        return removeDuplicated(productDtoList);
-    }
-
-    private List<ProductDto> removeDuplicated(List<ProductDto> productDtos){
-        List<ProductDto> productDtoList = new ArrayList<>(productDtos);
-        productDtoList.sort((p1,p2) -> p1.compareTo(p2));
-
-        for (int i = 0; i < productDtoList.size() - 1; i++) {
-            if (productDtoList.get(i).id().equals(productDtoList.get(i+1).id())){
-                productDtoList.remove(i);
-            }
-        }
-        return productDtoList;
+        return productUtils.removeDuplicated(productDtoList);
     }
 
     private List<ProductDto> productsToProductsDto(List<Product> products){

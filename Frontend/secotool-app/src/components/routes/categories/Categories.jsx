@@ -5,6 +5,7 @@ import AdminCategoryCard from "../../adminCategoryCard/AdminCategoryCard";
 import Pagination from "../../pagination/Pagination";
 import NewCategoryModal from "../../newCategoryModal/NewCategoryModal";
 import EditCategoryModal from "../../editCategoryModal/EditCategoryModal";
+import { Snackbar, Alert } from "@mui/material";
 
 const Categories = () => {
   //------------------------------ CONFIG MODALS--------------->
@@ -15,6 +16,12 @@ const Categories = () => {
   const [openEp, setOpenEp] = useState(false);
   const handleOpenEp = () => setOpenEp(true);
   const handleCloseEp = () => setOpenEp(false);
+  
+  //-----------------------------ALERTA BORRAR------------------------>
+  const [alertOpen, setAlertOpen] = useState(false);
+  const showDeleteSuccessAlert = () => {
+    setAlertOpen(true);
+  };
 
   //-------------- CONFIGURACION DE LA PAGINACION -------------------->
 
@@ -41,6 +48,7 @@ const Categories = () => {
         if (response.ok) {
           console.log(`Se ha borrado el item con id ${id} correctamente`);
           fetchCategoriesAdmin();
+          showDeleteSuccessAlert();
         } else {
           throw new Error("Error en la solicitud");
         }
@@ -142,6 +150,16 @@ const Categories = () => {
           Por favor ingrese desde un dispositivo más grande
         </span>
       )}
+      {/* ---------------------------------------------DELETE ALERT-------------------------- */}
+      <Snackbar
+        open={alertOpen}
+        autoHideDuration={3000} // Duración en milisegundos
+        onClose={() => setAlertOpen(false)}
+      >
+        <Alert onClose={() => setAlertOpen(false)} severity="success">
+          Producto eliminado correctamente.
+        </Alert>
+      </Snackbar>
       {/* --------------------------NUEVA CARACTERÍSTICA MODAL--------------------------------> */}
 
       <NewCategoryModal
