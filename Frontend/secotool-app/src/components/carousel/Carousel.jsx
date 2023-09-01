@@ -1,33 +1,34 @@
 import { useState } from "react";
 import styles from "./Carousel.module.css";
 
-function Carousel({ imagenes }) {
+function Carousel({ images }) {
   const [imagenActual, setImagenActual] = useState(0);
   const [showMore, setShowMore] = useState(false);
-  const indicadorImagenes = `${imagenActual + 1}/${imagenes.length}`;
+  const indicadorimages = `${imagenActual + 1}/${images.length}`;
+
   const toggleShowMore = () => {
     setShowMore(!showMore);
   };
 
-  if (!Array.isArray(imagenes) || imagenes.length === 0) return;
+  if (!Array.isArray(images) || images.length === 0) return;
 
   const siguienteImagen = () => {
     setImagenActual(
-      imagenActual === imagenes.length - 1 ? 0 : imagenActual + 1
+      imagenActual === images.length - 1 ? 0 : imagenActual + 1
     );
   };
 
   const anteriorImagen = () => {
     setImagenActual(
-      imagenActual === 0 ? imagenes.length - 1 : imagenActual - 1
+      imagenActual === 0 ? images.length - 1 : imagenActual - 1
     );
   };
 
   return (
     <>
       <div className={styles.containerCarouselMobile}>
-        <div className={styles.indicadorImg}>{indicadorImagenes}</div>
-        {imagenes.map((url, index) => {
+        <div className={styles.indicadorImg}>{indicadorimages}</div>
+        {images.map((image, index) => {
           return (
             // eslint-disable-next-line react/jsx-key
             <div
@@ -41,7 +42,7 @@ function Carousel({ imagenes }) {
                 <img
                   key={index}
                   className={styles.imgProduct}
-                  src={url}
+                  src={image.url}
                   alt=""
                 />
               )}
@@ -60,21 +61,21 @@ function Carousel({ imagenes }) {
       <div className={styles.containerCarousel}>
         <div className={styles.carouselGrid}>
           <div className={styles.leftColumn}>
-            <img className={styles.imgProduct} src={imagenes[0].url} alt="" />
+            <img className={styles.imgProduct} src={images[0].url} alt="" />
           </div>
           <div className={styles.rightColumn}>
-            {imagenes.slice(1, 5).map((url, index) => (
+            {images.slice(1, 5).map((image, index) => (
               <div key={index}>
-                <img className={styles.imgProduct} src={url} alt="" />
+                <img className={styles.imgProduct} src={image.url} alt="" />
               </div>
             ))}
           </div>
         </div>
         {showMore && (
           <div className={styles.moreImagesContainer}>
-            {imagenes.slice(5).map((url, index) => (
+            {images.slice(5).map((image, index) => (
               <div key={index}>
-                <img className={styles.imgProduct} src={url} alt="" />
+                <img className={styles.imgProduct} src={image.url} alt="" />
               </div>
             ))}
           </div>

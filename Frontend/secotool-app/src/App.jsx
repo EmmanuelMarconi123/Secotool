@@ -9,6 +9,7 @@ import AppRoutesAdmin from "./autenticaciones/AppRoutesAdmin/AppRoutesAdmin";
 
 function App() {
   return (
+
     <AuthProvider>
       <FunctionProvider>
         <Routes>
