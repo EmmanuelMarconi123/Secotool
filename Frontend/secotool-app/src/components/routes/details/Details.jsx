@@ -8,6 +8,7 @@ import { DateRangePicker } from "rsuite";
 import { useMediaQuery } from "@react-hook/media-query";
 import { Loader } from "rsuite";
 import { useFetch, statuses } from "../../../customHooks/useFetch";
+import ModalShare from "../../modal/ModalShare";
 
 const LoadingIndicator = () => <Loader size="md" content="CARGANDO" />;
 
@@ -17,17 +18,8 @@ function Details() {
   const params = useParams();
   const isScreenSmall = useMediaQuery("(max-width: 767px)");
   const [isSticky, setIsSticky] = useState(false);
-  //const [images, setImages] = useState([]);
-
   const URL_API = `http://localhost:8080/v1/api/products/${params.id}`;
   const { data, status } = useFetch(URL_API, {});
-
-  /*useEffect(() => {
-    if( status !== statuses.ERROR && data){
-      console.log(data)
-      setImages(data.images);
-    }
-  },[])*/
 
   function handleScroll() {
     const scrollPosition = window.scrollY;
@@ -97,7 +89,10 @@ function Details() {
         </Link>
         <div className={styles.boxInfoProduct}>
           <div>
-            <h1 className="title-lg">{data.name}</h1>
+            <div className={styles.boxShareProduct}>
+              <h1 className="title-lg">{data.name}</h1>
+              <ModalShare></ModalShare>
+            </div>
             <Carousel images={data.images}></Carousel>
           </div>
           <div className={styles.boxInfoProductBottom}>
