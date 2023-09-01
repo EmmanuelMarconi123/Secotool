@@ -28,7 +28,7 @@ function Carousel({ images }) {
     <>
       <div className={styles.containerCarouselMobile}>
         <div className={styles.indicadorImg}>{indicadorimages}</div>
-        {images.map((url, index) => {
+        {images.map((image, index) => {
           return (
             // eslint-disable-next-line react/jsx-key
             <div
@@ -42,7 +42,7 @@ function Carousel({ images }) {
                 <img
                   key={index}
                   className={styles.imgProduct}
-                  src={url}
+                  src={image.url}
                   alt=""
                 />
               )}

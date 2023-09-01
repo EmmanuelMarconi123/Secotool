@@ -17,17 +17,17 @@ function Details() {
   const params = useParams();
   const isScreenSmall = useMediaQuery("(max-width: 767px)");
   const [isSticky, setIsSticky] = useState(false);
-  const [images, setImages] = useState([]);
+  //const [images, setImages] = useState([]);
 
   const URL_API = `http://localhost:8080/v1/api/products/${params.id}`;
   const { data, status } = useFetch(URL_API, {});
 
-  useEffect(() => {
+  /*useEffect(() => {
     if( status !== statuses.ERROR && data){
       console.log(data)
       setImages(data.images);
     }
-  },[])
+  },[])*/
 
   function handleScroll() {
     const scrollPosition = window.scrollY;
@@ -89,7 +89,7 @@ function Details() {
 
   const ComponentDetailProduct =
     status !== statuses.ERROR && data ? (
-      <div className="d-flex f-dir-colum">
+      <>
         <Link to="/home">
           <button className="button-transparent font-btn-transparent pt-large">
             <i className="fa-regular fa-arrow-left"></i>Volver atrás
@@ -98,7 +98,7 @@ function Details() {
         <div className={styles.boxInfoProduct}>
           <div>
             <h1 className="title-lg">{data.name}</h1>
-            <Carousel images={images}></Carousel>
+            <Carousel images={data.images}></Carousel>
           </div>
           <div className={styles.boxInfoProductBottom}>
             <div className={styles.boxInfoProductBottomStart}>
@@ -171,7 +171,7 @@ function Details() {
             </ul>
           </div>
         </div>
-      </div>
+        </>
     ) : null;
 
   /*const mockCaracteristicas = [
@@ -182,14 +182,14 @@ function Details() {
   ];*/
 
   return (
-    <>
+    <div className="d-flex f-dir-colum">
       {status === statuses.LOADING ? (
         <LoadingIndicator />
       ) : (
         ComponentDetailProduct
       )}
       {status === statuses.ERROR && <NetworkError />}
-    </>
+    </div>
   );
 }
 
