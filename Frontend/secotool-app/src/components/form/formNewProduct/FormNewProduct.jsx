@@ -2,16 +2,23 @@ import { Modal, TagPicker, Uploader, Button } from "rsuite";
 import styles from "./FormNewProduct.module.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useAuth } from "../../../contexts/AuthContext";
 
 function FormNewProduct({ open, handleClose, onProductCreated }) {
   //-----------------------------DATOS(CATEGORIAS Y FEATURES)----------------------------------->
   const [categories, setCategories] = useState([]);
   const [features, setFeatures] = useState([]);
 
+  const { token } = useAuth();
+
   useEffect(() => {
     async function fetchCategories() {
       try {
-        const response = await fetch("http://localhost:8080/v1/api/categories");
+        const response = await fetch("http://localhost:8080/v1/api/categories",{
+          headers: {
+            'Authorization': 'Bearer ' + token,
+          }
+        });
         if (response.ok) {
           const dataC = await response.json();
 
@@ -38,7 +45,11 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
       try {
         const response = await fetch(
           "http://localhost:8080/v1/api/products/features"
-        );
+        ,{
+          headers: {
+            'Authorization': 'Bearer ' + token,
+          }
+        });
         if (response.ok) {
           const data = await response.json();
           const transformedData = data.map((category) => ({
@@ -82,7 +93,8 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
   };
 
   const handleImageChangeD = (fileList) => {
-    setUploadedImages([...uploadedImages, ...fileList]);
+    setUploadedImages(fileList);
+    console.log(fileList)
   };
 
   const handleNewProductSubmit = async (e) => {
@@ -127,6 +139,7 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
       url: "http://localhost:8080/v1/api/products",
       data: formData,
       headers: {
+        'Authorization': 'Bearer ' + token,
         "Content-Type": "multipart/form-data",
       },
     })
@@ -216,6 +229,7 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
               <Uploader
                 autoUpload={false}
                 draggable
+                multiple={true}
                 onChange={handleImageChangeD}
               >
                 <div
