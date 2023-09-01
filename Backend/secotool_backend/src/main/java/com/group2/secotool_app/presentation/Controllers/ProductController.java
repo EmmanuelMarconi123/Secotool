@@ -2,7 +2,8 @@ package com.group2.secotool_app.presentation.Controllers;
 
 import com.group2.secotool_app.bussiness.facade.IProductFacade;
 import com.group2.secotool_app.model.dto.ProductDto;
-import com.group2.secotool_app.model.dto.request.ProductRequestDto;
+import com.group2.secotool_app.model.dto.ProductFullDto;
+import com.group2.secotool_app.model.dto.request.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -24,7 +25,8 @@ import java.util.List;
 public class ProductController {
     private final IProductFacade productFacade;
 
-    @GetMapping
+
+    @GetMapping("/all")
     @Operation(summary = "return a list of all products saved in database")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",description = "list of products")
@@ -39,7 +41,7 @@ public class ProductController {
             @ApiResponse(responseCode = "200",description = "product found"),
             @ApiResponse(responseCode = "400",description = "product not found")
     })
-    public ResponseEntity<ProductDto> getProductById(@Parameter(description = "id of product ") @PathVariable Long id){
+    public ResponseEntity<ProductFullDto> getProductById(@Parameter(description = "id of product ") @PathVariable Long id){
         return ResponseEntity.ok(productFacade.findProductById(id));
     }
 
@@ -61,6 +63,19 @@ public class ProductController {
         return ResponseEntity.ok(productFacade.paginateProducts(page));
     }
 
+
+    @GetMapping("/all/feature/{featureId}")
+    public ResponseEntity<List<ProductDto>> getAllProductsAssociateWithAFeature(@PathVariable Long featureId){
+        return ResponseEntity.ok(productFacade.getAllProductsAssociateWithAFeature(featureId));
+    }
+
+
+    @GetMapping("/all/category")
+    public ResponseEntity<List<ProductDto>> filterProductsByCategories(@RequestParam("idCategory") List<Long> categoriesId){
+        ListOfCategoriesIdRequestDto categoriesIdRequestDto = new ListOfCategoriesIdRequestDto(categoriesId);
+        return ResponseEntity.ok(productFacade.getAllProductsAssociateWithACategory(categoriesIdRequestDto));
+    }
+
     @PostMapping
     @Operation(summary = "save a product on database")
     @ApiResponses(value = {
@@ -69,21 +84,34 @@ public class ProductController {
             @ApiResponse(responseCode = "406",description = "product name already exists on database")
     })
     public ResponseEntity<String> saveProduct(@Parameter(description = "")
-                                                    @RequestPart("data") @Valid ProductRequestDto productRequestDto,
-                                                    @RequestParam("images")
-                                                    @NotNull(message = "images requerid")
-                                                    @NotEmpty(message = "list can not be empy")
-                                                    @Valid
-                                                    List<MultipartFile> images ){
-        return ResponseEntity.status(201).body(productFacade.save(productRequestDto,images));
+                                              @RequestPart("product-data") @Valid
+                                              ProductRequestDto productRequestDto,
+                                              @RequestPart("categories") @Valid
+                                                  ListOfCategoriesIdRequestDto listOfCategoriesIdRequestDto,
+                                              @RequestPart("features") @Valid
+                                                  ListOfFeaturesidRequestDto listOfFeaturesidRequestDto,
+                                              @RequestParam("images")
+                                              @NotNull(message = "images requerid")
+                                              @NotEmpty(message = "list can not be empy")
+                                              @Valid
+                                              List<MultipartFile> images ){
+        return ResponseEntity.status(201).body(productFacade.save(productRequestDto, listOfCategoriesIdRequestDto, listOfFeaturesidRequestDto,images));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateProduct(@PathVariable Long id , @RequestBody @Valid ProductRequestDto productRequestDto){
-        productFacade.updateProduct(id,productRequestDto);
+    public ResponseEntity<?> updateProduct(@PathVariable Long id ,
+                                           @RequestPart("product-data") @Valid
+                                           ProductRequestDto productRequestDto,
+                                           @RequestPart("categories") @Valid
+                                               ListOfCategoriesIdRequestDto listOfCategoriesIdRequestDto,
+                                           @RequestPart("features") @Valid
+                                           ListOfFeaturesidRequestDto listOfFeaturesidRequestDto){
+        productFacade.updateProduct(id, productRequestDto, listOfCategoriesIdRequestDto, listOfFeaturesidRequestDto);
         return ResponseEntity.ok(String.format("product %s succesffully updated",id));
     }
 
+
+    // cuando se elimine un prd hay que borrar las imagenes de la db y del buvket s3 de aws
     @DeleteMapping("/{id}")
     @Operation(summary = "delete a product saved on database")
     @ApiResponses(value = {

@@ -2,6 +2,7 @@ package com.group2.secotool_app.bussiness.service.Impl;
 
 import com.group2.secotool_app.bussiness.mapper.ProductMapper;
 import com.group2.secotool_app.bussiness.service.IProductValidationService;
+import com.group2.secotool_app.model.entity.Image;
 import com.group2.secotool_app.model.entity.Product;
 import com.group2.secotool_app.persistence.ProductRepository;
 import com.group2.secotool_app.bussiness.service.IProductService;
@@ -40,8 +41,11 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public void deleteById(Long id) {
-        productRepository.deleteById(id);
+    public void deleteById(Long id, List<Image> images) {
+        var prod = new Product();
+        prod.setId(id);
+        prod.setImages(images);
+        productRepository.delete(prod);
     }
 
     @Override
@@ -68,6 +72,32 @@ public class ProductServiceImpl implements IProductService {
     public void updateProduct(Product prod) {
         if (!existProductById(prod.getId()))
             throw new RuntimeException("it is not posible to update a product doesn't exists");
+        productRepository.deleteRelationsWithCategoryAndFeatures(prod.getId());
         productRepository.save(prod);
     }
+
+    @Override
+    public List<Product> getAllProductsAssociateWithAFeature(Long featureId) {
+        return productRepository.findAllByFeatureId(featureId);
+    }
+    @Override
+    public List<Product> getAllProductsAssociateWithACategory(Long categoryId) {
+        return productRepository.findAllByCategoryId(categoryId);
+    }
+
+    @Override
+    public Product findByName(String prodName) {
+        var product = productRepository.findByName(prodName);
+        if (product.isPresent()){
+            return product.get();
+        }
+        throw new RuntimeException("product "+prodName+ " not found");
+    }
+
+    @Override
+    public void deleteRelationsWithCategoryAndFeatures(Long id) {
+        productRepository.deleteRelationsWithCategoryAndFeatures(id);
+    }
+
+
 }

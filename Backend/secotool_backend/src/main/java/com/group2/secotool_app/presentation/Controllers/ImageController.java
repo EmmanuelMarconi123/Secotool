@@ -6,5 +6,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("v1/api/products/images")
 public class ImageController {
+    //obtener todas las imagenes asociadas a un prod
 
+
+
+    //obtener la imagen asociada a una categoria
 }

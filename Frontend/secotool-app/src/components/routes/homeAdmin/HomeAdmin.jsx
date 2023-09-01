@@ -4,73 +4,71 @@ import { useEffect, useState } from "react";
 import Pagination from "../../pagination/Pagination";
 import { ButtonToolbar, Button, } from "rsuite";
 import { Alert, Snackbar } from "@mui/material";
-import axios from "axios";
-import FormNewProduct from "../../form/formNewProduct/FormNewProduct"
+import FormNewProduct from "../../form/formNewProduct/FormNewProduct";
 import FormEditProduct from "../../form/FormEditProduct";
 
 const HomeAdmin = () => {
+  //----------------------------TRAE TODOS LOS PRODUCTOS----------------------------->
+  const fetchProductsAdmin = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/v1/api/products/all");
+      if (response.ok) {
+        const data = await response.json();
+        setProducts(data);
+      } else {
+        throw new Error("Error en la solicitud");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProductsAdmin();
+  }, []);
+
   //------------------------------ CONFIG MODALS--------------->
   const [open, setOpen] = useState(false); //NEW PRODUCT MODAL
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   
   const [openEp, setOpenEp] = useState(false); // EDIT PRODUCT MODAL
-  const [selectedProduct, setSelectedProduct] = useState({});
-  const handleOpenEp = (product) => {
-    setSelectedProduct(product);
-    setOpenEp(true);
-  };
+  const [selectedProduct, setSelectedProduct] = useState([]);
   const handleCloseEp = () => setOpenEp(false);
-  //--------------------------------NEW PRODUCT---------------------->
-  const [name, setName] = useState("");
-  const [category, setCategory] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
-  const [uploadedImages, setUploadedImages] = useState([]); // Estado para las imágenes cargadas
 
-
-  const handleImageChangeD = (fileList) => {
-    setUploadedImages([...uploadedImages, ...fileList]);
+  //---------------------------EDIT PRODUCT------------------------------------>
+  const fetchProductDetails = async (productId) => {
+    try {
+      const response = await fetch(`http://localhost:8080/v1/api/products/${productId}`);
+      if (response.ok) {
+        const productDetails = await response.json();
+        return productDetails;
+      } else {
+        throw new Error("Error en la solicitud");
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
-
-  const handleNewProductSubmit = async (e) => {
-    e.preventDefault();
-
-    const dataC = { name, category, description, price };
-
-    const json = JSON.stringify(dataC)
-    const blob = new Blob([json], {
-      type: 'application/json'
-    })
-
+  const handleEditProduct = async (productId) => {
+    const productDetails = await fetchProductDetails(productId);
     
-    const formData = new FormData();
-    formData.append("data", blob)
-    uploadedImages.forEach((file) => {
-      formData.append('images', file.blobFile); // Use a key like 'images'
-    });
-
-    console.log(dataC);
-    console.log(formData)
-
-    axios({
-      method: "post",
-      url: "http://localhost:8080/v1/api/products",
-      data: formData,
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    })
-      .then(function (response) {
-        handleClose()
-        console.log(response);
-      })
-      .catch(function (response) {
-        //handle error
-        console.log(response);
-      });
+    setSelectedProduct(productDetails);
+    setOpenEp(true); // Abre el modal de edición con los detalles del producto
   };
+  const handleProductUpdate = (updatedProduct) => {
+    // Buscar el índice del producto en la lista
+    const productIndex = products.findIndex(p => p.id === updatedProduct.id);
 
+    if (productIndex !== -1) {
+      // Crear una nueva lista de productos con el producto actualizado
+      const updatedProducts = [...products];
+      updatedProducts[productIndex] = updatedProduct;
+
+      // Actualizar el estado de la lista de productos
+      setProducts(updatedProducts);
+    }
+  }
   //---------------------------------DELETE PRODUCT------------------------------->
 
   const [alertOpen, setAlertOpen] = useState(false);
@@ -98,61 +96,6 @@ const HomeAdmin = () => {
     }
   }
 
-  //---------------------------------------EDIT PRODUCT-------------------->
-
-  useEffect(() => {
-    setEditedProduct({
-      name: selectedProduct.name,
-      description: selectedProduct.description,
-      price: selectedProduct.price,
-    });
-  }, [selectedProduct]);
-  
-  const [editedProduct, setEditedProduct] = useState({
-    name: '',
-    description: '',
-    price: 0,
-  });
-
-  const handleFieldChange = (field, value) => {
-    setEditedProduct((prevProduct) => ({
-      ...prevProduct,
-      [field]: value,
-    }));
-  };
-
-  const handleUpdateProduct = () => {
-    const productId = selectedProduct.id;
-  
-    const requestOptions = {
-      method: 'PUT',
-      body: JSON.stringify(editedProduct),
-    };
-
-    fetch(`http://localhost:8080/v1/api/products/${productId}`, requestOptions)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Error en la solicitud');
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log('Producto actualizado:', data);
-        // Limpiar el estado después de la actualización
-        setEditedProduct({
-          name: '',
-          description: '',
-          price: 0,
-        });
-        // Cerrar el modal
-        handleCloseEp();
-      })
-      .catch((error) => {
-        console.error('Error en la solicitud:', error);
-      });
-  };
-
-
   //-------------- CONFIGURACION DE LA PAGINACION -------------------->
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -171,22 +114,6 @@ const HomeAdmin = () => {
 
   //---------------------------------FETCH TODOS LOS PRODUCTOS------------------>
 
-  useEffect(() => {
-    const fetchProductsAdmin = async () => {
-      try {
-        const response = await fetch("http://localhost:8080/v1/api/products/all");
-        if (response.ok) {
-          const data = await response.json();
-          setProducts(data);
-        } else {
-          throw new Error("Error en la solicitud");
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchProductsAdmin();
-  }, []);
 
   useEffect(() => {
     const lastPostIndex = currentPage * 10;
@@ -223,7 +150,7 @@ const HomeAdmin = () => {
                     deleteItem={() => deleteProduct(product.id)}
                     id={product.id}
                     title={product.name}
-                    editItem={() => handleOpenEp(product)}
+                    editItem={() => handleEditProduct(product.id)}
                   />
                 ))
               ) : (
@@ -267,26 +194,16 @@ const HomeAdmin = () => {
       <FormNewProduct
         open={open}
         handleClose={handleClose}
-        handleNewProductSubmit={handleNewProductSubmit}
-        name={name}
-        setName={setName}
-        description={description}
-        setDescription={setDescription}
-        category={category}
-        setCategory={setCategory}
-        price={price}
-        setPrice={setPrice}
-        handleImageChangeD={handleImageChangeD}
+        onProductCreated={fetchProductsAdmin}
       />
       {/* ------------------------------------------EDITAR PRODUCTO MODAL--------------------------> */}
       <FormEditProduct
         openEp={openEp}
         handleCloseEp={handleCloseEp}
-        editedProduct={editedProduct}
-        handleFieldChange={handleFieldChange}
-        handleUpdateProduct={handleUpdateProduct}
+        selectedProduct={selectedProduct}
+        onProductUpdate={handleProductUpdate}
       />
     </div>
   );
 };
-export default HomeAdmin;
+export default HomeAdmin

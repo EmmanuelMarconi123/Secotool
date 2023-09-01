@@ -2,13 +2,16 @@ import { useEffect} from "react";
 import AvatarLg from "../../avatar/AvatarLg";
 import style from "./Profile.module.css";
 import { useFunction } from "../../../contexts/FunctionsContext";
+import { useAuth } from "../../../contexts/AuthContext";
 
 const Profile = () => {
+
+  const {token} = useAuth();
 
   const {fetchUser, user } = useFunction();
 
   useEffect(() => {
-    fetchUser();
+    fetchUser(token);
   },[]);
 
   return (

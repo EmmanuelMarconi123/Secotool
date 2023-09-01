@@ -6,7 +6,8 @@ import lombok.*;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -16,19 +17,31 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name",nullable = false,unique = true)
+    //@Column(nullable = false,unique = true)
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "category",nullable = false)
-    private String category;
-
-    @Column(name = "description",nullable = false)
+    //@Column(nullable = false)
+    @Column(name = "description")
     private String description;
 
-    @Column(name = "price",nullable = false)
+    //@Column(nullable = false)
+    @Column(name = "price")
     private Double price;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = {
+            CascadeType.PERSIST,
+            CascadeType.REMOVE
+    })
     @JsonIgnore
     private List<Image> images;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "products")
+    @JsonIgnore
+    private List<Feature> productFeatures;
+
+    @ManyToMany(fetch = FetchType.LAZY,mappedBy = "products")
+    @JsonIgnore
+    private List<Category> productCategories;
+
 }

@@ -1,5 +1,6 @@
 package com.group2.secotool_app.bussiness.facade.Impl;
 
+import com.group2.secotool_app.bussiness.facade.IEmailFacade;
 import com.group2.secotool_app.bussiness.facade.IUserFacade;
 import com.group2.secotool_app.bussiness.mapper.UserDtoMapper;
 import com.group2.secotool_app.bussiness.mapper.UserGetMeDtoMapper;
@@ -32,6 +33,7 @@ public class UserFacadeImpl implements IUserFacade {
     private final UserServiceImpl userService;
     private final IUserValidationService userValidationService;
     private final JwtUtils jwtUtils;
+    private final IEmailFacade emailFacade;
 
     @Override
     public UserGetMeDto findUserById(Long id) {
@@ -52,7 +54,7 @@ public class UserFacadeImpl implements IUserFacade {
         Map extraClaims = new HashMap<String,Object>();
         extraClaims.put("id",user.getId());
         String jwt = jwtUtils.generateToken(user,extraClaims);
-        return new UserAuthenticatedResponseDto(jwt);
+        return new UserAuthenticatedResponseDto(jwt, userDtoMapper.toUserDto(user));
     }
 
     @Override
@@ -63,7 +65,8 @@ public class UserFacadeImpl implements IUserFacade {
         Map extraClaims = new HashMap<String,Object>();
         extraClaims.put("id",userId);
         String jwt = jwtUtils.generateToken(mappedUser,extraClaims);
-        return new UserAuthenticatedResponseDto(jwt);
+        emailFacade.sendEmail(registerRequestDto);
+        return new UserAuthenticatedResponseDto(jwt, userDtoMapper.toUserDto(mappedUser));
     }
 
     @Override
@@ -72,5 +75,10 @@ public class UserFacadeImpl implements IUserFacade {
         List<User> users = userService.findAllUser();
         users.forEach(user -> userDtos.add(userDtoMapper.toUserDto(user)));
         return userDtos;
+    }
+
+    @Override
+    public void changeUserRole(Long userId, UserRole userRole) {
+        userService.changeUserRole(userId, userRole);
     }
 }

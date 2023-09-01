@@ -2,6 +2,7 @@ import { Modal } from "rsuite";
 import styles from "./EditFeatureModal.module.css";
 import Select, { components } from "react-select";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 const icons = [
   { value: "fa-solid fa-wifi" },
@@ -51,32 +52,21 @@ const EditFeatureModal = ({ handleClose, open, getData, selectedFeature }) => {
   };
 
   const editFeaturesAdmin = async () => {
-    const options = {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        "name": newFeature.name,
-        "icon": newFeature.icon,
-      })
-    };
-
-    try {
-      const response = await fetch(
+    axios
+      .put(
         `http://localhost:8080/v1/api/products/features/${selectedFeature.id}`,
-        options
-      );
-      if (response.ok) {
-        const data = await response.json();
-        console.log("La característica se ha agregado correctamente", data); //Borrar este console.log, mas tarde\
-      } else {
-        throw new Error("Error en la solicitud");
-      }
-    } catch (error) {
-      console.error(error);
-      getData(); // LO PUSE TEMPORALMENTE ACA PORQUE ENTRA EN ERROR
-    }
+        {
+          name: newFeature.name,
+          icon: newFeature.icon,
+        }
+      )
+      .then(function (response) {
+        console.log(response);
+        getData();
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   useEffect(() => {
@@ -91,7 +81,13 @@ const EditFeatureModal = ({ handleClose, open, getData, selectedFeature }) => {
       open={open}
       onClose={handleClose}
       overflow={false}
-      className={"rs-modal-wrapper"}
+      style={{
+        display: "flex",
+        height: "100vh",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+      dialogClassName={styles.dialogClassName}
     >
       <Modal.Header>
         <Modal.Title style={{ textAlign: "center", fontSize: 23 }}>

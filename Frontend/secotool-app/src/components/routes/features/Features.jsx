@@ -79,28 +79,27 @@ const Features = () => {
     window.matchMedia("(min-width: 1024px)").matches
   );
 
-
-  function handleEdit(feature){
-    handleOpenEp()
-    setSelectedFeature(feature)
+  function handleEdit(feature) {
+    handleOpenEp();
+    setSelectedFeature(feature);
   }
 
   async function deleteFeature(id) {
-    console.log(id);
-    try {
-      const response = await fetch(
-        `http://localhost:8080/v1/api/products/features/${id}`,
-        { method: "DELETE" }
-      );
-      if (response.ok) {
-        console.log(`Se ha borrado el item con id ${id} correctamente`);
-        fetchFeaturesAdmin();
-      } else {
-        throw new Error("Error en la solicitud");
+    if (confirm("¿Está seguro que desea borrar esta característica?"))
+      try {
+        const response = await fetch(
+          `http://localhost:8080/v1/api/products/features/${id}`,
+          { method: "DELETE" }
+        );
+        if (response.ok) {
+          console.log(`Se ha borrado el item con id ${id} correctamente`);
+          fetchFeaturesAdmin();
+        } else {
+          throw new Error("Error en la solicitud");
+        }
+      } catch (error) {
+        console.error(error);
       }
-    } catch (error) {
-      console.error(error);
-    }
   }
 
   const fetchFeaturesAdmin = async () => {

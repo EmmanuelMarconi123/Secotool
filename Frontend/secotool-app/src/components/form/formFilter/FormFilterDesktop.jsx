@@ -20,6 +20,8 @@ const FormFilterDesktop = ({ updateFilteredProducts }) => {
       });
   }, []);
 
+
+
   // Función para manejar el cambio en la selección de checkboxes
   const handleCheckboxChange = (event) => {
     const categoryName = event.target.value;
@@ -30,43 +32,11 @@ const FormFilterDesktop = ({ updateFilteredProducts }) => {
         prevSelected.filter((category) => category !== categoryName)
       );
     }
-  };
-
-  // Función para manejar el envío del formulario
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      if (selectedCategories.length > 0) {
-        /* const categoryId = selectedCategories[0];*/
-        const response = await fetch(
-          `http://localhost:8080/v1/api/products/all/category`,
-          {
-            method: "POST",
-            headers: {
-              "Content-type": "application/json",
-            },
-            body: {
-              idsCategories: selectedCategories,
-            },
-          }
-        );
-
-        if (response.ok) {
-          const data = await response.json();
-          updateFilteredProducts(data);
-          console.log(data);
-        } else {
-          updateFilteredProducts([]); // Si no hay categorías seleccionadas, muestra todos los productos
-          throw new Error("Error en la solicitud");
-        }
-      }
-    } catch (error) {
-      console.error("Error fetching filtered products:", error);
-    }
+    updateFilteredProducts(selectedCategories);
   };
 
   return (
-    <form onSubmit={handleSubmit} className={style.form}>
+    <form className={style.form}>
       {categoryData.map((categ) => (
         <div key={categ.id} className={style.boxInputCheck}>
           <input
@@ -74,7 +44,8 @@ const FormFilterDesktop = ({ updateFilteredProducts }) => {
             type="checkbox"
             value={categ.name}
             onChange={handleCheckboxChange}
-            checked={selectedCategories.includes(categ.name)}
+            checked={selectedCategories.includes(categ.id)}
+            onClick={updateFilteredProducts(selectedCategories)}
           />
           <label>{categ.name}</label>
         </div>

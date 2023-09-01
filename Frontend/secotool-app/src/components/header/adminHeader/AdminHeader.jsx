@@ -1,16 +1,18 @@
 import styles from "../adminHeader/AdminHeader.module.css";
-import LogoDesktop from "../../../assets/img/LogoDesktop.png";
+import Logo from "../../../assets/img/LogoMovile.png";
 import { NavLink } from "react-router-dom";
 import "../../../index.css";
 import "../../../app.css";
+import { useAuth } from "../../../contexts/AuthContext";
 
 const AdminHeader = () => {
+  const { logout } = useAuth();
   return (
     <header className="spacing-grid">
       <nav className={styles.navbar}>
         <div>
           <NavLink to="/admin/home" className={styles.leftNavbar}>
-            <img src={LogoDesktop} className={styles.logo} alt="" />
+            <img src={Logo} className={styles.logo} alt="SecoTool" />
             <span className={styles.slogan}>Construí fácil y rápido</span>
           </NavLink>
         </div>
@@ -53,9 +55,15 @@ const AdminHeader = () => {
               Categorías
             </NavLink>
           </div>
-          <NavLink to="/home" className={styles.closeSesion}>
-            <i className="fa-regular fa-right-from-bracket"></i>
-          </NavLink>
+          <div>
+            <NavLink className={styles.closeSesion} to="/home">
+              <i className="fa-regular fa-store"></i>
+              Tienda
+            </NavLink>
+            <NavLink className={styles.closeSesion} to="/" onClick={logout}>
+              <i className="fa-regular fa-right-from-bracket"></i>
+            </NavLink>
+          </div>
         </div>
       </nav>
     </header>
