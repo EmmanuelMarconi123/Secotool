@@ -3,7 +3,6 @@ import FormBusqueda from "../../form/formBusqueda/FormBusqueda";
 import { useState } from "react";
 import { useEffect } from "react";
 import ListProducts from "../../list/ListProducts";
-import { Typography } from "@mui/material";
 
 const Home = () => {
   const [productsF, setProductsF] = useState([]);
@@ -30,11 +29,16 @@ const Home = () => {
   return (
     <section className={styles.sectionBusqueda}>
       <div className={styles.containerBusqueda}>
-        <div className={styles.bgBusqueda}></div>
-        <Typography variant="h6" className={styles.titulo}>
-          ¿Qué herramienta necesitas?
-        </Typography>
-        <FormBusqueda />
+        <div className={styles.bgBusqueda}>
+          <div className={styles.busquedaItems}>
+            <h3 className={styles.titulo}>¿Qué herramienta necesitas?</h3>
+            <span className={styles.subtitulo}>
+              Buscá las mejores herramientas para alquilar en las fechas que
+              desees
+            </span>
+            <FormBusqueda />
+          </div>
+        </div>
       </div>
       <div className={styles.contenedorCards}>
         <ListProducts products={productsF} />

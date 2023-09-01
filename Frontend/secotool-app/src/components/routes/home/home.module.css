@@ -16,24 +16,36 @@
   padding-top: 88px;
 }
 
-.containerBusqueda .bgBusqueda{
+.containerBusqueda .bgBusqueda {
   background-color: var(--color-primary);
   position: absolute;
   width: 100%;
   left: 0px;
-  height: 150px;
+  height: auto;
+  padding: 30px 0;
   border-bottom-left-radius: 100% 40px;
   border-bottom-right-radius: 100% 40px;
+  text-align: center;
+}
+
+.busquedaItems{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
 }
 
 .titulo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16px 0px;
-  font-family: 'Poppins', sans-serif!important;
+  margin: 0;
   color: var(--dark);
+  font-size: 23px;
+  font-weight: 500;
   z-index: 1;
+}
+
+.subtilo{
+  padding: 0 30px;
 }
 
 .contenedorCards {
@@ -43,13 +55,13 @@
   justify-items: center;
   align-items: center;
   margin-block-end: 2rem;
-    margin-block-start: 3.5rem;
+  margin-block-start: 3.5rem;
 }
 
 /*Breakpoints*/
 @media screen and (max-width: 360px) {
-  .titulo{
-    font-size: 16px!important;
+  .titulo {
+    font-size: 16px !important;
   }
 }
 

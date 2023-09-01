@@ -1,4 +1,3 @@
-import { Grid } from "@mui/material";
 import styles from "./FormBusqueda.module.css";
 /*import { useFormik } from "formik";*/
 
@@ -22,17 +21,24 @@ const FormBusqueda = () => {
   return (
     <>
       <form className={styles.containerFormBusqueda}>
-        <Grid
-          container
-          spacing={2}
-        >
-          <Grid item xs={12} md={12}>
-            <div className="d-flex">
-            <input className={styles.inputBrowser} type="text" value="" placeholder="Herramienta" />
-            <button className={styles.btnBrowser}><i className="fa-regular fa-magnifying-glass"></i></button>
-            </div>
-          </Grid>
-        </Grid>
+        <label htmlFor="" className={styles.inputLabelBusqueda}>
+          <i className="fa-solid fa-screwdriver-wrench"></i>
+          <input
+            className={styles.inputBrowser}
+            type="text"
+            placeholder="Herramienta"
+          />
+        </label>
+
+        <label htmlFor="" className={styles.inputLabelCalendar}>
+          <i className="fa-regular fa-calendar"></i>
+          <input
+            className={styles.inputDate}
+            type="text"
+            placeholder="Desde - Hasta"
+          />
+        </label>
+        <button className={styles.btnBrowser}>Buscar</button>
       </form>
     </>
   );
