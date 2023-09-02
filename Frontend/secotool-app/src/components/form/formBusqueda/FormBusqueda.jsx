@@ -1,7 +1,7 @@
 import styles from "./FormBusqueda.module.css";
-/*import { useFormik } from "formik";*/
+import { AutoComplete, DateRangePicker, InputGroup } from "rsuite";
 
-const FormBusqueda = () => {
+const FormBusqueda = ({ productNames }) => {
   // const [herramienta, setHerramienta] = useState("");
 
   /*let initialValues = {
@@ -16,28 +16,42 @@ const FormBusqueda = () => {
   const { handleSubmit, handleChange } = useFormik({
     initialValues: initialValues,
     onSubmit: sendForm,
+
+    localhost:8080/v1/api/products/all/rentals?startDate=2024-09-05&endDate=2024-09-10&productName=  -------> ENDPINT PARA BUSCADOR
+
   });*/
+
+  const { beforeToday } = DateRangePicker;
 
   return (
     <>
       <form className={styles.containerFormBusqueda}>
-        <label htmlFor="" className={styles.inputLabelBusqueda}>
-          <i className="fa-solid fa-screwdriver-wrench"></i>
-          <input
-            className={styles.inputBrowser}
-            type="text"
-            placeholder="Herramienta"
-          />
-        </label>
+        <div className={styles.inputBuscador}>
+          <InputGroup inside>
+            <InputGroup.Addon>
+              <i className="fa-solid fa-screwdriver-wrench"></i>
+            </InputGroup.Addon>
+            <AutoComplete data={productNames} />
+          </InputGroup>
+        </div>
 
-        <label htmlFor="" className={styles.inputLabelCalendar}>
-          <i className="fa-regular fa-calendar"></i>
-          <input
-            className={styles.inputDate}
-            type="text"
-            placeholder="Desde - Hasta"
-          />
-        </label>
+        <div className={styles.inputDate}>
+          <InputGroup
+            inside
+          >
+            <InputGroup.Addon>
+              <i className="fa-regular fa-calendar"></i>
+            </InputGroup.Addon>
+            <DateRangePicker
+              appearance="subtle"
+              character="-"
+              caretAs="none"
+              style={{ border: "none" }}
+              shouldDisableDate={beforeToday()}
+            />
+          </InputGroup>
+        </div>
+
         <button className={styles.btnBrowser}>Buscar</button>
       </form>
     </>

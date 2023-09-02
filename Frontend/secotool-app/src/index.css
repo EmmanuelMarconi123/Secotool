@@ -103,7 +103,7 @@ header {
   font-weight: 400;
 }
 
-.font-light{
+.font-light {
   font-weight: 300;
 }
 
@@ -124,7 +124,7 @@ header {
   flex-direction: column;
 }
 
-.pt-large{
+.pt-large {
   padding-top: 88px;
 }
 
@@ -146,6 +146,18 @@ header {
   border: 1px solid var(--darkGrey);
   display: flex;
   border-radius: 8px;
+}
+
+.rs-picker-toggle {
+  height: 5vh;
+}
+
+.rs-picker-toggle-textbox {
+  height: 5vh;
+}
+
+.rs-picker-toggle-textbox:hover {
+  background-color: none;
 }
 
 /*Breakpoints*/
@@ -184,7 +196,7 @@ header {
     padding: 8px 16px;
   }
 
-  .button-transparent{
+  .button-transparent {
     font-size: 16px;
   }
 }

@@ -5,28 +5,21 @@
   gap: 8px;
   padding: 5px;
   z-index: 1;
-}
-
-label {
-  position: relative;
-}
-
-label i {
-  position: absolute;
-  left: 22px;
-}
-
-.inputBrowser {
-  background-color: var(--white);
-  border-color: var(--white);
-  padding-left: 56px;
   width: 100%;
 }
 
-.inputDate {
-  background-color: var(--white);
-  border-color: var(--white);
-  padding-left: 56px;
+.inputBuscador{
+  background-color: white;
+  border-radius: 8px;
+}
+
+.inputDate{
+  background-color: white;
+  border-radius: 8px;
+}
+
+
+.divSearchBar{
   width: 100%;
 }
 
@@ -49,11 +42,10 @@ label i {
     width: 90%;
   }
 
-  .inputLabelBusqueda{
+  .inputBuscador{
     width: 90%;
   }
-  
-  .inputLabelCalendar{
+  .inputDate{
     width: 90%;
   }
 }
@@ -67,11 +59,10 @@ label i {
     width: 100%;
   }
 
-  .inputLabelBusqueda{
+  .inputBuscador{
     width: 100%;
   }
-  
-  .inputLabelCalendar{
+  .inputDate{
     width: 100%;
   }
 }
@@ -79,18 +70,18 @@ label i {
 @media screen and (min-width: 1025px){
   .containerFormBusqueda {
     flex-direction: row;
-    width: 70%;
-  }
-
-  .inputLabelBusqueda{
-    width: 50%;
-  }
-  
-  .inputLabelCalendar{
-    width: 30%;
+    width: 100%;
   }
 
   .btnBrowser {
+    width: 20%;
+  }
+
+  .inputBuscador{
+    width: 50%;
+  }
+  .inputDate{
+    min-width: 242px;
     width: 30%;
   }
   

@@ -1,47 +1,44 @@
 import styles from "./home.module.css";
 import FormBusqueda from "../../form/formBusqueda/FormBusqueda";
-import { useState } from "react";
-import { useEffect } from "react";
 import ListProducts from "../../list/ListProducts";
+import { useFetch, statuses } from "../../../customHooks/useFetch";
+import { Loader} from 'rsuite';
+
+const LoadingIndicator = () =>  <Loader size="md" content="CARGANDO" />;
+
+const NetworkError = () => <p>Network Error</p>;
+
 
 const Home = () => {
-  const [productsF, setProductsF] = useState([]);
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch(
-          "http://localhost:8080/v1/api/products/random"
-        );
-        if (response.ok) {
-          const data = await response.json();
-          setProductsF(data);
-        } else {
-          throw new Error("Error en la solicitud");
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
+  const URL_API = "http://localhost:8080/v1/api/products/all";
+  const { data, status } = useFetch(URL_API, {});
 
-    fetchProducts();
-  }, []);
+  const ComponentListProducts =
+    status !== statuses.ERROR && data ? <ListProducts products={data} /> : null;
+
+
 
   return (
     <section className={styles.sectionBusqueda}>
       <div className={styles.containerBusqueda}>
-        <div className={styles.bgBusqueda}>
+        <div className={styles.bgBusqueda}></div>
           <div className={styles.busquedaItems}>
             <h3 className={styles.titulo}>¿Qué herramienta necesitas?</h3>
             <span className={styles.subtitulo}>
               Buscá las mejores herramientas para alquilar en las fechas que
               desees
             </span>
-            <FormBusqueda />
-          </div>
+            <FormBusqueda productNames={data} />
         </div>
       </div>
       <div className={styles.contenedorCards}>
-        <ListProducts products={productsF} />
+      {status === statuses.LOADING ? (
+          <LoadingIndicator />
+        ) : (
+          ComponentListProducts
+        )}
+        {status === statuses.ERROR && <NetworkError />}
+
       </div>
     </section>
   );
