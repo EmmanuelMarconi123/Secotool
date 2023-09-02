@@ -39,7 +39,7 @@ function CardProduct({ product }) {
   };
 
   return (
-    <>
+    <div className={styles.contenedorGeneral}>
       {isLoggedIn ? (
         <Grid className={styles.contenedorCorazon} item xs={12} md={12}>
           <FavoriteIcon
@@ -52,15 +52,11 @@ function CardProduct({ product }) {
         </Grid>
       ) : null}
       <Link to={"/product/" + product.id} key={product.id}>
-        <Grid container className={styles.card} xs={12} md={12}>
-          <Grid container xs={12} md={12}>
+        <Grid container className={styles.container} xs={12} md={12}>
+          <Grid container className={styles.card}>
             {/* Contenedor de imagen */}
-            <Grid item xs={10} md={10} className={styles.imgContainer}>
-              <img
-                className={styles.img}
-                src="src/assets/img/taladro-1.png"
-                alt=""
-              />
+            <Grid item xs={10} md={6} className={styles.imgContainer}>
+              <img className={styles.img} src={product.images[0].url} alt="" />
             </Grid>
             {/* Contenedor de texto */}
             <Grid container className={styles.textoCard} item xs={12} md={6}>
@@ -75,7 +71,7 @@ function CardProduct({ product }) {
           </Grid>
         </Grid>
       </Link>
-    </>
+    </div>
   );
 }
 export default CardProduct;

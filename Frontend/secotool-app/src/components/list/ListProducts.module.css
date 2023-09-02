@@ -6,9 +6,19 @@
     column-gap: 0.5rem;
     justify-items: center;
     align-items: center;
+    margin-left: 32px;
+    margin-right: 32px;
 }
 
 .paginationList{
     align-self: center;
     padding-bottom: 32px;
 }
+
+@media(min-width: 1440px){
+.listProducts{
+    margin-left: 78px;
+    margin-right: 78px;
+}
+}
+
