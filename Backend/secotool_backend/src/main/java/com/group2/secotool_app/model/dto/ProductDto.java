@@ -6,11 +6,19 @@ public record ProductDto(
         String name,
         String description,
         Double price,
+        Boolean isFavorite,
         List<ImageDto> images,
         List<CategoryDto> productCategories
 
 ){
+
+    public ProductDto {
+        if (isFavorite == null) {
+            isFavorite = false;
+        }
+    }
     public int compareTo(ProductDto productDto) {
         return Long.compare(this.id, productDto.id);
     }
+
 }

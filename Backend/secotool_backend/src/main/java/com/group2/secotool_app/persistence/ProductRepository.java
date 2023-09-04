@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +31,13 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
     @Query("SELECT p FROM Product p JOIN p.productCategories c WHERE c.id = :categoryId")
     List<Product> findAllByCategoryId(@Param("categoryId") Long categoryId);
 
-    @Procedure(name = "deleteRelationsWithCategoryAndFeatures")
-    void deleteRelationsWithCategoryAndFeatures(@Param("product_id") Long product_id);
+    @Query("SELECT p FROM Product p JOIN p.usersFavorite u WHERE u.id = :userId")
+    List<Product> findAllByUserId(@Param("userId")Long userId);
+
+    @Query("SELECT p FROM Product p WHERE p.id NOT IN (SELECT r.product.id FROM Rent r WHERE :startDate <= r.rentalEndDate AND :endDate >= r.rentalStartDate)")
+    List<Product> getAllProductsAvaibleToRent(@Param("startDate")LocalDate startDate, @Param("endDate") LocalDate endDate);
+
+    @Procedure(name = "deleteAllRelationsAssociatedWithAProductById")
+    void deleteAllRelationsAssociatedWithAProductById(@Param("id") Long id);
+
 }

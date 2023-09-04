@@ -5,16 +5,20 @@ import com.group2.secotool_app.bussiness.facade.IUserFacade;
 import com.group2.secotool_app.bussiness.mapper.UserDtoMapper;
 import com.group2.secotool_app.bussiness.mapper.UserGetMeDtoMapper;
 import com.group2.secotool_app.bussiness.mapper.UserMapper;
+import com.group2.secotool_app.bussiness.service.IProductService;
 import com.group2.secotool_app.bussiness.service.IUserValidationService;
 import com.group2.secotool_app.bussiness.service.Impl.UserServiceImpl;
+import com.group2.secotool_app.model.dto.ProductDto;
 import com.group2.secotool_app.model.dto.UserAuthenticatedResponseDto;
 import com.group2.secotool_app.model.dto.UserDto;
 import com.group2.secotool_app.model.dto.UserGetMeDto;
 import com.group2.secotool_app.model.dto.request.UserAuthenticationRequestDto;
 import com.group2.secotool_app.model.dto.request.UserRegistrationRequestDto;
+import com.group2.secotool_app.model.entity.Product;
 import com.group2.secotool_app.model.entity.User;
 import com.group2.secotool_app.model.entity.UserRole;
 import com.group2.secotool_app.util.JwtUtils;
+import com.group2.secotool_app.util.ProductUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -27,12 +31,14 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserFacadeImpl implements IUserFacade {
 
+    private final IProductService productService;
     private final UserDtoMapper userDtoMapper;
     private final UserMapper userMapper;
     private final UserGetMeDtoMapper userGetMeDtoMapper;
     private final UserServiceImpl userService;
     private final IUserValidationService userValidationService;
     private final JwtUtils jwtUtils;
+    private final ProductUtils productUtils;
     private final IEmailFacade emailFacade;
 
     @Override
@@ -81,4 +87,27 @@ public class UserFacadeImpl implements IUserFacade {
     public void changeUserRole(Long userId, UserRole userRole) {
         userService.changeUserRole(userId, userRole);
     }
+
+    //implementar la logica para agregar productos a favoritos
+    @Override
+    public void addProductToFavorite(Long productId, Long userId) {
+        var product = productService.findProductById(productId);
+        List<Product> favoritesProducts = productService.getFavoritesProductOfUserById(userId);
+        userService.addProductToFavorite(userId,product, favoritesProducts);
+    }
+
+    @Override
+    public void removeProductToFavorite(Long productId, Long userId) {
+        var product = productService.findProductById(productId);
+        List<Product> favoritesProducts = productService.getFavoritesProductOfUserById(userId);
+        userService.removeProductToFavorite(userId,product, favoritesProducts);
+    }
+
+    @Override
+    public List<ProductDto> getAllFavoritesProducts(Long userId) {
+        User user = userService.findUserById(userId);
+        var favorites = user.getFavoritesProducts();
+        return productUtils.productsToProductsDto(favorites);
+    }
+
 }

@@ -18,12 +18,10 @@ public class Feature {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //@Column(nullable = false, unique = true)
-    @Column(name = "name")
+    @Column(nullable = false, unique = true)
     private String name;
 
-    //@Column(nullable = false, unique = true)
-    @Column(name = "icon")
+    @Column(nullable = false)
     private String icon;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)

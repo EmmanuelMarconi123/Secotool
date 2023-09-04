@@ -11,22 +11,20 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@ToString
 @Table(name = "products")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //@Column(nullable = false,unique = true)
-    @Column(name = "name")
+    @Column(nullable = false, unique = true)
     private String name;
 
-    //@Column(nullable = false)
-    @Column(name = "description")
+    @Column(nullable = false)
     private String description;
 
-    //@Column(nullable = false)
-    @Column(name = "price")
+    @Column(nullable = false)
     private Double price;
 
     @OneToMany(mappedBy = "product", cascade = {
@@ -36,6 +34,11 @@ public class Product {
     @JsonIgnore
     private List<Image> images;
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "product_id",referencedColumnName = "id")
+    @JsonIgnore
+    private List<Rent> productRentals;
+
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "products")
     @JsonIgnore
     private List<Feature> productFeatures;
@@ -43,5 +46,10 @@ public class Product {
     @ManyToMany(fetch = FetchType.LAZY,mappedBy = "products")
     @JsonIgnore
     private List<Category> productCategories;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "favoritesProducts")
+    @JsonIgnore
+    private List<User> usersFavorite;
+
 
 }
