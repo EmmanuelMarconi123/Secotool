@@ -1,6 +1,7 @@
 import { Modal, TagPicker, Uploader } from "rsuite";
 import styles from "./formNewProduct/FormNewProduct.module.css";
 import { useEffect, useState } from "react";
+import { useAuth } from "../../contexts/AuthContext";
 
 function FormEditProduct({
   openEp,
@@ -8,6 +9,7 @@ function FormEditProduct({
   selectedProduct,
   onProductUpdate,
 }) {
+  const { token } = useAuth();
   useEffect(() => {
     setEditedName(selectedProduct.name);
     setEditedDescription(selectedProduct.description);
@@ -27,7 +29,11 @@ function FormEditProduct({
   useEffect(() => {
     async function fetchCategories() {
       try {
-        const response = await fetch("http://localhost:8080/v1/api/categories");
+        const response = await fetch("http://localhost:8080/v1/api/categories", {
+          headers: {
+            'Authorization': 'Bearer ' + token,
+          }
+        });
         if (response.ok) {
           const dataC = await response.json();
 
@@ -54,7 +60,11 @@ function FormEditProduct({
       try {
         const response = await fetch(
           "http://localhost:8080/v1/api/products/features"
-        );
+        , {
+          headers: {
+            'Authorization': 'Bearer ' + token,
+          }
+        });
         if (response.ok) {
           const data = await response.json();
           const transformedData = data.map((category) => ({
@@ -124,6 +134,9 @@ function FormEditProduct({
         `http://localhost:8080/v1/api/products/${selectedProduct.id}`,
         {
           method: "PUT",
+          headers: {
+            'Authorization': 'Bearer ' + token,
+          },
           body: formData,
         }
       );

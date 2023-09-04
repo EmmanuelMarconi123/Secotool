@@ -4,7 +4,7 @@ const ListCaracteristicas = ({ caracteris }) => {
   return (
     <ul className={styles.listCaract}>
       {caracteris.map((caract) => (
-          <li key={caract.id}><i className={caract.icono}></i>{caract.nombre}</li>
+          <li key={caract.id}><i className={caract.icon}></i>{caract.name}</li>
       ))}
     </ul>
   );

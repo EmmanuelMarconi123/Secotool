@@ -9,7 +9,9 @@ import { useMediaQuery } from "@react-hook/media-query";
 
 const NavBarHeader = () => {
   const isMobile = useMediaQuery("(max-width: 1024px)");
-  const { isLoggedIn, user } = useAuth();
+  const { isLoggedIn, user} = useAuth();
+
+
 
   return (
     <nav className={styles.NavBarHeader}>
