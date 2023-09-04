@@ -10,6 +10,7 @@
 .imgProduct{
     width: 296px;
     height: 222px;
+    border-radius: 4px;
 }
 
 .slide {

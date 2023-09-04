@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import styles from "../card/CardProduct.module.css";
+import styles from "./CardProduct.module.css";
 
 function CardProduct({ product }) {
   return (
