@@ -18,7 +18,7 @@ const ModalShare = ({ product }) => {
       <i className="fa-regular fa-share-nodes"></i>
       </Button>
 
-      <Modal size={size} open={open} onClose={handleClose} className={styles.modal}>
+      <Modal size="md" open={open} onClose={handleClose} className={styles.modal}>
         <Modal.Header>
           <Modal.Title>Compartir producto</Modal.Title>
         </Modal.Header>

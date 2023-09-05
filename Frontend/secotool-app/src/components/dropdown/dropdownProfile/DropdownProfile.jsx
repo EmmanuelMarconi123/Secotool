@@ -47,6 +47,9 @@ const DropdownProfile = () => {
           <i className="fa-regular fa-user"></i>
             Ver Perfil
           </Link>
+          <Link to="/favorites">
+          <i className="fa-regular fa-star"></i> Mis favoritos
+          </Link>
           <Link to="/" onClick={logout}>
             <i className="fa-regular fa-arrow-right-from-bracket"></i> Cerrar Sesión
           </Link>
