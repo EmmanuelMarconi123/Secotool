@@ -18,11 +18,9 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //@Column(nullable = false, unique = true)
-    @Column(name = "name")
+    @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(name = "description")
     private String description;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = {

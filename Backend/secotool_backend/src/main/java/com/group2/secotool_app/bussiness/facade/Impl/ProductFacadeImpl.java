@@ -5,17 +5,17 @@ import com.group2.secotool_app.bussiness.facade.IFeatureFacade;
 import com.group2.secotool_app.bussiness.facade.IProductFacade;
 import com.group2.secotool_app.bussiness.mapper.*;
 import com.group2.secotool_app.bussiness.service.*;
-import com.group2.secotool_app.model.dto.ProductDto;
-import com.group2.secotool_app.model.dto.ProductFullDto;
+import com.group2.secotool_app.model.dto.*;
 import com.group2.secotool_app.model.dto.request.ListOfCategoriesIdRequestDto;
 import com.group2.secotool_app.model.dto.request.ListOfFeaturesidRequestDto;
 import com.group2.secotool_app.model.dto.request.ProductRequestDto;
-import com.group2.secotool_app.model.entity.Product;
 import com.group2.secotool_app.util.ProductUtils;
+import com.group2.secotool_app.util.RentUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,26 +26,24 @@ public class ProductFacadeImpl implements IProductFacade {
     private final IFeatureFacade featureFacade;
     private final ICategoryFacade categoryFacade;
     private final IProductService productService;
+    private final IProductValidationService productValidationService;
     private final IImageService imageService;
-    private final ICategoryService categoryService;
-    private final IFeatureService featureService;
     private final IFileService fileService;
     private final IBucketS3Service bucketS3Service;
     private final ProductMapper productMapper;
-    private final ProductDtoMapper productDtoMapper;
-    private final ProductFullDtoMapper productFullDtoMapper;
     private final ProductUtils productUtils;
+    private final RentUtils rentUtils;
 
     @Override
     public List<ProductDto> getAllProducts() {
         var prods = productService.getAllProducts();
-        return productsToProductsDto(prods);
+        return productUtils.productsToProductsDto(prods);
     }
 
     @Override
     public List<ProductDto> getTenRandomProducts() {
         var randomProds = productService.getTenRandomProducts();
-        return productsToProductsDto(randomProds);
+        return productUtils.productsToProductsDto(randomProds);
     }
 
     @Override
@@ -65,6 +63,7 @@ public class ProductFacadeImpl implements IProductFacade {
 //se puede refactorizar
     @Override
     public String save(ProductRequestDto productRequestDto, ListOfCategoriesIdRequestDto listOfCategoriesIdRequestDto, ListOfFeaturesidRequestDto listOfFeaturesidRequestDto, List<MultipartFile> images) {
+        productValidationService.validateProductNameIsNotAvaible(productRequestDto.name());
         fileService.validateFilesAreImages(images);
 
         var product = productMapper.toProduct(productRequestDto);
@@ -98,37 +97,54 @@ public class ProductFacadeImpl implements IProductFacade {
     @Override
     public List<ProductDto> paginateProducts(int page) {
         var products = productService.paginateProducts(page);
-        return productsToProductsDto(products);
+        return productUtils.productsToProductsDto(products);
     }
 
     @Override
     public ProductFullDto findProductById(Long id) {
         var product = productService.findProductById(id);
-        Long prodId = product.getId();
-        var images = imageService.getAllImagesByProduct(prodId);
-        var categories = categoryService.getAllCategoriesByProduct(prodId);
-        var features = featureService.getAllFeaturesByProduct(prodId);
-        product.setImages(images);
-        product.setProductCategories(categories);
-        product.setProductFeatures(features);
-        return productFullDtoMapper.toProductFullDto(product);
+        return productUtils.productToProductFullDto(product);
     }
 
     @Override
     public List<ProductDto> getAllProductsAssociateWithAFeature(Long featureId) {
-        List<ProductDto> productDtos = new ArrayList<>();
         var prods = productService.getAllProductsAssociateWithAFeature(featureId);
-        prods.forEach(prod -> productDtos.add(productDtoMapper.toProductDto(prod)));
-        return productDtos;
+        return productUtils.productsToProductsDto(prods);
     }
+
+    @Override
+    public List<RentProductDto> getAllProductsByRangeOfDateAvaibleToRent(LocalDate startDate, LocalDate endDate, String productName) {
+
+        var totalDays = productUtils.daysQuantity(startDate,endDate);
+        List<RentProductDto> response = new ArrayList<>();
+        var prodsAvailable = productService.getAllProductsByRangeOfDateAvaibleToRent(startDate,endDate);
+        var prodsAvailableDto = productUtils.productsToProductsDto(prodsAvailable);
+
+        if (productName.equals("")) {
+            prodsAvailableDto.forEach(productDto -> {
+                var totalPrice = rentUtils.calculateTotalPriceOfRent(totalDays,productDto.price());
+                response.add(new RentProductDto(startDate,endDate,totalDays,totalPrice,productDto));
+            });
+        }else {
+            prodsAvailableDto.forEach(productDto -> {
+                if (productDto.name().contains(productName)){
+                    var totalPrice = rentUtils.calculateTotalPriceOfRent(totalDays,productDto.price());
+                    response.add(new RentProductDto(startDate,endDate,totalDays,totalPrice,productDto));
+                }
+            });
+        }
+        return response;
+    }
+
     @Override
     public List<ProductDto> getAllProductsAssociateWithACategory(ListOfCategoriesIdRequestDto categoriesId) {
+
         List<List<ProductDto>> productDtosMatriz = new ArrayList<>();
         List<ProductDto> productDtoList = new ArrayList<>();
 
         categoriesId.idsCategories().forEach(categoryId -> {
             var prods = productService.getAllProductsAssociateWithACategory(categoryId);
-            productDtosMatriz.add(productsToProductsDto(prods));
+            productDtosMatriz.add(productUtils.productsToProductsDto(prods));
         });
 
         productDtosMatriz.forEach(arrayProd -> {
@@ -138,15 +154,6 @@ public class ProductFacadeImpl implements IProductFacade {
         return productUtils.removeDuplicated(productDtoList);
     }
 
-    private List<ProductDto> productsToProductsDto(List<Product> products){
-        ArrayList<ProductDto> productsDto = new ArrayList<>();
-        products.forEach(product -> {
-                    product.setProductCategories(categoryService.getAllCategoriesByProduct(product.getId()));
-                    product.setImages(imageService.getAllImagesByProduct(product.getId()));
-                    productsDto.add(productDtoMapper.toProductDto(product));
-                });
-        return productsDto;
-    }
 
 
 }

@@ -14,8 +14,7 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //@Column(nullable = false)
-    @Column(name = "url")
+    @Column(nullable = false)
     private String url;
 
     @ManyToOne(fetch = FetchType.LAZY)
