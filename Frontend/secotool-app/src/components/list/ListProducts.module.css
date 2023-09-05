@@ -1,3 +1,7 @@
+.contenedorLista{
+    width: 100%;
+}
+
 .listProducts{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -6,8 +10,7 @@
     column-gap: 0.5rem;
     justify-items: center;
     align-items: center;
-    margin-left: 32px;
-    margin-right: 32px;
+    
 }
 
 .paginationList{

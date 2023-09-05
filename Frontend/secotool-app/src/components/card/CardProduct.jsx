@@ -7,36 +7,89 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 function CardProduct({ product }) {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, token } = useAuth();
   const [isLiked, setIsLiked] = useState(false);
 
-  useEffect(() => {
-    const dispatchFavorite = async () => {
-      try {
-        const response = await axios.post(
-          `http://localhost:8080/v1/api/users/products/${product.id}`,
-          {
-            token: localStorage.getItem("tokenUserLog"),
-          }
-        );
+  const url = `http://localhost:8080/v1/api/users/products/${product.id}`;
 
-        if (response.status === 200) {
-          console.log("entro en el ok", response);
-        }
-      } catch (error) {
-        console.error("entro en el error ", error);
+
+  //--------------- aca solicito el estado del isliked a la base de dato ---------------
+
+  const fetchIsLikedStatus = async () => {
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: token,
+        },
+      });
+
+      if (response.status === 200) {
+        setIsLiked(response.data.isFavorite);
       }
-    };
-
-    if (isLiked) {
-      dispatchFavorite();
+    } catch (error) {
+      console.error("Error al obtener el estado de Favorite", error);
     }
-  }, [isLiked, product.id]);
+  };
+
+  // ------------- aca hacemos el post del favorite a la base de datos -------------------------
+
+  const dispatchFavorite = async () => {
+    try {
+      const response = await axios.post(
+        url,
+        {},
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        console.log("entro en el ok", response);
+      }
+    } catch (error) {
+      console.error("entro en el error ", error);
+    }
+  };
+
+  // ------------- aca hacemos el delete del favorito a la base de datos -------------------------
+
+  const dispatchNoFavorite = async () => {
+    try {
+      const response = await axios.delete(url, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      if (response.status === 200) {
+        console.log("entro en el ok", response);
+      }
+    } catch (error) {
+      console.error("entro en el error de sacar favoritos ", error);
+    }
+  };
+
+  // ----------- effect para renderizar el componenete completo --------------
+
+  useEffect(() => {
+    fetchIsLikedStatus()
+  }, []);
+
+  //-------- funcion que se ejecuta al hacer click en el corazon -------------
 
   const handleLike = (product) => {
     console.log("estoy en el producto ", product.name);
-    setIsLiked((prevIsLiked) => !prevIsLiked);
+    setIsLiked(!isLiked);
+    if (!isLiked) {
+      dispatchFavorite();
+    } else {
+      dispatchNoFavorite();
+    }
   };
+
+  //----------------------------------------------------------------
 
   return (
     <div className={styles.contenedorGeneral}>
@@ -63,7 +116,7 @@ function CardProduct({ product }) {
               <Grid item xs={12} md={12}>
                 <h4 className={styles.titleCard}>{product.name}</h4>
               </Grid>
-              <Grid xs={12} md={12} className={styles.textPriceCard}>
+              <Grid item xs={12} md={12} className={styles.textPriceCard}>
                 <span>$</span>
                 <span>{product.price}</span>
               </Grid>

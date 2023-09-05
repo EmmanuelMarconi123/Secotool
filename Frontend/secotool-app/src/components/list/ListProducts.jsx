@@ -29,7 +29,7 @@ const ListProducts = ({ products }) => {
   //const shuffledHerramientas = shuffleArray(products); //herramienta para hacer aleatoria la forma en que se renderizan las cards
 
   return (
-    <div className="d-flex f-dir-colum">
+    <div className={`d-flex f-dir-colum ${style.contenedorLista}`}>
       <div className={style.listProducts}>
         {/*shuffledHerramientas &&
           currentPost*/
