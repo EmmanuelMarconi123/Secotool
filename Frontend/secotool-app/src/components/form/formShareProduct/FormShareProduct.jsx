@@ -1,7 +1,7 @@
 import { Checkbox, CheckboxGroup, Input } from "rsuite";
 import styles from "./FormShareProduct.module.css";
 import { useState } from "react";
-import CardProductShare from "../../card/CardProductShare";
+import CardProductShare from "../../card/cardProductShare/CardProductShare";
 
 const FormShareProduct = ({ product }) => {
   const [value, setValue] = useState([]);

@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -18,8 +19,6 @@ import java.util.List;
 public class ProductServiceImpl implements IProductService {
 
     private final ProductRepository productRepository;
-    private final IProductValidationService productValidationService;
-    private final ProductMapper productMapper;
 
 
     @Override
@@ -34,8 +33,6 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public Long save(Product product) {
-        if (productValidationService.validateProductNameIsNotAvaible(product.getName()))
-            throw new RuntimeException("product name already exists on database");
         var prod = productRepository.save(product);
         return prod.getId();
     }
@@ -72,7 +69,7 @@ public class ProductServiceImpl implements IProductService {
     public void updateProduct(Product prod) {
         if (!existProductById(prod.getId()))
             throw new RuntimeException("it is not posible to update a product doesn't exists");
-        productRepository.deleteRelationsWithCategoryAndFeatures(prod.getId());
+        productRepository.deleteAllRelationsAssociatedWithAProductById(prod.getId());
         productRepository.save(prod);
     }
 
@@ -96,7 +93,22 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public void deleteRelationsWithCategoryAndFeatures(Long id) {
-        productRepository.deleteRelationsWithCategoryAndFeatures(id);
+        productRepository.deleteAllRelationsAssociatedWithAProductById(id);
+    }
+
+    @Override
+    public List<Product> getFavoritesProductOfUserById(Long userId) {
+        return productRepository.findAllByUserId(userId);
+    }
+
+    @Override
+    public List<Product> getAllProductsByRangeOfDateAvaibleToRent(LocalDate startDate, LocalDate endDate) {
+        return productRepository.getAllProductsAvaibleToRent(startDate,endDate);
+    }
+
+    @Override
+    public boolean existProductByName(String name) {
+        return productRepository.existsByName(name);
     }
 
 

@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import Card from "../card/CardProduct";
+import Card from "../card/cardProduct/CardProduct";
 import style from "./ListProducts.module.css";
 import Pagination from "../pagination/Pagination";
 

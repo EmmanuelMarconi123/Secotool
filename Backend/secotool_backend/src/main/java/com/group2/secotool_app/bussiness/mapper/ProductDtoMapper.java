@@ -13,4 +13,13 @@ public interface ProductDtoMapper {
     @Mapping(source = "images", target = "images")
     @Mapping(source = "productCategories", target = "productCategories")
     ProductDto toProductDto (Product product);
+
+
+    @Mapping(source = "product.id", target = "id")
+    @Mapping(source = "product.name", target = "name")
+    @Mapping(source = "product.price", target = "price")
+    @Mapping(source = "isFavorite", target = "isFavorite")
+    @Mapping(source = "product.images", target = "images")
+    @Mapping(source = "product.productCategories", target = "productCategories")
+    ProductDto toProductFavoritetDto (Product product, Boolean isFavorite);
 }
