@@ -1,6 +1,5 @@
-import { Grid} from "@mui/material";
+import { Grid } from "@mui/material";
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import Card from "../card/cardProduct/CardProduct";
 import style from "./ListProducts.module.css";
 import Pagination from "../pagination/Pagination";
@@ -29,15 +28,13 @@ const ListProducts = ({ products }) => {
   //const shuffledHerramientas = shuffleArray(products); //herramienta para hacer aleatoria la forma en que se renderizan las cards
 
   return (
-    <div className="d-flex f-dir-colum">
+    <div className={`d-flex f-dir-colum ${style.contenedorLista}`}>
       <div className={style.listProducts}>
         {/*shuffledHerramientas &&
           currentPost*/
           currentPost.map((product) => (
             <Grid key={product.id ? product.id : product.productDto.id}>
-              <Link to={`/product/${product.id ? product.id : product.productDto.id}`} key={product.id ? product.id : product.productDto.id}>
                 <Card product={product.productDto ? product.productDto : product} />
-              </Link>
             </Grid>
           ))}
       </div>
