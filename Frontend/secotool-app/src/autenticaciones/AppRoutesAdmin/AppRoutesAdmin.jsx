@@ -35,3 +35,4 @@ const AppRoutesAdmin = () => {
 };
 
 export default AppRoutesAdmin;
+
