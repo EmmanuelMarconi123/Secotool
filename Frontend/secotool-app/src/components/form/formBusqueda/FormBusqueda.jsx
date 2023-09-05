@@ -24,7 +24,9 @@ const FormBusqueda = ({ products, setProducts }) => {
       ? dateRange[1].toISOString().split("T")[0]
       : null;
 
-    const url = `http://localhost:8080/v1/api/products/all/rentals?startDate=${formattedStartDate}&endDate=${formattedEndDate}&productName=${buscador.toLocaleLowerCase()}`;
+    const buscadorValue= buscador.toLocaleLowerCase().trim(" ")
+
+    const url = `http://localhost:8080/v1/api/products/open/rentals?startDate=${formattedStartDate}&endDate=${formattedEndDate}&productName=${buscadorValue}`;
 
     console.log(url);
     axios

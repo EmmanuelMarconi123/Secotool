@@ -10,7 +10,7 @@ const LoadingIndicator = () => <Loader size="md" content="CARGANDO" />;
 const NetworkError = () => <p>Network Error</p>;
 
 const Home = () => {
-  const URL_API = "http://localhost:8080/v1/api/products/all";
+  const URL_API = "http://localhost:8080/v1/api/products/open";
   const { data, status } = useFetch(URL_API, {});
 
   const [products, setProducts] = useState("");

@@ -9,7 +9,7 @@ const ListCategorias = () => {
     const fetchCategorias = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/v1/api/categories"
+          "http://localhost:8080/v1/api/categories/open"
         );
         setCategorias(response.data);
       } catch (error) {
