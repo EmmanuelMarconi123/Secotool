@@ -67,10 +67,10 @@ public class ProductController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",description = "page of required products")
     })
+
     public ResponseEntity<List<ProductDto>> productPaginationTenByTen(@Parameter(description = "index of products needed")@PathVariable int page){
         return ResponseEntity.ok(productFacade.paginateProducts(page));
     }
-
 
     @GetMapping("/all/feature/{featureId}")
     public ResponseEntity<List<ProductDto>> getAllProductsAssociateWithAFeature(@PathVariable Long featureId){

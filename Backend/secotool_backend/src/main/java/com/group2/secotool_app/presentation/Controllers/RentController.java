@@ -2,6 +2,7 @@ package com.group2.secotool_app.presentation.Controllers;
 
 import com.group2.secotool_app.bussiness.facade.IRentFacade;
 import com.group2.secotool_app.model.dto.RentProductDto;
+import com.group2.secotool_app.model.dto.RentValidatedDto;
 import com.group2.secotool_app.model.dto.request.RentProductRequestDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ public class RentController {
     private final IRentFacade rentFacade;
 
     @PostMapping("/validate")
-    public ResponseEntity<RentProductDto> validateUserRent(@RequestBody @Valid RentProductRequestDto rangeOfDates){
+    public ResponseEntity<RentValidatedDto> validateUserRent(@RequestBody @Valid RentProductRequestDto rangeOfDates){
         return ResponseEntity.ok(rentFacade.validateUserRangeOfDatesToRent(rangeOfDates));
     }
 
