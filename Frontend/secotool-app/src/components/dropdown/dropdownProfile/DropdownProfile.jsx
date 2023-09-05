@@ -9,12 +9,11 @@ const DropdownProfile = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const { logout, token } = useAuth();
-  const {fetchUser, user } = useFunction();
+  const { fetchUser, user } = useFunction();
 
   useEffect(() => {
     fetchUser(token);
-  },[]);
-
+  }, []);
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -34,24 +33,27 @@ const DropdownProfile = () => {
   }, []);
   return (
     <div className={style.dropdown} ref={dropdownRef}>
-      <AvatarSm className={style.avatarDropdown} toggle={toggleDropdown} user={user}></AvatarSm>
+      <AvatarSm
+        className={style.avatarDropdown}
+        toggle={toggleDropdown}
+        user={user}
+      ></AvatarSm>
       <div
-        className={`${style.dropdownContent} ${
-          dropdownOpen ? style.show : ""
-        }`}
+        className={`${style.dropdownContent} ${dropdownOpen ? style.show : ""}`}
       >
         <span>{user.firstName + " " + user.lastName}</span>
         <hr />
         <nav className="d-flex f-dir-colum ">
           <Link to="/Profile" onClick={toggleDropdown}>
-          <i className="fa-regular fa-user"></i>
+            <i className="fa-regular fa-user"></i>
             Ver Perfil
           </Link>
           <Link to="/favorites">
-          <i className="fa-regular fa-star"></i> Mis favoritos
+            <i className="fa-regular fa-heart"></i>Mis favoritos
           </Link>
           <Link to="/" onClick={logout}>
-            <i className="fa-regular fa-arrow-right-from-bracket"></i> Cerrar Sesión
+            <i className="fa-regular fa-arrow-right-from-bracket"></i> Cerrar
+            Sesión
           </Link>
         </nav>
       </div>
