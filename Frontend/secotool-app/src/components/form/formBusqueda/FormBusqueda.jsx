@@ -24,13 +24,14 @@ const FormBusqueda = ({ products, setProducts }) => {
       ? dateRange[1].toISOString().split("T")[0]
       : null;
 
-    const url= `http://localhost:8080/v1/api/products/all/rentals?startDate=${formattedStartDate}&endDate=${formattedEndDate}&productName=${buscador.toLocaleLowerCase()}`
+    const url = `http://localhost:8080/v1/api/products/all/rentals?startDate=${formattedStartDate}&endDate=${formattedEndDate}&productName=${buscador.toLocaleLowerCase()}`;
 
     console.log(url);
-    axios.get(url)
+    axios
+      .get(url)
       .then(function (response) {
         console.log(response);
-        setProducts(response.data)
+        setProducts(response.data);
       })
       .catch(function (response) {
         console.log(response);
@@ -38,7 +39,12 @@ const FormBusqueda = ({ products, setProducts }) => {
   };
 
   useEffect(() => {
-    if (products) setProductsNames(products.map((producto) => producto.name ? producto.name : producto.productDto.name));
+    if (products)
+      setProductsNames(
+        products.map((producto) =>
+          producto.name ? producto.name : producto.productDto.name
+        )
+      );
   }, [products]);
 
   useEffect(() => {
