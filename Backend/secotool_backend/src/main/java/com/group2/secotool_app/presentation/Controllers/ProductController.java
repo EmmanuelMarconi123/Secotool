@@ -28,22 +28,17 @@ public class ProductController {
     private final IProductFacade productFacade;
 
 
-    @GetMapping("/all")
+    @GetMapping("/open")
     @Operation(summary = "return a list of all products saved in database")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",description = "list of products")
     })
+
     public ResponseEntity<List<ProductDto>> getAllProducts(){
         return ResponseEntity.ok(productFacade.getAllProducts());
     }
 
-    @GetMapping("/all/rentals")
-    public ResponseEntity<List<RentProductDto>> getAllProductsByRangeOfDateAvailableToRent(@RequestParam("startDate") LocalDate startDate, @RequestParam("endDate") LocalDate endDate , @RequestParam("productName") String productName){
-        return ResponseEntity.ok(productFacade.getAllProductsByRangeOfDateAvaibleToRent(startDate,endDate,productName));
-    }
-
-
-    @GetMapping("/{id}")
+    @GetMapping("/open/{id}")
     @Operation(summary = "return a product saved on database by its id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",description = "product found"),
@@ -53,7 +48,13 @@ public class ProductController {
         return ResponseEntity.ok(productFacade.findProductById(id));
     }
 
-    @GetMapping("/random")
+    @GetMapping("/open/rentals")
+    public ResponseEntity<List<RentProductDto>> getAllProductsByRangeOfDateAvailableToRent(@RequestParam("startDate") LocalDate startDate, @RequestParam("endDate") LocalDate endDate , @RequestParam("productName") String productName){
+        return ResponseEntity.ok(productFacade.getAllProductsByRangeOfDateAvaibleToRent(startDate,endDate,productName));
+    }
+
+
+    @GetMapping("/open/random")
     @Operation(summary = "return ten random products")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",description = "list of random products")
@@ -62,7 +63,7 @@ public class ProductController {
         return ResponseEntity.ok(productFacade.getTenRandomProducts());
     }
 
-    @GetMapping("/paginate/{page}")
+    @GetMapping("/open/paginate/{page}")
     @Operation(summary = "return a list of ten products according to the specified index. 0 = first 10 products 1 = second 10 products")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",description = "page of required products")
@@ -72,25 +73,26 @@ public class ProductController {
         return ResponseEntity.ok(productFacade.paginateProducts(page));
     }
 
-    @GetMapping("/all/feature/{featureId}")
+    @GetMapping("/open/feature/{featureId}")
     public ResponseEntity<List<ProductDto>> getAllProductsAssociateWithAFeature(@PathVariable Long featureId){
         return ResponseEntity.ok(productFacade.getAllProductsAssociateWithAFeature(featureId));
     }
 
 
-    @GetMapping("/all/category")
+    @GetMapping("/open/category")
     public ResponseEntity<List<ProductDto>> filterProductsByCategories(@RequestParam("idCategory") List<Long> categoriesId){
         ListOfCategoriesIdRequestDto categoriesIdRequestDto = new ListOfCategoriesIdRequestDto(categoriesId);
         return ResponseEntity.ok(productFacade.getAllProductsAssociateWithACategory(categoriesIdRequestDto));
     }
 
-    @PostMapping
+    @PostMapping("/admin")
     @Operation(summary = "save a product on database")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201",description = "product saved successfully"),
             @ApiResponse(responseCode = "400",description = "invalid body fields"),
             @ApiResponse(responseCode = "406",description = "product name already exists on database")
     })
+
     public ResponseEntity<String> saveProduct(@Parameter(description = "")
                                               @RequestPart("product-data") @Valid
                                               ProductRequestDto productRequestDto,
@@ -106,7 +108,7 @@ public class ProductController {
         return ResponseEntity.status(201).body(productFacade.save(productRequestDto, listOfCategoriesIdRequestDto, listOfFeaturesidRequestDto,images));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/admin/{id}")
     public ResponseEntity<?> updateProduct(@PathVariable Long id ,
                                            @RequestPart("product-data") @Valid
                                            ProductRequestDto productRequestDto,
@@ -120,11 +122,12 @@ public class ProductController {
 
 
     // cuando se elimine un prd hay que borrar las imagenes de la db y del buvket s3 de aws
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/{id}")
     @Operation(summary = "delete a product saved on database")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",description = "product successfully deleted")
     })
+
     public ResponseEntity<String> deleteProductById(@Parameter(description = "product id to remove") @PathVariable @Positive @Valid Long id){
         return ResponseEntity.ok(productFacade.deleteById(id));
     }

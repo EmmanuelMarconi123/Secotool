@@ -17,12 +17,12 @@ public class ProductPoliticController {
 
     private final IProductPoliticService productPoliticService;
 
-    @GetMapping
+    @GetMapping("/open")
     public ResponseEntity<List<ProductPoliticDto>> getallPolitics(){
         return ResponseEntity.ok(productPoliticService.findAll());
     }
 
-    @PostMapping
+    @PostMapping("/admin")
     public ResponseEntity<String> savePolitic(@RequestBody @Valid
                                                    ProductPoliticRequestDto productPoliticRequestDto
     ){
@@ -30,7 +30,7 @@ public class ProductPoliticController {
         return ResponseEntity.ok("politic successfully saved");
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/admin/{id}")
     public ResponseEntity<String> updatePolitic(@PathVariable Long id,
                                                 @RequestBody @Valid
                                                 ProductPoliticRequestDto productPoliticRequestDto){
@@ -38,7 +38,7 @@ public class ProductPoliticController {
         return ResponseEntity.ok("politic successfully updated");
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/{id}")
     public ResponseEntity<String> deletePolitic(@PathVariable Long id){
         productPoliticService.delete(id);
         return ResponseEntity.ok(String.format("politic %s successfully deleted", id));

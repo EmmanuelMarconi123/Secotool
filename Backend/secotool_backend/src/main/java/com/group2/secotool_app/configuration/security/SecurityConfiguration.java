@@ -1,5 +1,6 @@
 package com.group2.secotool_app.configuration.security;
 
+import com.group2.secotool_app.model.entity.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,7 +29,8 @@ public class SecurityConfiguration {
         http
                 .authorizeHttpRequests(authorize ->
                     authorize
-                            .requestMatchers("/v*/api/**",
+                            .requestMatchers("/v1/api/products/open/**",
+                                    "/v1/api/politics/open/**",
                                     "/v1/api/auth/**",
                                     "/v2/api-docs",
                                     "/v3/api-docs",
@@ -45,9 +47,28 @@ public class SecurityConfiguration {
                                     "/assets/**",
                                     "/scripts/**",
                                     "/*.js").permitAll()
-                            //.requestMatchers("/v1/api/users/**").hasAnyAuthority(UserRole.ADMIN.name(),UserRole.USER.name())
-                            //.requestMatchers("/v1/api/products/**").hasAuthority(UserRole.USER.name())
-                            //.anyRequest().authenticated()
+                            //products
+                            .requestMatchers("/v1/api/products/admin/**").hasAuthority(UserRole.ADMIN.name())
+
+                            //users
+                            .requestMatchers("/v1/api/users/products/**",
+                                    "/v1/api/users/getMe"
+                            ).hasAnyAuthority(UserRole.ADMIN.name(),UserRole.USER.name())
+                            .requestMatchers("/v1/api/rentals/admin/**").hasAuthority(UserRole.ADMIN.name())
+
+                            //rentals
+                            .requestMatchers("/v1/api/rentals/**"
+                            ).hasAnyAuthority(UserRole.ADMIN.name(),UserRole.USER.name())
+
+                            //features
+                            .requestMatchers("/v1/api/features/**").hasAuthority(UserRole.ADMIN.name())
+
+                            //categories
+                            .requestMatchers("/v1/api/categories/**").hasAuthority(UserRole.ADMIN.name())
+
+                            //politics
+                            .requestMatchers("/v1/api/politics/admin/**").hasAuthority(UserRole.ADMIN.name())
+                            .anyRequest().authenticated()
                 )
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session ->

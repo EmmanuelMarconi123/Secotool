@@ -22,7 +22,7 @@ public class ProductPoliticServiceImpl implements IProductPoliticService {
 
     @Override
     public void save(ProductPoliticRequestDto productPoliticRequestDto) {
-        if (productPoliticRepository.existsByName(productPoliticRequestDto.title()))
+        if (productPoliticRepository.existsByTitle(productPoliticRequestDto.title()))
             throw new RuntimeException("politic already exists");
         productPoliticRepository.save(productPoliticMapper.toProductPolitic(productPoliticRequestDto));
     }

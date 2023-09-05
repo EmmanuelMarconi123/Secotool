@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProductPoliticRepository extends JpaRepository<ProductPolitic,Long> {
-    boolean existsByName(String title);
+    boolean existsByTitle(String title);
 }
