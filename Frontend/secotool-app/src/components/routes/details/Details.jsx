@@ -17,6 +17,8 @@ const LoadingIndicator = () => <Loader size="md" content="CARGANDO" />;
 
 const NetworkError = () => <p>Network Error</p>;
 
+const { beforeToday } = DateRangePicker;
+
 function Details() {
   const params = useParams();
   const isScreenSmall = useMediaQuery("(max-width: 767px)");
@@ -114,11 +116,13 @@ function Details() {
                       appearance="subtle"
                       placeholder="Seleccione fechas"
                       showOneCalendar
+                      shouldDisableDate={beforeToday()}
                     />
                   ) : (
                     <DateRangePicker
                       appearance="subtle"
                       placeholder="Seleccione fechas"
+                      shouldDisableDate={beforeToday()}
                     />
                   )}
                 </div>
