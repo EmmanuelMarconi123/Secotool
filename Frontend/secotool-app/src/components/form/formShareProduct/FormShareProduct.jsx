@@ -5,10 +5,25 @@ import CardProductShare from "../../card/cardProductShare/CardProductShare";
 
 const FormShareProduct = ({ product }) => {
   const [value, setValue] = useState([]);
+  let url = "";
+  if (typeof window === "object") {
+    url = String(window.location);
+    console.log(url);
+  }
 
   return (
     <form className={styles.formShare}>
       <p>Elije alguna red social</p>
+      <a
+        href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+          url
+        )}`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Compartir en Facebook
+      </a>
+
       <CheckboxGroup
         inline
         name="checkboxList"

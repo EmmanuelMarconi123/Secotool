@@ -11,6 +11,7 @@ const ModalShare = ({ product }) => {
     setOpen(true);
   };
   const handleClose = () => setOpen(false);
+  
   return (
     <>
       <Button size="lg" onClick={() => handleOpen("lg")}>
