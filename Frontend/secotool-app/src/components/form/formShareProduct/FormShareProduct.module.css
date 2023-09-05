@@ -1,0 +1,48 @@
+.checkboxGroup{
+    display: flex;
+    gap: 32px;
+    align-items: center;
+    justify-content: center;
+}
+
+.checkbox{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid  rgb(230, 230, 230);
+    border-radius: 4px;
+    padding: 16px;
+    width: 80px;
+}
+
+.checkbox div{
+    margin-right: 0px!important;
+}
+
+.checkbox i{
+font-size: 50px;
+}
+
+.boxEndForm{
+    display: flex;
+    gap: 32px;
+    flex-direction: column;
+}
+
+.formShare{
+    padding: 16px;
+}
+
+.formShare button{
+    width:100%;
+}
+
+@media screen and (min-width: 1440px) {
+    .boxEndForm{
+        flex-direction: row;
+    }
+    .formShare button{
+        width:30%;
+    }
+}

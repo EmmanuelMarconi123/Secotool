@@ -3,6 +3,7 @@ package com.group2.secotool_app.presentation.Controllers;
 import com.group2.secotool_app.bussiness.facade.IProductFacade;
 import com.group2.secotool_app.model.dto.ProductDto;
 import com.group2.secotool_app.model.dto.ProductFullDto;
+import com.group2.secotool_app.model.dto.RentProductDto;
 import com.group2.secotool_app.model.dto.request.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -17,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -34,6 +36,12 @@ public class ProductController {
     public ResponseEntity<List<ProductDto>> getAllProducts(){
         return ResponseEntity.ok(productFacade.getAllProducts());
     }
+
+    @GetMapping("/all/rentals")
+    public ResponseEntity<List<RentProductDto>> getAllProductsByRangeOfDateAvailableToRent(@RequestParam("startDate") LocalDate startDate, @RequestParam("endDate") LocalDate endDate , @RequestParam("productName") String productName){
+        return ResponseEntity.ok(productFacade.getAllProductsByRangeOfDateAvaibleToRent(startDate,endDate,productName));
+    }
+
 
     @GetMapping("/{id}")
     @Operation(summary = "return a product saved on database by its id")
@@ -103,7 +111,7 @@ public class ProductController {
                                            @RequestPart("product-data") @Valid
                                            ProductRequestDto productRequestDto,
                                            @RequestPart("categories") @Valid
-                                               ListOfCategoriesIdRequestDto listOfCategoriesIdRequestDto,
+                                           ListOfCategoriesIdRequestDto listOfCategoriesIdRequestDto,
                                            @RequestPart("features") @Valid
                                            ListOfFeaturesidRequestDto listOfFeaturesidRequestDto){
         productFacade.updateProduct(id, productRequestDto, listOfCategoriesIdRequestDto, listOfFeaturesidRequestDto);

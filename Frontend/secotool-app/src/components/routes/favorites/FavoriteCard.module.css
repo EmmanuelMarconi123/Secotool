@@ -1,0 +1,59 @@
+.cardFavorite {
+    background-color: #FFF;
+    display: flex;
+    flex-direction: row;
+}
+
+.infoCard {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-left: 20px;
+}
+
+.productName {
+    color: #3a3939;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.cardFavorite i {
+    width: 63px;
+    height: 20px;
+    font-size: 15px;
+    font-weight: 400;
+    padding-top: 8px;
+}
+
+
+.productImage {
+    width: 20%;
+}
+
+@media screen and (max-width: 360px) {
+    .productImage {
+        width: 120px;
+    }
+
+    .cardFavorite {
+        font-size: 11px;
+    }
+
+    .cardFavorite i {
+        width: 63px;
+        height: 20px;
+        font-size: 13px;
+        font-weight: 400;
+    }
+
+    .favoritePrice{
+        font-size: 14px;
+    }
+
+    .infoCard h2 {
+        font-size: 11px;
+    }
+}
+

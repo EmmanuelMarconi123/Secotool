@@ -151,7 +151,7 @@ header {
   border-radius: 8px;
 }
 
-/* ------ CALENDAR HOME --------- */
+/*Calendar*/
 
 .rs-picker-toggle {
   height: 5vh;
@@ -165,6 +165,14 @@ header {
 
 .rs-picker-daterange .rs-picker-toggle.rs-btn .rs-picker-toggle-clean {
   top: 13px;
+}
+
+.rs-picker-daterange-menu .rs-picker-daterange-panel-show-one-calendar .rs-picker-toolbar {
+  max-width: none!important;
+}
+
+.rs-picker-daterange-header{
+  text-align: center;
 }
 
 /*Breakpoints*/
@@ -192,11 +200,6 @@ header {
 
   .font-sm {
     font-size: 19px;
-  }
-
-  .button-lg {
-    width: 296px;
-    align-self: center;
   }
 
   .button-primary-transparent {

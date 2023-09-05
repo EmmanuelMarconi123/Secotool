@@ -1,0 +1,20 @@
+.modalReview {
+    text-align: center;
+}
+
+.modalReview form{
+    gap: 24px;
+}
+
+.modalReview form h4{
+    margin-bottom: 8px;
+}
+
+@media screen and (min-width: 1440px) {
+.mrTitle{
+    font-size: 27px;
+}
+.mrSubtitle{
+    font-size: 19px;
+}
+}

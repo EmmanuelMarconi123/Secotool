@@ -2,16 +2,26 @@ import styles from "./HomeAdmin.module.css";
 import AdminProductCard from "../../adminProductCard/AdminProductCard";
 import { useEffect, useState } from "react";
 import Pagination from "../../pagination/Pagination";
-import { ButtonToolbar, Button, } from "rsuite";
+import { ButtonToolbar, Button } from "rsuite";
 import { Alert, Snackbar } from "@mui/material";
 import FormNewProduct from "../../form/formNewProduct/FormNewProduct";
 import FormEditProduct from "../../form/FormEditProduct";
+import { useAuth } from "../../../contexts/AuthContext";
 
 const HomeAdmin = () => {
   //----------------------------TRAE TODOS LOS PRODUCTOS----------------------------->
+  const { token } = useAuth();
+
   const fetchProductsAdmin = async () => {
     try {
-      const response = await fetch("http://localhost:8080/v1/api/products/all");
+      const response = await fetch(
+        "http://localhost:8080/v1/api/products/all",
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
       if (response.ok) {
         const data = await response.json();
         setProducts(data);
@@ -31,7 +41,7 @@ const HomeAdmin = () => {
   const [open, setOpen] = useState(false); //NEW PRODUCT MODAL
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  
+
   const [openEp, setOpenEp] = useState(false); // EDIT PRODUCT MODAL
   const [selectedProduct, setSelectedProduct] = useState([]);
   const handleCloseEp = () => setOpenEp(false);
@@ -39,7 +49,14 @@ const HomeAdmin = () => {
   //---------------------------EDIT PRODUCT------------------------------------>
   const fetchProductDetails = async (productId) => {
     try {
-      const response = await fetch(`http://localhost:8080/v1/api/products/${productId}`);
+      const response = await fetch(
+        `http://localhost:8080/v1/api/products/${productId}`,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
       if (response.ok) {
         const productDetails = await response.json();
         return productDetails;
@@ -52,23 +69,24 @@ const HomeAdmin = () => {
   };
   const handleEditProduct = async (productId) => {
     const productDetails = await fetchProductDetails(productId);
-    
+
     setSelectedProduct(productDetails);
     setOpenEp(true); // Abre el modal de edición con los detalles del producto
   };
   const handleProductUpdate = (updatedProduct) => {
     // Buscar el índice del producto en la lista
-    const productIndex = products.findIndex(p => p.id === updatedProduct.id);
+    const productIndex = products.findIndex((p) => p.id === updatedProduct.id);
 
     if (productIndex !== -1) {
       // Crear una nueva lista de productos con el producto actualizado
+      //hola(borrar)
       const updatedProducts = [...products];
       updatedProducts[productIndex] = updatedProduct;
 
       // Actualizar el estado de la lista de productos
       setProducts(updatedProducts);
     }
-  }
+  };
   //---------------------------------DELETE PRODUCT------------------------------->
 
   const [alertOpen, setAlertOpen] = useState(false);
@@ -81,6 +99,9 @@ const HomeAdmin = () => {
         `http://localhost:8080/v1/api/products/${productId}`,
         {
           method: "DELETE",
+          headers: {
+            Authorization: "Bearer " + token,
+          },
         }
       );
 
@@ -113,7 +134,6 @@ const HomeAdmin = () => {
   }, []);
 
   //---------------------------------FETCH TODOS LOS PRODUCTOS------------------>
-
 
   useEffect(() => {
     const lastPostIndex = currentPage * 10;
@@ -205,5 +225,6 @@ const HomeAdmin = () => {
       />
     </div>
   );
+
 };
-export default HomeAdmin
+export default HomeAdmin;

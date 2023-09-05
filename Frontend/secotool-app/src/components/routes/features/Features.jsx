@@ -5,6 +5,8 @@ import { ButtonToolbar, Button } from "rsuite";
 import NewFeatureModal from "../../newFeatureModal/NewFeatureModal";
 import AdminFeatureCard from "../../adminFeatureCard/AdminFeatureCard";
 import EditFeatureModal from "../../editFeatureModal/EditFeatureModal";
+import { useAuth } from "../../../contexts/AuthContext";
+import { Snackbar, Alert } from "@mui/material";
 
 // const icons = [
 //   {
@@ -60,6 +62,7 @@ import EditFeatureModal from "../../editFeatureModal/EditFeatureModal";
 // ];
 
 const Features = () => {
+  const { token } = useAuth();
   //------------------------------ CONFIG MODALS--------------->
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -68,6 +71,12 @@ const Features = () => {
   const [openEp, setOpenEp] = useState(false);
   const handleOpenEp = () => setOpenEp(true);
   const handleCloseEp = () => setOpenEp(false);
+
+  //--------------------DELETE ALERT-------------------->
+  const [alertOpen, setAlertOpen] = useState(false);
+  const showDeleteSuccessAlert = () => {
+    setAlertOpen(true);
+  };
 
   //-------------- CONFIGURACION DE LA PAGINACION -------------------->
 
@@ -89,11 +98,17 @@ const Features = () => {
       try {
         const response = await fetch(
           `http://localhost:8080/v1/api/products/features/${id}`,
-          { method: "DELETE" }
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
         );
         if (response.ok) {
           console.log(`Se ha borrado el item con id ${id} correctamente`);
           fetchFeaturesAdmin();
+          showDeleteSuccessAlert();
         } else {
           throw new Error("Error en la solicitud");
         }
@@ -194,6 +209,16 @@ const Features = () => {
           Por favor ingrese desde un dispositivo más grande
         </span>
       )}
+      {/* -----------------------DELETE ALERT---------------------> */}
+      <Snackbar
+        open={alertOpen}
+        autoHideDuration={3000} // Duración en milisegundos
+        onClose={() => setAlertOpen(false)}
+      >
+        <Alert onClose={() => setAlertOpen(false)} severity="success">
+          Producto eliminado correctamente.
+        </Alert>
+      </Snackbar>
       {/* --------------------------NUEVA CARACTERÍSTICA MODAL--------------------------------> */}
 
       <NewFeatureModal
