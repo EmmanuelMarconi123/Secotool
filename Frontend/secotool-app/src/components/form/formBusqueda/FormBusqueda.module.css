@@ -8,18 +8,17 @@
   width: 100%;
 }
 
-.inputBuscador{
+.inputBuscador {
   background-color: white;
   border-radius: 8px;
 }
 
-.inputDate{
+.inputDate {
   background-color: white;
   border-radius: 8px;
 }
 
-
-.divSearchBar{
+.divSearchBar {
   width: 100%;
 }
 
@@ -42,15 +41,15 @@
     width: 90%;
   }
 
-  .inputBuscador{
+  .inputBuscador {
     width: 90%;
   }
-  .inputDate{
+  .inputDate {
     width: 90%;
   }
 }
 
-@media screen and (min-width: 768px) and (max-width:1024px) {
+@media screen and (min-width: 768px) and (max-width: 1024px) {
   .containerFormBusqueda {
     flex-direction: column;
     width: 80%;
@@ -59,15 +58,15 @@
     width: 100%;
   }
 
-  .inputBuscador{
+  .inputBuscador {
     width: 100%;
   }
-  .inputDate{
+  .inputDate {
     width: 100%;
   }
 }
 
-@media screen and (min-width: 1025px){
+@media screen and (min-width: 1025px) {
   .containerFormBusqueda {
     flex-direction: row;
     width: 100%;
@@ -77,12 +76,11 @@
     width: 20%;
   }
 
-  .inputBuscador{
+  .inputBuscador {
     width: 50%;
   }
-  .inputDate{
-    min-width: 242px;
+  .inputDate {
+    min-width: 290px;
     width: 30%;
   }
-  
 }

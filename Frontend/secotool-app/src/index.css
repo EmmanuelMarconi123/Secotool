@@ -129,6 +129,9 @@ header {
 }
 
 /*React suite styles*/
+
+/* ------ TAGS TABLES ADMIN -------- */
+
 .rs-tag {
   background-color: var(--dark);
   color: var(--white);
@@ -148,16 +151,20 @@ header {
   border-radius: 8px;
 }
 
+/* ------ CALENDAR HOME --------- */
+
 .rs-picker-toggle {
   height: 5vh;
+  border: none;
+  padding: 0;
 }
 
-.rs-picker-toggle-textbox {
-  height: 5vh;
+.rs-stack {
+  height: 100%;
 }
 
-.rs-picker-toggle-textbox:hover {
-  background-color: none;
+.rs-picker-daterange .rs-picker-toggle.rs-btn .rs-picker-toggle-clean{
+  top: 13px;
 }
 
 /*Breakpoints*/

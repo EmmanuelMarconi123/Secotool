@@ -33,9 +33,9 @@ const ListProducts = ({ products }) => {
       <div className={style.listProducts}>
         {shuffledHerramientas &&
           currentPost.map((product) => (
-            <Grid key={product.id}>
-              <Link to={"/product/" + product.id} key={product.id}>
-                <Card product={product} />
+            <Grid key={product.id ? product.id : product.productDto.id}>
+              <Link to={`/product/${product.id ? product.id : product.productDto.id}`} key={product.id ? product.id : product.productDto.id}>
+                <Card product={product.productDto ? product.productDto : product} />
               </Link>
             </Grid>
           ))}
