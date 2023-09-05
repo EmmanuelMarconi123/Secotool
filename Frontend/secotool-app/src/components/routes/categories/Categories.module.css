@@ -114,3 +114,13 @@
   text-align: center;
   height: 60vh;
 }
+
+.modalButtons  {
+  display: flex;
+  justify-content: center;
+}
+
+.modalButtons button {
+  margin-right: 20px;
+  color: #fff;
+}
