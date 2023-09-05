@@ -47,18 +47,45 @@
   flex-direction: column;
 }
 
-.listPoliticas {
-  padding-left: 0px;
-}
-
-.boxShareProduct{
+.boxShareProduct {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.boxShareProduct i{
+.boxShareProduct i {
   font-size: 19px;
+}
+
+.sectionPoliticas h4 {
+  text-decoration: underline;
+}
+
+.boxProgressLines {
+  width: 100%;
+}
+
+.sectionVal {
+  padding-bottom: 32px;
+}
+
+.listReviews{
+  padding-left: 0px;
+}
+
+.buttonCta {
+  background-color: #4a6ac9!important;
+  border: none;
+  color: var(--white)!important;
+  background-color: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  padding-top: 12px!important;
+  padding-bottom: 12px!important;
+  width: 100%;
+  font-size: 16px;
+  margin-top: 24px;
+  margin-bottom: 24px;
 }
 
 @media screen and (min-width: 768px) {
@@ -67,6 +94,10 @@
     border: 1px solid #c2c2c2;
     padding: 0px 24px;
   }
+  .containerVal {
+    gap: 16px;
+  }
+
 }
 
 @media screen and (min-width: 1440px) {
@@ -109,7 +140,7 @@
     width: 27%;
   }
 
-  .boxShareProduct i{
+  .boxShareProduct i {
     font-size: 27px;
   }
 }
