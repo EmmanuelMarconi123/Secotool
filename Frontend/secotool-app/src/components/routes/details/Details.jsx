@@ -21,7 +21,7 @@ function Details() {
   const params = useParams();
   const isScreenSmall = useMediaQuery("(max-width: 767px)");
   const [isSticky, setIsSticky] = useState(false);
-  const URL_API = `http://localhost:8080/v1/api/products/${params.id}`;
+  const URL_API = `http://localhost:8080/v1/api/products/open/${params.id}`;
   const { data, status } = useFetch(URL_API, {});
   const [open, setOpen] = useState(false);
   const [size, setSize] = useState();
