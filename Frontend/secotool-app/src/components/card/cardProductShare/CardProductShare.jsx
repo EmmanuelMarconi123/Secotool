@@ -10,11 +10,7 @@ const CardProductShare = ({ product }) => {
     */}
       <img src={product.images[0].url} />
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Est sit amet
-        facilisis magna etiam tempor. Nulla aliquet porttitor lacus luctus
-        accumsan. Molestie nunc non blandit massa enim nec dui nunc mattis. Enim
-        nec dui nunc mattis.
+        {product.description}
       </p>
       <Link to={`/product/${product.id}`} >Enlace a la pagina del producto</Link>
     </div>
