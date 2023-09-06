@@ -3,6 +3,7 @@ package com.group2.secotool_app.bussiness.service;
 import com.group2.secotool_app.model.entity.Image;
 import com.group2.secotool_app.model.entity.Product;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface IProductService {
@@ -26,4 +27,10 @@ public interface IProductService {
     Product findByName(String prodName);
 
     void deleteRelationsWithCategoryAndFeatures(Long id);
+
+    List<Product> getFavoritesProductOfUserById(Long userId);
+
+    List<Product> getAllProductsByRangeOfDateAvaibleToRent(LocalDate startDate, LocalDate endDate);
+
+    boolean existProductByName(String name);
 }

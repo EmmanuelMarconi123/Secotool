@@ -6,8 +6,12 @@ import Pagination from "../../pagination/Pagination";
 import NewCategoryModal from "../../newCategoryModal/NewCategoryModal";
 import EditCategoryModal from "../../editCategoryModal/EditCategoryModal";
 import { Snackbar, Alert } from "@mui/material";
+import { useGlobal } from "../../../contexts/GlobalContext";
+import { useAuth } from "../../../contexts/AuthContext";
 
 const Categories = () => {
+  const { globalVariable } = useGlobal();
+  const { token } = useAuth();
   //------------------------------ CONFIG MODALS--------------->
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -29,18 +33,23 @@ const Categories = () => {
     setCategoryToDelete(category.name); // Establece el nombre de la categoría
     setSelectedCategory(category);
     setIsDeleteModalVisible(true);
-    console.log(selectedCategory)
+    console.log(selectedCategory);
   };
 
   const handleConfirmDelete = async () => {
     setIsDeleteModalVisible(false);
-    console.log(selectedCategory)
+    console.log(selectedCategory);
 
     // Realiza la eliminación del producto aquí
     try {
       const response = await fetch(
-        `http://localhost:8080/v1/api/categories/admin/{id}${selectedCategory}`,
-        { method: "DELETE" }
+        `${globalVariable}/v1/api/categories/admin/{id}${selectedCategory}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`, // Agrega el token JWT al encabezado
+          },
+        }
       );
       if (response.ok) {
         console.log(
@@ -71,27 +80,13 @@ const Categories = () => {
     setSelectedCategory(category);
   }
 
-  // async function deleteCategory(id) {
-  //     try {
-  //       const response = await fetch(
-  //         `http://localhost:8080/v1/api/categories/${id}`,
-  //         { method: "DELETE" }
-  //       );
-  //       if (response.ok) {
-  //         console.log(`Se ha borrado el item con id ${id} correctamente`);
-  //         fetchCategoriesAdmin();
-  //         showDeleteSuccessAlert();
-  //       } else {
-  //         throw new Error("Error en la solicitud");
-  //       }
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  // }
-
   const fetchCategoriesAdmin = async () => {
     try {
-      const response = await fetch("http://localhost:8080/v1/api/categories/open");
+      const response = await fetch(`${globalVariable}/v1/api/categories/open`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Agrega el token JWT al encabezado
+        },
+      });
       if (response.ok) {
         const data = await response.json();
         console.log(data); //Borrar este console.log, mas tarde\
@@ -194,10 +189,18 @@ const Categories = () => {
           ¿Está seguro que desea borrar la categoría {categoryToDelete}?
         </Modal.Body>
         <Modal.Footer className={styles.modalButtons}>
-          <button onClick={() => setIsDeleteModalVisible(false)} style={{backgroundColor: "red"}}>
+          <button
+            onClick={() => setIsDeleteModalVisible(false)}
+            style={{ backgroundColor: "red" }}
+          >
             Cancelar
           </button>
-          <button onClick={handleConfirmDelete} style={{backgroundColor: "green"}}>Confirmar</button>
+          <button
+            onClick={handleConfirmDelete}
+            style={{ backgroundColor: "green" }}
+          >
+            Confirmar
+          </button>
         </Modal.Footer>
       </Modal>
 

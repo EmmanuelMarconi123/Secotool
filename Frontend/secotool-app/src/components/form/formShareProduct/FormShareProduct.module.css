@@ -27,6 +27,7 @@ font-size: 50px;
 .boxEndForm{
     display: flex;
     gap: 32px;
+    flex-direction: column;
 }
 
 .formShare{
@@ -34,5 +35,14 @@ font-size: 50px;
 }
 
 .formShare button{
-    width:30%;
+    width:100%;
+}
+
+@media screen and (min-width: 1440px) {
+    .boxEndForm{
+        flex-direction: row;
+    }
+    .formShare button{
+        width:30%;
+    }
 }

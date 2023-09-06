@@ -1,6 +1,7 @@
 package com.group2.secotool_app.bussiness.service.Impl;
 
 import com.group2.secotool_app.bussiness.service.IUserService;
+import com.group2.secotool_app.model.entity.Product;
 import com.group2.secotool_app.model.entity.User;
 import com.group2.secotool_app.model.entity.UserRole;
 import com.group2.secotool_app.persistence.UserRepository;
@@ -60,5 +61,24 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
     @Override
     public void changeUserRole(Long userId, UserRole userRole) {
         userRepository.updateUserRole(userId,userRole);
+    }
+
+    @Override
+    public void addProductToFavorite(Long userId, Product product, List<Product> favoritesProducts) {
+        if (favoritesProducts.contains(product))
+            throw new RuntimeException("product is already in favorites");
+        var user = findUserById(userId);
+        favoritesProducts.add(product);
+        user.setFavoritesProducts(favoritesProducts);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void removeProductToFavorite(Long userId, Product product, List<Product> favoritesProducts) {
+        if (!favoritesProducts.remove(product))
+            throw new RuntimeException("product is not in your favorites list");
+        var user = findUserById(userId);
+        user.setFavoritesProducts(favoritesProducts);
+        userRepository.save(user);
     }
 }

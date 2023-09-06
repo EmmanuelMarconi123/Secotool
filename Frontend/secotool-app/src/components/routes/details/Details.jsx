@@ -4,22 +4,34 @@ import { useState } from "react";
 import { useEffect } from "react";
 import ListCaracteristicas from "../../list/ListCaracteristicas";
 import styles from "./Details.module.css";
-import { DateRangePicker } from "rsuite";
+import { Button, DateRangePicker, Loader, Progress } from "rsuite";
 import { useMediaQuery } from "@react-hook/media-query";
-import { Loader } from "rsuite";
 import { useFetch, statuses } from "../../../customHooks/useFetch";
 import ModalShare from "../../modal/ModalShare";
+import ListPoliticas from "../../list/listPoliticas/ListPoliticas";
+import FormVal from "../../form/formValoraciones/formVal";
+import CardReview from "../../card/cardReview/CardReview";
+import ModalReview from "../../modal/modalReview/ModalReview";
+import { useGlobal } from "../../../contexts/GlobalContext";
 
 const LoadingIndicator = () => <Loader size="md" content="CARGANDO" />;
 
 const NetworkError = () => <p>Network Error</p>;
 
+const { beforeToday, combine } = DateRangePicker;
+
 function Details() {
   const params = useParams();
   const isScreenSmall = useMediaQuery("(max-width: 767px)");
   const [isSticky, setIsSticky] = useState(false);
-  const URL_API = `http://localhost:8080/v1/api/products/${params.id}`;
+  const { globalVariable } = useGlobal();
+  const URL_API = `${globalVariable}/v1/api/products/open/${params.id}`;
   const { data, status } = useFetch(URL_API, {});
+  const [open, setOpen] = useState(false);
+  const [size, setSize] = useState();
+  const [disabledDates, setDisabledDates] = useState([]);
+  const [selectedDateRange, setSelectedDateRange] = useState(null);
+  const [dataRentail, setDataRentail] = useState(null);
 
   function handleScroll() {
     const scrollPosition = window.scrollY;
@@ -40,44 +52,89 @@ function Details() {
     };
   }, []);
 
-  const mockPoliticas = [
-    {
-      id: 1,
-      name: "Cancelación estricta",
-      description:
-        "Ante la cancelación del alquiler de un producto por parte del usuario, se descontará el 15% del valor del alquiler.  ",
-    },
-    {
-      id: 2,
-      name: "Garantía",
-      description:
-        "Se solicitará enviar foto del frente y dorso del DNI al momento de retirar el producto alquilado. ",
-    },
-    {
-      id: 3,
-      name: "Tarifas y Pagos",
-      description:
-        "Nuestra política de tarifas garantiza que los clientes conozcan el costo exacto del alquiler de la herramienta de construcción desde el principio. No habrá cargos ocultos ni sorpresas en la factura. El pago se realiza por adelantado y se aceptan varios métodos de pago, incluyendo tarjetas de crédito y transferencias bancarias",
-    },
-    {
-      id: 4,
-      name: "Depósito de Seguridad",
-      description:
-        "Para asegurar el uso responsable de nuestras herramientas, requerimos un depósito de seguridad antes del alquiler. Este depósito se reembolsará en su totalidad una vez que la herramienta sea devuelta en condiciones adecuadas. Cualquier daño o pérdida resultante del mal uso puede afectar la cantidad reembolsada.",
-    },
-    {
-      id: 5,
-      name: "Mantenimiento Post-Alquiler",
-      description:
-        "Esperamos que los clientes devuelvan la herramienta en condiciones limpias y funcionales. Si la herramienta se devuelve en mal estado o requiere una limpieza profunda, nos reservamos el derecho de aplicar cargos adicionales. Realizamos inspecciones exhaustivas después de cada alquiler para garantizar su calidad.",
-    },
-    {
-      id: 6,
-      name: "Seguro de Cobertura Amplia",
-      description:
-        "Ofrecemos un seguro opcional que cubre daños accidentales, pérdida y robo de la herramienta alquilada. Los clientes pueden optar por esta cobertura adicional para tener tranquilidad durante el uso. Es importante revisar los términos y condiciones del seguro para comprender plenamente qué situaciones están cubiertas.",
-    },
-  ];
+  const handleOpen = (value) => {
+    setSize(value);
+    setOpen(true);
+  };
+
+  const handleClose = () => setOpen(false);
+
+  useEffect(() => {
+    // Función para calcular las fechas deshabilitadas
+    const calculateDisabledDates = () => {
+      let newDisabledDates = [];
+
+      if (status !== statuses.ERROR && data) {
+        console.log(data.productRentals);
+        data.productRentals.forEach((rental) => {
+          const startDate = new Date(
+            rental.rentalStartDate + "T00:00:00-03:00"
+          );
+          const endDate = new Date(rental.rentalEndDate + "T00:00:00-03:00");
+          for (
+            let date = startDate;
+            date <= endDate;
+            date.setDate(date.getDate() + 1)
+          ) {
+            newDisabledDates.push(new Date(date));
+          }
+        });
+        setDisabledDates(newDisabledDates);
+      }
+    };
+
+    calculateDisabledDates();
+  }, []);
+
+  const validateRentals = () => {
+    if (selectedDateRange === null) {
+      // Maneja el caso en el que el rango de fechas no esté seleccionado correctamente
+      console.error("El rango de fechas no está seleccionado correctamente");
+      return;
+    }
+
+    const startDate = selectedDateRange[0].toISOString().split("T")[0];
+    const endDate = selectedDateRange[1].toISOString().split("T")[0];
+
+    const requestData = {
+      productId: data.id,
+      startDate,
+      endDate,
+    };
+
+    fetch(`${globalVariable}/v1/api/rentals/validate`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestData),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          // Maneja el caso en el que la solicitud no sea exitosa
+          throw new Error("La solicitud no pudo completarse");
+        }
+        return response.json();
+      })
+      .then((responseData) => {
+        // Procesa la respuesta exitosa
+        console.log("Respuesta exitosa:", responseData);
+        setDataRentail(responseData);
+      })
+      .catch((error) => {
+        // Maneja errores de la solicitud
+        console.error("Error en la solicitud:", error);
+      });
+  };
+
+  const handleDateRangeChange = (value) => {
+    setSelectedDateRange(value);
+    console.log(selectedDateRange);
+  };
+
+  const handleDateRangeOk = () => {
+    validateRentals();
+  };
 
   const ComponentDetailProduct =
     status !== statuses.ERROR && data ? (
@@ -118,6 +175,7 @@ function Details() {
                 )}
               </div>
             </div>
+            {/*---------------------------Seccion Calendario + precio ------------------------*/}
             <div
               className={
                 styles.boxInfoProductBottomEnd +
@@ -130,43 +188,107 @@ function Details() {
                     <span className={styles.titleSm}>Precio total</span>
                     <div className={styles.textPrecio}>
                       <span>$</span>
-                      <span>{data.price}</span>
+                      <span>
+                        {dataRentail ? dataRentail.TotalPrice : data.price}
+                      </span>
                     </div>
                   </div>
                 </div>
                 <div className={styles.boxCalendar}>
-                  <span className={styles.titleSm}>Desde - Hasta</span>
+                  <span className={styles.titleSm}>Desde ~ Hasta</span>
                   {isScreenSmall ? (
                     <DateRangePicker
                       appearance="subtle"
                       placeholder="Seleccione fechas"
                       showOneCalendar
+                      shouldDisableDate={combine(
+                        (date) =>
+                          disabledDates.some(
+                            (disabledDate) =>
+                              date.getDate() === disabledDate.getDate() &&
+                              date.getMonth() === disabledDate.getMonth() &&
+                              date.getFullYear() === disabledDate.getFullYear()
+                          ),
+                        beforeToday()
+                      )}
                     />
                   ) : (
                     <DateRangePicker
                       appearance="subtle"
                       placeholder="Seleccione fechas"
+                      shouldDisableDate={combine(
+                        (date) =>
+                          disabledDates.some(
+                            (disabledDate) =>
+                              date.getDate() === disabledDate.getDate() &&
+                              date.getMonth() === disabledDate.getMonth() &&
+                              date.getFullYear() === disabledDate.getFullYear()
+                          ),
+                        beforeToday()
+                      )}
+                      onChange={handleDateRangeChange}
+                      onOk={handleDateRangeOk}
                     />
                   )}
                 </div>
               </div>
-              <button className="button-lg button-cta">Alquilar</button>
+              <Button
+                className={styles.buttonCta}
+                onClick={() => handleOpen("lg")}
+              >
+                Alquilar
+              </Button>
+              <ModalReview open={open} size={size} handleClose={handleClose} />
             </div>
           </div>
           <div className={styles.boxList}>
-            <ul className={styles.listPoliticas}>
-              {mockPoliticas.map((politica) => (
-                <li key={politica.id}>
-                  <h4 className={styles.titleDetails + " font-regular mb-16"}>
-                    {politica.name}
-                  </h4>
-                  <p className="font-sm">{politica.description}</p>
+            {/*---------------------------Seccion Políticas------------------------*/}
+            <div className={styles.sectionPoliticas}>
+              <h4 className={styles.titleDetails + " font-regular mb-16"}>
+                Políticas
+              </h4>
+              <ListPoliticas />
+            </div>
+            {/*---------------------------Seccion Valoraciones------------------------*/}
+            <div className={styles.sectionVal}>
+              <h4 className={styles.titleDetails + " font-regular mb-16"}>
+                Valoraciones
+              </h4>
+              <div className={"d-flex " + styles.containerVal}>
+                <FormVal />
+                <div className={styles.boxProgressLines}>
+                  <div className="d-flex">
+                    <span>5</span>
+                    <Progress.Line showInfo={false} />
+                  </div>
+                  <div className="d-flex">
+                    <span>4</span>
+                    <Progress.Line showInfo={false} />
+                  </div>
+                  <div className="d-flex">
+                    <span>3</span>
+                    <Progress.Line showInfo={false} />
+                  </div>
+                  <div className="d-flex">
+                    <span>2</span>
+                    <Progress.Line showInfo={false} />
+                  </div>
+                  <div className="d-flex">
+                    <span>1</span>
+                    <Progress.Line showInfo={false} />
+                  </div>
+                </div>
+              </div>
+              {/*-----------Aqui va el map de las valoraciones del producto-------*/}
+              <ul className={styles.listReviews}>
+                <li>
+                  <CardReview />
                 </li>
-              ))}
-            </ul>
+              </ul>
+            </div>
           </div>
         </div>
-        </>
+      </>
     ) : null;
 
   /*const mockCaracteristicas = [
