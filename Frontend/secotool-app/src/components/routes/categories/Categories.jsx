@@ -39,7 +39,7 @@ const Categories = () => {
     // Realiza la eliminación del producto aquí
     try {
       const response = await fetch(
-        `http://localhost:8080/v1/api/categories/${selectedCategory}`,
+        `http://localhost:8080/v1/api/categories/admin/{id}${selectedCategory}`,
         { method: "DELETE" }
       );
       if (response.ok) {
@@ -91,7 +91,7 @@ const Categories = () => {
 
   const fetchCategoriesAdmin = async () => {
     try {
-      const response = await fetch("http://localhost:8080/v1/api/categories");
+      const response = await fetch("http://localhost:8080/v1/api/categories/open");
       if (response.ok) {
         const data = await response.json();
         console.log(data); //Borrar este console.log, mas tarde\

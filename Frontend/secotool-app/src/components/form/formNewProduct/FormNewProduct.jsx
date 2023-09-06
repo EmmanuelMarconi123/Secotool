@@ -14,7 +14,7 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
   useEffect(() => {
     async function fetchCategories() {
       try {
-        const response = await fetch("http://localhost:8080/v1/api/categories",{
+        const response = await fetch("http://localhost:8080/v1/api/categories/open",{
           headers: {
             'Authorization': 'Bearer ' + token,
           }
@@ -44,7 +44,7 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
     async function fetchFeatures() {
       try {
         const response = await fetch(
-          "http://localhost:8080/v1/api/products/features"
+          "http://localhost:8080/v1/api/features/open"
         ,{
           headers: {
             'Authorization': 'Bearer ' + token,

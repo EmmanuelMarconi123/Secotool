@@ -49,7 +49,7 @@ function FormEditProduct({
     async function fetchCategories() {
       try {
         const response = await fetch(
-          "http://localhost:8080/v1/api/categories",
+          "http://localhost:8080/v1/api/categories/open",
           {
             headers: {
               Authorization: "Bearer " + token,
@@ -81,7 +81,7 @@ function FormEditProduct({
     async function fetchFeatures() {
       try {
         const response = await fetch(
-          "http://localhost:8080/v1/api/products/features",
+          "http://localhost:8080/v1/api/features/open",
           {
             headers: {
               Authorization: "Bearer " + token,
