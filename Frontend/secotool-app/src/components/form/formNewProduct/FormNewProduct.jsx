@@ -136,7 +136,7 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
 
     axios({
       method: "post",
-      url: "http://localhost:8080/v1/api/products",
+      url: "http://localhost:8080/v1/api/products/admin",
       data: formData,
       headers: {
         'Authorization': 'Bearer ' + token,

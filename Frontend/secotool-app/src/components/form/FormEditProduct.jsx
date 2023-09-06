@@ -152,7 +152,7 @@ function FormEditProduct({
 
     try {
       const response = await fetch(
-        `http://localhost:8080/v1/api/products/${selectedProduct.id}`,
+        `http://localhost:8080/v1/api/products/admin/${selectedProduct.id}`,
         {
           method: "PUT",
           headers: {
