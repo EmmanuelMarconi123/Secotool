@@ -12,6 +12,7 @@ import ListPoliticas from "../../list/listPoliticas/ListPoliticas";
 import FormVal from "../../form/formValoraciones/formVal";
 import CardReview from "../../card/cardReview/CardReview";
 import ModalReview from "../../modal/modalReview/ModalReview";
+import { useGlobal } from "../../../contexts/GlobalContext";
 
 const LoadingIndicator = () => <Loader size="md" content="CARGANDO" />;
 
@@ -23,7 +24,8 @@ function Details() {
   const params = useParams();
   const isScreenSmall = useMediaQuery("(max-width: 767px)");
   const [isSticky, setIsSticky] = useState(false);
-  const URL_API = `http://localhost:8080/v1/api/products/open/${params.id}`;
+  const { globalVariable } = useGlobal();
+  const URL_API = `${globalVariable}/v1/api/products/open/${params.id}`;
   const { data, status } = useFetch(URL_API, {});
   const [open, setOpen] = useState(false);
   const [size, setSize] = useState();
@@ -100,7 +102,7 @@ function Details() {
       endDate,
     };
 
-    fetch("http://localhost:8080/v1/api/rentals/validate", {
+    fetch(`${globalVariable}/v1/api/rentals/validate`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
