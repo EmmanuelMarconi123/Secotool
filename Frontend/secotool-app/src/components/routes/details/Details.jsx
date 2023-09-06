@@ -85,14 +85,14 @@ function Details() {
   }, []);
 
   const validateRentals = () => {
-    if (!selectedDateRange) {
+    if (selectedDateRange === null) {
       // Maneja el caso en el que el rango de fechas no esté seleccionado correctamente
       console.error("El rango de fechas no está seleccionado correctamente");
       return;
     }
 
-    const startDate = selectedDateRange[0].toISOString().split('T')[0];
-    const endDate = selectedDateRange[1].toISOString().split('T')[0];
+    const startDate = selectedDateRange[0].toISOString().split("T")[0];
+    const endDate = selectedDateRange[1].toISOString().split("T")[0];
 
     const requestData = {
       productId: data.id,
@@ -123,6 +123,15 @@ function Details() {
         // Maneja errores de la solicitud
         console.error("Error en la solicitud:", error);
       });
+  };
+
+  const handleDateRangeChange = (value) => {
+    setSelectedDateRange(value);
+    console.log(selectedDateRange);
+  };
+
+  const handleDateRangeOk = () => {
+    validateRentals();
   };
 
   const ComponentDetailProduct =
@@ -177,7 +186,9 @@ function Details() {
                     <span className={styles.titleSm}>Precio total</span>
                     <div className={styles.textPrecio}>
                       <span>$</span>
-                      <span>{dataRentail ? dataRentail.TotalPrice : data.price}</span>
+                      <span>
+                        {dataRentail ? dataRentail.TotalPrice : data.price}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -213,13 +224,8 @@ function Details() {
                           ),
                         beforeToday()
                       )}
-
-                      onOk = {(dateRange) => {
-                        setSelectedDateRange(dateRange);
-                        console.log(selectedDateRange);
-                        validateRentals();
-                      }}
-
+                      onChange={handleDateRangeChange}
+                      onOk={handleDateRangeOk}
                     />
                   )}
                 </div>
