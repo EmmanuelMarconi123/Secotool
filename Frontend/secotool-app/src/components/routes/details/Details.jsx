@@ -30,7 +30,7 @@ function Details() {
   const [open, setOpen] = useState(false);
   const [size, setSize] = useState();
   const [disabledDates, setDisabledDates] = useState([]);
-  const [selectedDateRange, setSelectedDateRange] = useState(null);
+  const [selectedDateRange, setSelectedDateRange] = useState([]);
   const [dataRentail, setDataRentail] = useState(null);
 
   function handleScroll() {
@@ -84,10 +84,11 @@ function Details() {
     };
 
     calculateDisabledDates();
-  }, []);
+  }, [status, data]);
 
   const validateRentals = () => {
-    if (selectedDateRange === null) {
+    console.log(selectedDateRange);
+    if (selectedDateRange.length !== 2) {
       // Maneja el caso en el que el rango de fechas no esté seleccionado correctamente
       console.error("El rango de fechas no está seleccionado correctamente");
       return;
@@ -127,14 +128,14 @@ function Details() {
       });
   };
 
-  const handleDateRangeChange = (value) => {
+  /*const handleDateRangeChange = (value) => {
     setSelectedDateRange(value);
     console.log(selectedDateRange);
-  };
+  };*/
 
-  const handleDateRangeOk = () => {
+  /*const handleDateRangeOk = () => {
     validateRentals();
-  };
+  };*/
 
   const ComponentDetailProduct =
     status !== statuses.ERROR && data ? (
@@ -189,7 +190,7 @@ function Details() {
                     <div className={styles.textPrecio}>
                       <span>$</span>
                       <span>
-                        {dataRentail ? dataRentail.TotalPrice : data.price}
+                        {dataRentail ? (<span>{dataRentail.TotalPrice} x {dataRentail.totalDays > 1 ? (<span>{dataRentail.totalDays} dias</span>):<span>dia</span>} </span> ) : data.price}
                       </span>
                     </div>
                   </div>
@@ -211,6 +212,10 @@ function Details() {
                           ),
                         beforeToday()
                       )}
+                      onOk={(dateRange) => {
+                        setSelectedDateRange(dateRange); // Actualiza el estado con el rango seleccionado
+                        validateRentals(); // Llama a la función de validación (puedes hacer lo que necesites aquí)
+                      }}
                     />
                   ) : (
                     <DateRangePicker
@@ -226,8 +231,10 @@ function Details() {
                           ),
                         beforeToday()
                       )}
-                      onChange={handleDateRangeChange}
-                      onOk={handleDateRangeOk}
+                      onOk={(dateRange) => {
+                        setSelectedDateRange(dateRange); // Actualiza el estado con el rango seleccionado
+                        validateRentals(); // Llama a la función de validación (puedes hacer lo que necesites aquí)
+                      }}
                     />
                   )}
                 </div>

@@ -11,7 +11,7 @@ const LoadingIndicator = () =>  <Loader size="md" content="CARGANDO" />;
 const NetworkError = () => <p>Network Error</p>;
 
 const Home = () => {
-  const { globalVariable } = useGlobal()
+  const { globalVariable } = useGlobal();
   const URL_API = `${globalVariable}/v1/api/products/open`;
   const { data, status } = useFetch(URL_API, {});
 
