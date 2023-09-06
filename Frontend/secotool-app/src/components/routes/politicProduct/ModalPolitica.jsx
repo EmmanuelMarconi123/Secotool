@@ -9,56 +9,30 @@ function ModalPolitica({
   handleNewProductSubmit,
   getData,
 }) {
-  const [newCategory, setNewCategory] = useState({ name: "", description: "" });
-  const [uploadedImages, setUploadedImages] = useState([]); // Estado para las imágenes cargadas
-  const handleImageChangeD = (fileList) => {
-    setUploadedImages([...uploadedImages, ...fileList]);
-  };
+  
+  const [newPolitic, setNewPolitic] = useState({ name: "", description: "" });
 
   const handleSubmit = () => {
-    addCategoryAdmin();
+    addPoliticAdmin();
     handleClose();
   };
 
-  const addCategoryAdmin = async () => {
+  const addPoliticAdmin = async () => {
 
-
-    const nuevaCategoria = {
-      name: newCategory.name,
-      description: newCategory.description,
+    console.log(newPolitic);
+  
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/v1/api/politics/admin",
+        {
+          title: newPolitic.name, 
+          description: newPolitic.description, 
+        }
+      );
+      console.log(response)
+    } catch (error) {
+      console.error('esta entrando en este error: ',error);
     }
-    const formData = new FormData();
-    console.log(nuevaCategoria)
-
-    const json = JSON.stringify(nuevaCategoria)
-    console.log(json)
-    const blob = new Blob([json],{
-      type: 'application/json'
-    })
-
-    formData.append("data", blob)
-    uploadedImages.forEach((file) => {
-      formData.append("image", file.blobFile);
-    });
-
-    console.log(formData);
-
-    axios({
-      method: "post",
-      url: "http://localhost:8080/v1/api/categories",
-      data: formData,
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    })
-      .then(function (response) {
-        handleClose();
-        console.log(response);
-        getData();
-      })
-      .catch(function (response) {
-        console.log(response);
-      });
   };
 
   return (
@@ -77,7 +51,7 @@ function ModalPolitica({
     >
       <Modal.Header>
         <Modal.Title style={{ textAlign: "center", fontSize: 23 }}>
-          Nueva categoría
+          Nueva Política
         </Modal.Title>
       </Modal.Header>
       <Modal.Body className={styles.containerModal}>
@@ -87,13 +61,13 @@ function ModalPolitica({
             onSubmit={handleNewProductSubmit}
           >
             <label htmlFor="">
-              Nombre de la categoría
+              Nombre de la Política
               <input
                 type="text"
                 name="name"
-                value={newCategory.name}
+                value={newPolitic.name}
                 onChange={(e) =>
-                  setNewCategory({ ...newCategory, name: e.target.value })
+                  setNewPolitic({ ...newPolitic, name: e.target.value })
                 }
               />
             </label>
@@ -103,46 +77,22 @@ function ModalPolitica({
                 cols="30"
                 rows="10"
                 name="description"
-                value={newCategory.description}
+                value={newPolitic.description}
                 onChange={(e) =>
-                  setNewCategory({
-                    ...newCategory,
+                  setNewPolitic({
+                    ...newPolitic, 
                     description: e.target.value,
                   })
                 }
                 style={{ height: 120, width: 640, padding: 8 }}
               ></textarea>
             </label>
-            <label htmlFor="">
-              Imagenes
-              <Uploader
-                autoUpload={false}
-                draggable
-                onChange={handleImageChangeD}
-              >
-                <div
-                  style={{
-                    height: 54,
-                    width: 640,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: 10,
-                    borderRadius: 8,
-                    border: "1px dashed #666",
-                  }}
-                >
-                  <i className="fa-solid fa-cloud-arrow-up"></i>
-                  <span>Subir imagen</span>
-                </div>
-              </Uploader>
-            </label>
           </form>
         </div>
       </Modal.Body>
       <Modal.Footer>
         <div className={styles.buttonsContainer}>
-          <button onClick={() => handleSubmit()}>Añadir</button>
+          <button onClick={() => handleSubmit()}>Agregar</button>
           <button onClick={handleClose}>Cancelar</button>
         </div>
       </Modal.Footer>
