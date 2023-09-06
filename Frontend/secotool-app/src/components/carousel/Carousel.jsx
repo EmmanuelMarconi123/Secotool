@@ -66,7 +66,7 @@ function Carousel({ images }) {
           <div className={styles.rightColumn}>
             {images.slice(1, 5).map((image, index) => (
               <div key={index}>
-                <img className={styles.imgProduct} src={image.url} alt="" />
+                <img className={styles.rightImgProduct} src={image.url} alt="" />
               </div>
             ))}
           </div>
@@ -75,7 +75,7 @@ function Carousel({ images }) {
           <div className={styles.moreImagesContainer}>
             {images.slice(5).map((image, index) => (
               <div key={index}>
-                <img className={styles.imgProduct} src={image.url} alt="" />
+                <img className={styles.moreImgProduct} src={image.url} alt="" />
               </div>
             ))}
           </div>
