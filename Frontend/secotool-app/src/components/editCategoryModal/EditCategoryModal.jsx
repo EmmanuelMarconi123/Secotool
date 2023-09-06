@@ -29,7 +29,7 @@ function EditCategoryModal({ handleClose, open, getData, selectedCategory }) {
 
     axios({
       method: "put",
-      url: "http://localhost:8080/v1/api/categories",
+      url: `http://localhost:8080/v1/api/categories/admin/${selectedCategory.id}`,
       data: formData,
       headers: {
         'Authorization': 'Bearer ' + token,

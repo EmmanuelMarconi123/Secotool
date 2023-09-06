@@ -56,7 +56,7 @@ const EditFeatureModal = ({ handleClose, open, getData, selectedFeature }) => {
   const editFeaturesAdmin = async () => {
     axios
       .put(
-        `http://localhost:8080/v1/api/products/features/${selectedFeature.id}`,
+        `http://localhost:8080//v1/api/features/admin/${selectedFeature.id}`,
         {
           name: newFeature.name,
           icon: newFeature.icon,

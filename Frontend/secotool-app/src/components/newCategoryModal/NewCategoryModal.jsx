@@ -45,7 +45,7 @@ function NewCategoryModal({
 
     axios({
       method: "post",
-      url: "http://localhost:8080/v1/api/categories",
+      url: "http://localhost:8080/v1/api/features/admin",
       data: formData,
       headers: {
         "Content-Type": "multipart/form-data",

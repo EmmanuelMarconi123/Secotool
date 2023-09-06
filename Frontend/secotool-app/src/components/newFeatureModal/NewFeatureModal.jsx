@@ -54,7 +54,7 @@ const NewFeatureModal = ({ handleClose, open, getData }) => {
 
   const addFeaturesAdmin = async () => {
     axios
-      .post("http://localhost:8080/v1/api/products/features", {
+      .post("http://localhost:8080/v1/api/features/admin", {
         name: newFeature.name,
         icon: newFeature.icon,
       })
