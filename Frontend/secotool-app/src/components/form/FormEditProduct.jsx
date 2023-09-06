@@ -2,6 +2,7 @@ import { Button, Modal, TagPicker, Uploader } from "rsuite";
 import styles from "./formNewProduct/FormNewProduct.module.css";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
+import { useGlobal } from "../../contexts/GlobalContext";
 
 function FormEditProduct({
   openEp,
@@ -10,6 +11,8 @@ function FormEditProduct({
   onProductUpdate,
 }) {
   const { token } = useAuth();
+  const { globalVariable } = useGlobal();
+
   //------------------------------INPUTS EDIT-------------------------------->
   const [editedName, setEditedName] = useState();
   const [editedDescription, setEditedDescription] = useState();
@@ -49,7 +52,7 @@ function FormEditProduct({
     async function fetchCategories() {
       try {
         const response = await fetch(
-          "http://localhost:8080/v1/api/categories/open",
+          `${globalVariable}/v1/api/categories/open`,
           {
             headers: {
               Authorization: "Bearer " + token,
@@ -81,7 +84,7 @@ function FormEditProduct({
     async function fetchFeatures() {
       try {
         const response = await fetch(
-          "http://localhost:8080/v1/api/features/open",
+          `${globalVariable}/v1/api/features/open`,
           {
             headers: {
               Authorization: "Bearer " + token,
@@ -152,7 +155,7 @@ function FormEditProduct({
 
     try {
       const response = await fetch(
-        `http://localhost:8080/v1/api/products/admin/${selectedProduct.id}`,
+        `${globalVariable}/v1/api/products/admin/${selectedProduct.id}`,
         {
           method: "PUT",
           headers: {

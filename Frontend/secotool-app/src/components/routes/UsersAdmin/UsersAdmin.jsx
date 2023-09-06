@@ -3,15 +3,18 @@ import { useEffect, useState } from "react";
 import UsersAdminCard from "../../adminUserCard/UsersAdminCard";
 import Pagination from "../../pagination/Pagination";
 import { useAuth } from "../../../contexts/AuthContext";
+import { useGlobal } from "../../../contexts/GlobalContext";
 
 const UsersAdmin = () => {
   const { token } = useAuth();
+
+  const {globalVariable}= useGlobal();
 
   const [user, setUser] = useState([]);
 
   const fetchUsersAdmin = async () => {
     try {
-      const response = await fetch("http://localhost:8080/v1/api/users/admin", {
+      const response = await fetch(`${globalVariable}/v1/api/users/admin`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
