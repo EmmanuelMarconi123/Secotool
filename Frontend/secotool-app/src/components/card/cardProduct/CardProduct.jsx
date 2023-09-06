@@ -11,13 +11,14 @@ function CardProduct({ product }) {
   const [isLiked, setIsLiked] = useState(false);
 
   const url = `http://localhost:8080/v1/api/users/products/${product.id}`;
+  const urlFavoritos = `http://localhost:8080/v1/api/users/products/favorites`;
 
 
   //--------------- aca solicito el estado del isliked a la base de dato ---------------
 
   const fetchIsLikedStatus = async () => {
     try {
-      const response = await axios.get(url, {
+      const response = await axios.get(urlFavoritos, {
         headers: {
           Authorization: token,
         },
