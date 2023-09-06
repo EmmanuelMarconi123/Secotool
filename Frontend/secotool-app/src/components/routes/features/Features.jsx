@@ -120,7 +120,7 @@ const Features = () => {
   const fetchFeaturesAdmin = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8080/v1/api/products/features"
+        "http://localhost:8080/v1/api/features/open"
       );
       if (response.ok) {
         const data = await response.json();

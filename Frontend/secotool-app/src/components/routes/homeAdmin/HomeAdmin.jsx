@@ -15,7 +15,7 @@ const HomeAdmin = () => {
   const fetchProductsAdmin = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8080/v1/api/products/all",
+        "http://localhost:8080/v1/api/products/open",
         {
           headers: {
             Authorization: "Bearer " + token,
@@ -50,7 +50,7 @@ const HomeAdmin = () => {
   const fetchProductDetails = async (productId) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/v1/api/products/${productId}`,
+        `http://localhost:8080/v1/api/products/open/${productId}`,
         {
           headers: {
             Authorization: "Bearer " + token,
@@ -79,10 +79,8 @@ const HomeAdmin = () => {
 
     if (productIndex !== -1) {
       // Crear una nueva lista de productos con el producto actualizado
-      //hola(borrar)
       const updatedProducts = [...products];
       updatedProducts[productIndex] = updatedProduct;
-
       // Actualizar el estado de la lista de productos
       setProducts(updatedProducts);
     }
@@ -96,7 +94,7 @@ const HomeAdmin = () => {
   async function deleteProduct(productId) {
     try {
       const response = await fetch(
-        `http://localhost:8080/v1/api/products/${productId}`,
+        `http://localhost:8080/v1/api/products/admin/${productId}`,
         {
           method: "DELETE",
           headers: {
