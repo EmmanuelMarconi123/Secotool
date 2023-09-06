@@ -1,19 +1,19 @@
 import styles from '../PoliticCard/PoliticCard.module.css'
 
-const PoliticCard = (props) => {
+const PoliticCard = ({name, description, key, deleteItem, editItem}) => {
   return (
     <div className={styles.container}>
-    <span>{props.name}</span>
-    <span>{props.descripcion}</span>
+    <span>{name}</span>
+    <span>{description}</span>
     <div className={styles.iconAd}>
       <i
         className="fa-regular fa-pencil-square fa-lg"
-        onClick={props.editItem}
+        onClick={editItem}
         style={{ color: "#D0731D" }}
       ></i>
       <i
         className="fa-regular fa-trash-can fa-lg"
-        onClick={props.deleteItem}
+        onClick={deleteItem}
       ></i>
     </div>
   </div>

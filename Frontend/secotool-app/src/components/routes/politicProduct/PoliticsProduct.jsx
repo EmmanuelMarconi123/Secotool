@@ -4,8 +4,9 @@ import { ButtonToolbar, Button, Modal } from "rsuite";
 import PoliticCard from "../../PoliticCard/PoliticCard";
 import Pagination from "../../pagination/Pagination";
 import ModalPolitica from "./ModalPolitica";
-import EditCategoryModal from "../../editCategoryModal/EditCategoryModal";
 import { Snackbar, Alert } from "@mui/material";
+import axios from "axios";
+import ModalEditarPolitica from "./ModalEditarPolitica";
 
 const PoliticsProduct = () => {
   //------------------------------ CONFIG MODALS--------------->
@@ -18,7 +19,7 @@ const PoliticsProduct = () => {
   const handleOpenEp = () => setOpenEp(true);
   const handleCloseEp = () => setOpenEp(false);
 
-  //-----------------------------BORRAR CATEGORIA------------------------>
+  //----------------------------------------------------->
   const [alertOpen, setAlertOpen] = useState(false);
   const showDeleteSuccessAlert = () => {
     setAlertOpen(true);
@@ -67,10 +68,13 @@ const PoliticsProduct = () => {
     window.matchMedia("(min-width: 1024px)").matches
   );
 
+
   function handleEdit(politic) {
     handleOpenEp();
     setSelectedCategory(politic);
   }
+
+  //-------------------FETCH DE LAS POLITICAS-------------------------
 
   const fetchPoliticasAdmin = async () => {
     try {
@@ -88,6 +92,19 @@ const PoliticsProduct = () => {
       console.error(error);
     }
   };
+
+  //-------------------DELETE DE LAS POLITICAS-------------------------
+
+
+  // const handleConfirmDelete = async() =>{
+  //   try{
+  //     const deletePolitica = await axios.delete(`http://localhost:8080/v1/api/politics/admin/${id}`)
+  //   }
+  // }
+
+
+  //-------------------------------------------------------------------
+
 
   useEffect(() => {
     window
@@ -128,11 +145,11 @@ const PoliticsProduct = () => {
                 <span>Acciones</span>
               </div>
               {politicas.length > 0 ? (
-                currentPost.map((poli) => (
+                politicas.map((poli) => (
                   <PoliticCard
                     key={poli.id}
                     deleteItem={() => deleteCategory(poli.id)}
-                    name={poli.name}
+                    name={poli.title}
                     description={poli.description}
                     editItem={() => handleEdit(poli)}
                   />
@@ -202,7 +219,7 @@ const PoliticsProduct = () => {
       </Snackbar>
 
       {/* ------------------------------------------EDITAR POLITICA MODAL--------------------------> */}
-      <EditCategoryModal
+      <ModalEditarPolitica
         handleClose={handleCloseEp}
         open={openEp}
         getData={() => fetchPoliticasAdmin()}

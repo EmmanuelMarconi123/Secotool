@@ -1,16 +1,13 @@
 import { Modal, Uploader } from "rsuite";
-import styles from "./ModalPolitica.module.css"
+import styles from "./ModalPolitica.module.css";
 import axios from "axios";
 import { useState } from "react";
+import { useAuth } from "../../../contexts/AuthContext";
 
-function ModalPolitica({
-  open,
-  handleClose,
-  handleNewProductSubmit,
-  getData,
-}) {
-  
+function ModalPolitica({ open, handleClose, handleNewProductSubmit, getData }) {
+
   const [newPolitic, setNewPolitic] = useState({ name: "", description: "" });
+  const {token} = useAuth()
 
   const handleSubmit = () => {
     addPoliticAdmin();
@@ -18,20 +15,26 @@ function ModalPolitica({
   };
 
   const addPoliticAdmin = async () => {
-
     console.log(newPolitic);
   
     try {
+      const tokenUser = token;
       const response = await axios.post(
         "http://localhost:8080/v1/api/politics/admin",
         {
-          title: newPolitic.name, 
-          description: newPolitic.description, 
+          title: newPolitic.name,
+          description: newPolitic.description,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${tokenUser}`,
+          },
         }
       );
-      console.log(response)
+  
+      console.log(response);
     } catch (error) {
-      console.error('esta entrando en este error: ',error);
+      console.error("Esta entrando en este error: ", error);
     }
   };
 
@@ -80,7 +83,7 @@ function ModalPolitica({
                 value={newPolitic.description}
                 onChange={(e) =>
                   setNewPolitic({
-                    ...newPolitic, 
+                    ...newPolitic,
                     description: e.target.value,
                   })
                 }
