@@ -1,104 +1,59 @@
-package com.group2.secotool_app.configuration.security;
+package com.group2.secotool_app.presentation.Controllers;
 
-import com.group2.secotool_app.model.entity.UserRole;
+import com.group2.secotool_app.bussiness.facade.ICategoryFacade;
+import com.group2.secotool_app.model.dto.CategoryFullDto;
+import com.group2.secotool_app.model.dto.request.CategoryRequestDto;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Arrays;
+import java.util.List;
 
-@Configuration
-@EnableWebSecurity
+@RestController
 @RequiredArgsConstructor
-public class SecurityConfiguration {
-    private final JwtRequestFilter jwtRequestFilter;
-    private final AuthenticationProvider authenticationProvider;
+@RequestMapping("/v1/api/categories")
+public class CategoryController {
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-        http
-                .authorizeHttpRequests(authorize ->
-                        authorize
-                                .requestMatchers("/v1/api/products/open/**",
-                                        "/v1/api/cateogories/open/**",
-                                        "/v1/api/features/open/**",
-                                        "/v1/api/politics/open/**",
-                                        "/v1/api/auth/**",
-                                        "/v2/api-docs",
-                                        "/v3/api-docs",
-                                        "/v3/api-docs/**",
-                                        "/swagger-resources",
-                                        "/swagger-resources/**",
-                                        "/configuration/ui",
-                                        "/configuration/security",
-                                        "/swagger-ui/**",
-                                        "/webjars/**",
-                                        "/swagger-ui.html",
-                                        "/*.html",
-                                        "/css/**",
-                                        "/assets/**",
-                                        "/scripts/**",
-                                        "/*.js").permitAll()
-                                //products
-                                .requestMatchers("/v1/api/products/admin/**").hasAuthority(UserRole.ADMIN.name())
+    private final ICategoryFacade categoryFacade;
 
-                                //users
-                                .requestMatchers("/v1/api/users/products/**",
-                                        "/v1/api/users/getMe"
-                                ).hasAnyAuthority(UserRole.ADMIN.name(),UserRole.USER.name())
-                                .requestMatchers("/v1/api/rentals/admin/**").hasAuthority(UserRole.ADMIN.name())
-
-                                //rentals
-                                .requestMatchers("/v1/api/rentals/**"
-                                ).hasAnyAuthority(UserRole.ADMIN.name(),UserRole.USER.name())
-
-                                //features
-                                .requestMatchers("/v1/api/features/admin/**").hasAuthority(UserRole.ADMIN.name())
-
-                                //categories
-                                .requestMatchers("/v1/api/categories/admin/**").hasAuthority(UserRole.ADMIN.name())
-
-                                //politics
-                                .requestMatchers("/v1/api/politics/admin/**").hasAuthority(UserRole.ADMIN.name())
-                                .anyRequest().authenticated()
-                )
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .sessionManagement(session ->
-                        session
-                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-                .csrf(crsf ->
-                        crsf.disable()
-                )
-                .logout(log ->
-                        log.
-                                logoutUrl("/v1/api/auth/logout").
-                                logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext())
-                )
-                .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-        return http.build();
+    @GetMapping("/open")
+    public ResponseEntity<List<CategoryFullDto>> getAllCategories(){
+        return ResponseEntity.ok(categoryFacade.getAllCategory());
     }
 
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOriginPattern(("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST","PATCH","PUT","DELETE"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
-        configuration.setExposedHeaders(Arrays.asList("*"));
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
+    @PostMapping("/admin")
+    public ResponseEntity<String> saveCategory(@RequestPart("data") @Valid
+                                               CategoryRequestDto categoryRequestDto,
+                                               @RequestParam("image")
+                                               @NotNull(message = "image required")
+                                               @Valid
+                                               MultipartFile image
+    ){
+        categoryFacade.saveCategory(categoryRequestDto, image);
+        return ResponseEntity.ok("category saved successfully");
     }
 
+    // puede ir en el controller de prod
+    /*
+    @PostMapping("/{prodId}/{categoryId}")
+    public ResponseEntity<String> associateProductToCategory(@PathVariable("prodId") Long prodId, @PathVariable("categoryId") Long categoryId){
+        categoryFacade.associateProductToCategory(prodId,categoryId);
+        return ResponseEntity.ok(String.format("product: %s successfully associated with feature: %s", prodId,categoryId));
+    }
+     */
+
+    @PutMapping("/admin/{id}")
+    public ResponseEntity<String> updateCategory(@RequestBody @Valid CategoryRequestDto categoryRequestDto, @PathVariable Long id){
+        categoryFacade.updateCategory(categoryRequestDto,id);
+        return ResponseEntity.ok(String.format("feature %s successfully updated", id));
+    }
+
+    @DeleteMapping("/admin/{id}")
+    public ResponseEntity<String> deleteFeature(@PathVariable Long id){
+        categoryFacade.deleteCategory(id);
+        return ResponseEntity.ok(String.format("category %s successfully deleted", id));
+    }
 }

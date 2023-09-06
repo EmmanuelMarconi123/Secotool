@@ -28,47 +28,49 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
                 .authorizeHttpRequests(authorize ->
-                    authorize
-                            .requestMatchers("/v1/api/products/open/**",
-                                    "/v1/api/politics/open/**",
-                                    "/v1/api/auth/**",
-                                    "/v2/api-docs",
-                                    "/v3/api-docs",
-                                    "/v3/api-docs/**",
-                                    "/swagger-resources",
-                                    "/swagger-resources/**",
-                                    "/configuration/ui",
-                                    "/configuration/security",
-                                    "/swagger-ui/**",
-                                    "/webjars/**",
-                                    "/swagger-ui.html",
-                                    "/*.html",
-                                    "/css/**",
-                                    "/assets/**",
-                                    "/scripts/**",
-                                    "/*.js").permitAll()
-                            //products
-                            .requestMatchers("/v1/api/products/admin/**").hasAuthority(UserRole.ADMIN.name())
+                        authorize
+                                .requestMatchers("/v1/api/products/open/**",
+                                        "/v1/api/cateogories/open/**",
+                                        "/v1/api/features/open/**",
+                                        "/v1/api/politics/open/**",
+                                        "/v1/api/auth/**",
+                                        "/v2/api-docs",
+                                        "/v3/api-docs",
+                                        "/v3/api-docs/**",
+                                        "/swagger-resources",
+                                        "/swagger-resources/**",
+                                        "/configuration/ui",
+                                        "/configuration/security",
+                                        "/swagger-ui/**",
+                                        "/webjars/**",
+                                        "/swagger-ui.html",
+                                        "/*.html",
+                                        "/css/**",
+                                        "/assets/**",
+                                        "/scripts/**",
+                                        "/*.js").permitAll()
+                                //products
+                                .requestMatchers("/v1/api/products/admin/**").hasAuthority(UserRole.ADMIN.name())
 
-                            //users
-                            .requestMatchers("/v1/api/users/products/**",
-                                    "/v1/api/users/getMe"
-                            ).hasAnyAuthority(UserRole.ADMIN.name(),UserRole.USER.name())
-                            .requestMatchers("/v1/api/rentals/admin/**").hasAuthority(UserRole.ADMIN.name())
+                                //users
+                                .requestMatchers("/v1/api/users/products/**",
+                                        "/v1/api/users/getMe"
+                                ).hasAnyAuthority(UserRole.ADMIN.name(),UserRole.USER.name())
+                                .requestMatchers("/v1/api/rentals/admin/**").hasAuthority(UserRole.ADMIN.name())
 
-                            //rentals
-                            .requestMatchers("/v1/api/rentals/**"
-                            ).hasAnyAuthority(UserRole.ADMIN.name(),UserRole.USER.name())
+                                //rentals
+                                .requestMatchers("/v1/api/rentals/**"
+                                ).hasAnyAuthority(UserRole.ADMIN.name(),UserRole.USER.name())
 
-                            //features
-                            .requestMatchers("/v1/api/features/**").hasAuthority(UserRole.ADMIN.name())
+                                //features
+                                .requestMatchers("/v1/api/features/admin/**").hasAuthority(UserRole.ADMIN.name())
 
-                            //categories
-                            .requestMatchers("/v1/api/categories/**").hasAuthority(UserRole.ADMIN.name())
+                                //categories
+                                .requestMatchers("/v1/api/categories/admin/**").hasAuthority(UserRole.ADMIN.name())
 
-                            //politics
-                            .requestMatchers("/v1/api/politics/admin/**").hasAuthority(UserRole.ADMIN.name())
-                            .anyRequest().authenticated()
+                                //politics
+                                .requestMatchers("/v1/api/politics/admin/**").hasAuthority(UserRole.ADMIN.name())
+                                .anyRequest().authenticated()
                 )
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session ->
@@ -87,7 +89,8 @@ public class SecurityConfiguration {
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
-    CorsConfigurationSource corsConfigurationSource(){
+
+    CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOriginPattern(("*"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST","PATCH","PUT","DELETE"));
@@ -97,4 +100,5 @@ public class SecurityConfiguration {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+
 }
