@@ -95,7 +95,7 @@ const FormBusqueda = ({ products, setProducts }) => {
               value={dateRange}
               onChange={setDateRange}
               showMeridian
-              placeholder="Rango de fechas"
+              placeholder="Selecciona fechas"
               format="yyyy-MM-dd"
             />
           </InputGroup>
