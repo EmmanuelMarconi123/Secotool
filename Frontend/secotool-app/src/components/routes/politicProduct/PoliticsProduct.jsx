@@ -70,7 +70,6 @@ const PoliticsProduct = () => {
   //-------------- CONFIGURACION DE LA PAGINACION -------------------->
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [categories, serCategories] = useState([]);
   const [currentPost, setCurrentPost] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState({});
   const [matches, setMatches] = useState(
@@ -222,7 +221,7 @@ const PoliticsProduct = () => {
       <ModalPolitica
         handleClose={handleClose}
         open={open}
-        getData={() => fetchPoliticasAdmin()}
+        fetchPoliticasAdmin={fetchPoliticasAdmin}
       />
     </div>
   );

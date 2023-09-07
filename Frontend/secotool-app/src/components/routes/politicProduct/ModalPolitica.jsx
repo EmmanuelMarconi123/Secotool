@@ -1,13 +1,17 @@
-import { Modal, Uploader } from "rsuite";
+import { Modal } from "rsuite";
 import styles from "./ModalPolitica.module.css";
 import axios from "axios";
 import { useState } from "react";
 import { useAuth } from "../../../contexts/AuthContext";
 
-function ModalPolitica({ open, handleClose, handleNewProductSubmit, getData }) {
-
+function ModalPolitica({
+  open,
+  handleClose,
+  handleNewProductSubmit,
+  fetchPoliticasAdmin,
+}) {
   const [newPolitic, setNewPolitic] = useState({ name: "", description: "" });
-  const {token} = useAuth()
+  const { token } = useAuth();
 
   const handleSubmit = () => {
     addPoliticAdmin();
@@ -16,7 +20,7 @@ function ModalPolitica({ open, handleClose, handleNewProductSubmit, getData }) {
 
   const addPoliticAdmin = async () => {
     console.log(newPolitic);
-  
+
     try {
       const tokenUser = token;
       const response = await axios.post(
@@ -31,7 +35,7 @@ function ModalPolitica({ open, handleClose, handleNewProductSubmit, getData }) {
           },
         }
       );
-  
+      fetchPoliticasAdmin();
       console.log(response);
     } catch (error) {
       console.error("Esta entrando en este error: ", error);
@@ -68,7 +72,6 @@ function ModalPolitica({ open, handleClose, handleNewProductSubmit, getData }) {
               <input
                 type="text"
                 name="name"
-                value={newPolitic.name}
                 onChange={(e) =>
                   setNewPolitic({ ...newPolitic, name: e.target.value })
                 }
@@ -80,7 +83,6 @@ function ModalPolitica({ open, handleClose, handleNewProductSubmit, getData }) {
                 cols="30"
                 rows="10"
                 name="description"
-                value={newPolitic.description}
                 onChange={(e) =>
                   setNewPolitic({
                     ...newPolitic,
