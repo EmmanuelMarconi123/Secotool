@@ -82,7 +82,7 @@ function ModalEditarPolitica({
                 onChange={(e) =>
                   setCurrentPolitic({
                     ...currentPolitic,
-                    name: e.target.value,
+                    title: e.target.value,
                   })
                 }
               />
@@ -117,3 +117,4 @@ function ModalEditarPolitica({
 }
 
 export default ModalEditarPolitica;
+

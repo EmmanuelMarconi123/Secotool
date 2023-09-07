@@ -117,8 +117,8 @@ const PoliticsProduct = () => {
   useEffect(() => {
     const lastPostIndex = currentPage * 10;
     const fistPostIndex = lastPostIndex - 10;
-    setCurrentPost(categories.slice(fistPostIndex, lastPostIndex));
-  }, [currentPage, categories]);
+    setCurrentPost(politicas.slice(fistPostIndex, lastPostIndex));
+  }, [currentPage, politicas]);
 
   //---------------------------- COMPONENETE -------------------------------------
 
