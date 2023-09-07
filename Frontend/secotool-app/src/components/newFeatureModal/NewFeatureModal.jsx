@@ -21,6 +21,8 @@ const icons = [
   { value: "fa-solid fa-block-brick-fire" },
   { value: "fa-solid fa-helmet-safety" },
   { value: "fa-solid fa-stopwatch" },
+  { value: "fa-solid fa-light-switch" },
+  { value: "fa-solid fa-cabinet-filing" },
 ];
 
 const Option = (props) => (
