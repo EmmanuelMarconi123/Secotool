@@ -19,7 +19,7 @@ const AppRoutes = () => {
           <Route path="/home" element={<Home />} />
           <Route path="/product/:id" element={<Details />} />
           <Route path="/allFilters" element={<Filters />} />
-          <Route path="/allProducts/:idCateg" element={<Filters />} />
+          <Route path="/allProducts/:categ" element={<Filters />} />
           {isLoggedIn && <Route path="/profile" element={<Profile />} />}
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
