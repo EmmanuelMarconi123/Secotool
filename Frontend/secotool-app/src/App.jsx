@@ -6,10 +6,11 @@ import AppRoutes from "./autenticaciones/AppRoutes/AppRoutes";
 import { AuthProvider } from "./contexts/AuthContext";
 import { FunctionProvider } from "./contexts/FunctionsContext";
 import AppRoutesAdmin from "./autenticaciones/AppRoutesAdmin/AppRoutesAdmin";
+import { GlobalProvider } from "./contexts/GlobalContext";
 
 function App() {
   return (
-
+    <GlobalProvider>
     <AuthProvider>
       <FunctionProvider>
         <Routes>
@@ -19,6 +20,7 @@ function App() {
         </Routes>
       </FunctionProvider>
     </AuthProvider>
+    </GlobalProvider>
   );
 }
 

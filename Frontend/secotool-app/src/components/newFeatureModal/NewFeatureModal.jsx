@@ -3,6 +3,8 @@ import styles from "./NewFeatureModal.module.css";
 import Select, { components } from "react-select";
 import { useState } from "react";
 import axios from "axios";
+import { useGlobal } from "../../contexts/GlobalContext";
+import { useAuth } from "../../contexts/AuthContext";
 
 const icons = [
   { value: "fa-solid fa-wifi" },
@@ -28,6 +30,10 @@ const Option = (props) => (
 );
 
 const NewFeatureModal = ({ handleClose, open, getData }) => {
+
+  const { globalVariable } = useGlobal();
+  const { token } = useAuth();
+
   const [selectedIcon, setSelectedIcon] = useState(icons[0]);
   const [newFeature, setNewFeature] = useState({ name: "", icon: icons[0] });
 
@@ -53,18 +59,27 @@ const NewFeatureModal = ({ handleClose, open, getData }) => {
   };
 
   const addFeaturesAdmin = async () => {
-    axios
-      .post("http://localhost:8080/v1/api/products/features", {
-        name: newFeature.name,
-        icon: newFeature.icon,
-      })
-      .then(function (response) {
-        console.log(response);
-        getData();
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    try {
+  
+      const response = await axios.post(
+        `${globalVariable}/v1/api/features/admin`,
+        {
+          name: newFeature.name,
+          icon: newFeature.icon,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Agregar el token JWT al encabezado
+          },
+        }
+      );
+  
+      console.log(response);
+      getData();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

@@ -4,6 +4,7 @@ import Select, { components } from "react-select";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../contexts/AuthContext";
+import { useGlobal } from "../../contexts/GlobalContext";
 
 const icons = [
   { value: "fa-solid fa-wifi" },
@@ -30,6 +31,7 @@ const Option = (props) => (
 
 const EditFeatureModal = ({ handleClose, open, getData, selectedFeature }) => {
   const { token } = useAuth;
+  const { globalVariable} = useGlobal();
   const [selectedIcon, setSelectedIcon] = useState({});
   const [newFeature, setNewFeature] = useState({});
 
@@ -56,7 +58,7 @@ const EditFeatureModal = ({ handleClose, open, getData, selectedFeature }) => {
   const editFeaturesAdmin = async () => {
     axios
       .put(
-        `http://localhost:8080/v1/api/products/features/${selectedFeature.id}`,
+        `${globalVariable}/v1/api/features/admin/${selectedFeature.id}`,
         {
           name: newFeature.name,
           icon: newFeature.icon,

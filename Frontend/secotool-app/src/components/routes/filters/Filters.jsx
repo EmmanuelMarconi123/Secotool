@@ -16,7 +16,7 @@ const Filters = () => {
       try {
         // Realiza la solicitud para obtener todos los productos sin filtros
         const response = await axios.get(
-          "http://localhost:8080/v1/api/products/all"
+          "http://localhost:8080/v1/api/products/open"
         );
         setProductsF(response.data);
       } catch (error) {
@@ -49,6 +49,7 @@ const Filters = () => {
     setfilterProducts(filterProducts);
   };
   console.log(filteredProductsF);
+
   return (
     <section className={style.sectionFilters}>
       <div className={style.boxHeader}>

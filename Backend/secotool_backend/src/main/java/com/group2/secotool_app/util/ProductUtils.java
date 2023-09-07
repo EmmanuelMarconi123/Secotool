@@ -55,11 +55,11 @@ public class ProductUtils {
                 });
                 productsDto.add(productDtoMapper.toProductDto(product));
             });
+            return removeDuplicated(productsDto);
         }
         else
             products.forEach(product -> productsDto.add(productDtoMapper.toProductDto(product)));
-
-        return removeDuplicated(productsDto);
+        return productsDto;
     }
 
     public ProductFullDto productToProductFullDto (Product product){
