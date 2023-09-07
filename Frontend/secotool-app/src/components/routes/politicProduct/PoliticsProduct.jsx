@@ -4,7 +4,6 @@ import { ButtonToolbar, Button, Modal } from "rsuite";
 import PoliticCard from "../../PoliticCard/PoliticCard";
 import Pagination from "../../pagination/Pagination";
 import ModalPolitica from "./ModalPolitica";
-import { Snackbar, Alert } from "@mui/material";
 import ModalEditarPolitica from "./ModalEditarPolitica";
 import axios from "axios";
 import { useAuth } from "../../../contexts/AuthContext";
@@ -71,7 +70,7 @@ const PoliticsProduct = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [currentPost, setCurrentPost] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState({});
+
   const [matches, setMatches] = useState(
     window.matchMedia("(min-width: 1024px)").matches
   );
@@ -145,7 +144,7 @@ const PoliticsProduct = () => {
                 <span>Acciones</span>
               </div>
               {politicas.length > 0 ? (
-                politicas.map((poli) => (
+                currentPost.map((poli) => (
                   <PoliticCard
                     key={poli.id}
                     deleteItem={() => deletePolitic(poli)}
