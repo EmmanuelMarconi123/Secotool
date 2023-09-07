@@ -59,13 +59,14 @@ public class UserFacadeImpl implements IUserFacade {
 
     @Override
     public UserAuthenticatedResponseDto registerUser(UserRegistrationRequestDto registerRequestDto) {
+        userValidationService.isUsernameAvailable(registerRequestDto.username());
+        emailFacade.sendEmail(registerRequestDto);
         var mappedUser = userMapper.toUser(registerRequestDto);
         mappedUser.setUserRole(UserRole.USER);
         var userId = userService.saveUser(mappedUser);
         Map extraClaims = new HashMap<String,Object>();
         extraClaims.put("id",userId);
         String jwt = jwtUtils.generateToken(mappedUser,extraClaims);
-        emailFacade.sendEmail(registerRequestDto);
         return new UserAuthenticatedResponseDto(jwt, userDtoMapper.toUserDto(mappedUser));
     }
 

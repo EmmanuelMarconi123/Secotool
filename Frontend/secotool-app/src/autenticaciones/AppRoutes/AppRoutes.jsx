@@ -6,6 +6,7 @@ import Footer from "../../components/footer/Footer";
 import Filters from "../../components/routes/filters/Filters";
 import Profile from "../../components/routes/profile/Profile";
 import { useAuth } from "../../contexts/AuthContext";
+import Favorites from "../../components/routes/favorites/Favorites"
 
 const AppRoutes = () => {
   const { isLoggedIn } = useAuth();
@@ -20,6 +21,7 @@ const AppRoutes = () => {
           <Route path="/product/:id" element={<Details />} />
           <Route path="/allFilters" element={<Filters />} />
           <Route path="/allProducts/:idCateg" element={<Filters />} />
+          <Route path="/favorites" element={<Favorites />} />
           {isLoggedIn && <Route path="/profile" element={<Profile />} />}
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
@@ -30,3 +32,4 @@ const AppRoutes = () => {
 };
 
 export default AppRoutes;
+

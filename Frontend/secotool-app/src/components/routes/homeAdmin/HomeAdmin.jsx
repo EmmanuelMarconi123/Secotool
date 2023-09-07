@@ -7,15 +7,17 @@ import { Alert, Snackbar } from "@mui/material";
 import FormNewProduct from "../../form/formNewProduct/FormNewProduct";
 import FormEditProduct from "../../form/FormEditProduct";
 import { useAuth } from "../../../contexts/AuthContext";
+import { useGlobal } from "../../../contexts/GlobalContext";
 
 const HomeAdmin = () => {
   //----------------------------TRAE TODOS LOS PRODUCTOS----------------------------->
   const { token } = useAuth();
+  const {globalVariable}= useGlobal();
 
   const fetchProductsAdmin = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8080/v1/api/products/all",
+        `${globalVariable}/v1/api/products/open`,
         {
           headers: {
             Authorization: "Bearer " + token,
@@ -50,7 +52,7 @@ const HomeAdmin = () => {
   const fetchProductDetails = async (productId) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/v1/api/products/${productId}`,
+        `${globalVariable}/v1/api/products/open/${productId}`,
         {
           headers: {
             Authorization: "Bearer " + token,
@@ -79,10 +81,8 @@ const HomeAdmin = () => {
 
     if (productIndex !== -1) {
       // Crear una nueva lista de productos con el producto actualizado
-      //hola(borrar)
       const updatedProducts = [...products];
       updatedProducts[productIndex] = updatedProduct;
-
       // Actualizar el estado de la lista de productos
       setProducts(updatedProducts);
     }
@@ -96,7 +96,7 @@ const HomeAdmin = () => {
   async function deleteProduct(productId) {
     try {
       const response = await fetch(
-        `http://localhost:8080/v1/api/products/${productId}`,
+        `${globalVariable}/v1/api/products/admin/${productId}`,
         {
           method: "DELETE",
           headers: {
@@ -225,5 +225,6 @@ const HomeAdmin = () => {
       />
     </div>
   );
+
 };
 export default HomeAdmin;

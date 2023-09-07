@@ -2,14 +2,16 @@ import { Link } from "react-router-dom";
 import style from "./ListCategorias.module.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useGlobal } from "../../contexts/GlobalContext";
 const ListCategorias = () => {
   const [categorias, setCategorias] = useState([]);
+  const { globalVariable } = useGlobal();
 
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/v1/api/categories"
+          `${globalVariable}/v1/api/categories/open`
         );
         setCategorias(response.data);
       } catch (error) {
