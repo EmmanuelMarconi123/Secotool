@@ -30,7 +30,10 @@ public interface IProductService {
 
     List<Product> getFavoritesProductOfUserById(Long userId);
 
-    List<Product> getAllProductsByRangeOfDateAvaibleToRent(LocalDate startDate, LocalDate endDate);
+    List<Product> getAllProductsByRangeOfDateAvailableToRent(LocalDate startDate, LocalDate endDate);
 
     boolean existProductByName(String name);
+
+    void updateAverageAndNumberOfScore(Double score, Long productId);
+
 }

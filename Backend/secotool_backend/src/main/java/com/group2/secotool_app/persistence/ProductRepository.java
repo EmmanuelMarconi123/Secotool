@@ -1,7 +1,9 @@
 package com.group2.secotool_app.persistence;
 
 import com.group2.secotool_app.model.entity.Product;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
@@ -36,6 +38,11 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
 
     @Query("SELECT p FROM Product p WHERE p.id NOT IN (SELECT r.product.id FROM Rent r WHERE :startDate <= r.rentalEndDate AND :endDate >= r.rentalStartDate)")
     List<Product> getAllProductsAvaibleToRent(@Param("startDate")LocalDate startDate, @Param("endDate") LocalDate endDate);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Product p SET p.averageScore = :averageScore, p.numberOfScores = :numberOfScores WHERE p.id = :productId")
+    void updateAvarageAndNumberOfScore(@Param("averageScore") Double averageScore, @Param("numberOfScores") Integer numberOfScores, @Param("productId") Long productId);
 
     @Procedure(name = "deleteAllRelationsAssociatedWithAProductById")
     void deleteAllRelationsAssociatedWithAProductById(@Param("id") Long id);

@@ -46,37 +46,51 @@ public class ProductFacadeImpl implements IProductFacade {
         return productUtils.productsToProductsDto(randomProds);
     }
 
+    //se puede refactorizar hacer todas las sentencias por list
     @Override
-    public void updateProduct(Long id, ProductRequestDto productRequestDto, ListOfCategoriesIdRequestDto listOfCategoriesIdRequestDto, ListOfFeaturesidRequestDto listOfFeaturesidRequestDto) {
-        var product = productMapper.toProduct(productRequestDto);
-        product.setId(id);
+    public void updateProduct(Long id, ProductRequestDto productRequestDto, ListOfCategoriesIdRequestDto listOfCategoriesIdRequestDto, ListOfFeaturesidRequestDto listOfFeaturesidRequestDto, List<MultipartFile> images) {
 
-        productService.updateProduct(product);
+        var oldProduct = productService.findProductById(id);
 
-        listOfFeaturesidRequestDto.idsFeatures().forEach(featureId -> {
-            featureFacade.associateProductToFeature(product,featureId);
-        });
-        listOfCategoriesIdRequestDto.idsCategories().forEach(categoryId -> {
-            categoryFacade.associateProductToCategory(product,categoryId);
-        });
+        var newProduct = productMapper.toProduct(productRequestDto);
+
+        newProduct.setId(id);
+        newProduct.setAverageScore(oldProduct.getAverageScore());
+        newProduct.setNumberOfScores(oldProduct.getNumberOfScores());
+        newProduct.setProductRentals(oldProduct.getProductRentals());
+        newProduct.setProductReviews(oldProduct.getProductReviews());
+
+        var proOldImages = imageService.getAllImagesByProduct(id);
+        proOldImages.forEach( image -> imageService.deleteImage(image.getId()));
+
+        var urlImages = bucketS3Service.storeFiles(images);
+        urlImages.forEach(url -> imageService.saveProductImage(url,id));
+
+        productService.updateProduct(newProduct);
+
+        listOfFeaturesidRequestDto.idsFeatures().forEach(featureId ->
+                featureFacade.associateProductToFeature(newProduct,featureId));
+        listOfCategoriesIdRequestDto.idsCategories().forEach(categoryId ->
+                categoryFacade.associateProductToCategory(newProduct,categoryId)
+        );
     }
 //se puede refactorizar
     @Override
     public String save(ProductRequestDto productRequestDto, ListOfCategoriesIdRequestDto listOfCategoriesIdRequestDto, ListOfFeaturesidRequestDto listOfFeaturesidRequestDto, List<MultipartFile> images) {
-        productValidationService.validateProductNameIsNotAvaible(productRequestDto.name());
+        productValidationService.validateProductNameIsNotAvailable(productRequestDto.name());
         fileService.validateFilesAreImages(images);
 
         var product = productMapper.toProduct(productRequestDto);
         Long prodId = productService.save(product);
         product.setId(prodId);
 
-        listOfFeaturesidRequestDto.idsFeatures().forEach(id -> {
-            featureFacade.associateProductToFeature(product,id);
-        });
+        listOfFeaturesidRequestDto.idsFeatures().forEach(id ->
+                featureFacade.associateProductToFeature(product,id)
+        );
 
-        listOfCategoriesIdRequestDto.idsCategories().forEach(id -> {
-            categoryFacade.associateProductToCategory(product,id);
-        });
+        listOfCategoriesIdRequestDto.idsCategories().forEach(id ->
+                categoryFacade.associateProductToCategory(product,id)
+        );
 
         var urlImages = bucketS3Service.storeFiles(images);
 
@@ -117,7 +131,7 @@ public class ProductFacadeImpl implements IProductFacade {
 
         var totalDays = productUtils.daysQuantity(startDate,endDate);
         List<RentProductDto> response = new ArrayList<>();
-        var prodsAvailable = productService.getAllProductsByRangeOfDateAvaibleToRent(startDate,endDate);
+        var prodsAvailable = productService.getAllProductsByRangeOfDateAvailableToRent(startDate,endDate);
         var prodsAvailableDto = productUtils.productsToProductsDto(prodsAvailable);
 
         if (productName.equals("")) {
@@ -147,9 +161,10 @@ public class ProductFacadeImpl implements IProductFacade {
             productDtosMatriz.add(productUtils.productsToProductsDto(prods));
         });
 
-        productDtosMatriz.forEach(arrayProd -> {
-            arrayProd.forEach(product -> productDtoList.add(product));
-        });
+        //Iteration can be replaced with bulk 'Collection.addAll()' call
+        productDtosMatriz.forEach(arrayProd ->
+                arrayProd.forEach(product -> productDtoList.add(product))
+        );
 
         return productUtils.removeDuplicated(productDtoList);
     }

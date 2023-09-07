@@ -1,7 +1,6 @@
 package com.group2.secotool_app.presentation.Controllers;
 
 import com.group2.secotool_app.bussiness.facade.ICategoryFacade;
-import com.group2.secotool_app.model.dto.CategoryDto;
 import com.group2.secotool_app.model.dto.CategoryFullDto;
 import com.group2.secotool_app.model.dto.request.CategoryRequestDto;
 import jakarta.validation.Valid;
@@ -20,12 +19,12 @@ public class CategoryController {
 
     private final ICategoryFacade categoryFacade;
 
-    @GetMapping
+    @GetMapping("/open")
     public ResponseEntity<List<CategoryFullDto>> getAllCategories(){
         return ResponseEntity.ok(categoryFacade.getAllCategory());
     }
 
-    @PostMapping
+    @PostMapping("/admin")
     public ResponseEntity<String> saveCategory(@RequestPart("data") @Valid
                                                CategoryRequestDto categoryRequestDto,
                                                @RequestParam("image")
@@ -46,13 +45,13 @@ public class CategoryController {
     }
      */
 
-    @PutMapping("/{id}")
+    @PutMapping("/admin/{id}")
     public ResponseEntity<String> updateCategory(@RequestBody @Valid CategoryRequestDto categoryRequestDto, @PathVariable Long id){
         categoryFacade.updateCategory(categoryRequestDto,id);
         return ResponseEntity.ok(String.format("feature %s successfully updated", id));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/{id}")
     public ResponseEntity<String> deleteFeature(@PathVariable Long id){
         categoryFacade.deleteCategory(id);
         return ResponseEntity.ok(String.format("category %s successfully deleted", id));
