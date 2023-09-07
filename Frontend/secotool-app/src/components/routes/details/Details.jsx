@@ -12,19 +12,26 @@ import ListPoliticas from "../../list/listPoliticas/ListPoliticas";
 import FormVal from "../../form/formValoraciones/formVal";
 import CardReview from "../../card/cardReview/CardReview";
 import ModalReview from "../../modal/modalReview/ModalReview";
+import { useGlobal } from "../../../contexts/GlobalContext";
 
 const LoadingIndicator = () => <Loader size="md" content="CARGANDO" />;
 
 const NetworkError = () => <p>Network Error</p>;
 
+const { beforeToday, combine } = DateRangePicker;
+
 function Details() {
   const params = useParams();
   const isScreenSmall = useMediaQuery("(max-width: 767px)");
   const [isSticky, setIsSticky] = useState(false);
-  const URL_API = `http://localhost:8080/v1/api/products/${params.id}`;
+  const { globalVariable } = useGlobal();
+  const URL_API = `${globalVariable}/v1/api/products/open/${params.id}`;
   const { data, status } = useFetch(URL_API, {});
   const [open, setOpen] = useState(false);
   const [size, setSize] = useState();
+  const [disabledDates, setDisabledDates] = useState([]);
+  const [selectedDateRange, setSelectedDateRange] = useState([]);
+  const [dataRentail, setDataRentail] = useState(null);
 
   function handleScroll() {
     const scrollPosition = window.scrollY;
@@ -49,7 +56,86 @@ function Details() {
     setSize(value);
     setOpen(true);
   };
+
   const handleClose = () => setOpen(false);
+
+  useEffect(() => {
+    // Función para calcular las fechas deshabilitadas
+    const calculateDisabledDates = () => {
+      let newDisabledDates = [];
+
+      if (status !== statuses.ERROR && data) {
+        console.log(data.productRentals);
+        data.productRentals.forEach((rental) => {
+          const startDate = new Date(
+            rental.rentalStartDate + "T00:00:00-03:00"
+          );
+          const endDate = new Date(rental.rentalEndDate + "T00:00:00-03:00");
+          for (
+            let date = startDate;
+            date <= endDate;
+            date.setDate(date.getDate() + 1)
+          ) {
+            newDisabledDates.push(new Date(date));
+          }
+        });
+        setDisabledDates(newDisabledDates);
+      }
+    };
+
+    calculateDisabledDates();
+  }, [status, data]);
+
+  const validateRentals = () => {
+    console.log(selectedDateRange);
+    if (selectedDateRange.length !== 2) {
+      // Maneja el caso en el que el rango de fechas no esté seleccionado correctamente
+      console.error("El rango de fechas no está seleccionado correctamente");
+      return;
+    }
+
+    const startDate = selectedDateRange[0].toISOString().split("T")[0];
+    const endDate = selectedDateRange[1].toISOString().split("T")[0];
+
+    const requestData = {
+      productId: data.id,
+      startDate,
+      endDate,
+    };
+
+    fetch(`${globalVariable}/v1/api/rentals/validate`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestData),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          // Maneja el caso en el que la solicitud no sea exitosa
+          throw new Error("La solicitud no pudo completarse");
+        }
+        return response.json();
+      })
+      .then((responseData) => {
+        // Procesa la respuesta exitosa
+        console.log("Respuesta exitosa:", responseData);
+        setDataRentail(responseData);
+      })
+      .catch((error) => {
+        // Maneja errores de la solicitud
+        console.error("Error en la solicitud:", error);
+      });
+  };
+
+  /*const handleDateRangeChange = (value) => {
+    setSelectedDateRange(value);
+    console.log(selectedDateRange);
+  };*/
+
+  /*const handleDateRangeOk = () => {
+    validateRentals();
+  };*/
 
   const ComponentDetailProduct =
     status !== statuses.ERROR && data ? (
@@ -103,22 +189,52 @@ function Details() {
                     <span className={styles.titleSm}>Precio total</span>
                     <div className={styles.textPrecio}>
                       <span>$</span>
-                      <span>{data.price}</span>
+                      <span>
+                        {dataRentail ? (<span>{dataRentail.TotalPrice} x {dataRentail.totalDays > 1 ? (<span>{dataRentail.totalDays} dias</span>):<span>dia</span>} </span> ) : data.price}
+                      </span>
                     </div>
                   </div>
                 </div>
                 <div className={styles.boxCalendar}>
-                  <span className={styles.titleSm}>Desde - Hasta</span>
+                  <span className={styles.titleSm}>Desde ~ Hasta</span>
                   {isScreenSmall ? (
                     <DateRangePicker
                       appearance="subtle"
                       placeholder="Seleccione fechas"
                       showOneCalendar
+                      shouldDisableDate={combine(
+                        (date) =>
+                          disabledDates.some(
+                            (disabledDate) =>
+                              date.getDate() === disabledDate.getDate() &&
+                              date.getMonth() === disabledDate.getMonth() &&
+                              date.getFullYear() === disabledDate.getFullYear()
+                          ),
+                        beforeToday()
+                      )}
+                      onOk={(dateRange) => {
+                        setSelectedDateRange(dateRange); // Actualiza el estado con el rango seleccionado
+                        validateRentals(); // Llama a la función de validación (puedes hacer lo que necesites aquí)
+                      }}
                     />
                   ) : (
                     <DateRangePicker
                       appearance="subtle"
                       placeholder="Seleccione fechas"
+                      shouldDisableDate={combine(
+                        (date) =>
+                          disabledDates.some(
+                            (disabledDate) =>
+                              date.getDate() === disabledDate.getDate() &&
+                              date.getMonth() === disabledDate.getMonth() &&
+                              date.getFullYear() === disabledDate.getFullYear()
+                          ),
+                        beforeToday()
+                      )}
+                      onOk={(dateRange) => {
+                        setSelectedDateRange(dateRange); // Actualiza el estado con el rango seleccionado
+                        validateRentals(); // Llama a la función de validación (puedes hacer lo que necesites aquí)
+                      }}
                     />
                   )}
                 </div>
@@ -129,7 +245,7 @@ function Details() {
               >
                 Alquilar
               </Button>
-              <ModalReview open={open} size={size} handleClose={handleClose}/>
+              <ModalReview open={open} size={size} handleClose={handleClose} />
             </div>
           </div>
           <div className={styles.boxList}>
