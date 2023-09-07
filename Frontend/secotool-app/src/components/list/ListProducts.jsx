@@ -1,6 +1,5 @@
 import { Grid } from "@mui/material";
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import Card from "../card/cardProduct/CardProduct";
 import style from "./ListProducts.module.css";
 import Pagination from "../pagination/Pagination";
@@ -34,8 +33,8 @@ const ListProducts = ({ products }) => {
         {/*shuffledHerramientas &&
           currentPost*/
           currentPost.map((product) => (
-            <Grid container key={product.id}>
-              <Card product={product}/>
+            <Grid container key={product.id ? product.id : product.productDto.id}>
+                <Card product={product.productDto ? product.productDto : product} style={{width: "100%"}} />
             </Grid>
           ))}
       </div>
