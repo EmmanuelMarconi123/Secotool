@@ -23,10 +23,10 @@ const FormCrearCuenta = () => {
 
   const validationSchema = Yup.object({
     name: Yup.string()
-      .min(6, "Tu nombre debe contener más de 6 caracteres")
+      .min(3, "Tu nombre debe contener 3 o más caracteres")
       .required("Debes ingresar un nombre"),
     lastname: Yup.string()
-      .min(6, "Tu apellido debe contener más de 6 caracteres")
+      .min(3, "Tu apellido debe contener 3 o más caracteres")
       .required("Debes ingresar un apellido"),
     email: Yup.string()
       .email("Debes ingresar un email válido")
