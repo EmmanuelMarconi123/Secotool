@@ -3,6 +3,7 @@ import styles from "./FormNewProduct.module.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../../../contexts/AuthContext";
+import { useGlobal } from "../../../contexts/GlobalContext";
 
 function FormNewProduct({ open, handleClose, onProductCreated }) {
   //-----------------------------DATOS(CATEGORIAS Y FEATURES)----------------------------------->
@@ -10,15 +11,19 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
   const [features, setFeatures] = useState([]);
 
   const { token } = useAuth();
+  const { globalVariable } = useGlobal();
 
   useEffect(() => {
     async function fetchCategories() {
       try {
-        const response = await fetch("http://localhost:8080/v1/api/categories/open",{
-          headers: {
-            'Authorization': 'Bearer ' + token,
+        const response = await fetch(
+          `${globalVariable}/v1/api/categories/open`,
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
           }
-        });
+        );
         if (response.ok) {
           const dataC = await response.json();
 
@@ -44,12 +49,13 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
     async function fetchFeatures() {
       try {
         const response = await fetch(
-          "http://localhost:8080/v1/api/features/open"
-        ,{
-          headers: {
-            'Authorization': 'Bearer ' + token,
+          `${globalVariable}/v1/api/features/open`,
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
           }
-        });
+        );
         if (response.ok) {
           const data = await response.json();
           const transformedData = data.map((category) => ({
@@ -69,8 +75,7 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
   }, []);
 
   //--------------------------------NEW PRODUCT---------------------->
-  const[isLoading, setIsLoading] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -94,12 +99,12 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
 
   const handleImageChangeD = (fileList) => {
     setUploadedImages(fileList);
-    console.log(fileList)
+    console.log(fileList);
   };
 
   const handleNewProductSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true)
+    setIsLoading(true);
     const formData = new FormData(); //Creando el form DATA
 
     const productData = {
@@ -136,17 +141,17 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
 
     axios({
       method: "post",
-      url: "http://localhost:8080/v1/api/products/admin",
+      url: `${globalVariable}/v1/api/products/admin`,
       data: formData,
       headers: {
-        'Authorization': 'Bearer ' + token,
+        Authorization: "Bearer " + token,
         "Content-Type": "multipart/form-data",
       },
     })
       .then(function (response) {
         handleClose();
         onProductCreated();
-        setIsLoading(false)
+        setIsLoading(false);
 
         setName("");
         setDescription("");
@@ -250,8 +255,13 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
               </Uploader>
             </label>
             <div className={styles.labelSeparator}></div>
-            <Button type='submit' appearance="default" loading={isLoading} disabled={isLoading}>
-            {isLoading ? "Cargando..." : "Agregar Producto"}
+            <Button
+              type="submit"
+              appearance="default"
+              loading={isLoading}
+              disabled={isLoading}
+            >
+              {isLoading ? "Cargando..." : "Agregar Producto"}
             </Button>
           </form>
         </div>

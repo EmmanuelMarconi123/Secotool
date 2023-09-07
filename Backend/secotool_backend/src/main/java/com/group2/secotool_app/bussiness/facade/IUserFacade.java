@@ -1,5 +1,6 @@
 package com.group2.secotool_app.bussiness.facade;
 
+import com.group2.secotool_app.model.dto.ProductDto;
 import com.group2.secotool_app.model.dto.UserAuthenticatedResponseDto;
 import com.group2.secotool_app.model.dto.UserDto;
 import com.group2.secotool_app.model.dto.UserGetMeDto;
@@ -17,4 +18,10 @@ public interface IUserFacade {
 
     List<UserDto> getAllUsers();
     void changeUserRole(Long userId, UserRole userRole);
+
+    void addProductToFavorite(Long productId, Long userId);
+
+    void removeProductToFavorite(Long productId, Long userId);
+
+    List<ProductDto> getAllFavoritesProducts(Long userId);
 }
