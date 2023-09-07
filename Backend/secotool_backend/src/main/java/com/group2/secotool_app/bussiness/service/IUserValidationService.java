@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface IUserValidationService {
     void AuthenticateUser (UserAuthenticationRequestDto authenticationRequestDto);
     Optional<User> isUserAuthenticated();
+
+    void isUsernameAvailable(String username);
 }

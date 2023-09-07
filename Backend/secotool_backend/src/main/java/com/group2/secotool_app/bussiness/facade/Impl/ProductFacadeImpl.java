@@ -9,6 +9,7 @@ import com.group2.secotool_app.model.dto.*;
 import com.group2.secotool_app.model.dto.request.ListOfCategoriesIdRequestDto;
 import com.group2.secotool_app.model.dto.request.ListOfFeaturesidRequestDto;
 import com.group2.secotool_app.model.dto.request.ProductRequestDto;
+import com.group2.secotool_app.util.CommonUtils;
 import com.group2.secotool_app.util.ProductUtils;
 import com.group2.secotool_app.util.RentUtils;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,7 @@ public class ProductFacadeImpl implements IProductFacade {
     private final ProductMapper productMapper;
     private final ProductUtils productUtils;
     private final RentUtils rentUtils;
+    private final CommonUtils commonUtils;
 
     @Override
     public List<ProductDto> getAllProducts() {
@@ -77,10 +79,13 @@ public class ProductFacadeImpl implements IProductFacade {
 //se puede refactorizar
     @Override
     public String save(ProductRequestDto productRequestDto, ListOfCategoriesIdRequestDto listOfCategoriesIdRequestDto, ListOfFeaturesidRequestDto listOfFeaturesidRequestDto, List<MultipartFile> images) {
-        productValidationService.validateProductNameIsNotAvailable(productRequestDto.name());
+        var productName = commonUtils.normalizeText(productRequestDto.name());
+        productValidationService.validateProductNameIsNotAvailable(productName);
         fileService.validateFilesAreImages(images);
 
         var product = productMapper.toProduct(productRequestDto);
+        product.setName(productName);
+
         Long prodId = productService.save(product);
         product.setId(prodId);
 
@@ -140,8 +145,9 @@ public class ProductFacadeImpl implements IProductFacade {
                 response.add(new RentProductDto(startDate,endDate,totalDays,totalPrice,productDto));
             });
         }else {
+            var prodNameNormalized = commonUtils.normalizeText(productName);
             prodsAvailableDto.forEach(productDto -> {
-                if (productDto.name().contains(productName)){
+                if (productDto.name().contains(prodNameNormalized)){
                     var totalPrice = rentUtils.calculateTotalPriceOfRent(totalDays,productDto.price());
                     response.add(new RentProductDto(startDate,endDate,totalDays,totalPrice,productDto));
                 }
