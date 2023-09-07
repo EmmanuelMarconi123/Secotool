@@ -1,10 +1,16 @@
 import { Link, useParams } from "react-router-dom";
 import Carousel from "../../carousel/Carousel";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import ListCaracteristicas from "../../list/ListCaracteristicas";
 import styles from "./Details.module.css";
-import { Button, DateRangePicker, Loader, Progress } from "rsuite";
+import {
+  Button,
+  DateRangePicker,
+  Loader,
+  Message,
+  Progress,
+  useToaster,
+} from "rsuite";
 import { useMediaQuery } from "@react-hook/media-query";
 import { useFetch, statuses } from "../../../customHooks/useFetch";
 import ModalShare from "../../modal/ModalShare";
@@ -12,19 +18,31 @@ import ListPoliticas from "../../list/listPoliticas/ListPoliticas";
 import FormVal from "../../form/formValoraciones/formVal";
 import CardReview from "../../card/cardReview/CardReview";
 import ModalReview from "../../modal/modalReview/ModalReview";
+import { useGlobal } from "../../../contexts/GlobalContext";
+import { useAuth } from "../../../contexts/AuthContext";
+import axios from "axios";
 
 const LoadingIndicator = () => <Loader size="md" content="CARGANDO" />;
 
 const NetworkError = () => <p>Network Error</p>;
 
+const { beforeToday, combine } = DateRangePicker;
+
 function Details() {
   const params = useParams();
   const isScreenSmall = useMediaQuery("(max-width: 767px)");
   const [isSticky, setIsSticky] = useState(false);
-  const URL_API = `http://localhost:8080/v1/api/products/open/${params.id}`;
+  const { globalVariable } = useGlobal();
+  const { token } = useAuth();
+  const URL_API = `${globalVariable}/v1/api/products/open/${params.id}`;
   const { data, status } = useFetch(URL_API, {});
   const [open, setOpen] = useState(false);
   const [size, setSize] = useState();
+  const [disabledDates, setDisabledDates] = useState([]);
+  const [selectedDateRange, setSelectedDateRange] = useState([]);
+  const [dataRentail, setDataRentail] = useState(null);
+
+  const toaster = useToaster();
 
   function handleScroll() {
     const scrollPosition = window.scrollY;
@@ -37,6 +55,112 @@ function Details() {
       setIsSticky(scrollPosition > bottomElementOffset);
     }
   }
+
+  const message = (
+    <Message showIcon type="error" closable>
+      No se ha podido alquilar el producto
+    </Message>
+  );
+
+  async function handleRent() {
+    const startDate = selectedDateRange[0].toISOString().split("T")[0];
+    const endDate = selectedDateRange[1].toISOString().split("T")[0];
+
+    if (selectedDateRange)
+      await axios
+        .post(
+          `${globalVariable}/v1/api/rentals`,
+          {
+            productId: params.id,
+            startDate: startDate,
+            endDate: endDate,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        )
+        .then(function (response) {
+          console.log(response);
+          handleOpen("lg");
+          setSelectedDateRange([]);
+        })
+        .catch(function (error) {
+          console.log(error);
+          console.log(token);
+          toaster.push(message, { placement: "bottomStart", duration: 5000 });
+        });
+  }
+
+  const validateRentals = () => {
+    console.log(selectedDateRange);
+    if (selectedDateRange.length !== 2) {
+      // Maneja el caso en el que el rango de fechas no esté seleccionado correctamente
+      console.error("El rango de fechas no está seleccionado correctamente");
+      return;
+    }
+
+    const startDate = selectedDateRange[0].toISOString().split("T")[0];
+    const endDate = selectedDateRange[1].toISOString().split("T")[0];
+
+    const requestData = {
+      productId: data.id,
+      startDate,
+      endDate,
+    };
+
+    fetch(`${globalVariable}/v1/api/rentals/validate`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestData),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          // Maneja el caso en el que la solicitud no sea exitosa
+          throw new Error("La solicitud no pudo completarse");
+        }
+        return response.json();
+      })
+      .then((responseData) => {
+        // Procesa la respuesta exitosa
+        console.log("Respuesta exitosa:", responseData);
+        setDataRentail(responseData);
+      })
+      .catch((error) => {
+        // Maneja errores de la solicitud
+        console.error("Error en la solicitud:", error);
+      });
+  };
+
+  useEffect(() => {
+    // Función para calcular las fechas deshabilitadas
+    const calculateDisabledDates = () => {
+      let newDisabledDates = [];
+
+      if (status !== statuses.ERROR && data) {
+        console.log(data.productRentals);
+        data.productRentals.forEach((rental) => {
+          const startDate = new Date(
+            rental.rentalStartDate + "T00:00:00-03:00"
+          );
+          const endDate = new Date(rental.rentalEndDate + "T00:00:00-03:00");
+          for (
+            let date = startDate;
+            date <= endDate;
+            date.setDate(date.getDate() + 1)
+          ) {
+            newDisabledDates.push(new Date(date));
+          }
+        });
+        setDisabledDates(newDisabledDates);
+      }
+    };
+
+    calculateDisabledDates();
+  }, [status, data]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -103,7 +227,20 @@ function Details() {
                     <span className={styles.titleSm}>Precio total</span>
                     <div className={styles.textPrecio}>
                       <span>$</span>
-                      <span>{data.price}</span>
+                      <span>
+                        {dataRentail ? (
+                          <span>
+                            {dataRentail.TotalPrice} x{" "}
+                            {dataRentail.totalDays > 1 ? (
+                              <span>{dataRentail.totalDays} dias</span>
+                            ) : (
+                              <span>dia</span>
+                            )}{" "}
+                          </span>
+                        ) : (
+                          data.price
+                        )}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -114,22 +251,58 @@ function Details() {
                       appearance="subtle"
                       placeholder="Seleccione fechas"
                       showOneCalendar
+                      shouldDisableDate={combine(
+                        (date) =>
+                          disabledDates.some(
+                            (disabledDate) =>
+                              date.getDate() === disabledDate.getDate() &&
+                              date.getMonth() === disabledDate.getMonth() &&
+                              date.getFullYear() === disabledDate.getFullYear()
+                          ),
+                        beforeToday()
+                      )}
+                      value={selectedDateRange}
+                      onChange={setSelectedDateRange}
+                      onOk={() => {
+                        validateRentals(); // Llama a la función de validación (puedes hacer lo que necesites aquí)
+                      }}
                     />
                   ) : (
                     <DateRangePicker
                       appearance="subtle"
                       placeholder="Seleccione fechas"
+                      shouldDisableDate={combine(
+                        (date) =>
+                          disabledDates.some(
+                            (disabledDate) =>
+                              date.getDate() === disabledDate.getDate() &&
+                              date.getMonth() === disabledDate.getMonth() &&
+                              date.getFullYear() === disabledDate.getFullYear()
+                          ),
+                        beforeToday()
+                      )}
+                      value={selectedDateRange}
+                      onChange={setSelectedDateRange}
+                      onOk={() => {
+                        validateRentals(); // Llama a la función de validación (puedes hacer lo que necesites aquí)
+                      }}
                     />
                   )}
                 </div>
               </div>
               <Button
                 className={styles.buttonCta}
-                onClick={() => handleOpen("lg")}
+                // onClick={() => handleOpen("lg")}
+                onClick={() => handleRent()}
               >
                 Alquilar
               </Button>
-              <ModalReview open={open} size={size} handleClose={handleClose}/>
+              <ModalReview
+                open={open}
+                size={size}
+                handleClose={handleClose}
+                productId={params.id}
+              />
             </div>
           </div>
           <div className={styles.boxList}>

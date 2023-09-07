@@ -1,13 +1,38 @@
 import { useState } from "react";
-import { Modal, Button, Form, Rate, Input } from "rsuite";
+import { Modal, Button, Rate } from "rsuite";
 import styles from "./ModalReview.module.css";
+import axios from "axios";
+import { useGlobal } from "../../../contexts/GlobalContext";
+import { useAuth } from "../../../contexts/AuthContext";
 
-const initFormValue = {
-  rate: 0,
-};
+const ModalReview = ({ open, size, handleClose, productId }) => {
+  const [stars, setStars] = useState(0);
+  const [desc, setDesc] = useState("");
+  const { token } = useAuth();
+  const { globalVariable } = useGlobal();
 
-const ModalReview = ({ open, size, handleClose }) => {
-  const [formValue, setFormValue] = useState(initFormValue);
+  async function fetchReview() {
+    await axios
+      .post(
+        `${globalVariable}/v1/api/reviews/${productId}`,
+        {
+          comment: desc,
+          score: stars,
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      )
+      .then(function (response) {
+        console.log(response);
+        handleClose();
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
 
   return (
     <Modal
@@ -15,37 +40,47 @@ const ModalReview = ({ open, size, handleClose }) => {
       open={open}
       onClose={handleClose}
       className={styles.modalReview}
+      style={{
+        display: "flex",
+        height: "100vh",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+      dialogClassName={styles.dialogClassName}
     >
       <Modal.Header>
-        <Modal.Title className={styles.mrTitle}>
+        <Modal.Title style={{fontWeight:"600", color:"var(--dark)"}}>
           ¡Gracias por tu alquiler!
         </Modal.Title>
       </Modal.Header>
       <Modal.Body className={styles.mrBody}>
-        <h4 className={styles.mrSubtitle}>¿Qué te pareció el producto?</h4>
-        <Form formValue={formValue}>
-          <Input
-            as="textarea"
-            rows={3}
-            placeholder="Escribe aquí una breve reseña acerca de lo que opinas del producto"
+        <form>
+          <span className={styles.mrSubtitle}>Califíca el producto</span>
+          <Rate max={5} value={stars} onChangeActive={setStars} size="lg" />
+          <span className={styles.mrSubtitle}>
+            ¿Qué te pareció el producto?
+          </span>
+          <textarea
+            className={styles.textArea}
+            name=""
+            value={desc}
+            onChange={(e) => setDesc(e.target.value)}
+            id=""
+            cols="30"
+            rows="10"
           />
-          <div>
-            <h4 className={styles.mrSubtitle}>Califíca el producto</h4>
-            <Form.Group controlId="rate">
-              <Form.Control name="rate" accepter={Rate} size="lg" />
-            </Form.Group>
-          </div>
-          <div>
-            <Button onClick={handleClose} appearance="primary">
-              Calificar
-            </Button>
-            <Button onClick={handleClose} appearance="subtle">
-              Omitir
-            </Button>
-          </div>
-        </Form>
+        </form>
       </Modal.Body>
-      <Modal.Footer></Modal.Footer>
+      <Modal.Footer>
+        <div className={styles.footerButtons}>
+          <Button style={{backgroundColor:"#4a6ac9"}} onClick={() => fetchReview()} appearance="primary">
+            Calificar
+          </Button>
+          <Button onClick={handleClose} appearance="subtle">
+            Omitir
+          </Button>
+        </div>
+      </Modal.Footer>
     </Modal>
   );
 };
