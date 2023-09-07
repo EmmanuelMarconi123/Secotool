@@ -7,6 +7,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import Features from "../../components/routes/features/Features";
 import Categories from "../../components/routes/categories/Categories";
 import UsersAdmin from "../../components/routes/usersAdmin/UsersAdmin";
+import Politicas from "../../components/routes/politicProduct/PoliticsProduct"
 
 const AppRoutesAdmin = () => {
   const { user } = useAuth();
@@ -25,6 +26,7 @@ const AppRoutesAdmin = () => {
              <Route path="/categories" element={<Categories />}></Route>
              <Route path="/features" element={<Features />}></Route>
              <Route path="/users" element={<UsersAdmin />}></Route>
+             <Route path="/politicas" element={<Politicas />}></Route>
             </>
           )}
         </Routes>
@@ -35,3 +37,4 @@ const AppRoutesAdmin = () => {
 };
 
 export default AppRoutesAdmin;
+

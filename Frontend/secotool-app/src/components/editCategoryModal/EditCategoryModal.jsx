@@ -3,9 +3,12 @@ import styles from "./EditCategoryModal.module.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../contexts/AuthContext";
+import { useGlobal } from "../../contexts/GlobalContext";
 
 function EditCategoryModal({ handleClose, open, getData, selectedCategory }) {
   const { token } = useAuth();
+  const { globalVariable } = useGlobal();
+
   const [currentCategory, setCurrentCategory] = useState({
     name: "",
     description: "",
@@ -29,7 +32,7 @@ function EditCategoryModal({ handleClose, open, getData, selectedCategory }) {
 
     axios({
       method: "put",
-      url: "http://localhost:8080/v1/api/categories",
+      url: `${globalVariable}/v1/api/categories/admin/${selectedCategory.id}`,
       data: formData,
       headers: {
         'Authorization': 'Bearer ' + token,

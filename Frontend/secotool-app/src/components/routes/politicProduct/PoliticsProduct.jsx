@@ -1,61 +1,63 @@
-import styles from "./Categories.module.css";
+import styles from "./PoliticsProduct.module.css";
 import { useEffect, useState } from "react";
 import { ButtonToolbar, Button, Modal } from "rsuite";
-import AdminCategoryCard from "../../adminCategoryCard/AdminCategoryCard";
+import PoliticCard from "../../PoliticCard/PoliticCard";
 import Pagination from "../../pagination/Pagination";
-import NewCategoryModal from "../../newCategoryModal/NewCategoryModal";
-import EditCategoryModal from "../../editCategoryModal/EditCategoryModal";
+import ModalPolitica from "./ModalPolitica";
 import { Snackbar, Alert } from "@mui/material";
-import { useGlobal } from "../../../contexts/GlobalContext";
+import ModalEditarPolitica from "./ModalEditarPolitica";
+import axios from "axios";
 import { useAuth } from "../../../contexts/AuthContext";
 
-const Categories = () => {
-  const { globalVariable } = useGlobal();
-  const { token } = useAuth();
+const PoliticsProduct = () => {
   //------------------------------ CONFIG MODALS--------------->
   const [open, setOpen] = useState(false);
+  const [openEp, setOpenEp] = useState(false);
+  const [politicas, setPoliticas] = useState([]);
+  const [selectedPolitic, setSelectedPoitic] = useState({});
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+  const [politicaAEliminar, setPoliticaAEliminar] = useState({});
+  const [alertOpen, setAlertOpen] = useState(false);
+
+  const { token } = useAuth();
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const [openEp, setOpenEp] = useState(false);
   const handleOpenEp = () => setOpenEp(true);
   const handleCloseEp = () => setOpenEp(false);
 
-  //-----------------------------BORRAR CATEGORIA------------------------>
-  const [alertOpen, setAlertOpen] = useState(false);
+  //------------------------DELETE POLITIC----------------------------->
+
   const showDeleteSuccessAlert = () => {
     setAlertOpen(true);
   };
-  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
-  const [categoryToDelete, setCategoryToDelete] = useState("");
 
-  const deleteCategory = (category) => {
-    setCategoryToDelete(category.name); // Establece el nombre de la categoría
-    setSelectedCategory(category);
+  const deletePolitic = (politica) => {
+    console.log("mostrando la politica: ", politica);
+    setPoliticaAEliminar(politica);
     setIsDeleteModalVisible(true);
-    console.log(selectedCategory);
   };
 
   const handleConfirmDelete = async () => {
     setIsDeleteModalVisible(false);
-    console.log(selectedCategory);
 
-    // Realiza la eliminación del producto aquí
     try {
-      const response = await fetch(
-        `${globalVariable}/v1/api/categories/admin/{id}${selectedCategory}`,
+      const tokenUsuario = token;
+
+      const response = await axios.delete(
+        `http://localhost:8080/v1/api/politics/admin/${politicaAEliminar.id}`,
         {
-          method: "DELETE",
           headers: {
-            Authorization: `Bearer ${token}`, // Agrega el token JWT al encabezado
+            Authorization: `Bearer ${tokenUsuario}`,
           },
         }
       );
-      if (response.ok) {
+
+      if (response.status === 200) {
         console.log(
-          `Se ha borrado el item con id ${selectedCategory} correctamente`
+          `Se ha borrado la politica con id ${politicaAEliminar} correctamente`
         );
-        fetchCategoriesAdmin();
+        fetchPoliticasAdmin();
         showDeleteSuccessAlert();
       } else {
         throw new Error("Error en la solicitud");
@@ -68,29 +70,30 @@ const Categories = () => {
   //-------------- CONFIGURACION DE LA PAGINACION -------------------->
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [categories, serCategories] = useState([]);
   const [currentPost, setCurrentPost] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState({});
   const [matches, setMatches] = useState(
     window.matchMedia("(min-width: 1024px)").matches
   );
 
-  function handleEdit(category) {
+  //------------------ FUNCION PARA EDITAR POLITICAS ----------------------
+
+  function handleEdit(poli) {
     handleOpenEp();
-    setSelectedCategory(category);
+    setSelectedPoitic(poli);
   }
 
-  const fetchCategoriesAdmin = async () => {
+  //-------------------FETCH DE LAS POLITICAS-------------------------
+
+  const fetchPoliticasAdmin = async () => {
     try {
-      const response = await fetch(`${globalVariable}/v1/api/categories/open`, {
-        headers: {
-          Authorization: `Bearer ${token}`, // Agrega el token JWT al encabezado
-        },
-      });
+      const response = await fetch(
+        "http://localhost:8080/v1/api/politics/open"
+      );
       if (response.ok) {
         const data = await response.json();
-        console.log(data); //Borrar este console.log, mas tarde\
-        serCategories(data);
+        console.log("las politicas son ", data);
+        setPoliticas(data);
       } else {
         throw new Error("Error en la solicitud");
       }
@@ -99,6 +102,8 @@ const Categories = () => {
     }
   };
 
+  //---------------------------- TODOS LOS USE-EFFECT -------------------------------
+
   useEffect(() => {
     window
       .matchMedia("(min-width: 1024px)")
@@ -106,14 +111,16 @@ const Categories = () => {
   }, []);
 
   useEffect(() => {
-    fetchCategoriesAdmin();
+    fetchPoliticasAdmin();
   }, []);
 
   useEffect(() => {
     const lastPostIndex = currentPage * 10;
     const fistPostIndex = lastPostIndex - 10;
-    setCurrentPost(categories.slice(fistPostIndex, lastPostIndex));
-  }, [currentPage, categories]);
+    setCurrentPost(politicas.slice(fistPostIndex, lastPostIndex));
+  }, [currentPage, politicas]);
+
+  //---------------------------- COMPONENETE -------------------------------------
 
   return (
     <div>
@@ -121,13 +128,13 @@ const Categories = () => {
         <div>
           <div className={styles.container}>
             <div className={styles.upTable}>
-              <h1>Todos las categorías</h1>
+              <h1>Todos las Políticas</h1>
               <ButtonToolbar className={styles.buttonToolbarRight}>
                 <Button
                   onClick={handleOpen}
                   style={{ background: "#45A42D", color: "#F9F9F9" }}
                 >
-                  + Agregar categoría
+                  + Agregar Politica
                 </Button>
               </ButtonToolbar>
             </div>
@@ -135,19 +142,16 @@ const Categories = () => {
               <div className={styles.tableHeader}>
                 <span>Nombre</span>
                 <span>Descripción</span>
-                <span>Imagen</span>
                 <span>Acciones</span>
               </div>
-              {categories.length > 0 ? (
-                currentPost.map((category) => (
-                  <AdminCategoryCard
-                    key={category.id}
-                    deleteItem={() => deleteCategory(category.id)}
-                    name={category.name}
-                    icon={category.name}
-                    description={category.description}
-                    image={category.image.url}
-                    editItem={() => handleEdit(category)}
+              {politicas.length > 0 ? (
+                politicas.map((poli) => (
+                  <PoliticCard
+                    key={poli.id}
+                    deleteItem={() => deletePolitic(poli)}
+                    name={poli.title}
+                    description={poli.description}
+                    editItem={() => handleEdit(poli)}
                   />
                 ))
               ) : (
@@ -156,7 +160,7 @@ const Categories = () => {
                 </span>
               )}
               <Pagination
-                totalPosts={categories.length}
+                totalPosts={politicas.length}
                 itemsPerPage={10}
                 setCurrentPage={setCurrentPage}
                 currentPage={currentPage}
@@ -186,7 +190,7 @@ const Categories = () => {
           <Modal.Title>Confirmar eliminación</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          ¿Está seguro que desea borrar la categoría {categoryToDelete}?
+          ¿Está seguro que desea borrar la Politica {politicaAEliminar.title}?
         </Modal.Body>
         <Modal.Footer className={styles.modalButtons}>
           <button
@@ -204,31 +208,22 @@ const Categories = () => {
         </Modal.Footer>
       </Modal>
 
-      <Snackbar
-        open={alertOpen}
-        autoHideDuration={3000} // Duración en milisegundos
-        onClose={() => setAlertOpen(false)}
-      >
-        <Alert onClose={() => setAlertOpen(false)} severity="success">
-          Producto eliminado correctamente.
-        </Alert>
-      </Snackbar>
-      {/* --------------------------NUEVA CARACTERÍSTICA MODAL--------------------------------> */}
-
-      <NewCategoryModal
-        handleClose={handleClose}
-        open={open}
-        getData={() => fetchCategoriesAdmin()}
-      />
-
-      {/* ------------------------------------------EDITAR PRODUCTO MODAL--------------------------> */}
-      <EditCategoryModal
+      {/* ------------------------------------------EDITAR POLITICA MODAL--------------------------> */}
+      <ModalEditarPolitica
         handleClose={handleCloseEp}
         open={openEp}
-        getData={() => fetchCategoriesAdmin()}
-        selectedCategory={selectedCategory}
+        fetchPoliticasAdmin={fetchPoliticasAdmin}
+        selectedPolitic={selectedPolitic}
+      />
+
+      {/* --------------------------NUEVA POLITICA MODAL--------------------------------> */}
+
+      <ModalPolitica
+        handleClose={handleClose}
+        open={open}
+        fetchPoliticasAdmin={fetchPoliticasAdmin}
       />
     </div>
   );
 };
-export default Categories;
+export default PoliticsProduct;
