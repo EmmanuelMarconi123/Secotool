@@ -5,50 +5,59 @@ import PoliticCard from "../../PoliticCard/PoliticCard";
 import Pagination from "../../pagination/Pagination";
 import ModalPolitica from "./ModalPolitica";
 import { Snackbar, Alert } from "@mui/material";
-import axios from "axios";
 import ModalEditarPolitica from "./ModalEditarPolitica";
+import axios from "axios";
+import { useAuth } from "../../../contexts/AuthContext";
 
 const PoliticsProduct = () => {
   //------------------------------ CONFIG MODALS--------------->
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
   const [openEp, setOpenEp] = useState(false);
   const [politicas, setPoliticas] = useState([]);
+  const [selectedPolitic, setSelectedPoitic] = useState({});
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+  const [politicaAEliminar, setPoliticaAEliminar] = useState({});
+  const [alertOpen, setAlertOpen] = useState(false);
+
+  const { token } = useAuth();
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const handleOpenEp = () => setOpenEp(true);
   const handleCloseEp = () => setOpenEp(false);
 
-  //----------------------------------------------------->
-  const [alertOpen, setAlertOpen] = useState(false);
+  //------------------------DELETE POLITIC----------------------------->
+
   const showDeleteSuccessAlert = () => {
     setAlertOpen(true);
   };
-  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
-  const [categoryToDelete, setCategoryToDelete] = useState("");
 
-  const deleteCategory = (category) => {
-    setCategoryToDelete(category.name); // Establece el nombre de la categoría
-    setSelectedCategory(category);
+  const deletePolitic = (politica) => {
+    console.log("mostrando la politica: ", politica);
+    setPoliticaAEliminar(politica);
     setIsDeleteModalVisible(true);
-    console.log(selectedCategory);
   };
 
   const handleConfirmDelete = async () => {
     setIsDeleteModalVisible(false);
-    console.log(selectedCategory);
 
-    // Realiza la eliminación del producto aquí
     try {
-      const response = await fetch(
-        `http://localhost:8080/v1/api/categories/${selectedCategory}`,
-        { method: "DELETE" }
+      const tokenUsuario = token;
+
+      const response = await axios.delete(
+        `http://localhost:8080/v1/api/politics/admin/${politicaAEliminar.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${tokenUsuario}`,
+          },
+        }
       );
-      if (response.ok) {
+
+      if (response.status === 200) {
         console.log(
-          `Se ha borrado el item con id ${selectedCategory} correctamente`
+          `Se ha borrado la politica con id ${politicaAEliminar} correctamente`
         );
-        fetchCategoriesAdmin();
+        fetchPoliticasAdmin();
         showDeleteSuccessAlert();
       } else {
         throw new Error("Error en la solicitud");
@@ -68,10 +77,11 @@ const PoliticsProduct = () => {
     window.matchMedia("(min-width: 1024px)").matches
   );
 
+  //------------------ FUNCION PARA EDITAR POLITICAS ----------------------
 
-  function handleEdit(politic) {
+  function handleEdit(poli) {
     handleOpenEp();
-    setSelectedCategory(politic);
+    setSelectedPoitic(poli);
   }
 
   //-------------------FETCH DE LAS POLITICAS-------------------------
@@ -93,18 +103,7 @@ const PoliticsProduct = () => {
     }
   };
 
-  //-------------------DELETE DE LAS POLITICAS-------------------------
-
-
-  // const handleConfirmDelete = async() =>{
-  //   try{
-  //     const deletePolitica = await axios.delete(`http://localhost:8080/v1/api/politics/admin/${id}`)
-  //   }
-  // }
-
-
-  //-------------------------------------------------------------------
-
+  //---------------------------- TODOS LOS USE-EFFECT -------------------------------
 
   useEffect(() => {
     window
@@ -121,6 +120,8 @@ const PoliticsProduct = () => {
     const fistPostIndex = lastPostIndex - 10;
     setCurrentPost(categories.slice(fistPostIndex, lastPostIndex));
   }, [currentPage, categories]);
+
+  //---------------------------- COMPONENETE -------------------------------------
 
   return (
     <div>
@@ -148,7 +149,7 @@ const PoliticsProduct = () => {
                 politicas.map((poli) => (
                   <PoliticCard
                     key={poli.id}
-                    deleteItem={() => deleteCategory(poli.id)}
+                    deleteItem={() => deletePolitic(poli)}
                     name={poli.title}
                     description={poli.description}
                     editItem={() => handleEdit(poli)}
@@ -190,7 +191,7 @@ const PoliticsProduct = () => {
           <Modal.Title>Confirmar eliminación</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          ¿Está seguro que desea borrar la categoría {categoryToDelete}?
+          ¿Está seguro que desea borrar la Politica {politicaAEliminar.title}?
         </Modal.Body>
         <Modal.Footer className={styles.modalButtons}>
           <button
@@ -208,22 +209,12 @@ const PoliticsProduct = () => {
         </Modal.Footer>
       </Modal>
 
-      <Snackbar
-        open={alertOpen}
-        autoHideDuration={3000} // Duración en milisegundos
-        onClose={() => setAlertOpen(false)}
-      >
-        <Alert onClose={() => setAlertOpen(false)} severity="success">
-          Producto eliminado correctamente.
-        </Alert>
-      </Snackbar>
-
       {/* ------------------------------------------EDITAR POLITICA MODAL--------------------------> */}
       <ModalEditarPolitica
         handleClose={handleCloseEp}
         open={openEp}
-        getData={() => fetchPoliticasAdmin()}
-        selectedCategory={selectedCategory}
+        fetchPoliticasAdmin={fetchPoliticasAdmin}
+        selectedPolitic={selectedPolitic}
       />
 
       {/* --------------------------NUEVA POLITICA MODAL--------------------------------> */}

@@ -4,55 +4,52 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../../contexts/AuthContext";
 
-function ModalEditarPolitica({ handleClose, open, getData, selectedCategory }) {
+function ModalEditarPolitica({
+  handleClose,
+  open,
+  selectedPolitic,
+  fetchPoliticasAdmin,
+}) {
   const { token } = useAuth();
-  const [currentCategory, setCurrentCategory] = useState({
+  const [currentPolitic, setCurrentPolitic] = useState({
     name: "",
     description: "",
   });
-  const [currentImage, setCurrentImage] = useState("");
 
   const handleSubmit = () => {
-    editCategoryAdmin();
+    editPolitic();
     handleClose();
   };
 
-  const editCategoryAdmin = async () => {
-    const formData = new FormData();
-    formData.append(
-      "data",
-      new Blob([JSON.stringify(currentCategory)], { type: "application/json" })
-    );
-    formData.append("image", currentImage.blobFile);
+  const editPolitic = async () => {
+    const title = currentPolitic.title;
+    const description = currentPolitic.description;
 
-    console.log(formData);
-
-    axios({
-      method: "put",
-      url: "http://localhost:8080/v1/api/categories",
-      data: formData,
-      headers: {
-        'Authorization': 'Bearer ' + token,
-        "Content-Type": "multipart/form-data",
-      },
-    })
-      .then(function (response) {
-        handleClose();
-        console.log(response);
-        getData();
-      })
-      .catch(function (response) {
-        console.log(response);
-      });
+    try {
+      await axios.put(
+        `http://localhost:8080/v1/api/politics/admin/${selectedPolitic.id}`,
+        {
+          title: title,
+          description: description,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      fetchPoliticasAdmin();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
-    setCurrentCategory({
-      name: selectedCategory.name,
-      description: selectedCategory.description,
+    setCurrentPolitic({
+      title: selectedPolitic.title,
+      description: selectedPolitic.description,
     });
-    setCurrentImage(selectedCategory.image);
-  }, [selectedCategory]);
+  }, [selectedPolitic]);
 
   return (
     <Modal
@@ -81,10 +78,10 @@ function ModalEditarPolitica({ handleClose, open, getData, selectedCategory }) {
               <input
                 type="text"
                 name="name"
-                value={currentCategory.name}
+                value={currentPolitic.title}
                 onChange={(e) =>
-                  setCurrentCategory({
-                    ...currentCategory,
+                  setCurrentPolitic({
+                    ...currentPolitic,
                     name: e.target.value,
                   })
                 }
@@ -96,10 +93,10 @@ function ModalEditarPolitica({ handleClose, open, getData, selectedCategory }) {
                 cols="30"
                 rows="10"
                 name="description"
-                value={currentCategory.description}
+                value={currentPolitic.description}
                 onChange={(e) =>
-                  setCurrentCategory({
-                    ...currentCategory,
+                  setCurrentPolitic({
+                    ...currentPolitic,
                     description: e.target.value,
                   })
                 }
@@ -108,38 +105,6 @@ function ModalEditarPolitica({ handleClose, open, getData, selectedCategory }) {
             </label>
           </form>
         </div>
-        {currentImage && (
-          <div
-            style={{
-              height: 54,
-              width: 640,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              border: "none",
-              overflow: "hidden",
-            }}
-          >
-            <img
-              style={{ width: "50%", borderRadius: 8 }}
-              src={currentImage.url}
-              alt=""
-            />
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "8px",
-                cursor: "pointer",
-              }}
-            >
-              <a href={currentImage.url} target="blank">
-                <i className="fa-solid fa-arrow-up-right-from-square"></i>
-              </a>
-            </div>
-          </div>
-        )}
       </Modal.Body>
       <Modal.Footer>
         <div className={styles.buttonsContainer}>

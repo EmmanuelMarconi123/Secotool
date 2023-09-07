@@ -1,6 +1,6 @@
 import styles from '../PoliticCard/PoliticCard.module.css'
 
-const PoliticCard = ({name, description, key, deleteItem, editItem}) => {
+const PoliticCard = ({name, description, deleteItem, editItem}) => {
   return (
     <div className={styles.container}>
     <span>{name}</span>
