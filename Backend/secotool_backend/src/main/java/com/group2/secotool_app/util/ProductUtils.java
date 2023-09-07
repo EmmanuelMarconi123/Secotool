@@ -2,13 +2,11 @@ package com.group2.secotool_app.util;
 
 import com.group2.secotool_app.bussiness.mapper.ProductDtoMapper;
 import com.group2.secotool_app.bussiness.mapper.ProductFullDtoMapper;
-import com.group2.secotool_app.bussiness.service.IUserService;
 import com.group2.secotool_app.bussiness.service.IUserValidationService;
 import com.group2.secotool_app.model.dto.ProductDto;
 import com.group2.secotool_app.model.dto.ProductFullDto;
 import com.group2.secotool_app.model.entity.Product;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -73,6 +71,7 @@ public class ProductUtils {
                     isFav=true;
             }
         }
+        System.out.println(product.getProductReviews().size());
         return productFullDtoMapper.toFavoriteProductFullDto(product,isFav);
     }
 

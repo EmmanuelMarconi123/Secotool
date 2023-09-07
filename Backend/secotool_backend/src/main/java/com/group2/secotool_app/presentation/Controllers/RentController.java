@@ -1,7 +1,6 @@
 package com.group2.secotool_app.presentation.Controllers;
 
 import com.group2.secotool_app.bussiness.facade.IRentFacade;
-import com.group2.secotool_app.model.dto.RentProductDto;
 import com.group2.secotool_app.model.dto.RentValidatedDto;
 import com.group2.secotool_app.model.dto.request.RentProductRequestDto;
 import jakarta.validation.Valid;

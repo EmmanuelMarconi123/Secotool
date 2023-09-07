@@ -10,6 +10,7 @@ public interface ProductDtoMapper {
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
     @Mapping(source = "price", target = "price")
+    @Mapping(source = "averageScore", target = "averageScore")
     @Mapping(source = "images", target = "images")
     @Mapping(source = "productCategories", target = "productCategories")
     ProductDto toProductDto (Product product);
@@ -18,6 +19,7 @@ public interface ProductDtoMapper {
     @Mapping(source = "product.id", target = "id")
     @Mapping(source = "product.name", target = "name")
     @Mapping(source = "product.price", target = "price")
+    @Mapping(source = "product.averageScore", target = "averageScore")
     @Mapping(source = "isFavorite", target = "isFavorite")
     @Mapping(source = "product.images", target = "images")
     @Mapping(source = "product.productCategories", target = "productCategories")

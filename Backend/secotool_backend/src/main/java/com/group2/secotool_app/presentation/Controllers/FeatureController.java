@@ -28,14 +28,6 @@ public class FeatureController {
         return ResponseEntity.ok("feature saved successfully");
     }
 
-    // puede ir en el controller de productos
-    /*
-    @PostMapping("/{prodId}/{featureId}")
-    public ResponseEntity<String> associateProductToFeature(@PathVariable("prodId") Long prodId, @PathVariable("featureId") Long featureId){
-        featureFacade.associateProductToFeature(prodId,featureId);
-        return ResponseEntity.ok(String.format("product: %s successfully associated with feature: %s", prodId,featureId));
-    }
-     */
     @PutMapping("/admin/{id}")
     public ResponseEntity<String> updateFeature(@RequestBody @Valid FeatureRequestDto featureRequestDto, @PathVariable Long id){
         featureFacade.updateFeature(featureRequestDto,id);
