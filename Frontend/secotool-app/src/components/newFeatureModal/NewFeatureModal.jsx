@@ -32,7 +32,6 @@ const Option = (props) => (
 );
 
 const NewFeatureModal = ({ handleClose, open, getData }) => {
-
   const { globalVariable } = useGlobal();
   const { token } = useAuth();
 
@@ -62,7 +61,6 @@ const NewFeatureModal = ({ handleClose, open, getData }) => {
 
   const addFeaturesAdmin = async () => {
     try {
-  
       const response = await axios.post(
         `${globalVariable}/v1/api/features/admin`,
         {
@@ -76,7 +74,7 @@ const NewFeatureModal = ({ handleClose, open, getData }) => {
           },
         }
       );
-  
+
       console.log(response);
       getData();
     } catch (error) {

@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import style from "./FormFilterDesktop.module.css";
 import axios from "axios";
+import { useGlobal } from "../../../contexts/GlobalContext";
 
 const FormFilterDesktop = ({ updatefilterProducts }) => {
   const [categoryData, setCategoryData] = useState([]);
+  const { globalVariable } = useGlobal();
 
   // Estado para mantener el registro de checkboxes seleccionados
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -11,7 +13,7 @@ const FormFilterDesktop = ({ updatefilterProducts }) => {
   useEffect(() => {
     // Realizar la solicitud Fetch al endpoint usando Axios
     axios
-      .get("http://localhost:8080/v1/api/categories")
+      .get(`${globalVariable}/v1/api/categories/open`)
       .then((response) => {
         setCategoryData(response.data);
       })
