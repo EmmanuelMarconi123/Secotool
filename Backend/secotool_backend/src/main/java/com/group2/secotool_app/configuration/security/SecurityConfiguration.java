@@ -28,49 +28,54 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
                 .authorizeHttpRequests(authorize ->
-                        authorize
-                                .requestMatchers("/v1/api/products/open/**",
-                                        "/v1/api/cateogories/open/**",
-                                        "/v1/api/features/open/**",
-                                        "/v1/api/politics/open/**",
-                                        "/v1/api/auth/**",
-                                        "/v2/api-docs",
-                                        "/v3/api-docs",
-                                        "/v3/api-docs/**",
-                                        "/swagger-resources",
-                                        "/swagger-resources/**",
-                                        "/configuration/ui",
-                                        "/configuration/security",
-                                        "/swagger-ui/**",
-                                        "/webjars/**",
-                                        "/swagger-ui.html",
-                                        "/*.html",
-                                        "/css/**",
-                                        "/assets/**",
-                                        "/scripts/**",
-                                        "/*.js").permitAll()
-                                //products
-                                .requestMatchers("/v1/api/products/admin/**").hasAuthority(UserRole.ADMIN.name())
+                    authorize
+                            .requestMatchers("/v1/api/products/open/**",
+                                    "/v1/api/rentals/validate",
+                                    "/v1/api/categories/open/**",
+                                    "/v1/api/features/open/**",
+                                    "/v1/api/politics/open/**",
+                                    "/v1/api/auth/**",
+                                    "/v2/api-docs",
+                                    "/v3/api-docs",
+                                    "/v3/api-docs/**",
+                                    "/swagger-resources",
+                                    "/swagger-resources/**",
+                                    "/configuration/ui",
+                                    "/configuration/security",
+                                    "/swagger-ui/**",
+                                    "/webjars/**",
+                                    "/swagger-ui.html",
+                                    "/*.html",
+                                    "/css/**",
+                                    "/assets/**",
+                                    "/scripts/**",
+                                    "/*.js").permitAll()
+                            //products
+                            .requestMatchers("/v1/api/products/admin/**").hasAuthority(UserRole.ADMIN.name())
 
-                                //users
-                                .requestMatchers("/v1/api/users/products/**",
-                                        "/v1/api/users/getMe"
-                                ).hasAnyAuthority(UserRole.ADMIN.name(),UserRole.USER.name())
-                                .requestMatchers("/v1/api/rentals/admin/**").hasAuthority(UserRole.ADMIN.name())
+                            //users
+                            .requestMatchers("/v1/api/users/products/**",
+                                    "/v1/api/users/getMe"
+                            ).hasAnyAuthority(UserRole.ADMIN.name(),UserRole.USER.name())
 
-                                //rentals
-                                .requestMatchers("/v1/api/rentals/**"
-                                ).hasAnyAuthority(UserRole.ADMIN.name(),UserRole.USER.name())
 
-                                //features
-                                .requestMatchers("/v1/api/features/admin/**").hasAuthority(UserRole.ADMIN.name())
+                            //rentals
+                            .requestMatchers("/v1/api/rentals/**"
+                            ).hasAnyAuthority(UserRole.ADMIN.name(),UserRole.USER.name())
+                            .requestMatchers("/v1/api/rentals/admin/**").hasAuthority(UserRole.ADMIN.name())
 
-                                //categories
-                                .requestMatchers("/v1/api/categories/admin/**").hasAuthority(UserRole.ADMIN.name())
+                            //features
+                            .requestMatchers("/v1/api/features/admin/**").hasAuthority(UserRole.ADMIN.name())
 
-                                //politics
-                                .requestMatchers("/v1/api/politics/admin/**").hasAuthority(UserRole.ADMIN.name())
-                                .anyRequest().authenticated()
+                            //categories
+                            .requestMatchers("/v1/api/categories/admin/**").hasAuthority(UserRole.ADMIN.name())
+
+                            //politics
+                            .requestMatchers("/v1/api/politics/admin/**").hasAuthority(UserRole.ADMIN.name())
+
+                            //reviews
+                            .requestMatchers("/v1/api/reviews/**").hasAnyAuthority(UserRole.USER.name(),UserRole.ADMIN.name())
+                            .anyRequest().authenticated()
                 )
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session ->

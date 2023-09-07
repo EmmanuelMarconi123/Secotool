@@ -11,32 +11,27 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @Setter
-@Table(name = "rentals")
+@Table(name = "reviews")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Rent {
+public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private LocalDate rentalStartDate;
+    private String comment;
 
     @Column(nullable = false)
-    private LocalDate rentalEndDate;
+    private Double score;
 
-    @Column(nullable = false)
-    private Long totalDays;
-
-    @Column(nullable = false)
-    private Double rentalPrice;
+    private LocalDate reviewDay = LocalDate.now();
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private Product product;
-
 
 }

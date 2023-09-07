@@ -6,13 +6,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class FileServiceImpl implements IFileService {
     @Override
     public void validateFilesAreImages(List<MultipartFile> files) {
         files.forEach(file -> {
-            String filename = file.getOriginalFilename().toLowerCase();
+            String filename = Objects.requireNonNull(file.getOriginalFilename()).toLowerCase();
             //check if the file is empty
             if (file.isEmpty()) {
                 throw new IllegalStateException("Cannot upload empty file");

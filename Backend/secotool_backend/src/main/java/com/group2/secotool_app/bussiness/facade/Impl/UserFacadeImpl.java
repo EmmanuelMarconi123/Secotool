@@ -48,12 +48,6 @@ public class UserFacadeImpl implements IUserFacade {
     }
 
     @Override
-    public UserGetMeDto findUserByUsername(String username) {
-        var resp = userService.loadUserByUsername(username);
-        return null;
-    }
-
-    @Override
     public UserAuthenticatedResponseDto authenticateUser(UserAuthenticationRequestDto authenticationRequestDto) {
         userValidationService.AuthenticateUser(authenticationRequestDto);
         User user = userService.findUserByUsername(authenticationRequestDto.username());

@@ -16,11 +16,13 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@RequiredArgsConstructor
 @Table(name = "users")
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NonNull
     private Long id;
 
     @Column(nullable = false, unique = true)
@@ -51,6 +53,11 @@ public class User implements UserDetails {
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     @JsonIgnore
     private List<Rent> rents;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    @JsonIgnore
+    private List<Review> reviews;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
