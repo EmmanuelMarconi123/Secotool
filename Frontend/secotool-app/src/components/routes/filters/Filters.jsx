@@ -6,13 +6,15 @@ import FormFilterDesktop from "../../form/formFilter/FormFilterDesktop";
 import axios from "axios";
 import { useMediaQuery } from "@react-hook/media-query";
 import { useGlobal } from "../../../contexts/GlobalContext";
+import { useParams } from "react-router-dom";
 
 const Filters = () => {
   const [productsF, setProductsF] = useState([]);
   const [filterProducts, setfilterProducts] = useState([]);
   const [filteredProductsF, setFilteredProductsF] = useState([]);
   const { globalVariable } = useGlobal();
-
+  const params = useParams();
+  console.log(params);
   useEffect(() => {
     const fetchData = async () => {
       try {
