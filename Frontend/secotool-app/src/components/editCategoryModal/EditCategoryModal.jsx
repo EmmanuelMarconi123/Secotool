@@ -22,6 +22,7 @@ function EditCategoryModal({ handleClose, open, getData, selectedCategory }) {
 
   const editCategoryAdmin = async () => {
     const formData = new FormData();
+    console.log(currentImage)
     formData.append(
       "data",
       new Blob([JSON.stringify(currentCategory)], { type: "application/json" })
