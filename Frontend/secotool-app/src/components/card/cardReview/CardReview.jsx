@@ -12,7 +12,7 @@ const CardReview = ({ productReviews }) => {
           <span>{review.reviewDay}</span>
           <div className={styles.formVal}>
             <div className={styles.formRate}>
-              <Rate max={5} defaultValue={review.score} size="xs" />
+              <Rate readOnly max={5} defaultValue={review.score} size="xs" allowHalf/>
             </div>
           </div>
           <p>{review.comment}</p>

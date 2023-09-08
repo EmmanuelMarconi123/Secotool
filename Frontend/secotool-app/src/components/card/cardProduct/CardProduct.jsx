@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Rate } from "rsuite";
 
 function CardProduct({ product }) {
   const { isLoggedIn, token } = useAuth();
@@ -123,6 +124,7 @@ function CardProduct({ product }) {
               </Grid>
               <div className={styles.boxScore}>
                 <span>{product.averageScore}</span>
+                <Rate readOnly allowHalf max={5} defaultValue={product.averageScore} size="xs" />
               </div>
             </Grid>
           </Grid>
