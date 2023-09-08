@@ -186,8 +186,8 @@ const Categories = () => {
           <Modal.Title>Confirmar eliminación</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          ¿Está seguro que desea borrar la categoría {categoryToDelete}?
-          Esto puede llegar a eliminar todos los productos asociados a esta categoria
+          ¿Está seguro que desea eliminar la categoría {categoryToDelete}?
+          Una vez eliminada la categoría no podrás restaurar los cambios y se eliminara de forma permanente.
         </Modal.Body>
         <Modal.Footer className={styles.modalButtons}>
           <button
