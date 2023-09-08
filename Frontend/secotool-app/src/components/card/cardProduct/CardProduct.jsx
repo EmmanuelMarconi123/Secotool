@@ -59,12 +59,15 @@ function CardProduct({ product }) {
   // ----------- effect para renderizar el componenete completo --------------
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   useEffect(() => {
     fetchIsLikedStatus();
   }, []);
 
 >>>>>>> e020a85e2dac3498c153a86f8d0c816e42c31920
+=======
+>>>>>>> ead936973da7fd169ea03b8db1bd805d3577860f
   //-------- funcion que se ejecuta al hacer click en el corazon -------------
 
   const handleLike = (product) => {
