@@ -8,7 +8,6 @@ import axios from "axios";
 import { Rate } from "rsuite";
 
 function CardProduct({ product }) {
-  console.log(product)
   const { isLoggedIn, token } = useAuth();
   const [isLiked, setIsLiked] = useState(product.isFavorite);
 
@@ -53,8 +52,6 @@ function CardProduct({ product }) {
       console.error("entro en el error de sacar favoritos ", error);
     }
   };
-
-  // ----------- effect para renderizar el componenete completo --------------
 
   //-------- funcion que se ejecuta al hacer click en el corazon -------------
 
