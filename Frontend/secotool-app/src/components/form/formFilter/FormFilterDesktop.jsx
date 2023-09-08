@@ -10,8 +10,6 @@ const FormFilterDesktop = ({ updatefilterProducts }) => {
   // Estado para mantener el registro de checkboxes seleccionados
   const [selectedCategories, setSelectedCategories] = useState([]);
 
-  const { globalVariable } = useGlobal();
-
   useEffect(() => {
     // Realizar la solicitud Fetch al endpoint usando Axios
     axios
