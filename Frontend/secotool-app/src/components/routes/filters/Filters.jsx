@@ -47,6 +47,8 @@ const Filters = () => {
       // Si no hay filtros seleccionados, muestra todos los productos
       setFilteredProductsF(productsF);
     }
+
+    console.log("soy filter Products", filterProducts);
   }, [filterProducts, productsF]);
 
   const updatefilterProducts = (filterProducts) => {

@@ -13,7 +13,6 @@ function CardProduct({ product }) {
 
   const url = `http://localhost:8080/v1/api/users/products/${product.id}`;
 
-
   //--------------- aca solicito el estado del isliked a la base de dato ---------------
 
 
@@ -59,6 +58,13 @@ function CardProduct({ product }) {
 
   // ----------- effect para renderizar el componenete completo --------------
 
+<<<<<<< HEAD
+=======
+  useEffect(() => {
+    fetchIsLikedStatus();
+  }, []);
+
+>>>>>>> e020a85e2dac3498c153a86f8d0c816e42c31920
   //-------- funcion que se ejecuta al hacer click en el corazon -------------
 
   const handleLike = (product) => {
@@ -86,6 +92,7 @@ function CardProduct({ product }) {
           />
         </Grid>
       ) : null}
+
       <Link to={"/product/" + product.id} key={product.id}>
         <Grid container className={styles.container} xs={12} md={12}>
           <Grid container className={styles.card}>
@@ -102,6 +109,9 @@ function CardProduct({ product }) {
                 <span>$</span>
                 <span>{product.price}</span>
               </Grid>
+              <div className={styles.boxScore}>
+                <span>{product.averageScore}</span>
+              </div>
             </Grid>
           </Grid>
         </Grid>
