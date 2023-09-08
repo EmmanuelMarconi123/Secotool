@@ -145,7 +145,7 @@ const PoliticsProduct = () => {
                 <span>Acciones</span>
               </div>
               {politicas.length > 0 ? (
-                politicas.map((poli) => (
+                currentPost.map((poli) => (
                   <PoliticCard
                     key={poli.id}
                     deleteItem={() => deletePolitic(poli)}
@@ -195,13 +195,13 @@ const PoliticsProduct = () => {
         <Modal.Footer className={styles.modalButtons}>
           <button
             onClick={() => setIsDeleteModalVisible(false)}
-            style={{ backgroundColor: "red" }}
+            style={{ backgroundColor: "red", color: "white" }}
           >
             Cancelar
           </button>
           <button
             onClick={handleConfirmDelete}
-            style={{ backgroundColor: "green" }}
+            style={{ backgroundColor: "green", margin: 10, color: "white" }}
           >
             Confirmar
           </button>
