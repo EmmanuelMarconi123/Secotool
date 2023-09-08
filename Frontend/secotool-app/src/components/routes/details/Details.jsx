@@ -217,7 +217,7 @@ function Details() {
                 </h4>
                 <p className="font-sm">{data.description}</p>
               </div>
-              <div className="">
+              <div>
                 <h4 className={styles.titleDetails + " font-regular mb-16"}>
                   Características
                 </h4>
@@ -298,6 +298,7 @@ function Details() {
                       )}
                       value={selectedDateRange}
                       onChange={setSelectedDateRange}
+                      className={styles.inputCalendar}
                     />
                   )}
                 </div>
