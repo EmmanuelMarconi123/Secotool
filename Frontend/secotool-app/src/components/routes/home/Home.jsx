@@ -5,15 +5,20 @@ import { useFetch, statuses } from "../../../customHooks/useFetch";
 import { Loader } from "rsuite";
 import { useEffect, useState } from "react";
 import { useGlobal } from "../../../contexts/GlobalContext";
+import { useAuth } from "../../../contexts/AuthContext";
 
 const LoadingIndicator = () => <Loader size="md" content="CARGANDO" />;
 
 const NetworkError = () => <p>Network Error</p>;
 
 const Home = () => {
+  const { isLoggedIn, token } = useAuth();
   const { globalVariable } = useGlobal();
   const URL_API = `${globalVariable}/v1/api/products/open`;
-  const { data, status } = useFetch(URL_API, {});
+
+  const fetchOptions = isLoggedIn ? { headers: { Authorization: `Bearer ${token}` } } : {};
+
+  const { data, status } = useFetch(URL_API, fetchOptions);
 
   const [products, setProducts] = useState("");
 
