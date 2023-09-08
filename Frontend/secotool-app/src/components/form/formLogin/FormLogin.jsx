@@ -7,10 +7,12 @@ import styles from "./FormLogin.module.css";
 import { useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../../contexts/AuthContext";
+import { useGlobal } from "../../../contexts/GlobalContext";
 
 const FormLogin = () => {
 
   const { login, userLog } = useAuth();
+  const { globalVariable } = useGlobal();
 
   //en estos initial values se me van a guardar luego lo que el usuario escriba en los imputs
   const initialValues = {
@@ -25,7 +27,7 @@ const FormLogin = () => {
   const sendForm = async (values) => {
     try {
       const response = await axios.post(
-        "http://localhost:8080/v1/api/auth/login",
+        `${globalVariable}/v1/api/auth/login`,
         {
           username: values.email,
           password: values.password,

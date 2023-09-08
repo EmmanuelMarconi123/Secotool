@@ -3,6 +3,7 @@ import styles from "./ModalPolitica.module.css";
 import axios from "axios";
 import { useState } from "react";
 import { useAuth } from "../../../contexts/AuthContext";
+import { useGlobal } from "../../../contexts/GlobalContext";
 
 function ModalPolitica({
   open,
@@ -12,11 +13,13 @@ function ModalPolitica({
 }) {
   const [newPolitic, setNewPolitic] = useState({ name: "", description: "" });
   const { token } = useAuth();
+  const { globalVariable } = useGlobal();
 
   const handleSubmit = () => {
     addPoliticAdmin();
     handleClose();
   };
+
 
   const addPoliticAdmin = async () => {
     console.log(newPolitic);
@@ -24,7 +27,7 @@ function ModalPolitica({
     try {
       const tokenUser = token;
       const response = await axios.post(
-        "http://localhost:8080/v1/api/politics/admin",
+        `${globalVariable}/v1/api/politics/admin`,
         {
           title: newPolitic.name,
           description: newPolitic.description,
