@@ -70,11 +70,25 @@
 }
 
 .corazon {
-  z-index: 500;
+  z-index: 1;
   position: absolute;
   top: 5px;
   right: 5px;
   cursor: pointer;
+}
+
+.boxScore {
+  display: flex;
+  justify-content: center;
+  padding-top: 16px;
+}
+
+.boxScore span{
+  font-size: 16px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  background-color: rgb(101, 169, 101);
+  color: var(--white);
 }
 
 @media screen and (min-width: 768px) {

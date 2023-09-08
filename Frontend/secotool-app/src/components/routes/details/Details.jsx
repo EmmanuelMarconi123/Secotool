@@ -221,7 +221,7 @@ function Details() {
                 <h4 className={styles.titleDetails + " font-regular mb-16"}>
                   Características
                 </h4>
-                {data.productFeature ? (
+                {data.productFeatures ? (
                   <ListCaracteristicas
                     caracteris={data.productFeatures}
                   ></ListCaracteristicas>
