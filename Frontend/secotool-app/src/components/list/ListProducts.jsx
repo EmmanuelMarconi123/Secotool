@@ -8,9 +8,9 @@ const ListProducts = ({ products }) => {
   //-------------- CONFIGURACION DE LA PAGINACION -------------------->
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
- const lastPostIndex = currentPage * itemsPerPage;
- const fistPostIndex = lastPostIndex - itemsPerPage;
- const currentPost = products.slice(fistPostIndex, lastPostIndex);
+  const lastPostIndex = currentPage * itemsPerPage;
+  const fistPostIndex = lastPostIndex - itemsPerPage;
+  const currentPost = products.slice(fistPostIndex, lastPostIndex);
 
   // Función para barajar un array utilizando el algoritmo de Fisher-Yates
   /*function shuffleArray(array) {
@@ -30,13 +30,21 @@ const ListProducts = ({ products }) => {
   return (
     <div className={`d-flex f-dir-colum ${style.contenedorLista}`}>
       <div className={style.listProducts}>
-        {/*shuffledHerramientas &&
+        {
+          /*shuffledHerramientas &&
           currentPost*/
           currentPost.map((product) => (
-            <Grid container key={product.id ? product.id : product.productDto.id}>
-                <Card product={product.productDto ? product.productDto : product} style={{width: "100%"}} />
+            <Grid
+              container
+              key={product.id ? product.id : product.productDto.id}
+            >
+              <Card
+                product={product.productDto ? product.productDto : product}
+                style={{ width: "100%" }}
+              />
             </Grid>
-          ))}
+          ))
+        }
       </div>
       <Pagination
         totalPosts={products.length}

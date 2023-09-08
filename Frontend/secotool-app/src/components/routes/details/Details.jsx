@@ -38,6 +38,7 @@ function Details() {
   const { data, status } = useFetch(URL_API, {});
   const [open, setOpen] = useState(false);
   const [size, setSize] = useState();
+  const [policies, setPolicies] = useState();
   const [disabledDates, setDisabledDates] = useState([]);
   const [selectedDateRange, setSelectedDateRange] = useState([]);
   const [dataRentail, setDataRentail] = useState(null);
@@ -54,6 +55,17 @@ function Details() {
       const bottomElementOffset = bottomElement.offsetTop;
       setIsSticky(scrollPosition > bottomElementOffset);
     }
+  }
+
+  async function getPolitics() {
+    await axios
+      .get(`${globalVariable}/v1/api/politics/open`)
+      .then(function (response) {
+        setPolicies(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
   const message = (
@@ -88,13 +100,11 @@ function Details() {
         })
         .catch(function (error) {
           console.log(error);
-          console.log(token);
           toaster.push(message, { placement: "bottomStart", duration: 5000 });
         });
   }
 
   const validateRentals = () => {
-    console.log(selectedDateRange);
     if (selectedDateRange.length !== 2) {
       // Maneja el caso en el que el rango de fechas no esté seleccionado correctamente
       console.error("El rango de fechas no está seleccionado correctamente");
@@ -174,6 +184,10 @@ function Details() {
     setOpen(true);
   };
   const handleClose = () => setOpen(false);
+
+  useEffect(() => {
+    getPolitics();
+  }, []);
 
   const ComponentDetailProduct =
     status !== statuses.ERROR && data ? (
@@ -311,7 +325,7 @@ function Details() {
               <h4 className={styles.titleDetails + " font-regular mb-16"}>
                 Políticas
               </h4>
-              <ListPoliticas />
+              <ListPoliticas policies={policies} />
             </div>
             {/*---------------------------Seccion Valoraciones------------------------*/}
             <div className={styles.sectionVal}>
@@ -319,35 +333,78 @@ function Details() {
                 Valoraciones
               </h4>
               <div className={"d-flex " + styles.containerVal}>
-                <FormVal />
+                <FormVal productReviews={data} />
                 <div className={styles.boxProgressLines}>
                   <div className="d-flex">
                     <span>5</span>
-                    <Progress.Line showInfo={false} />
+                    <Progress.Line
+                      showInfo={false}
+                      percent={
+                        (data.productReviews.filter(
+                          (product) => product.score === 5
+                        ).length /
+                          data.productReviews.length) *
+                        100
+                      }
+                    />
                   </div>
                   <div className="d-flex">
                     <span>4</span>
-                    <Progress.Line showInfo={false} />
+                    <Progress.Line
+                      showInfo={false}
+                      percent={
+                        (data.productReviews.filter(
+                          (product) => product.score === 4
+                        ).length /
+                          data.productReviews.length) *
+                        100
+                      }
+                    />
                   </div>
                   <div className="d-flex">
                     <span>3</span>
-                    <Progress.Line showInfo={false} />
+                    <Progress.Line
+                      showInfo={false}
+                      percent={
+                        (data.productReviews.filter(
+                          (product) => product.score === 3
+                        ).length /
+                          data.productReviews.length) *
+                        100
+                      }
+                    />
                   </div>
                   <div className="d-flex">
                     <span>2</span>
-                    <Progress.Line showInfo={false} />
+                    <Progress.Line
+                      showInfo={false}
+                      percent={
+                        (data.productReviews.filter(
+                          (product) => product.score === 2
+                        ).length /
+                          data.productReviews.length) *
+                        100
+                      }
+                    />
                   </div>
                   <div className="d-flex">
                     <span>1</span>
-                    <Progress.Line showInfo={false} />
+                    <Progress.Line
+                      showInfo={false}
+                      percent={
+                        (data.productReviews.filter(
+                          (product) => product.score === 1
+                        ).length /
+                          data.productReviews.length) *
+                        100
+                      }
+                    />
                   </div>
                 </div>
               </div>
               {/*-----------Aqui va el map de las valoraciones del producto-------*/}
               <ul className={styles.listReviews}>
-                <li>
-                  <CardReview />
-                </li>
+                <CardReview productReviews={data.productReviews} />
               </ul>
             </div>
           </div>
@@ -375,4 +432,3 @@ function Details() {
 }
 
 export default Details;
-
