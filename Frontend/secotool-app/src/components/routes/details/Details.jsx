@@ -75,10 +75,12 @@ function Details() {
   );
 
   async function handleRent() {
-    const startDate = selectedDateRange[0].toISOString().split("T")[0];
-    const endDate = selectedDateRange[1].toISOString().split("T")[0];
+    /*const startDate = selectedDateRange[0].toISOString().split("T")[0];
+    const endDate = selectedDateRange[1].toISOString().split("T")[0];*/
 
-    if (selectedDateRange)
+    if (selectedDateRange) {
+      const startDate = selectedDateRange[0].toISOString().split("T")[0];
+      const endDate = selectedDateRange[1].toISOString().split("T")[0];
       await axios
         .post(
           `${globalVariable}/v1/api/rentals`,
@@ -102,6 +104,9 @@ function Details() {
           console.log(error);
           toaster.push(message, { placement: "bottomStart", duration: 5000 });
         });
+    } else {
+      alert("Debes seleccionar alguna fecha para alquilar el producto");
+    }
   }
 
   const validateRentals = () => {
@@ -190,7 +195,7 @@ function Details() {
   }, []);
 
   useEffect(() => {
-    validateRentals();
+    if (selectedDateRange) validateRentals();
   }, [selectedDateRange]);
 
   const ComponentDetailProduct =
