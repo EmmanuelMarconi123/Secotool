@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import styles from "./FormBusqueda.module.css";
 import { AutoComplete, DateRangePicker, InputGroup } from "rsuite";
 import axios from "axios";
+import { useGlobal } from "../../../contexts/GlobalContext";
 
 const FormBusqueda = ({ products, setProducts }) => {
   const [screenSize, setScreenSize] = useState("");
   const [productsNames, setProductsNames] = useState([]);
   const [buscador, setBuscador] = useState("");
   const [dateRange, setDateRange] = useState([null, null]);
+  const { globalVariable } = useGlobal();
 
   const { beforeToday } = DateRangePicker;
 
@@ -26,7 +28,7 @@ const FormBusqueda = ({ products, setProducts }) => {
 
     const buscadorValue= buscador.toLocaleLowerCase().trim(" ")
 
-    const url = `http://localhost:8080/v1/api/products/open/rentals?startDate=${formattedStartDate}&endDate=${formattedEndDate}&productName=${buscadorValue}`;
+    const url = `${globalVariable}/v1/api/products/open/rentals?startDate=${formattedStartDate}&endDate=${formattedEndDate}&productName=${buscadorValue}`;
 
     console.log(url);
     axios
