@@ -3,10 +3,11 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import styles from "../cardProduct/CardProduct.module.css";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 
 function CardProduct({ product }) {
+  console.log(product)
   const { isLoggedIn, token } = useAuth();
   const [isLiked, setIsLiked] = useState(product.isFavorite);
 

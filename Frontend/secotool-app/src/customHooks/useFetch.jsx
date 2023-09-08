@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useAuth } from "../contexts/AuthContext";
 
 export const statuses = {
   LOADING: "Loading...",
@@ -6,24 +7,37 @@ export const statuses = {
   ERROR: "Error",
 };
 
-export function useFetch(URL, options) {
+export function useFetch(URL, options = {}) {
+  const { token } = useAuth();
   const [data, setData] = useState(null);
   const [status, setStatus] = useState(statuses.LOADING);
 
   useEffect(() => {
     setStatus(statuses.LOADING);
-    fetch(URL, options)
-      .then((response) => {
+
+    const fetchWithToken = async () => {
+      try {
+        const response = await fetch(URL, {
+          ...options,
+          headers: {
+            ...options.headers,
+            Authorization: `Bearer ${token}`, // Replace yourTokenHere with the actual token
+          },
+        });
+
         if (!response.ok) {
           throw Error(response.statusText);
         }
-        return response.json();
-      })
-      .then((data) => {
-        setData(data);
+
+        const jsonData = await response.json();
+        setData(jsonData);
         setStatus(statuses.OK);
-      })
-      .catch((error) => setStatus(statuses.ERROR + " " + error));
+      } catch (error) {
+        setStatus(statuses.ERROR + " " + error);
+      }
+    };
+
+    fetchWithToken();
   }, []);
 
   return { data, status };

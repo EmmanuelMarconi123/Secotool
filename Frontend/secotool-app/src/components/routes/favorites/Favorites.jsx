@@ -41,12 +41,7 @@ function Favorites() {
           Authorization: `Bearer ${token}`,
         },
       });
-
-      // Actualiza la lista de favoritos después de eliminar el producto
-      const updatedFavorites = favorites.filter(
-        (favorite) => favorite.productId !== productId
-      );
-      setFavorites(updatedFavorites);
+      fetchFavorites()
     } catch (error) {
       console.error(`Error al eliminar el producto ${productId}:`, error);
     }
