@@ -160,6 +160,10 @@ header {
   color: var(--dark) !important;
 }
 
+.rs-picker-toggle .rs-picker-toggle-placeholder{
+  padding-left: 8px;
+}
+
 /*Calendar*/
 
 .rs-picker-toggle {
