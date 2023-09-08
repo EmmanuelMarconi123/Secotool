@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
 import style from "./FormFilterCategory.module.css";
 import axios from "axios";
-import { RestorePageRounded } from "@mui/icons-material";
+import { useGlobal } from "../../../contexts/GlobalContext";
 
 const FormFilterCategory = ({ close, updateFilteredProducts }) => {
   const [categorias, setCategorias] = useState([]);
+  const { globalVariable } = useGlobal();
 
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/v1/api/categories"
+          `${globalVariable}/v1/api/categories/open`
         );
         setCategorias(response.data);
       } catch (error) {
@@ -50,27 +51,26 @@ const FormFilterCategory = ({ close, updateFilteredProducts }) => {
           {
             method: "POST",
             headers: {
-              'Content-type':'application/json'
+              "Content-type": "application/json",
             },
             body: {
-              idsCategories: selectedCategories
-            }
+              idsCategories: selectedCategories,
+            },
           }
         );
 
-        if(response.ok){
+        if (response.ok) {
           const data = await response.json();
           updateFilteredProducts(data);
-          console.log(data)
+          console.log(data);
+        } else {
+          updateFilteredProducts([]); // Si no hay categorías seleccionadas, muestra todos los productos
+          throw new Error("Error en la solicitud");
         }
-       else {
-        updateFilteredProducts([]); // Si no hay categorías seleccionadas, muestra todos los productos
-         throw new Error("Error en la solicitud");
       }
-      }}
-      catch (error) {
-        console.error("Error fetching filtered products:", error);
-      }
+    } catch (error) {
+      console.error("Error fetching filtered products:", error);
+    }
   };
 
   // Función para limpiar los filtros

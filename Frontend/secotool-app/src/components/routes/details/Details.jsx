@@ -189,6 +189,10 @@ function Details() {
     getPolitics();
   }, []);
 
+  useEffect(() => {
+    validateRentals();
+  }, [selectedDateRange]);
+
   const ComponentDetailProduct =
     status !== statuses.ERROR && data ? (
       <>
@@ -217,7 +221,7 @@ function Details() {
                 <h4 className={styles.titleDetails + " font-regular mb-16"}>
                   Características
                 </h4>
-                {data.productFeature ? (
+                {data.productFeatures ? (
                   <ListCaracteristicas
                     caracteris={data.productFeatures}
                   ></ListCaracteristicas>
@@ -277,9 +281,6 @@ function Details() {
                       )}
                       value={selectedDateRange}
                       onChange={setSelectedDateRange}
-                      onOk={() => {
-                        validateRentals(); // Llama a la función de validación (puedes hacer lo que necesites aquí)
-                      }}
                     />
                   ) : (
                     <DateRangePicker
@@ -297,9 +298,6 @@ function Details() {
                       )}
                       value={selectedDateRange}
                       onChange={setSelectedDateRange}
-                      onOk={() => {
-                        validateRentals(); // Llama a la función de validación (puedes hacer lo que necesites aquí)
-                      }}
                     />
                   )}
                 </div>
@@ -340,11 +338,13 @@ function Details() {
                     <Progress.Line
                       showInfo={false}
                       percent={
-                        (data.productReviews.filter(
-                          (product) => product.score === 5
-                        ).length /
-                          data.productReviews.length) *
-                        100
+                        data.productReviews.length !== 0
+                          ? (data.productReviews.filter(
+                              (product) => product.score === 5
+                            ).length /
+                              data.productReviews.length) *
+                            100
+                          : 0
                       }
                     />
                   </div>
@@ -353,11 +353,13 @@ function Details() {
                     <Progress.Line
                       showInfo={false}
                       percent={
-                        (data.productReviews.filter(
-                          (product) => product.score === 4
-                        ).length /
-                          data.productReviews.length) *
-                        100
+                        data.productReviews.length !== 0
+                          ? (data.productReviews.filter(
+                              (product) => product.score === 4
+                            ).length /
+                              data.productReviews.length) *
+                            100
+                          : 0
                       }
                     />
                   </div>
@@ -366,11 +368,13 @@ function Details() {
                     <Progress.Line
                       showInfo={false}
                       percent={
-                        (data.productReviews.filter(
-                          (product) => product.score === 3
-                        ).length /
-                          data.productReviews.length) *
-                        100
+                        data.productReviews.length !== 0
+                          ? (data.productReviews.filter(
+                              (product) => product.score === 3
+                            ).length /
+                              data.productReviews.length) *
+                            100
+                          : 0
                       }
                     />
                   </div>
@@ -379,11 +383,13 @@ function Details() {
                     <Progress.Line
                       showInfo={false}
                       percent={
-                        (data.productReviews.filter(
-                          (product) => product.score === 2
-                        ).length /
-                          data.productReviews.length) *
-                        100
+                        data.productReviews.length !== 0
+                          ? (data.productReviews.filter(
+                              (product) => product.score === 2
+                            ).length /
+                              data.productReviews.length) *
+                            100
+                          : 0
                       }
                     />
                   </div>
@@ -392,11 +398,13 @@ function Details() {
                     <Progress.Line
                       showInfo={false}
                       percent={
-                        (data.productReviews.filter(
-                          (product) => product.score === 1
-                        ).length /
-                          data.productReviews.length) *
-                        100
+                        data.productReviews.length !== 0
+                          ? (data.productReviews.filter(
+                              (product) => product.score === 1
+                            ).length /
+                              data.productReviews.length) *
+                            100
+                          : 0
                       }
                     />
                   </div>
