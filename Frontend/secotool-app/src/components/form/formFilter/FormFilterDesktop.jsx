@@ -5,6 +5,7 @@ import { useGlobal } from "../../../contexts/GlobalContext";
 
 const FormFilterDesktop = ({ updatefilterProducts }) => {
   const [categoryData, setCategoryData] = useState([]);
+  const { globalVariable } = useGlobal();
 
   // Estado para mantener el registro de checkboxes seleccionados
   const [selectedCategories, setSelectedCategories] = useState([]);
