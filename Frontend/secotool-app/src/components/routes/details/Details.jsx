@@ -298,6 +298,7 @@ function Details() {
                       )}
                       value={selectedDateRange}
                       onChange={setSelectedDateRange}
+                      className={styles.inputCalendar}
                     />
                   )}
                 </div>
