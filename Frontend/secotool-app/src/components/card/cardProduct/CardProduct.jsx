@@ -7,30 +7,15 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 function CardProduct({ product }) {
+  console.log(product)
   const { isLoggedIn, token } = useAuth();
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState(product.isFavorite);
 
   const url = `http://localhost:8080/v1/api/users/products/${product.id}`;
-  const urlFavoritos = `http://localhost:8080/v1/api/users/products/favorites`;
 
 
   //--------------- aca solicito el estado del isliked a la base de dato ---------------
 
-  const fetchIsLikedStatus = async () => {
-    try {
-      const response = await axios.get(urlFavoritos, {
-        headers: {
-          Authorization: token,
-        },
-      });
-
-      if (response.status === 200) {
-        setIsLiked(response.data.isFavorite);
-      }
-    } catch (error) {
-      console.error("Error al obtener el estado de Favorite", error);
-    }
-  };
 
   // ------------- aca hacemos el post del favorite a la base de datos -------------------------
 
@@ -73,10 +58,6 @@ function CardProduct({ product }) {
   };
 
   // ----------- effect para renderizar el componenete completo --------------
-
-  useEffect(() => {
-    fetchIsLikedStatus()
-  }, []);
 
   //-------- funcion que se ejecuta al hacer click en el corazon -------------
 
