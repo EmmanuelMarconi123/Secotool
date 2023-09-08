@@ -1,18 +1,26 @@
 
 .boxEndForm{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
     gap: 20px;
 }
 
+
 .inputLink {
     width:  80%;
 }
 
-.socialIcons {
+.iconsShare {
     display: flex;
-    gap: 40px;
-    font-size: 40px;
+    justify-content: center;
+}
+
+.icons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 30px;
+    padding-left: 40px;
 }

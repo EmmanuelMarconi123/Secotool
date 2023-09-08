@@ -30,8 +30,8 @@ const Categories = () => {
   const [categoryToDelete, setCategoryToDelete] = useState("");
 
   const deleteCategory = (category) => {
-    setCategoryToDelete(category.name); // Establece el nombre de la categoría
-    setSelectedCategory(category);
+    setCategoryToDelete(category.name); 
+    setSelectedCategory(category.id);
     setIsDeleteModalVisible(true);
     console.log(selectedCategory);
   };
@@ -43,7 +43,7 @@ const Categories = () => {
     // Realiza la eliminación del producto aquí
     try {
       const response = await fetch(
-        `${globalVariable}/v1/api/categories/admin/{id}${selectedCategory}`,
+        `${globalVariable}/v1/api/categories/admin/${selectedCategory}`,
         {
           method: "DELETE",
           headers: {
@@ -142,7 +142,7 @@ const Categories = () => {
                 currentPost.map((category) => (
                   <AdminCategoryCard
                     key={category.id}
-                    deleteItem={() => deleteCategory(category.id)}
+                    deleteItem={() => deleteCategory(category)}
                     name={category.name}
                     icon={category.name}
                     description={category.description}
@@ -187,6 +187,7 @@ const Categories = () => {
         </Modal.Header>
         <Modal.Body>
           ¿Está seguro que desea borrar la categoría {categoryToDelete}?
+          Esto puede llegar a eliminar todos los productos asociados a esta categoria
         </Modal.Body>
         <Modal.Footer className={styles.modalButtons}>
           <button
