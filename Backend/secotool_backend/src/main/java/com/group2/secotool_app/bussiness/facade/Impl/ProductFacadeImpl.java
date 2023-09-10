@@ -79,12 +79,11 @@ public class ProductFacadeImpl implements IProductFacade {
 //se puede refactorizar
     @Override
     public String save(ProductRequestDto productRequestDto, ListOfCategoriesIdRequestDto listOfCategoriesIdRequestDto, ListOfFeaturesidRequestDto listOfFeaturesidRequestDto, List<MultipartFile> images) {
-        var productName = commonUtils.normalizeText(productRequestDto.name());
+        var productName = productRequestDto.name();
         productValidationService.validateProductNameIsNotAvailable(productName);
         fileService.validateFilesAreImages(images);
 
         var product = productMapper.toProduct(productRequestDto);
-        product.setName(productName);
 
         Long prodId = productService.save(product);
         product.setId(prodId);
@@ -145,9 +144,10 @@ public class ProductFacadeImpl implements IProductFacade {
                 response.add(new RentProductDto(startDate,endDate,totalDays,totalPrice,productDto));
             });
         }else {
-            var prodNameNormalized = commonUtils.normalizeText(productName);
+            var userProductName = commonUtils.normalizeText(productName);
             prodsAvailableDto.forEach(productDto -> {
-                if (productDto.name().contains(prodNameNormalized)){
+                var prodName = commonUtils.normalizeText(productDto.name());
+                if (prodName.contains(userProductName)){
                     var totalPrice = rentUtils.calculateTotalPriceOfRent(totalDays,productDto.price());
                     response.add(new RentProductDto(startDate,endDate,totalDays,totalPrice,productDto));
                 }
