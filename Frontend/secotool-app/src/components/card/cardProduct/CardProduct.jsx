@@ -6,12 +6,14 @@ import { useAuth } from "../../../contexts/AuthContext";
 import { useState } from "react";
 import axios from "axios";
 import { Rate } from "rsuite";
+import { useGlobal } from "../../../contexts/GlobalContext";
 
 function CardProduct({ product }) {
   const { isLoggedIn, token } = useAuth();
   const [isLiked, setIsLiked] = useState(product.isFavorite);
+  const { globalVariable } = useGlobal();
 
-  const url = `http://localhost:8080/v1/api/users/products/${product.id}`;
+  const url = `${globalVariable}/v1/api/users/products/${product.id}`;
 
   // ------------- aca hacemos el post del favorite a la base de datos -------------------------
 

@@ -47,7 +47,7 @@ const FormFilterCategory = ({ close, updateFilteredProducts }) => {
       if (selectedCategories.length > 0) {
         /* const categoryId = selectedCategories[0];*/
         const response = await fetch(
-          `http://localhost:8080/v1/api/products/all/category`,
+          `${globalVariable}/v1/api/products/all/category`,
           {
             method: "POST",
             headers: {

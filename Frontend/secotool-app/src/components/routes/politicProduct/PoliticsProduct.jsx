@@ -7,6 +7,7 @@ import ModalPolitica from "./ModalPolitica";
 import ModalEditarPolitica from "./ModalEditarPolitica";
 import axios from "axios";
 import { useAuth } from "../../../contexts/AuthContext";
+import { useGlobal } from "../../../contexts/GlobalContext";
 
 const PoliticsProduct = () => {
   //------------------------------ CONFIG MODALS--------------->
@@ -17,6 +18,7 @@ const PoliticsProduct = () => {
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [politicaAEliminar, setPoliticaAEliminar] = useState({});
   const [alertOpen, setAlertOpen] = useState(false);
+  const { globalVariable } = useGlobal();
 
   const { token } = useAuth();
 
@@ -44,7 +46,7 @@ const PoliticsProduct = () => {
       const tokenUsuario = token;
 
       const response = await axios.delete(
-        `http://localhost:8080/v1/api/politics/admin/${politicaAEliminar.id}`,
+        `${globalVariable}/v1/api/politics/admin/${politicaAEliminar.id}`,
         {
           headers: {
             Authorization: `Bearer ${tokenUsuario}`,
@@ -87,7 +89,7 @@ const PoliticsProduct = () => {
   const fetchPoliticasAdmin = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8080/v1/api/politics/open"
+        `${globalVariable}/v1/api/politics/open`
       );
       if (response.ok) {
         const data = await response.json();
