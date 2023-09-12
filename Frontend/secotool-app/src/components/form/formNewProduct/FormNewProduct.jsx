@@ -236,6 +236,7 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
                 draggable
                 multiple={true}
                 onChange={handleImageChangeD}
+                className={styles.uploaderN}
               >
                 <div
                   style={{

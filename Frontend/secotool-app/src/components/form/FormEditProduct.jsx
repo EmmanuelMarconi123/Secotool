@@ -247,7 +247,7 @@ function FormEditProduct({
             </label>
             <label htmlFor="">
               Imagenes
-              <Uploader listType="picture-text" autoUpload={false} draggable onChange={handleImageChangeE}>
+              <Uploader listType="picture-text" autoUpload={false} draggable onChange={handleImageChangeE} className={styles.uploaderN}>
                 <div
                   style={{
                     height: 54,

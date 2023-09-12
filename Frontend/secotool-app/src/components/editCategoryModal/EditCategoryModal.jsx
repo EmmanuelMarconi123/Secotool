@@ -21,23 +21,13 @@ function EditCategoryModal({ handleClose, open, getData, selectedCategory }) {
   };
 
   const editCategoryAdmin = async () => {
-    const formData = new FormData();
-    console.log(currentImage)
-    formData.append(
-      "data",
-      new Blob([JSON.stringify(currentCategory)], { type: "application/json" })
-    );
-    formData.append("image", currentImage.blobFile);
-
-    console.log(formData);
 
     axios({
       method: "put",
       url: `${globalVariable}/v1/api/categories/admin/${selectedCategory.id}`,
-      data: formData,
+      data: currentCategory,
       headers: {
         'Authorization': 'Bearer ' + token,
-        "Content-Type": "multipart/form-data",
       },
     })
       .then(function (response) {
