@@ -10,7 +10,7 @@ body{
   display: flex;
   flex-direction: column; 
   justify-content: space-between;
-  min-width: 320px;
+  min-width: 375px;
   min-height: 100vh;
   background-color: #f9f9f9;
 }

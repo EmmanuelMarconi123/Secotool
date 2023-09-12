@@ -3,10 +3,14 @@ import styles from "./UsersAdminCard.module.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../contexts/AuthContext";
+import { useGlobal } from "../../contexts/GlobalContext";
+
+
 
 const UsersAdminCard = ({ selectedUser,getData }) => {
   const { token } = useAuth();
   const [newUserBody, setNewUserBody] = useState(selectedUser);
+  const { globalVariable } = useGlobal();
 
   const handleRole = () => {
     console.log("handleRole called with role:", selectedUser.userRole);
@@ -31,7 +35,7 @@ const UsersAdminCard = ({ selectedUser,getData }) => {
 
     axios
       .post(
-        `http://localhost:8080/v1/api/users/admin/${selectedUser.id}/${newUserBody.userRole}`,
+        `${globalVariable}/v1/api/users/admin/${selectedUser.id}/${newUserBody.userRole}`,
         newUserBody,
         {
           headers: {

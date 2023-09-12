@@ -1,6 +1,5 @@
-import { Grid} from "@mui/material";
+import { Grid } from "@mui/material";
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import Card from "../card/cardProduct/CardProduct";
 import style from "./ListProducts.module.css";
 import Pagination from "../pagination/Pagination";
@@ -9,37 +8,29 @@ const ListProducts = ({ products }) => {
   //-------------- CONFIGURACION DE LA PAGINACION -------------------->
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
- const lastPostIndex = currentPage * itemsPerPage;
- const fistPostIndex = lastPostIndex - itemsPerPage;
- const currentPost = products.slice(fistPostIndex, lastPostIndex);
+  const lastPostIndex = currentPage * itemsPerPage;
+  const fistPostIndex = lastPostIndex - itemsPerPage;
+  const currentPost = products.slice(fistPostIndex, lastPostIndex);
 
-  // Función para barajar un array utilizando el algoritmo de Fisher-Yates
-  /*function shuffleArray(array) {
-    const shuffledArray = [...array];
-    for (let i = shuffledArray.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffledArray[i], shuffledArray[j]] = [
-        shuffledArray[j],
-        shuffledArray[i],
-      ];
-    }
-    return shuffledArray;
-  }*/
-
-  //const shuffledHerramientas = shuffleArray(products); //herramienta para hacer aleatoria la forma en que se renderizan las cards
 
   return (
-    <div className="d-flex f-dir-colum">
+    <div className={`d-flex f-dir-colum ${style.contenedorLista}`}>
       <div className={style.listProducts}>
-        {/*shuffledHerramientas &&
+        {
+          /*shuffledHerramientas &&
           currentPost*/
           currentPost.map((product) => (
-            <Grid key={product.id}>
-              <Link to={"/product/" + product.id} key={product.id}>
-                <Card product={product} />
-              </Link>
+            <Grid
+              container
+              key={product.id ? product.id : product.productDto.id}
+            >
+              <Card
+                product={product.productDto ? product.productDto : product}
+                style={{ width: "100%" }}
+              />
             </Grid>
-          ))}
+          ))
+        }
       </div>
       <Pagination
         totalPosts={products.length}

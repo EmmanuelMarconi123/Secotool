@@ -13,15 +13,11 @@ function Carousel({ images }) {
   if (!Array.isArray(images) || images.length === 0) return;
 
   const siguienteImagen = () => {
-    setImagenActual(
-      imagenActual === images.length - 1 ? 0 : imagenActual + 1
-    );
+    setImagenActual(imagenActual === images.length - 1 ? 0 : imagenActual + 1);
   };
 
   const anteriorImagen = () => {
-    setImagenActual(
-      imagenActual === 0 ? images.length - 1 : imagenActual - 1
-    );
+    setImagenActual(imagenActual === 0 ? images.length - 1 : imagenActual - 1);
   };
 
   return (
@@ -32,6 +28,7 @@ function Carousel({ images }) {
           return (
             // eslint-disable-next-line react/jsx-key
             <div
+              key={image.id}
               className={
                 imagenActual === index
                   ? `${styles.slide} ${styles.active}`
@@ -66,7 +63,11 @@ function Carousel({ images }) {
           <div className={styles.rightColumn}>
             {images.slice(1, 5).map((image, index) => (
               <div key={index}>
-                <img className={styles.rightImgProduct} src={image.url} alt="" />
+                <img
+                  className={styles.rightImgProduct}
+                  src={image.url}
+                  alt=""
+                />
               </div>
             ))}
           </div>
@@ -81,11 +82,17 @@ function Carousel({ images }) {
           </div>
         )}
         {showMore ? (
-          <button className={styles.btnChevron + " button-transparent"} onClick={toggleShowMore}>
+          <button
+            className={styles.btnChevron + " button-transparent"}
+            onClick={toggleShowMore}
+          >
             Ver menos<i className="fa-regular fa-chevron-up"></i>
           </button>
         ) : (
-          <button className={styles.btnChevron + " button-transparent"} onClick={toggleShowMore}>
+          <button
+            className={styles.btnChevron + " button-transparent"}
+            onClick={toggleShowMore}
+          >
             Ver más<i className="fa-regular fa-chevron-down"></i>
           </button>
         )}

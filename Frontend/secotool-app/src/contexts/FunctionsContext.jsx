@@ -1,15 +1,17 @@
 import { createContext, useContext, useState } from "react";
+import { useGlobal } from "./GlobalContext";
 
 const FunctionContext = createContext();
 
 export const FunctionProvider = ({ children }) => {
 
     const [ user, setUser] = useState(false);
+    const { globalVariable } = useGlobal();
 
     const fetchUser = async (token) => {
         try {
           const response = await fetch(
-            "http://localhost:8080/v1/api/users/getMe",
+            `${globalVariable}/v1/api/users/getMe`,
             {
               method: 'GET',
               headers: {
@@ -41,3 +43,4 @@ export const FunctionProvider = ({ children }) => {
 export const useFunction = () => {
   return useContext(FunctionContext);
 };
+

@@ -225,5 +225,6 @@ const HomeAdmin = () => {
       />
     </div>
   );
+
 };
 export default HomeAdmin;

@@ -19,4 +19,6 @@ public interface IUserService {
     void addProductToFavorite(Long userId,Product product, List<Product> favoritesProducts);
 
     void removeProductToFavorite(Long userId, Product product, List<Product> favoritesProducts);
+
+    boolean existsByUsername(String username);
 }

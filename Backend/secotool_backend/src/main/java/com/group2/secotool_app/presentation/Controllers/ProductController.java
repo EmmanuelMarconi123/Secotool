@@ -115,8 +115,13 @@ public class ProductController {
                                            @RequestPart("categories") @Valid
                                            ListOfCategoriesIdRequestDto listOfCategoriesIdRequestDto,
                                            @RequestPart("features") @Valid
-                                           ListOfFeaturesidRequestDto listOfFeaturesidRequestDto){
-        productFacade.updateProduct(id, productRequestDto, listOfCategoriesIdRequestDto, listOfFeaturesidRequestDto);
+                                           ListOfFeaturesidRequestDto listOfFeaturesidRequestDto,
+                                           @RequestParam("images")
+                                           @NotNull(message = "images requerid")
+                                           @NotEmpty(message = "list can not be empy")
+                                           @Valid
+                                           List<MultipartFile> images){
+        productFacade.updateProduct(id, productRequestDto, listOfCategoriesIdRequestDto, listOfFeaturesidRequestDto, images);
         return ResponseEntity.ok(String.format("product %s succesffully updated",id));
     }
 

@@ -4,10 +4,10 @@ import { ButtonToolbar, Button, Modal } from "rsuite";
 import PoliticCard from "../../PoliticCard/PoliticCard";
 import Pagination from "../../pagination/Pagination";
 import ModalPolitica from "./ModalPolitica";
-import { Snackbar, Alert } from "@mui/material";
 import ModalEditarPolitica from "./ModalEditarPolitica";
 import axios from "axios";
 import { useAuth } from "../../../contexts/AuthContext";
+import { useGlobal } from "../../../contexts/GlobalContext";
 
 const PoliticsProduct = () => {
   //------------------------------ CONFIG MODALS--------------->
@@ -18,6 +18,7 @@ const PoliticsProduct = () => {
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [politicaAEliminar, setPoliticaAEliminar] = useState({});
   const [alertOpen, setAlertOpen] = useState(false);
+  const { globalVariable } = useGlobal();
 
   const { token } = useAuth();
 
@@ -45,7 +46,7 @@ const PoliticsProduct = () => {
       const tokenUsuario = token;
 
       const response = await axios.delete(
-        `http://localhost:8080/v1/api/politics/admin/${politicaAEliminar.id}`,
+        `${globalVariable}/v1/api/politics/admin/${politicaAEliminar.id}`,
         {
           headers: {
             Authorization: `Bearer ${tokenUsuario}`,
@@ -71,7 +72,7 @@ const PoliticsProduct = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [currentPost, setCurrentPost] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState({});
+
   const [matches, setMatches] = useState(
     window.matchMedia("(min-width: 1024px)").matches
   );
@@ -88,7 +89,7 @@ const PoliticsProduct = () => {
   const fetchPoliticasAdmin = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8080/v1/api/politics/open"
+        `${globalVariable}/v1/api/politics/open`
       );
       if (response.ok) {
         const data = await response.json();
@@ -145,7 +146,7 @@ const PoliticsProduct = () => {
                 <span>Acciones</span>
               </div>
               {politicas.length > 0 ? (
-                politicas.map((poli) => (
+                currentPost.map((poli) => (
                   <PoliticCard
                     key={poli.id}
                     deleteItem={() => deletePolitic(poli)}
@@ -195,13 +196,13 @@ const PoliticsProduct = () => {
         <Modal.Footer className={styles.modalButtons}>
           <button
             onClick={() => setIsDeleteModalVisible(false)}
-            style={{ backgroundColor: "red" }}
+            style={{ backgroundColor: "red", color: "white" }}
           >
             Cancelar
           </button>
           <button
             onClick={handleConfirmDelete}
-            style={{ backgroundColor: "green" }}
+            style={{ backgroundColor: "green", margin: 10, color: "white" }}
           >
             Confirmar
           </button>

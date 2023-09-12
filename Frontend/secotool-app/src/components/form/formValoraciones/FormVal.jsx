@@ -1,25 +1,21 @@
-import { useState } from "react";
-import { Rate, Form } from "rsuite";
+import { Rate } from "rsuite";
 import styles from "./FormVal.module.css";
 
-const initFormValue = {
-  rate: 2,
-};
-
-const FormVal = () => {
-
-  const [formValue, setFormValue] = useState(initFormValue);
-  const [status, setStatus] = useState("readonly");
-  const readOnly = status === "readonly";
-
+const FormVal = ({ productReviews }) => {
   return (
-    <Form readOnly={readOnly} formValue={formValue} className={styles.formVal}>
-      <h2 className={styles.valTitle}>5.0</h2>
-      <Form.Group controlId="rate" className={styles.formRate}>
-        <Form.Control name="rate" accepter={Rate} size="xs" />
-      </Form.Group>
-      <span>2 valoraciones</span>
-    </Form>
+    <div className={styles.formVal}>
+      <h2 className={styles.valTitle}>{productReviews.averageScore}</h2>
+      <div className={styles.formRate}>
+        <Rate
+          max={5}
+          value={productReviews.averageScore}
+          readOnly
+          allowHalf
+          size="xs"
+        />
+      </div>
+      <span>{productReviews.productReviews.length} valoraciones</span>
+    </div>
   );
 };
 export default FormVal;

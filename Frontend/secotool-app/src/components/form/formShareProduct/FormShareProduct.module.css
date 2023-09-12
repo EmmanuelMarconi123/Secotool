@@ -1,48 +1,39 @@
-.checkboxGroup{
-    display: flex;
-    gap: 32px;
-    align-items: center;
-    justify-content: center;
+.boxEndForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
 }
 
-.checkbox{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid  rgb(230, 230, 230);
-    border-radius: 4px;
-    padding: 16px;
-    width: 80px;
+.inputLink {
+  width: 80%;
 }
 
-.checkbox div{
-    margin-right: 0px!important;
+.iconsShare {
+  display: flex;
+  justify-content: center;
 }
 
-.checkbox i{
-font-size: 50px;
+.icons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 30px;
+  padding-left: 40px;
 }
 
-.boxEndForm{
-    display: flex;
-    gap: 32px;
-    flex-direction: column;
-}
-
-.formShare{
-    padding: 16px;
+.boxEndForm textarea{
+    height: 100%;
 }
 
 .formShare button{
-    width:100%;
+    background-color: rgb(58, 111, 234);
+    color: var(--white);
 }
 
-@media screen and (min-width: 1440px) {
-    .boxEndForm{
+@media screen and (min-width: 768px) {
+    .boxEndForm {
         flex-direction: row;
-    }
-    .formShare button{
-        width:30%;
-    }
+      }
 }

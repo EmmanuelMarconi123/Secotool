@@ -1,35 +1,24 @@
-import { useState } from "react";
 import styles from "./CardReview.module.css";
-import { Rate, Form } from "rsuite";
+import { Rate } from "rsuite";
 
-const initFormValue = {
-  rate: 5,
-};
-
-const CardReview = () => {
-  const [formValue, setFormValue] = useState(initFormValue);
-  const [status, setStatus] = useState("readonly");
-  const readOnly = status === "readonly";
-
+const CardReview = ({ productReviews }) => {
   return (
-    <div className={styles.cardReview}>
-      <h4>Evelyn Tramontin</h4>
-      <span>16/08/2023</span>
-      <Form
-        readOnly={readOnly}
-        formValue={formValue}
-        className={styles.formVal}
-      >
-        <Form.Group controlId="rate" className={styles.formRate}>
-          <Form.Control name="rate" accepter={Rate} size="xs" />
-        </Form.Group>
-      </Form>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Est ultricies
-        integer quis auctor elit sed vulputate
-      </p>
-    </div>
+    <li>
+      {productReviews.map((review) => (
+        <div key={review.id} className={styles.cardReview}>
+          <h4>
+            {review.user.firstName} {review.user.lastName}
+          </h4>
+          <span>{review.reviewDay}</span>
+          <div className={styles.formVal}>
+            <div className={styles.formRate}>
+              <Rate readOnly max={5} defaultValue={review.score} size="xs" allowHalf/>
+            </div>
+          </div>
+          <p>{review.comment}</p>
+        </div>
+      ))}
+    </li>
   );
 };
 export default CardReview;

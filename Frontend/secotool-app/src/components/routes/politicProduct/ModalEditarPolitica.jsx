@@ -3,6 +3,7 @@ import styles from "../../editCategoryModal/EditCategoryModal.module.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../../contexts/AuthContext";
+import { useGlobal } from "../../../contexts/GlobalContext";
 
 function ModalEditarPolitica({
   handleClose,
@@ -15,6 +16,7 @@ function ModalEditarPolitica({
     name: "",
     description: "",
   });
+  const { globalVariable } = useGlobal();
 
   const handleSubmit = () => {
     editPolitic();
@@ -27,7 +29,7 @@ function ModalEditarPolitica({
 
     try {
       await axios.put(
-        `http://localhost:8080/v1/api/politics/admin/${selectedPolitic.id}`,
+        `${globalVariable}/v1/api/politics/admin/${selectedPolitic.id}`,
         {
           title: title,
           description: description,

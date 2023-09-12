@@ -27,7 +27,7 @@ public interface IProductFacade {
 
     ProductFullDto findProductById(Long id);
 
-    void updateProduct(Long id, ProductRequestDto productRequestDto, ListOfCategoriesIdRequestDto listOfCategoriesIdRequestDto, ListOfFeaturesidRequestDto listOfFeaturesidRequestDto);
+    void updateProduct(Long id, ProductRequestDto productRequestDto, ListOfCategoriesIdRequestDto listOfCategoriesIdRequestDto, ListOfFeaturesidRequestDto listOfFeaturesidRequestDto, List<MultipartFile> images);
 
     List<ProductDto> getAllProductsAssociateWithAFeature(Long featureId);
 

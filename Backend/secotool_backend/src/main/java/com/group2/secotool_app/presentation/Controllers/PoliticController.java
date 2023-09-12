@@ -1,8 +1,8 @@
 package com.group2.secotool_app.presentation.Controllers;
 
-import com.group2.secotool_app.bussiness.service.IProductPoliticService;
-import com.group2.secotool_app.model.dto.ProductPoliticDto;
-import com.group2.secotool_app.model.dto.request.ProductPoliticRequestDto;
+import com.group2.secotool_app.bussiness.service.IPoliticService;
+import com.group2.secotool_app.model.dto.PoliticDto;
+import com.group2.secotool_app.model.dto.request.PoliticRequestDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,28 +13,28 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/api/politics")
-public class ProductPoliticController {
+public class PoliticController {
 
-    private final IProductPoliticService productPoliticService;
+    private final IPoliticService productPoliticService;
 
     @GetMapping("/open")
-    public ResponseEntity<List<ProductPoliticDto>> getallPolitics(){
+    public ResponseEntity<List<PoliticDto>> getallPolitics(){
         return ResponseEntity.ok(productPoliticService.findAll());
     }
 
     @PostMapping("/admin")
     public ResponseEntity<String> savePolitic(@RequestBody @Valid
-                                                   ProductPoliticRequestDto productPoliticRequestDto
+                                                  PoliticRequestDto politicRequestDto
     ){
-        productPoliticService.save(productPoliticRequestDto);
+        productPoliticService.save(politicRequestDto);
         return ResponseEntity.ok("politic successfully saved");
     }
 
     @PutMapping("/admin/{id}")
     public ResponseEntity<String> updatePolitic(@PathVariable Long id,
                                                 @RequestBody @Valid
-                                                ProductPoliticRequestDto productPoliticRequestDto){
-        productPoliticService.update(productPoliticRequestDto, id);
+                                                PoliticRequestDto politicRequestDto){
+        productPoliticService.update(politicRequestDto, id);
         return ResponseEntity.ok("politic successfully updated");
     }
 
