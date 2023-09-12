@@ -1,116 +1,127 @@
+import styles from "./PoliticsProduct.module.css";
 import { useEffect, useState } from "react";
-import { ButtonToolbar, Button } from "rsuite";
-import Pagination from "../../pagination/Pagination";
-// import NewCategoryModal from "../../newCategoryModal/NewCategoryModal";
-// import EditCategoryModal from "../../editCategoryModal/EditCategoryModal";
-// import { Snackbar, Alert } from "@mui/material";
-import styles from "../politicProduct/PoliticsProduct.module.css";
+import { ButtonToolbar, Button, Modal } from "rsuite";
 import PoliticCard from "../../PoliticCard/PoliticCard";
+import Pagination from "../../pagination/Pagination";
+import ModalPolitica from "./ModalPolitica";
+import ModalEditarPolitica from "./ModalEditarPolitica";
 import axios from "axios";
+import { useAuth } from "../../../contexts/AuthContext";
+import { useGlobal } from "../../../contexts/GlobalContext";
 
 const PoliticsProduct = () => {
   //------------------------------ CONFIG MODALS--------------->
   const [open, setOpen] = useState(false);
+  const [openEp, setOpenEp] = useState(false);
+  const [politicas, setPoliticas] = useState([]);
+  const [selectedPolitic, setSelectedPoitic] = useState({});
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+  const [politicaAEliminar, setPoliticaAEliminar] = useState({});
+  const [alertOpen, setAlertOpen] = useState(false);
+  const { globalVariable } = useGlobal();
+
+  const { token } = useAuth();
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const [openEp, setOpenEp] = useState(false);
   const handleOpenEp = () => setOpenEp(true);
   const handleCloseEp = () => setOpenEp(false);
-  const [producto, setProducto] = useState([]);
 
-  //-----------------------------ALERTA BORRAR------------------------>
-  // const [alertOpen, setAlertOpen] = useState(false);
-  // const showDeleteSuccessAlert = () => {
-  //   setAlertOpen(true);
-  // };
+  //------------------------DELETE POLITIC----------------------------->
+
+  const showDeleteSuccessAlert = () => {
+    setAlertOpen(true);
+  };
+
+  const deletePolitic = (politica) => {
+    console.log("mostrando la politica: ", politica);
+    setPoliticaAEliminar(politica);
+    setIsDeleteModalVisible(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    setIsDeleteModalVisible(false);
+
+    try {
+      const tokenUsuario = token;
+
+      const response = await axios.delete(
+        `${globalVariable}/v1/api/politics/admin/${politicaAEliminar.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${tokenUsuario}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        console.log(
+          `Se ha borrado la politica con id ${politicaAEliminar} correctamente`
+        );
+        fetchPoliticasAdmin();
+        showDeleteSuccessAlert();
+      } else {
+        throw new Error("Error en la solicitud");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   //-------------- CONFIGURACION DE LA PAGINACION -------------------->
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [politicas, setPoliticas] = useState([]);
   const [currentPost, setCurrentPost] = useState([]);
-  // const [selectedCategory, setSelectedCategory] = useState({});
+
   const [matches, setMatches] = useState(
     window.matchMedia("(min-width: 1024px)").matches
   );
 
-  // function handleEdit(category) {
-  //   handleOpenEp();
-  //   setSelectedCategory(category);
-  // }
+  //------------------ FUNCION PARA EDITAR POLITICAS ----------------------
 
-  // async function deleteCategory(id) {
-  //   if (confirm("¿Está seguro que desea borrar esta Politica?"))
-  //     try {
-  //       const response = await fetch(
-  //         `http://localhost:8080/v1/api/categories/${id}`,
-  //         { method: "DELETE" }
-  //       );
-  //       if (response.ok) {
-  //         console.log(`Se ha borrado la politica con id ${id} correctamente`);
-  //         fetchCategoriesAdmin();
-  //         showDeleteSuccessAlert();
-  //       } else {
-  //         throw new Error("Error en la solicitud");
-  //       }
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  // }
+  function handleEdit(poli) {
+    handleOpenEp();
+    setSelectedPoitic(poli);
+  }
 
-  //------------------- Fetch de productos ---------------------------
+  //-------------------FETCH DE LAS POLITICAS-------------------------
 
-  // const fetchPoliticas = async () => {
-  //   try {
-  //     const response = await fetch("http://localhost:8080/v1/api/politicas");
-  //     if (response.ok) {
-  //       const data = await response.json();
-  //       console.log(data);
-  //       setPoliticas(data);
-  //     } else {
-  //       throw new Error("Error en la solicitud");
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-  //------------------- Fetch de productos ---------------------------
-
-  const fetchProductos = async () => {
+  const fetchPoliticasAdmin = async () => {
     try {
-       await axios
-        .get("http://localhost:8080/v1/api/products/all")
-        .then((response) => {
-          if (response.status === 200) {
-            console.log("aca va la resp ", response.data);
-            setProducto(response.data);
-            console.log('aca va el producto',producto);
-          }
-        });
-      } catch (error) {
-        console.log(error);
+      const response = await fetch(
+        `${globalVariable}/v1/api/politics/open`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        console.log("las politicas son ", data);
+        setPoliticas(data);
+      } else {
+        throw new Error("Error en la solicitud");
       }
-    };
-    
-    //------------------------------------------------------------------
-    useEffect(() => {
-      window
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  //---------------------------- TODOS LOS USE-EFFECT -------------------------------
+
+  useEffect(() => {
+    window
       .matchMedia("(min-width: 1024px)")
       .addEventListener("change", (e) => setMatches(e.matches));
-      fetchProductos();
-    }, []);
-    
-  //   useEffect(() => {
-  //     fetchPoliticas();
-  // }, []);
+  }, []);
 
-  // useEffect(() => {
-  //   const lastPostIndex = currentPage * 10;
-  //   const fistPostIndex = lastPostIndex - 10;
-  //   setCurrentPost(politicas.slice(fistPostIndex, lastPostIndex));
-  // }, [currentPage, politicas]);
+  useEffect(() => {
+    fetchPoliticasAdmin();
+  }, []);
+
+  useEffect(() => {
+    const lastPostIndex = currentPage * 10;
+    const fistPostIndex = lastPostIndex - 10;
+    setCurrentPost(politicas.slice(fistPostIndex, lastPostIndex));
+  }, [currentPage, politicas]);
+
+  //---------------------------- COMPONENETE -------------------------------------
 
   return (
     <div>
@@ -118,7 +129,7 @@ const PoliticsProduct = () => {
         <div>
           <div className={styles.container}>
             <div className={styles.upTable}>
-              <h1>Todos las Politicas</h1>
+              <h1>Todos las Políticas</h1>
               <ButtonToolbar className={styles.buttonToolbarRight}>
                 <Button
                   onClick={handleOpen}
@@ -131,15 +142,17 @@ const PoliticsProduct = () => {
             <div className={styles.tableContainer}>
               <div className={styles.tableHeader}>
                 <span>Nombre</span>
-                <span>Politíca</span>
+                <span>Descripción</span>
                 <span>Acciones</span>
               </div>
-              {producto.length > 0 ? (
-                producto.map((product) => (
+              {politicas.length > 0 ? (
+                currentPost.map((poli) => (
                   <PoliticCard
-                    key={product.id}
-                    name={product.name}
-                    politica={product.politica}
+                    key={poli.id}
+                    deleteItem={() => deletePolitic(poli)}
+                    name={poli.title}
+                    description={poli.description}
+                    editItem={() => handleEdit(poli)}
                   />
                 ))
               ) : (
@@ -170,30 +183,47 @@ const PoliticsProduct = () => {
         </span>
       )}
       {/* ---------------------------------------------DELETE ALERT-------------------------- */}
-      {/* <Snackbar
-        open={alertOpen}
-        autoHideDuration={3000} // Duración en milisegundos
-        onClose={() => setAlertOpen(false)}
+      <Modal
+        open={isDeleteModalVisible}
+        onClose={() => setIsDeleteModalVisible(false)}
       >
-        <Alert onClose={() => setAlertOpen(false)} severity="success">
-          Producto eliminado correctamente.
-        </Alert>
-      </Snackbar> */}
-      {/* --------------------------NUEVA CARACTERÍSTICA MODAL--------------------------------> */}
+        <Modal.Header>
+          <Modal.Title>Confirmar eliminación</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          ¿Está seguro que desea borrar la Politica {politicaAEliminar.title}?
+        </Modal.Body>
+        <Modal.Footer className={styles.modalButtons}>
+          <button
+            onClick={() => setIsDeleteModalVisible(false)}
+            style={{ backgroundColor: "red", color: "white" }}
+          >
+            Cancelar
+          </button>
+          <button
+            onClick={handleConfirmDelete}
+            style={{ backgroundColor: "green", margin: 10, color: "white" }}
+          >
+            Confirmar
+          </button>
+        </Modal.Footer>
+      </Modal>
 
-      {/* <NewCategoryModal
-        handleClose={handleClose}
-        open={open}
-        getData={() => fetchCategoriesAdmin()}
-      /> */}
-
-      {/* ------------------------------------------EDITAR PRODUCTO MODAL--------------------------> */}
-      {/* <EditCategoryModal
+      {/* ------------------------------------------EDITAR POLITICA MODAL--------------------------> */}
+      <ModalEditarPolitica
         handleClose={handleCloseEp}
         open={openEp}
-        getData={() => fetchCategoriesAdmin()}
-        selectedCategory={selectedCategory}
-      /> */}
+        fetchPoliticasAdmin={fetchPoliticasAdmin}
+        selectedPolitic={selectedPolitic}
+      />
+
+      {/* --------------------------NUEVA POLITICA MODAL--------------------------------> */}
+
+      <ModalPolitica
+        handleClose={handleClose}
+        open={open}
+        fetchPoliticasAdmin={fetchPoliticasAdmin}
+      />
     </div>
   );
 };

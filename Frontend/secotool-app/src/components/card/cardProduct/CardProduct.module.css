@@ -58,7 +58,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   line-height: 1.5;
-  height: 48px;
+  height: 40px;
 }
 
 .textPriceCard {
@@ -70,16 +70,39 @@
 }
 
 .corazon {
-  z-index: 500;
+  z-index: 1;
   position: absolute;
   top: 5px;
   right: 5px;
   cursor: pointer;
 }
 
+.boxScore {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  padding-top: 16px;
+}
+
+.boxScore ul li{
+  width: 8px!important;
+}
+
+.boxScore ul li div{
+  width: 14px!important;
+  font-size: 13px;
+}
+
+.boxScore span{
+  font-size: 13px;
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
 @media screen and (min-width: 768px) {
   .titleCard {
     font-size: 16px;
+    height: 48px;
   }
   .textPriceCard {
     font-size: 19px;
@@ -87,8 +110,19 @@
   .img{
       max-width: 297.4px;
       max-height: 222px;
-    
   }
+  .boxScore span{
+    font-size: 16px;
+  }
+
+  .boxScore ul li{
+    width: 16px!important;
+  }
+
+.boxScore ul li div{
+  width: 14px!important;
+  font-size: 16px;
+}
 }
 
 @media screen and (min-width: 1440px) {
@@ -98,5 +132,10 @@
   .textoCard {
     padding-left: 32px;
     padding-bottom: 0px;
+  }
+
+  .boxScore ul li div{
+    width: auto;
+    font-size: 18px;
   }
 }

@@ -1,16 +1,25 @@
 import styles from "../usersAdmin/UsersAdmin.module.css";
 import { useEffect, useState } from "react";
 import UsersAdminCard from "../../adminUserCard/UsersAdminCard";
-import Pagination from "../../pagination/Pagination"
-
+import Pagination from "../../pagination/Pagination";
+import { useAuth } from "../../../contexts/AuthContext";
+import { useGlobal } from "../../../contexts/GlobalContext";
 
 const UsersAdmin = () => {
-  
+  const { token } = useAuth();
+
+  const {globalVariable}= useGlobal();
+
   const [user, setUser] = useState([]);
-    
+
   const fetchUsersAdmin = async () => {
     try {
-      const response = await fetch("http://localhost:8080/v1/api/users/admin");
+      const response = await fetch(`${globalVariable}/v1/api/users/admin`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+  
       if (response.ok) {
         const data = await response.json();
         setUser(data);
@@ -19,15 +28,15 @@ const UsersAdmin = () => {
         throw new Error("Error en la solicitud");
       }
     } catch (error) {
-      console.log("este es el error",error);
+      console.log("este es el error", error);
     }
   };
-  useEffect(()=>{
-    fetchUsersAdmin()
-},[]);
+  useEffect(() => {
+    fetchUsersAdmin();
+  }, []);
 
   //-------------- CONFIGURACION DE LA PAGINACION -------------------->
-  console.log(user)
+  console.log(user);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -67,7 +76,7 @@ const UsersAdmin = () => {
                   <UsersAdminCard
                     key={user.id}
                     selectedUser={user}
-                    getData={()=>fetchUsersAdmin()}
+                    getData={() => fetchUsersAdmin()}
                   />
                 ))}
               <Pagination

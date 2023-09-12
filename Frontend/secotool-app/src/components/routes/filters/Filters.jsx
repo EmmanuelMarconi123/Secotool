@@ -5,18 +5,22 @@ import ModalFilters from "../../modal/ModalFilters";
 import FormFilterDesktop from "../../form/formFilter/FormFilterDesktop";
 import axios from "axios";
 import { useMediaQuery } from "@react-hook/media-query";
+import { useGlobal } from "../../../contexts/GlobalContext";
+import { useParams } from "react-router-dom";
 
 const Filters = () => {
   const [productsF, setProductsF] = useState([]);
   const [filterProducts, setfilterProducts] = useState([]);
   const [filteredProductsF, setFilteredProductsF] = useState([]);
-
+  const { globalVariable } = useGlobal();
+  const params = useParams();
+  console.log(params);
   useEffect(() => {
     const fetchData = async () => {
       try {
         // Realiza la solicitud para obtener todos los productos sin filtros
         const response = await axios.get(
-          "http://localhost:8080/v1/api/products/all"
+          `${globalVariable}/v1/api/products/open`
         );
         setProductsF(response.data);
       } catch (error) {
@@ -43,12 +47,15 @@ const Filters = () => {
       // Si no hay filtros seleccionados, muestra todos los productos
       setFilteredProductsF(productsF);
     }
+
+    console.log("soy filter Products", filterProducts);
   }, [filterProducts, productsF]);
 
   const updatefilterProducts = (filterProducts) => {
     setfilterProducts(filterProducts);
   };
   console.log(filteredProductsF);
+
   return (
     <section className={style.sectionFilters}>
       <div className={style.boxHeader}>

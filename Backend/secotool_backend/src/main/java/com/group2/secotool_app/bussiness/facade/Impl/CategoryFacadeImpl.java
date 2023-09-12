@@ -1,7 +1,6 @@
 package com.group2.secotool_app.bussiness.facade.Impl;
 
 import com.group2.secotool_app.bussiness.facade.ICategoryFacade;
-import com.group2.secotool_app.bussiness.mapper.CategoryDtoMapper;
 import com.group2.secotool_app.bussiness.mapper.CategoryFullDtoMapper;
 import com.group2.secotool_app.bussiness.mapper.CategoryMapper;
 import com.group2.secotool_app.bussiness.service.*;
@@ -23,7 +22,6 @@ public class CategoryFacadeImpl implements ICategoryFacade {
     private final ICategoryService categoryService;
     private final IImageService imageService;
     private final IFileService fileService;
-    private final CategoryDtoMapper categoryDtoMapper;
     private final CategoryMapper categoryMapper;
     private final CategoryFullDtoMapper categoryFullDtoMapper;
     private final IBucketS3Service bucketS3Service;

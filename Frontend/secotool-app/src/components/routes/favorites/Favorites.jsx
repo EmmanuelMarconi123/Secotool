@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import FavoriteCard from './FavoriteCard'
 import axios from 'axios'
 import { useAuth } from "../../../contexts/AuthContext";
+import { useGlobal } from "../../../contexts/GlobalContext";
 
 function Favorites() {
 
@@ -10,8 +11,9 @@ function Favorites() {
   console.log(token)
 
   const [favorites, setFavorites] = useState([]);
+  const { globalVariable } = useGlobal();
 
-  const apiUrl = "http://localhost:8080/v1/api/users/products/favorites";
+  const apiUrl = `${globalVariable}/v1/api/users/products/favorites`;
 
   const fetchFavorites = async () => {
     try {
@@ -33,7 +35,7 @@ function Favorites() {
 
 
   const handleDeleteFavorite = async (productId) => {
-    const apiUrlDelete = `http://localhost:8080/v1/api/users/products/${productId}`;
+    const apiUrlDelete = `${globalVariable}/v1/api/users/products/${productId}`;
 
     try {
       await axios.delete(apiUrlDelete, {
@@ -41,12 +43,7 @@ function Favorites() {
           Authorization: `Bearer ${token}`,
         },
       });
-
-      // Actualiza la lista de favoritos después de eliminar el producto
-      const updatedFavorites = favorites.filter(
-        (favorite) => favorite.productId !== productId
-      );
-      setFavorites(updatedFavorites);
+      fetchFavorites()
     } catch (error) {
       console.error(`Error al eliminar el producto ${productId}:`, error);
     }

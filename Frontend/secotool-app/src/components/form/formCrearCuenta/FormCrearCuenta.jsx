@@ -7,8 +7,10 @@ import { useNavigate } from "react-router";
 import { useState } from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
+import { useGlobal } from "../../../contexts/GlobalContext";
 
 const FormCrearCuenta = () => {
+  const { globalVariable } = useGlobal();
   //en estos initial values se me van a guardar luego lo que el usuario escriba en los inputs
   const initialValues = {
     name: "",
@@ -23,10 +25,10 @@ const FormCrearCuenta = () => {
 
   const validationSchema = Yup.object({
     name: Yup.string()
-      .min(6, "Tu nombre debe contener más de 6 caracteres")
+      .min(3, "Tu nombre debe contener 3 o más caracteres")
       .required("Debes ingresar un nombre"),
     lastname: Yup.string()
-      .min(6, "Tu apellido debe contener más de 6 caracteres")
+      .min(3, "Tu apellido debe contener 3 o más caracteres")
       .required("Debes ingresar un apellido"),
     email: Yup.string()
       .email("Debes ingresar un email válido")
@@ -49,7 +51,7 @@ const FormCrearCuenta = () => {
           setMensajeError(false);
           // console.log(values);
           const response = await axios.post(
-            "http://localhost:8080/v1/api/auth/singup",
+            `${globalVariable}/v1/api/auth/singup`,
             {
               firstName: values.name,
               lastName: values.lastname,

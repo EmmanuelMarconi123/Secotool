@@ -31,7 +31,7 @@ public class BucketS3ServiceImpl implements IBucketS3Service {
                 bucket.putObject(objectRequest);
                 urls.add(url);
             } catch (Exception e) {
-                System.out.println(e.fillInStackTrace());
+                //mostrar error de aws
                 System.out.println(e.getCause());
                 throw new RuntimeException("failed to upload file "+file.getOriginalFilename());
             }

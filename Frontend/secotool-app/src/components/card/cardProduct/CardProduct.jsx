@@ -3,34 +3,17 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import styles from "../cardProduct/CardProduct.module.css";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
+import { Rate } from "rsuite";
+import { useGlobal } from "../../../contexts/GlobalContext";
 
 function CardProduct({ product }) {
   const { isLoggedIn, token } = useAuth();
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState(product.isFavorite);
+  const { globalVariable } = useGlobal();
 
-  const url = `http://localhost:8080/v1/api/users/products/${product.id}`;
-  const urlFavoritos = `http://localhost:8080/v1/api/users/products/favorites`;
-
-
-  //--------------- aca solicito el estado del isliked a la base de dato ---------------
-
-  const fetchIsLikedStatus = async () => {
-    try {
-      const response = await axios.get(urlFavoritos, {
-        headers: {
-          Authorization: token,
-        },
-      });
-
-      if (response.status === 200) {
-        setIsLiked(response.data.isFavorite);
-      }
-    } catch (error) {
-      console.error("Error al obtener el estado de Favorite", error);
-    }
-  };
+  const url = `${globalVariable}/v1/api/users/products/${product.id}`;
 
   // ------------- aca hacemos el post del favorite a la base de datos -------------------------
 
@@ -72,12 +55,6 @@ function CardProduct({ product }) {
     }
   };
 
-  // ----------- effect para renderizar el componenete completo --------------
-
-  useEffect(() => {
-    fetchIsLikedStatus()
-  }, []);
-
   //-------- funcion que se ejecuta al hacer click en el corazon -------------
 
   const handleLike = (product) => {
@@ -105,6 +82,7 @@ function CardProduct({ product }) {
           />
         </Grid>
       ) : null}
+
       <Link to={"/product/" + product.id} key={product.id}>
         <Grid container className={styles.container} xs={12} md={12}>
           <Grid container className={styles.card}>
@@ -121,6 +99,10 @@ function CardProduct({ product }) {
                 <span>$</span>
                 <span>{product.price}</span>
               </Grid>
+              <div className={styles.boxScore}>
+                <span>{product.averageScore}</span>
+                <Rate readOnly allowHalf max={5} defaultValue={product.averageScore} size="xs" />
+              </div>
             </Grid>
           </Grid>
         </Grid>

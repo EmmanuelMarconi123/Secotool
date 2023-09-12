@@ -37,7 +37,7 @@ public class UserController {
         return ResponseEntity.ok(String.format("user %s now has %s role",userId,userRole.name()));
     }
 
-    @GetMapping("/favorites")
+    @GetMapping("/products/favorites")
     public ResponseEntity<List<ProductDto>> getAllFavoritesProducts(){
         Long userId = Long.parseLong((String) SecurityContextHolder.getContext().getAuthentication().getCredentials());
         return ResponseEntity.ok(userFacade.getAllFavoritesProducts(userId));

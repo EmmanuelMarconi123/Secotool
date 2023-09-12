@@ -10,5 +10,5 @@ public interface ImageMapper {
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "url", target = "url")
-    public Image toImage(ImageDto imageDto);
+    Image toImage(ImageDto imageDto);
 }
