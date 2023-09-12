@@ -1,6 +1,8 @@
 .listCaract{
     font-size: 13px;
     padding-left: 0px;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .listCaract i{
