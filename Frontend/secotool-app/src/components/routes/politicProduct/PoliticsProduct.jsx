@@ -1,6 +1,6 @@
 import styles from "./PoliticsProduct.module.css";
 import { useEffect, useState } from "react";
-import { ButtonToolbar, Button, Modal } from "rsuite";
+import { ButtonToolbar, Button, Modal, Loader } from "rsuite";
 import PoliticCard from "../../PoliticCard/PoliticCard";
 import Pagination from "../../pagination/Pagination";
 import ModalPolitica from "./ModalPolitica";
@@ -95,6 +95,7 @@ const PoliticsProduct = () => {
         const data = await response.json();
         console.log("las politicas son ", data);
         setPoliticas(data);
+        setCargando(false)
       } else {
         throw new Error("Error en la solicitud");
       }
@@ -121,6 +122,26 @@ const PoliticsProduct = () => {
     setCurrentPost(politicas.slice(fistPostIndex, lastPostIndex));
   }, [currentPage, politicas]);
 
+
+  //-------------------------------------LOUDER-----------------------------------
+
+  const [cargando, setCargando] = useState(true)
+
+  const renderPoliticas =  politicas.length > 0 ? (
+    currentPost.map((poli) => (
+      <PoliticCard
+        key={poli.id}
+        deleteItem={() => deletePolitic(poli)}
+        name={poli.title}
+        description={poli.description}
+        editItem={() => handleEdit(poli)}
+      />
+    ))
+  ) : (
+    <span className={styles.noProducstMessage}>
+      No se encontraron resultados
+    </span>
+  )
   //---------------------------- COMPONENETE -------------------------------------
 
   return (
@@ -145,21 +166,7 @@ const PoliticsProduct = () => {
                 <span>Descripción</span>
                 <span>Acciones</span>
               </div>
-              {politicas.length > 0 ? (
-                currentPost.map((poli) => (
-                  <PoliticCard
-                    key={poli.id}
-                    deleteItem={() => deletePolitic(poli)}
-                    name={poli.title}
-                    description={poli.description}
-                    editItem={() => handleEdit(poli)}
-                  />
-                ))
-              ) : (
-                <span className={styles.noProducstMessage}>
-                  No se encontraron resultados
-                </span>
-              )}
+              {cargando ? <Loader size="md" content='Cargando'/> : renderPoliticas}
               <Pagination
                 totalPosts={politicas.length}
                 itemsPerPage={10}

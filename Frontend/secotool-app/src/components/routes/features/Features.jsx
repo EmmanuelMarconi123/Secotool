@@ -1,7 +1,7 @@
 import styles from "./Features.module.css";
 import { useEffect, useState } from "react";
 import Pagination from "../../pagination/Pagination";
-import { ButtonToolbar, Button } from "rsuite";
+import { ButtonToolbar, Button, Loader } from "rsuite";
 import NewFeatureModal from "../../newFeatureModal/NewFeatureModal";
 import AdminFeatureCard from "../../adminFeatureCard/AdminFeatureCard";
 import EditFeatureModal from "../../editFeatureModal/EditFeatureModal";
@@ -128,6 +128,7 @@ const Features = () => {
         const data = await response.json();
         console.log(data); //Borrar este console.log, mas tarde\
         setFeatures(data);
+        setCargando(false)
       } else {
         throw new Error("Error en la solicitud");
       }
@@ -152,6 +153,28 @@ const Features = () => {
     setCurrentPost(features.slice(fistPostIndex, lastPostIndex));
   }, [currentPage, features]);
 
+//-------------------------------------LOUDER-----------------------------------
+
+    const [cargando, setCargando] = useState(true)
+
+    const renderFeatures = features.length > 0 ? (
+      currentPost.map((feature) => (
+        <AdminFeatureCard
+          key={feature.id}
+          deleteItem={() => deleteFeature(feature.id)}
+          name={feature.name}
+          icon={feature.icon}
+          editItem={() => handleEdit(feature)}
+        />
+      ))
+    ) : (
+      <span className={styles.noProducstMessage}>
+        No se encontraron resultados
+      </span>
+    )
+  
+//-------------------------------------COMPONENTE-----------------------------------
+
   return (
     <div>
       {matches ? (
@@ -174,21 +197,7 @@ const Features = () => {
                 <span>Icono</span>
                 <span>Acciones</span>
               </div>
-              {features.length > 0 ? (
-                currentPost.map((feature) => (
-                  <AdminFeatureCard
-                    key={feature.id}
-                    deleteItem={() => deleteFeature(feature.id)}
-                    name={feature.name}
-                    icon={feature.icon}
-                    editItem={() => handleEdit(feature)}
-                  />
-                ))
-              ) : (
-                <span className={styles.noProducstMessage}>
-                  No se encontraron resultados
-                </span>
-              )}
+              {cargando? <Loader size="md" content='Cargando'/> : renderFeatures}
               <Pagination
                 totalPosts={features.length}
                 itemsPerPage={10}
