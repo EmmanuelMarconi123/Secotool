@@ -12,47 +12,24 @@ const LoadingIndicator = () => <Loader size="md" content="CARGANDO" />;
 const NetworkError = () => <p>Network Error</p>;
 
 const Home = () => {
+  const { isLoggedIn, token } = useAuth();
   const { globalVariable } = useGlobal();
   const URL_API = `${globalVariable}/v1/api/products/open`;
 
-  const [products, setProducts] = useState();
-  const [loading, setLoading] = useState(true);
+  const fetchOptions = isLoggedIn ? { headers: { Authorization: `Bearer ${token}` } } : {};
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const storedToken = localStorage.getItem("tokenUserLog");
-        const fetchOptions = {
-          headers: {
-            Authorization: storedToken ? `Bearer ${storedToken}` : "", // Solo se incluye si hay un token
-          },
-        };
+  const { data, status } = useFetch(URL_API, fetchOptions);
 
-        const response = await fetch(URL_API, fetchOptions);
-
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-
-        const data = await response.json();
-        setProducts(data);
-
-      } catch (error) {
-        console.log("hola")
-      } finally {
-        // Independientemente de si hay un error o no, la carga se detiene
-        setLoading(false);
-      }
-    }
-
-    fetchData();
-  }, []);
-
+  const [products, setProducts] = useState("");
 
   const ComponentListProducts =
-    products ? (
+    status !== statuses.ERROR && products ? (
       <ListProducts products={products} />
     ) : null;
+
+  useEffect(() => {
+    setProducts(data);
+  }, [data]);
 
   return (
     <section className={styles.sectionBusqueda}>
@@ -68,12 +45,12 @@ const Home = () => {
         </div>
       </div>
       <div className={styles.contenedorCards}>
-        {loading ? (
+        {status === statuses.LOADING ? (
           <LoadingIndicator />
         ) : (
           ComponentListProducts
         )}
-        {products === undefined && !loading && <NetworkError />}
+        {status === statuses.ERROR && <NetworkError />}
       </div>
     </section>
   );

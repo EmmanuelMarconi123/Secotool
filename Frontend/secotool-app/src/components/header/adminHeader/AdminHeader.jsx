@@ -60,7 +60,7 @@ const AdminHeader = () => {
                 isActive ? styles.navLinkActive : styles.navLink
               }
             >
-              <i class="fa-solid fa-file-contract"></i>
+              <i className="fa-solid fa-file-contract"></i>
               Politícas
             </NavLink>
           </div>
