@@ -99,7 +99,7 @@ const Features = () => {
     if (confirm("¿Está seguro que desea borrar esta característica?"))
       try {
         const response = await fetch(
-          `${globalVariable}/v1/api/products/features/${id}`,
+          `${globalVariable}/v1/api/features/admin/${id}`,
           {
             method: "DELETE",
             headers: {

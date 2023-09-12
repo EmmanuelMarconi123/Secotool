@@ -1,4 +1,4 @@
-import { Modal } from "rsuite";
+import { Message, Modal, toaster } from "rsuite";
 import styles from "./EditFeatureModal.module.css";
 import Select, { components } from "react-select";
 import { useEffect, useState } from "react";
@@ -46,6 +46,12 @@ const EditFeatureModal = ({ handleClose, open, getData, selectedFeature }) => {
     </components.SingleValue>
   );
 
+  const message = (
+    <Message showIcon type="success" closable>
+      La característica se ha modificado exitosamente
+    </Message>
+  );
+
   const handleChange = (value) => {
     setSelectedIcon(value);
     setNewFeature({ ...newFeature, icon: value.value });
@@ -62,7 +68,7 @@ const EditFeatureModal = ({ handleClose, open, getData, selectedFeature }) => {
       url: `${globalVariable}/v1/api/features/admin/${selectedFeature.id}`,
       data: {
         name: newFeature.name,
-        icon: newFeature.icon
+        icon: newFeature.icon,
       },
       headers: {
         Authorization: "Bearer " + token,
@@ -70,6 +76,7 @@ const EditFeatureModal = ({ handleClose, open, getData, selectedFeature }) => {
     })
       .then(function (response) {
         console.log(response);
+        toaster.push(message, { placement: "bottomStart", duration: 5000 });
         getData();
       })
       .catch(function (error) {
