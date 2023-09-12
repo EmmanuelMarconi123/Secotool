@@ -1,6 +1,6 @@
 import styles from "./Categories.module.css";
 import { useEffect, useState } from "react";
-import { ButtonToolbar, Button, Modal } from "rsuite";
+import { ButtonToolbar, Button, Modal, Loader } from "rsuite";
 import AdminCategoryCard from "../../adminCategoryCard/AdminCategoryCard";
 import Pagination from "../../pagination/Pagination";
 import NewCategoryModal from "../../newCategoryModal/NewCategoryModal";
@@ -91,6 +91,7 @@ const Categories = () => {
         const data = await response.json();
         console.log(data); //Borrar este console.log, mas tarde\
         serCategories(data);
+        setCargando(false)
       } else {
         throw new Error("Error en la solicitud");
       }
@@ -115,6 +116,30 @@ const Categories = () => {
     setCurrentPost(categories.slice(fistPostIndex, lastPostIndex));
   }, [currentPage, categories]);
 
+//-------------------------------------LOUDER-----------------------------------
+
+    const [cargando, setCargando] = useState(true)
+
+    const renderCategories = categories.length > 0 ? (
+      currentPost.map((category) => (
+        <AdminCategoryCard
+          key={category.id}
+          deleteItem={() => deleteCategory(category)}
+          name={category.name}
+          icon={category.name}
+          description={category.description}
+          image={category.image.url}
+          editItem={() => handleEdit(category)}
+        />
+      ))
+    ) : (
+      <span className={styles.noProducstMessage}>
+        No se encontraron resultados
+      </span>
+    )   
+  
+//-------------------------------------COMPONENTE-----------------------------------
+
   return (
     <div>
       {matches ? (
@@ -138,23 +163,7 @@ const Categories = () => {
                 <span>Imagen</span>
                 <span>Acciones</span>
               </div>
-              {categories.length > 0 ? (
-                currentPost.map((category) => (
-                  <AdminCategoryCard
-                    key={category.id}
-                    deleteItem={() => deleteCategory(category)}
-                    name={category.name}
-                    icon={category.name}
-                    description={category.description}
-                    image={category.image.url}
-                    editItem={() => handleEdit(category)}
-                  />
-                ))
-              ) : (
-                <span className={styles.noProducstMessage}>
-                  No se encontraron resultados
-                </span>
-              )}
+              {cargando ? <Loader size="md" content='Cargando'/> : renderCategories}
               <Pagination
                 totalPosts={categories.length}
                 itemsPerPage={10}
