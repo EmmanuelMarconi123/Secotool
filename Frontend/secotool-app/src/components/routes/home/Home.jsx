@@ -5,7 +5,6 @@ import { useFetch, statuses } from "../../../customHooks/useFetch";
 import { Loader } from "rsuite";
 import { useEffect, useState } from "react";
 import { useGlobal } from "../../../contexts/GlobalContext";
-import { useAuth } from "../../../contexts/AuthContext";
 
 const LoadingIndicator = () => <Loader size="md" content="CARGANDO" />;
 
