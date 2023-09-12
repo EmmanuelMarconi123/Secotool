@@ -4,6 +4,7 @@ import UsersAdminCard from "../../adminUserCard/UsersAdminCard";
 import Pagination from "../../pagination/Pagination";
 import { useAuth } from "../../../contexts/AuthContext";
 import { useGlobal } from "../../../contexts/GlobalContext";
+import { Loader } from "rsuite";
 
 const UsersAdmin = () => {
   const { token } = useAuth();
@@ -23,6 +24,7 @@ const UsersAdmin = () => {
       if (response.ok) {
         const data = await response.json();
         setUser(data);
+        setCargando(false)
         console.log(data);
       } else {
         throw new Error("Error en la solicitud");
@@ -55,6 +57,21 @@ const UsersAdmin = () => {
       .addEventListener("change", (e) => setMatches(e.matches));
   }, []);
 
+  //-------------------------------------LOUDER-----------------------------------
+
+  const [cargando, setCargando] = useState(true)
+
+  const renderUsers =   user &&
+    currentPost.map((user) => (
+      <UsersAdminCard
+        key={user.id}
+        selectedUser={user}
+        getData={() => fetchUsersAdmin()}
+      />
+    ))
+
+ //-------------------------------------COMPONENTE-----------------------------------
+
   return (
     <div>
       {matches ? (
@@ -71,14 +88,7 @@ const UsersAdmin = () => {
                 <span>Nombre</span>
                 <span>Permisos admin</span>
               </div>
-              {user &&
-                currentPost.map((user) => (
-                  <UsersAdminCard
-                    key={user.id}
-                    selectedUser={user}
-                    getData={() => fetchUsersAdmin()}
-                  />
-                ))}
+             {cargando ? <Loader size="md" content='Cargando'/> : renderUsers}
               <Pagination
                 totalPosts={user.length}
                 itemsPerPage={itemsPerPage}

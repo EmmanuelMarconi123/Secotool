@@ -2,31 +2,30 @@ import styles from "./HomeAdmin.module.css";
 import AdminProductCard from "../../adminProductCard/AdminProductCard";
 import { useEffect, useState } from "react";
 import Pagination from "../../pagination/Pagination";
-import { ButtonToolbar, Button } from "rsuite";
+import { ButtonToolbar, Button, Loader } from "rsuite";
 import { Alert, Snackbar } from "@mui/material";
 import FormNewProduct from "../../form/formNewProduct/FormNewProduct";
 import FormEditProduct from "../../form/FormEditProduct";
 import { useAuth } from "../../../contexts/AuthContext";
 import { useGlobal } from "../../../contexts/GlobalContext";
 
+
 const HomeAdmin = () => {
   //----------------------------TRAE TODOS LOS PRODUCTOS----------------------------->
   const { token } = useAuth();
-  const {globalVariable}= useGlobal();
+  const { globalVariable } = useGlobal();
 
   const fetchProductsAdmin = async () => {
     try {
-      const response = await fetch(
-        `${globalVariable}/v1/api/products/open`,
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
+      const response = await fetch(`${globalVariable}/v1/api/products/open`, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      });
       if (response.ok) {
         const data = await response.json();
         setProducts(data);
+        setCargando(false)
       } else {
         throw new Error("Error en la solicitud");
       }
@@ -141,6 +140,28 @@ const HomeAdmin = () => {
     setCurrentPost(products.slice(fistPostIndex, lastPostIndex));
   }, [currentPage, products]);
 
+  //---------------------------------- LOUDER ---------------------------------
+
+  const [cargando, setCargando] = useState(true)
+
+  const renderProductosAdmin = products.length > 0 ? (
+    currentPost.map((product) => (
+      <AdminProductCard
+        key={product.id}
+        deleteItem={() => deleteProduct(product.id)}
+        id={product.id}
+        title={product.name}
+        editItem={() => handleEditProduct(product.id)}
+      />
+    ))
+  ) : (
+    <span className={styles.noProducstMessage}>
+      No se encontraron resultados
+    </span>
+  )
+
+  //---------------------------------- COMPONENTE ---------------------------------
+
   return (
     <div>
       {matches ? (
@@ -163,21 +184,7 @@ const HomeAdmin = () => {
                 <span>Nombre</span>
                 <span>Acciones</span>
               </div>
-              {products.length > 0 ? (
-                currentPost.map((product) => (
-                  <AdminProductCard
-                    key={product.id}
-                    deleteItem={() => deleteProduct(product.id)}
-                    id={product.id}
-                    title={product.name}
-                    editItem={() => handleEditProduct(product.id)}
-                  />
-                ))
-              ) : (
-                <span className={styles.noProducstMessage}>
-                  No se encontraron resultados
-                </span>
-              )}
+              {cargando ? <Loader size="md" content='Cargando'/> : renderProductosAdmin}
               <Pagination
                 totalPosts={products.length}
                 itemsPerPage={10}
@@ -225,6 +232,5 @@ const HomeAdmin = () => {
       />
     </div>
   );
-
 };
 export default HomeAdmin;
