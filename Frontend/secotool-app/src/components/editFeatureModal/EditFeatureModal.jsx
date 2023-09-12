@@ -21,7 +21,7 @@ const icons = [
   { value: "fa-solid fa-block-brick-fire" },
   { value: "fa-solid fa-helmet-safety" },
   { value: "fa-solid fa-stopwatch" },
-  { value: "fa-solid fa-light-switch" }
+  { value: "fa-solid fa-light-switch" },
 ];
 
 const Option = (props) => (
@@ -31,8 +31,8 @@ const Option = (props) => (
 );
 
 const EditFeatureModal = ({ handleClose, open, getData, selectedFeature }) => {
-  const { token } = useAuth;
-  const { globalVariable} = useGlobal();
+  const { token } = useAuth();
+  const { globalVariable } = useGlobal();
   const [selectedIcon, setSelectedIcon] = useState({});
   const [newFeature, setNewFeature] = useState({});
 
@@ -57,25 +57,24 @@ const EditFeatureModal = ({ handleClose, open, getData, selectedFeature }) => {
   };
 
   const editFeaturesAdmin = async () => {
-    axios
-      .put(
-        `${globalVariable}/v1/api/features/admin/${selectedFeature.id}`,
-        {
-          name: newFeature.name,
-          icon: newFeature.icon,
-        },
-        {
-          headers: {
-            'Authorization': 'Bearer ' + token,
-          }
-        }
-      )
+    axios({
+      method: "PUT",
+      url: `${globalVariable}/v1/api/features/admin/${selectedFeature.id}`,
+      data: {
+        name: newFeature.name,
+        icon: newFeature.icon
+      },
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    })
       .then(function (response) {
         console.log(response);
         getData();
       })
       .catch(function (error) {
         console.log(error);
+        console.log("soy token", token);
       });
   };
 
