@@ -74,10 +74,13 @@ public class ProductFacadeImpl implements IProductFacade {
             });
         });
 
-        var urlImages = bucketS3Service.storeFiles(images);
-        urlImages.forEach(url -> {
-            imageService.saveProductImage(url,id);
-        });
+        if (images != null){
+            fileService.validateFilesAreImages(images);
+            var urlImages = bucketS3Service.storeFiles(images);
+            urlImages.forEach(url -> {
+                imageService.saveProductImage(url,id);
+            });
+        }
 
         productService.updateProduct(newProduct);
 

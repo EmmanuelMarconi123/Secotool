@@ -118,9 +118,7 @@ public class ProductController {
                                                IdListRequestDto idFeatures,
                                            @RequestPart("id-images-delete") @Valid
                                                IdListRequestDto idImages,
-                                           @RequestPart("images")
-                                           @NotNull(message = "images requerid")
-                                           @Valid
+                                           @RequestPart(value = "images", required = false)
                                            List<MultipartFile> images){
         productFacade.updateProduct(id, productRequestDto, idCategories, idFeatures, idImages,images);
         return ResponseEntity.ok(String.format("product %s succesffully updated",id));
