@@ -29,6 +29,9 @@ const Home = () => {
 
   useEffect(() => {
     setProducts(data);
+    console.log(fetchOptions)
+    console.log(isLoggedIn)
+    console.log(token)
   }, [data]);
 
   return (
