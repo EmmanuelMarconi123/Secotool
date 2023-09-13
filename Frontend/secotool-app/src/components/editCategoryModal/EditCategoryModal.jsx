@@ -1,4 +1,4 @@
-import { Modal } from "rsuite";
+import { Message, Modal, toaster } from "rsuite";
 import styles from "./EditCategoryModal.module.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -19,6 +19,12 @@ function EditCategoryModal({ handleClose, open, getData, selectedCategory }) {
     editCategoryAdmin();
     handleClose();
   };
+
+  const message = (
+    <Message showIcon type="success" closable>
+      La categoria se ha creado exitosamente
+    </Message>
+  );
 
   const editCategoryAdmin = async () => {
     const formData = new FormData();
@@ -43,6 +49,7 @@ function EditCategoryModal({ handleClose, open, getData, selectedCategory }) {
       .then(function (response) {
         handleClose();
         console.log(response);
+        toaster.push(message, { placement: "bottomStart", duration: 5000 });
         getData();
       })
       .catch(function (response) {

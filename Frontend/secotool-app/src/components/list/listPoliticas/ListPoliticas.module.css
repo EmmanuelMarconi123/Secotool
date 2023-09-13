@@ -1,16 +1,21 @@
 .listPoliticas {
   padding-left: 0px;
   font-size: 13px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .listPoliticas li {
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding: 8px;
+  width: 48%;
+  border: 1px solid #c2c2c2;
+  border-radius: 8px;
 }
 
-.listPoliticas li h5{
-    font-size: 13px;
-    margin-bottom: 8px;
+.listPoliticas li h5 {
+  font-size: 13px;
+  margin-bottom: 8px;
 }
 
 .titleDetails {
@@ -22,7 +27,18 @@
   .titleDetails {
     font-size: 23px;
   }
-  .listPoliticas li, .listPoliticas li h5 {
+  .listPoliticas li,
+  .listPoliticas li h5 {
     font-size: 19px;
   }
+
+  .listPoliticas li {
+    padding: 16px;
+  }
+
+  .listPoliticas li h5{
+    padding-top: 16px;
+    margin: 0px;
+  }
+
 }

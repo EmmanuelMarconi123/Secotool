@@ -7,10 +7,13 @@ import com.group2.secotool_app.bussiness.service.IRentService;
 import com.group2.secotool_app.bussiness.service.IUserService;
 import com.group2.secotool_app.model.dto.RentValidatedDto;
 import com.group2.secotool_app.model.dto.request.RentProductRequestDto;
+import com.group2.secotool_app.model.entity.User;
 import com.group2.secotool_app.util.ProductUtils;
 import com.group2.secotool_app.util.RentUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -53,6 +56,13 @@ public class RentFacadeImpl implements IRentFacade {
         var totalDays = productUtils.daysQuantity(startDate,endDate);
         var totalPrice = rentUtils.calculateTotalPriceOfRent(totalDays,prodToRent.getPrice());
         rentService.saveRent(prodToRent, startDate, endDate, user, totalDays, totalPrice);
+    }
+
+    @Override
+    public List<?> userHistorylOfRentals(Long userId) {
+        // que informacion necesitan desde el front?
+        var userRentals = rentService.getUserHistoryOfRentals(new User(userId));
+        return null;
     }
 
 }

@@ -1,4 +1,4 @@
-import { Modal } from "rsuite";
+import { Message, Modal, toaster } from "rsuite";
 import styles from "./EditFeatureModal.module.css";
 import Select, { components } from "react-select";
 import { useEffect, useState } from "react";
@@ -21,7 +21,7 @@ const icons = [
   { value: "fa-solid fa-block-brick-fire" },
   { value: "fa-solid fa-helmet-safety" },
   { value: "fa-solid fa-stopwatch" },
-  { value: "fa-solid fa-light-switch" }
+  { value: "fa-solid fa-light-switch" },
 ];
 
 const Option = (props) => (
@@ -31,8 +31,8 @@ const Option = (props) => (
 );
 
 const EditFeatureModal = ({ handleClose, open, getData, selectedFeature }) => {
-  const { token } = useAuth;
-  const { globalVariable} = useGlobal();
+  const { token } = useAuth();
+  const { globalVariable } = useGlobal();
   const [selectedIcon, setSelectedIcon] = useState({});
   const [newFeature, setNewFeature] = useState({});
 
@@ -46,6 +46,12 @@ const EditFeatureModal = ({ handleClose, open, getData, selectedFeature }) => {
     </components.SingleValue>
   );
 
+  const message = (
+    <Message showIcon type="success" closable>
+      La característica se ha modificado exitosamente
+    </Message>
+  );
+
   const handleChange = (value) => {
     setSelectedIcon(value);
     setNewFeature({ ...newFeature, icon: value.value });
@@ -57,25 +63,25 @@ const EditFeatureModal = ({ handleClose, open, getData, selectedFeature }) => {
   };
 
   const editFeaturesAdmin = async () => {
-    axios
-      .put(
-        `${globalVariable}/v1/api/features/admin/${selectedFeature.id}`,
-        {
-          name: newFeature.name,
-          icon: newFeature.icon,
-        },
-        {
-          headers: {
-            'Authorization': 'Bearer ' + token,
-          }
-        }
-      )
+    axios({
+      method: "PUT",
+      url: `${globalVariable}/v1/api/features/admin/${selectedFeature.id}`,
+      data: {
+        name: newFeature.name,
+        icon: newFeature.icon,
+      },
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    })
       .then(function (response) {
         console.log(response);
+        toaster.push(message, { placement: "bottomStart", duration: 5000 });
         getData();
       })
       .catch(function (error) {
         console.log(error);
+        console.log("soy token", token);
       });
   };
 
