@@ -13,6 +13,7 @@
     color: #3a3939;
     font-size: 19px;
     font-weight: 600;
+    padding-top: 32px;
 }
 
 @media screen and (max-width: 360px) {

@@ -51,14 +51,14 @@ function Favorites() {
 
 
   return (
-    <div className={styles.favoritesContainer}>
+    <section className={styles.favoritesContainer}>
       <h4>Mis Favoritos</h4>
       <div className={styles.cardFContainer}>
         {favorites.map(product => (
           <FavoriteCard key={product.id} id={product.id} images={product.images[0].url} name={product.name} price={product.price} deleteItem={() => handleDeleteFavorite(product.id)}/>
         ))}
       </div>
-    </div>
+    </section>
   );
 }
 

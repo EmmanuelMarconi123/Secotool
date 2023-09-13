@@ -1,6 +1,6 @@
 import styles from "./PoliticsProduct.module.css";
 import { useEffect, useState } from "react";
-import { ButtonToolbar, Button, Modal } from "rsuite";
+import { ButtonToolbar, Button, Modal, Message, toaster } from "rsuite";
 import PoliticCard from "../../PoliticCard/PoliticCard";
 import Pagination from "../../pagination/Pagination";
 import ModalPolitica from "./ModalPolitica";
@@ -19,6 +19,12 @@ const PoliticsProduct = () => {
   const [politicaAEliminar, setPoliticaAEliminar] = useState({});
   const [alertOpen, setAlertOpen] = useState(false);
   const { globalVariable } = useGlobal();
+
+  const message = (
+    <Message showIcon type="success" closable>
+      Se ha borrado la politica exitosamente
+    </Message>
+  );
 
   const { token } = useAuth();
 
@@ -55,9 +61,7 @@ const PoliticsProduct = () => {
       );
 
       if (response.status === 200) {
-        console.log(
-          `Se ha borrado la politica con id ${politicaAEliminar} correctamente`
-        );
+        toaster.push(message, { placement: "bottomStart", duration: 5000 });
         fetchPoliticasAdmin();
         showDeleteSuccessAlert();
       } else {

@@ -1,60 +1,49 @@
-import { Toggle } from "rsuite";
+import { Message, Toggle, toaster } from "rsuite";
 import styles from "./UsersAdminCard.module.css";
-import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../contexts/AuthContext";
 import { useGlobal } from "../../contexts/GlobalContext";
 
-
-
-const UsersAdminCard = ({ selectedUser,getData }) => {
+const UsersAdminCard = ({ selectedUser, getData }) => {
   const { token } = useAuth();
-  const [newUserBody, setNewUserBody] = useState(selectedUser);
   const { globalVariable } = useGlobal();
 
-  const handleRole = () => {
-    console.log("handleRole called with role:", selectedUser.userRole);
-    console.log("selected user:", newUserBody);
-  
-    if (selectedUser.userRole=== "USER") {
-      setNewUserBody({
-        firstName: selectedUser.firstName,
-        lastName: selectedUser.lastName,
-        userRole: "ADMIN"
-      });
-    } else {
-      setNewUserBody({
-        firstName: selectedUser.firstName,
-        lastName: selectedUser.lastName,
-        userRole: "USER"
-      });
-    }
-  };
+  const message = (
+    <Message showIcon type="success" closable>
+      El rol se ha actualizado exitosamente
+    </Message>
+  );
+
+  async function handleRole() {
+    return {
+      ...selectedUser,
+      userRole: selectedUser.userRole === "USER" ? "ADMIN" : "USER"
+    };
+  }
 
   const updateAdminRole = async () => {
+    const updatedUserBody = await handleRole();
 
-    axios
-      .post(
-        `${globalVariable}/v1/api/users/admin/${selectedUser.id}/${newUserBody.userRole}`,
-        newUserBody,
+    console.log("soy updated user", updatedUserBody);
+
+    try {
+      const response = await axios.post(
+        `${globalVariable}/v1/api/users/admin/${selectedUser.id}/${updatedUserBody.userRole}`,
+        updatedUserBody,
         {
           headers: {
-            'Authorization': 'Bearer ' + token,
-          }
+            Authorization: "Bearer " + token,
+          },
         }
-      )
-      .then(function (response) {
-        console.log(response);
-        getData()
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  };
+      );
 
-  useEffect(()=>{
-    updateAdminRole()
-  },[newUserBody])
+      console.log(response);
+      toaster.push(message, { placement: "bottomStart", duration: 5000 });
+      getData();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -67,7 +56,7 @@ const UsersAdminCard = ({ selectedUser,getData }) => {
         checkedChildren="ADMIN"
         unCheckedChildren="USER"
         checked={selectedUser.userRole === "ADMIN"}
-        onChange={handleRole}
+        onChange={updateAdminRole}
         arial-label="Switch"
       />
     </div>
