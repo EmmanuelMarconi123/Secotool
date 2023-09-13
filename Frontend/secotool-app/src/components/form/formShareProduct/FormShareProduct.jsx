@@ -1,20 +1,13 @@
 import styles from "./FormShareProduct.module.css";
 import CardProductShare from "../../card/cardProductShare/CardProductShare";
-import { useGlobal } from "../../../contexts/GlobalContext";
 import { useState } from "react";
 
 const FormShareProduct = ({ product }) => {
   const [selectedSocials, setSelectedSocials] = useState([]);
   const [textareaContent, setTextareaContent] = useState("");
-  const { globalVariable } = useGlobal();
   const [activeButtons, setActiveButtons] = useState({});
 
   console.log(product);
-
-  // if (typeof window === "object") {
-  //   url = String(window.location);
-  //   console.log(url);
-  // }
 
   const toggleSocial = (social) => {
     if (selectedSocials.includes(social)) {
@@ -26,7 +19,7 @@ const FormShareProduct = ({ product }) => {
 
   const handleShare = () => {
     // let url = "https://rsuitejs.com/components/notification/";
-    let url = `${globalVariable}/product/${product.id}`;
+    let url = `${window.location}`;
 
     selectedSocials.forEach((social) => {
       if (social === "whatsapp") {

@@ -1,4 +1,4 @@
-import { Button, Modal, TagPicker, Uploader } from "rsuite";
+import { Button, Message, Modal, TagPicker, Uploader, toaster } from "rsuite";
 import styles from "./formNewProduct/FormNewProduct.module.css";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
@@ -19,6 +19,12 @@ function FormEditProduct({
   const [editedPrice, setEditedPrice] = useState();
   const [editedCategories, setEditedCategories] = useState([]);
   const [editedFeatures, setEditedFeatures] = useState([]);
+
+  const message = (
+    <Message showIcon type="success" closable>
+      El producto ha sido editado exitosamente
+    </Message>
+  );
 
   useEffect(() => {
     if (selectedProduct) {
@@ -177,6 +183,7 @@ function FormEditProduct({
         };
         onProductUpdate(updatedProductR); // Llamar a la función de actualización del padre
         setIsLoading(false)
+        toaster.push(message, { placement: "bottomStart", duration: 5000 });
       } else {
         console.error("Error updating product:", response.statusText);
       }
