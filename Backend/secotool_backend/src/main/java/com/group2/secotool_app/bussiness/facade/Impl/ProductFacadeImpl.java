@@ -6,9 +6,12 @@ import com.group2.secotool_app.bussiness.facade.IProductFacade;
 import com.group2.secotool_app.bussiness.mapper.*;
 import com.group2.secotool_app.bussiness.service.*;
 import com.group2.secotool_app.model.dto.*;
+import com.group2.secotool_app.model.dto.request.IdListRequestDto;
 import com.group2.secotool_app.model.dto.request.ListOfCategoriesIdRequestDto;
 import com.group2.secotool_app.model.dto.request.ListOfFeaturesidRequestDto;
 import com.group2.secotool_app.model.dto.request.ProductRequestDto;
+import com.group2.secotool_app.model.entity.Image;
+import com.group2.secotool_app.model.entity.Product;
 import com.group2.secotool_app.util.CommonUtils;
 import com.group2.secotool_app.util.ProductUtils;
 import com.group2.secotool_app.util.RentUtils;
@@ -50,7 +53,7 @@ public class ProductFacadeImpl implements IProductFacade {
 
     //se puede refactorizar hacer todas las sentencias por list
     @Override
-    public void updateProduct(Long id, ProductRequestDto productRequestDto, ListOfCategoriesIdRequestDto listOfCategoriesIdRequestDto, ListOfFeaturesidRequestDto listOfFeaturesidRequestDto, List<MultipartFile> images) {
+    public void updateProduct(Long id, ProductRequestDto productRequestDto, IdListRequestDto idCategories, IdListRequestDto idFeatures, IdListRequestDto idImages, List<MultipartFile> images) {
 
         var oldProduct = productService.findProductById(id);
 
@@ -63,20 +66,28 @@ public class ProductFacadeImpl implements IProductFacade {
         newProduct.setProductReviews(oldProduct.getProductReviews());
 
         var proOldImages = imageService.getAllImagesByProduct(id);
-        proOldImages.forEach( image -> imageService.deleteImage(image.getId()));
+
+        idImages.idsList().forEach(imageId -> {
+            proOldImages.forEach(image -> {
+                if (imageId.equals(image.getId()))
+                    imageService.deleteImage(image.getId());
+            });
+        });
 
         var urlImages = bucketS3Service.storeFiles(images);
-        urlImages.forEach(url -> imageService.saveProductImage(url,id));
+        urlImages.forEach(url -> {
+            imageService.saveProductImage(url,id);
+        });
 
         productService.updateProduct(newProduct);
 
-        listOfFeaturesidRequestDto.idsFeatures().forEach(featureId ->
+        idFeatures.idsList().forEach(featureId ->
                 featureFacade.associateProductToFeature(newProduct,featureId));
-        listOfCategoriesIdRequestDto.idsCategories().forEach(categoryId ->
+        idCategories.idsList().forEach(categoryId ->
                 categoryFacade.associateProductToCategory(newProduct,categoryId)
         );
     }
-//se puede refactorizar
+    //se puede refactorizar
     @Override
     public String save(ProductRequestDto productRequestDto, ListOfCategoriesIdRequestDto listOfCategoriesIdRequestDto, ListOfFeaturesidRequestDto listOfFeaturesidRequestDto, List<MultipartFile> images) {
         var productName = productRequestDto.name();

@@ -7,10 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/v1/api/rentals")
@@ -19,6 +16,12 @@ public class RentController {
 
     private final IRentFacade rentFacade;
 
+
+    @GetMapping("/historical")
+    public ResponseEntity<?> userHistorylOfRentals(){
+        Long userId = Long.parseLong((String) SecurityContextHolder.getContext().getAuthentication().getCredentials());
+        return ResponseEntity.ok(rentFacade.userHistorylOfRentals(userId));
+    }
     @PostMapping("/validate")
     public ResponseEntity<RentValidatedDto> validateUserRent(@RequestBody @Valid RentProductRequestDto rangeOfDates){
         return ResponseEntity.ok(rentFacade.validateUserRangeOfDatesToRent(rangeOfDates));
@@ -30,4 +33,5 @@ public class RentController {
         rentFacade.registerRent(rentProductRequestDto, userId);
         return ResponseEntity.ok(String.format("producto %s succesful rented by %s from %s to %s",rentProductRequestDto.productId(),userId,rentProductRequestDto.startDate(),rentProductRequestDto.endDate()));
     }
+
 }

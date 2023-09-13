@@ -111,17 +111,18 @@ public class ProductController {
     @PutMapping("/admin/{id}")
     public ResponseEntity<?> updateProduct(@PathVariable Long id ,
                                            @RequestPart("product-data") @Valid
-                                           ProductRequestDto productRequestDto,
-                                           @RequestPart("categories") @Valid
-                                           ListOfCategoriesIdRequestDto listOfCategoriesIdRequestDto,
-                                           @RequestPart("features") @Valid
-                                           ListOfFeaturesidRequestDto listOfFeaturesidRequestDto,
-                                           @RequestParam("images")
+                                               ProductRequestDto productRequestDto,
+                                           @RequestPart("id-categories") @Valid
+                                               IdListRequestDto idCategories,
+                                           @RequestPart("id-features") @Valid
+                                               IdListRequestDto idFeatures,
+                                           @RequestPart("id-images-delete") @Valid
+                                               IdListRequestDto idImages,
+                                           @RequestPart("images")
                                            @NotNull(message = "images requerid")
-                                           @NotEmpty(message = "list can not be empy")
                                            @Valid
                                            List<MultipartFile> images){
-        productFacade.updateProduct(id, productRequestDto, listOfCategoriesIdRequestDto, listOfFeaturesidRequestDto, images);
+        productFacade.updateProduct(id, productRequestDto, idCategories, idFeatures, idImages,images);
         return ResponseEntity.ok(String.format("product %s succesffully updated",id));
     }
 
