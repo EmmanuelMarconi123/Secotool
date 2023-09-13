@@ -4,6 +4,7 @@ package com.group2.secotool_app.bussiness.facade;
 import com.group2.secotool_app.model.dto.ProductDto;
 import com.group2.secotool_app.model.dto.ProductFullDto;
 import com.group2.secotool_app.model.dto.RentProductDto;
+import com.group2.secotool_app.model.dto.request.IdListRequestDto;
 import com.group2.secotool_app.model.dto.request.ListOfCategoriesIdRequestDto;
 import com.group2.secotool_app.model.dto.request.ListOfFeaturesidRequestDto;
 import com.group2.secotool_app.model.dto.request.ProductRequestDto;
@@ -27,7 +28,7 @@ public interface IProductFacade {
 
     ProductFullDto findProductById(Long id);
 
-    void updateProduct(Long id, ProductRequestDto productRequestDto, ListOfCategoriesIdRequestDto listOfCategoriesIdRequestDto, ListOfFeaturesidRequestDto listOfFeaturesidRequestDto, List<MultipartFile> images);
+    void updateProduct(Long id, ProductRequestDto productRequestDto, IdListRequestDto idCategories, IdListRequestDto idFeatures, IdListRequestDto idImages,  List<MultipartFile> images);
 
     List<ProductDto> getAllProductsAssociateWithAFeature(Long featureId);
 
