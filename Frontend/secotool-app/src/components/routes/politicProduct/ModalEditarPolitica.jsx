@@ -1,4 +1,4 @@
-import { Modal } from "rsuite";
+import { Message, Modal, toaster } from "rsuite";
 import styles from "../../editCategoryModal/EditCategoryModal.module.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -17,6 +17,12 @@ function ModalEditarPolitica({
     description: "",
   });
   const { globalVariable } = useGlobal();
+
+  const message = (
+    <Message showIcon type="success" closable>
+      La politica se ha editado exitosamente
+    </Message>
+  );
 
   const handleSubmit = () => {
     editPolitic();
@@ -41,6 +47,7 @@ function ModalEditarPolitica({
         }
       );
       fetchPoliticasAdmin();
+      toaster.push(message, { placement: "bottomStart", duration: 5000 });
     } catch (error) {
       console.error(error);
     }
