@@ -2,15 +2,14 @@ import styles from "./FormShareProduct.module.css";
 import CardProductShare from "../../card/cardProductShare/CardProductShare";
 import { useGlobal } from "../../../contexts/GlobalContext";
 import { useState } from "react";
-import { Checkbox } from "rsuite";
 
 const FormShareProduct = ({ product }) => {
   const [selectedSocials, setSelectedSocials] = useState([]);
   const [textareaContent, setTextareaContent] = useState("");
   const { globalVariable } = useGlobal();
+  const [activeButtons, setActiveButtons] = useState({});
 
-  console.log(product)
-
+  console.log(product);
 
   // if (typeof window === "object") {
   //   url = String(window.location);
@@ -23,7 +22,7 @@ const FormShareProduct = ({ product }) => {
     } else {
       setSelectedSocials([...selectedSocials, social]);
     }
-  };
+  }
 
   const handleShare = () => {
     // let url = "https://rsuitejs.com/components/notification/";
@@ -47,50 +46,60 @@ const FormShareProduct = ({ product }) => {
         )}&text=${encodeURIComponent(textareaContent)}`;
         window.open(twitterShareUrl, "TwitterShare", "width=600,height=400");
       }
-    });
+      setActiveButtons({});
+    })
   };
 
+  const handleOnClick = (e, social) => {
+    if (e) {
+      e.preventDefault();
+    }
+    setSelectedSocials(social);
+    setActiveButtons((prevState) => ({
+      ...prevState,
+      [social]: !prevState[social], // Alternar el estado actual
+    }));
+    toggleSocial(social);
+  }
+
   return (
-    <form className={styles.formShare}>
-      <p>Elije alguna red social</p>
-      <div className={styles.iconsShare}>
-        <div className={styles.icons}>
-          <i className="fa-brands fa-facebook"></i>
-          <Checkbox
-            checked={selectedSocials.includes("facebook")}
-            onChange={() => toggleSocial("facebook")}
-          ></Checkbox>
-        </div>
-        <div className={styles.icons}>
-          <i className="fa-brands fa-twitter"></i>
-          <Checkbox
-            checked={selectedSocials.includes("twitter")}
-            onChange={() => toggleSocial("twitter")}
-          ></Checkbox>
-        </div>
-        <div className={styles.icons}>
-          <i className="fa-brands fa-whatsapp"></i>
-          <Checkbox
-            checked={selectedSocials.includes("whatsapp")}
-            onChange={() => toggleSocial("whatsapp")}
-          ></Checkbox>
+    <form className={styles.formShare} onSubmit={handleShare}>
+      <div className={styles.boxRedes}>
+        <p>Selecciona alguna red social</p>
+        <div className={styles.iconsShare}>
+          <button className={`${styles.icons} ${
+              activeButtons["facebook"] ? styles.active : ""
+            }`} onClick={(e) => handleOnClick(e, "facebook")}>
+            <i className="fa-brands fa-facebook"></i>
+            <span>Facebook</span>
+          </button>
+          <button className={`${styles.icons} ${
+              activeButtons["twitter"] ? styles.active : ""
+            }`} onClick={(e) => handleOnClick(e, "twitter")}>
+            <i className="fa-brands fa-twitter"></i>
+            <span>Twitter</span>
+          </button>
+          <button className={`${styles.icons} ${
+              activeButtons["whatsapp"] ? styles.active : ""
+            }`} onClick={(e) => handleOnClick(e, "whatsapp")}>
+            <i className="fa-brands fa-whatsapp"></i>
+            <span>Whatsapp</span>
+          </button>
         </div>
       </div>
-
       <div className={styles.boxEndForm}>
         <CardProductShare product={product}></CardProductShare>
         <textarea
           name=""
           id=""
           cols="60"
-          rows="10"
           value={textareaContent}
           onChange={(e) => setTextareaContent(e.target.value)}
-          style={{ height: 400, padding: 10 }}
-          placeholder="Agrega aquí un mensaje personalizado para acompañar el contenido que deseas compartir"
+          style={{ padding: 10 }}
+          placeholder="Escribe aquí un mensaje personalizado para acompañar el contenido que deseas compartir"
         ></textarea>
       </div>
-      <button type="button" onClick={handleShare}>
+      <button type="submit" className={styles.buttonCompartir}>
         Compartir
       </button>
     </form>
