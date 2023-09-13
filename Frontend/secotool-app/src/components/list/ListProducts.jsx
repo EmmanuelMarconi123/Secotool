@@ -21,12 +21,14 @@ const ListProducts = ({ products }) => {
           currentPost*/
           currentPost.map((product) => (
             <Grid
+              className={style.mapCards}
               container
               key={product.id ? product.id : product.productDto.id}
             >
               <Card
                 product={product.productDto ? product.productDto : product}
                 style={{ width: "100%" }}
+                categoria={product.productCategories}
               />
             </Grid>
           ))
