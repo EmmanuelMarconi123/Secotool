@@ -2,10 +2,6 @@
     width: 100%;
 }
 
-.mapCards{
-    height: 100%;
-}
-
 .listProducts{
     display: grid;
     grid-template-columns: repeat(2, 1fr);

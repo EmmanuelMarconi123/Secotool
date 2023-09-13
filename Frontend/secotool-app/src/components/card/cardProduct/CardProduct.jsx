@@ -8,7 +8,7 @@ import axios from "axios";
 import { Rate } from "rsuite";
 import { useGlobal } from "../../../contexts/GlobalContext";
 
-function CardProduct({ product, categoria }) {
+function CardProduct({ product }) {
   const { isLoggedIn, token } = useAuth();
   const [isLiked, setIsLiked] = useState(product.isFavorite);
   const { globalVariable } = useGlobal();
@@ -67,12 +67,7 @@ function CardProduct({ product, categoria }) {
     }
   };
 
-  //--------------------------------- logica para mostrar categorias --------------------------
-
-  const mostrarTodasLasCategorias = categoria.length <= 3;
-  console.log(categoria);
-
-  //---------------------------------- COMPONENTE -------------------------------
+  //----------------------------------------------------------------
 
   return (
     <div className={styles.contenedorGeneral}>
@@ -89,7 +84,7 @@ function CardProduct({ product, categoria }) {
       ) : null}
 
       <Link to={"/product/" + product.id} key={product.id}>
-        <Grid container className={styles.container}>
+        <Grid container className={styles.container} xs={12} md={12}>
           <Grid container className={styles.card}>
             {/* Contenedor de imagen */}
             <Grid item xs={10} md={6} className={styles.imgContainer}>
@@ -104,38 +99,10 @@ function CardProduct({ product, categoria }) {
                 <span>$</span>
                 <span>{product.price}</span>
               </Grid>
-              <Grid item xs={12} md={12}>
-                <div className={styles.boxScore}>
-                  <span>{product.averageScore}</span>
-                  <Rate
-                    readOnly
-                    allowHalf
-                    max={5}
-                    defaultValue={product.averageScore}
-                    size="xs"
-                  />
-                </div>
-                {mostrarTodasLasCategorias ? (
-                  // Si hay 3 o menos categorías, mostrar todas
-                  <Grid container>
-                    {categoria.map((categorias, index) => (
-                      <Grid key={index} item xs={12} md={12}>
-                        <span> {categorias.name}, </span>
-                      </Grid>
-                    ))}
-                  </Grid>
-                ) : (
-                  // Si hay más de 3 categorías, mostrar las primeras 3 y el signo "+"
-                  <div>
-                    {categoria.slice(0, 3).map((categorias, index) => (
-                      <Grid key={index} item xs={12} md={12}>
-                        <span> {categorias.name}, </span>
-                      </Grid>
-                    ))}
-                    <span> ... </span>
-                  </div>
-                )}
-              </Grid>
+              <div className={styles.boxScore}>
+                <span>{product.averageScore}</span>
+                <Rate readOnly allowHalf max={5} defaultValue={product.averageScore} size="xs" />
+              </div>
             </Grid>
           </Grid>
         </Grid>
