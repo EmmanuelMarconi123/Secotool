@@ -1,4 +1,4 @@
-import { Modal } from "rsuite";
+import { Message, Modal, toaster } from "rsuite";
 import styles from "./NewFeatureModal.module.css";
 import Select, { components } from "react-select";
 import { useState } from "react";
@@ -29,6 +29,12 @@ const Option = (props) => (
   <components.Option {...props} className={styles.iconOption}>
     <i className={props.data.value} />
   </components.Option>
+);
+
+const message = (
+  <Message showIcon type="success" closable>
+    La característica se ha creado exitosamente
+  </Message>
 );
 
 const NewFeatureModal = ({ handleClose, open, getData }) => {
@@ -76,6 +82,7 @@ const NewFeatureModal = ({ handleClose, open, getData }) => {
       );
 
       console.log(response);
+      toaster.push(message, { placement: "bottomStart", duration: 5000 });
       getData();
     } catch (error) {
       console.error(error);

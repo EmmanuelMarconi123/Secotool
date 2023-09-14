@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -26,5 +27,10 @@ public class RentServiceImpl implements IRentService {
         rent.setUser(user);
         rent.setProduct(prodToRent);
         rentRepository.save(rent);
+    }
+
+    @Override
+    public List<Rent> getUserHistoryOfRentals(User user) {
+        return user.getRents();
     }
 }

@@ -49,10 +49,25 @@ public class CategoryFacadeImpl implements ICategoryFacade {
     }
 
     @Override
-    public void updateCategory(CategoryRequestDto categoryRequestDto, Long id) {
-        var category = categoryMapper.toCategory(categoryRequestDto);
-        category.setId(id);
-        categoryService.update(category);
+    public void updateCategory(CategoryRequestDto categoryRequestDto, Long id, MultipartFile categoryImage) {
+        var oldCategory = categoryService.findById(id);
+        var newCategory = categoryMapper.toCategory(categoryRequestDto);
+        newCategory.setId(id);
+        newCategory.setProducts(oldCategory.getProducts());
+
+        if (categoryImage != null){
+            var imageArray = Arrays.asList(categoryImage);
+            imageService.deleteImage(oldCategory.getImage().getId());
+            fileService.validateFilesAreImages(imageArray);
+            var urlImages = bucketS3Service.storeFiles(imageArray);
+            urlImages.forEach(url -> {
+               var image =  imageService.saveCategoryImage(url);
+               newCategory.setImage(image);
+            });
+        }else
+            newCategory.setImage(oldCategory.getImage());
+
+        categoryService.update(newCategory);
     }
 
     @Override

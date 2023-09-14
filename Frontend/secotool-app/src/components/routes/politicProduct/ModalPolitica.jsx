@@ -1,4 +1,4 @@
-import { Modal } from "rsuite";
+import { Message, Modal, toaster } from "rsuite";
 import styles from "./ModalPolitica.module.css";
 import axios from "axios";
 import { useState } from "react";
@@ -20,6 +20,12 @@ function ModalPolitica({
     handleClose();
   };
 
+  const message = (
+    <Message showIcon type="success" closable>
+      La politica se ha creado exitosamente
+    </Message>
+  );
+
 
   const addPoliticAdmin = async () => {
     console.log(newPolitic);
@@ -39,6 +45,7 @@ function ModalPolitica({
         }
       );
       fetchPoliticasAdmin();
+      toaster.push(message, { placement: "bottomStart", duration: 5000 });
       console.log(response);
     } catch (error) {
       console.error("Esta entrando en este error: ", error);

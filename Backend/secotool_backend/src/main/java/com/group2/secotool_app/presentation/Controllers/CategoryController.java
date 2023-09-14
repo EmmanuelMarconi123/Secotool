@@ -27,7 +27,7 @@ public class CategoryController {
     @PostMapping("/admin")
     public ResponseEntity<String> saveCategory(@RequestPart("data") @Valid
                                                CategoryRequestDto categoryRequestDto,
-                                               @RequestParam("image")
+                                               @RequestPart("image")
                                                @NotNull(message = "image required")
                                                @Valid
                                                MultipartFile image
@@ -46,8 +46,8 @@ public class CategoryController {
      */
 
     @PutMapping("/admin/{id}")
-    public ResponseEntity<String> updateCategory(@RequestBody @Valid CategoryRequestDto categoryRequestDto, @PathVariable Long id){
-        categoryFacade.updateCategory(categoryRequestDto,id);
+    public ResponseEntity<String> updateCategory(@PathVariable Long id, @RequestPart("category-data") @Valid CategoryRequestDto categoryRequestDto, @RequestPart(value = "image", required = false) MultipartFile categoryImage){
+        categoryFacade.updateCategory(categoryRequestDto,id, categoryImage);
         return ResponseEntity.ok(String.format("feature %s successfully updated", id));
     }
 

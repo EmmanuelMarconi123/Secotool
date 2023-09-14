@@ -176,16 +176,16 @@ header {
   height: 100%;
 }
 
-.rs-picker-daterange .rs-picker-toggle.rs-btn .rs-picker-toggle-clean {
-  top: 13px;
-}
-
 .rs-picker-daterange-menu .rs-picker-daterange-panel-show-one-calendar .rs-picker-toolbar {
   max-width: none!important;
 }
 
 .rs-picker-daterange-header{
   text-align: center;
+}
+
+.rs-auto-complete .rs-input{
+  min-height: 40px;
 }
 
 /*Breakpoints*/

@@ -12,7 +12,7 @@ public interface ICategoryFacade {
 
     void saveCategory(CategoryRequestDto categoryRequestDto, MultipartFile image);
 
-    void updateCategory(CategoryRequestDto categoryRequestDto,Long id);
+    void updateCategory(CategoryRequestDto categoryRequestDto, Long id, MultipartFile categoryImage);
 
     void deleteCategory(Long id);
 
