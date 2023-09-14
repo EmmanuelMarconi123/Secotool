@@ -20,7 +20,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 32px;
+  gap: 16px;
 }
 
 @media screen and (max-width: 1024px) {
@@ -130,6 +130,6 @@
   }
 
   .navbarButtons div {
-    gap: 32px;
+    gap: 16px;
   }
 }
