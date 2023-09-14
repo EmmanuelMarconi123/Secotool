@@ -1,13 +1,14 @@
 import styles from "./Features.module.css";
 import { useEffect, useState } from "react";
 import Pagination from "../../pagination/Pagination";
-import { ButtonToolbar, Button, Loader } from "rsuite";
+import { ButtonToolbar, Button} from "rsuite";
 import NewFeatureModal from "../../newFeatureModal/NewFeatureModal";
 import AdminFeatureCard from "../../adminFeatureCard/AdminFeatureCard";
 import EditFeatureModal from "../../editFeatureModal/EditFeatureModal";
 import { useAuth } from "../../../contexts/AuthContext";
 import { Snackbar, Alert } from "@mui/material";
 import { useGlobal } from "../../../contexts/GlobalContext";
+import EsqueletorAdmin from "../../EsqueletorAdmin/EsqueletorAdmin";
 
 // const icons = [
 //   {
@@ -187,7 +188,7 @@ const Features = () => {
                   onClick={handleOpen}
                   style={{ background: "#45A42D", color: "#F9F9F9" }}
                 >
-                  + Añadir nueva
+                  + Añadir Característica
                 </Button>
               </ButtonToolbar>
             </div>
@@ -197,7 +198,7 @@ const Features = () => {
                 <span>Icono</span>
                 <span>Acciones</span>
               </div>
-              {cargando? <Loader size="md" content='Cargando'/> : renderFeatures}
+              {cargando? <EsqueletorAdmin/> : renderFeatures}
               <Pagination
                 totalPosts={features.length}
                 itemsPerPage={10}

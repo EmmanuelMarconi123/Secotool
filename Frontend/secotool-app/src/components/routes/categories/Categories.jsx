@@ -1,6 +1,6 @@
 import styles from "./Categories.module.css";
 import { useEffect, useState } from "react";
-import { ButtonToolbar, Button, Modal, Loader } from "rsuite";
+import { ButtonToolbar, Button, Modal} from "rsuite";
 import AdminCategoryCard from "../../adminCategoryCard/AdminCategoryCard";
 import Pagination from "../../pagination/Pagination";
 import NewCategoryModal from "../../newCategoryModal/NewCategoryModal";
@@ -8,6 +8,7 @@ import EditCategoryModal from "../../editCategoryModal/EditCategoryModal";
 import { Snackbar, Alert } from "@mui/material";
 import { useGlobal } from "../../../contexts/GlobalContext";
 import { useAuth } from "../../../contexts/AuthContext";
+import EsqueletorAdmin from "../../EsqueletorAdmin/EsqueletorAdmin";
 
 const Categories = () => {
   const { globalVariable } = useGlobal();
@@ -163,7 +164,7 @@ const Categories = () => {
                 <span>Imagen</span>
                 <span>Acciones</span>
               </div>
-              {cargando ? <Loader size="md" content='Cargando'/> : renderCategories}
+              {cargando ? <EsqueletorAdmin/> : renderCategories}
               <Pagination
                 totalPosts={categories.length}
                 itemsPerPage={10}
