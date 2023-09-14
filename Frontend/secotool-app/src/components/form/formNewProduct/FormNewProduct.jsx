@@ -1,4 +1,4 @@
-import { Modal, TagPicker, Uploader, Button } from "rsuite";
+import { Modal, TagPicker, Uploader, Button, Message, toaster } from "rsuite";
 import styles from "./FormNewProduct.module.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -12,6 +12,12 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
 
   const { token } = useAuth();
   const { globalVariable } = useGlobal();
+
+  const message = (
+    <Message showIcon type="success" closable>
+      El producto se ha creado exitosamente
+    </Message>
+  );
 
   useEffect(() => {
     async function fetchCategories() {
@@ -159,6 +165,7 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
         setUploadedImages([]);
         setIdsCategories([]);
         setIdsFeatures([]);
+        toaster.push(message, { placement: "bottomStart", duration: 5000 });
         console.log(response);
       })
       .catch(function (response) {

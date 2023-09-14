@@ -1,4 +1,4 @@
-import { Modal, Uploader } from "rsuite";
+import { Message, Modal, Uploader, toaster } from "rsuite";
 import styles from "./NewCategoryModal.module.css";
 import axios from "axios";
 import { useState } from "react";
@@ -26,6 +26,12 @@ function NewCategoryModal({
     addCategoryAdmin();
     handleClose();
   };
+
+  const message = (
+    <Message showIcon type="success" closable>
+      La categoria se ha creado exitosamente
+    </Message>
+  );
 
   const addCategoryAdmin = async () => {
 
@@ -62,6 +68,7 @@ function NewCategoryModal({
       .then(function (response) {
         handleClose();
         console.log(response);
+        toaster.push(message, { placement: "bottomStart", duration: 5000 });
         getData();
       })
       .catch(function (response) {
