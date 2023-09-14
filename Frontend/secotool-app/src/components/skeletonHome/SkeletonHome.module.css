@@ -1,0 +1,43 @@
+.contenedorCardsSkeleton{
+    position: relative;
+}
+
+.elemento {
+    width: 100%;
+    background-color: rgb(255, 255, 255); /* Establece el fondo inicial como transparente */
+    opacity: 0.7;
+    height: 45px;
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+    height: 250px;
+    border-radius: 8px;
+  }
+  
+  @keyframes skeleton-loading {
+    0% {
+      background-position: -100% 0; /* Comienza con el fondo completamente a la izquierda */
+    }
+    100% {
+      background-position: 100% 0; /* Termina con el fondo completamente a la derecha */
+    }
+  }
+  
+  /* Aplica la animación a fondo en lugar de todo el elemento */
+  .elemento::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent 25%, #f0f0f0 50%, transparent 75%);
+    background-size: 200% 100%; /* Asegura que el fondo sea el doble del ancho del elemento */
+    animation: skeleton-loading 3s linear infinite;
+  }
+  
+
+  .loader{
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }

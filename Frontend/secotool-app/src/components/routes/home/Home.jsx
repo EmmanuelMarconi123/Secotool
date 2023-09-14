@@ -6,8 +6,13 @@ import { Loader } from "rsuite";
 import { useEffect, useState } from "react";
 import { useGlobal } from "../../../contexts/GlobalContext";
 import { useAuth } from "../../../contexts/AuthContext";
+import SkeletonHome from "../../SkeletonHome/SkeletonHome";
 
-const LoadingIndicator = () => <Loader size="md" content="CARGANDO" />;
+const LoadingIndicator = () => 
+
+<SkeletonHome/>
+{/* <Loader size="md" content="CARGANDO" />; */}
+
 
 const NetworkError = () => <p>Network Error</p>;
 
