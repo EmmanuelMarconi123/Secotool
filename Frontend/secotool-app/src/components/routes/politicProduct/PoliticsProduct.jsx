@@ -1,6 +1,6 @@
 import styles from "./PoliticsProduct.module.css";
 import { useEffect, useState } from "react";
-import { ButtonToolbar, Button, Modal, Message, toaster, Loader } from "rsuite";
+import { ButtonToolbar, Button, Modal, Message, toaster } from "rsuite";
 import PoliticCard from "../../PoliticCard/PoliticCard";
 import Pagination from "../../pagination/Pagination";
 import ModalPolitica from "./ModalPolitica";
@@ -8,6 +8,7 @@ import ModalEditarPolitica from "./ModalEditarPolitica";
 import axios from "axios";
 import { useAuth } from "../../../contexts/AuthContext";
 import { useGlobal } from "../../../contexts/GlobalContext";
+import EsqueletorAdmin from "../../EsqueletorAdmin/EsqueletorAdmin";
 
 const PoliticsProduct = () => {
   //------------------------------ CONFIG MODALS--------------->
@@ -170,7 +171,7 @@ const PoliticsProduct = () => {
                 <span>Descripción</span>
                 <span>Acciones</span>
               </div>
-              {cargando ? <Loader size="md" content='Cargando'/> : renderPoliticas}
+              {cargando ? <EsqueletorAdmin/> : renderPoliticas}
               <Pagination
                 totalPosts={politicas.length}
                 itemsPerPage={10}

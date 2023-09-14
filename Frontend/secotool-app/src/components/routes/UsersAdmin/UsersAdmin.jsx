@@ -4,7 +4,7 @@ import UsersAdminCard from "../../adminUserCard/UsersAdminCard";
 import Pagination from "../../pagination/Pagination";
 import { useAuth } from "../../../contexts/AuthContext";
 import { useGlobal } from "../../../contexts/GlobalContext";
-import { Loader } from "rsuite";
+import EsqueletorAdmin from "../../EsqueletorAdmin/EsqueletorAdmin";
 
 const UsersAdmin = () => {
   const { token } = useAuth();
@@ -88,7 +88,7 @@ const UsersAdmin = () => {
                 <span>Nombre</span>
                 <span>Permisos admin</span>
               </div>
-             {cargando ? <Loader size="md" content='Cargando'/> : renderUsers}
+             {cargando ? <EsqueletorAdmin/> : renderUsers}
               <Pagination
                 totalPosts={user.length}
                 itemsPerPage={itemsPerPage}
