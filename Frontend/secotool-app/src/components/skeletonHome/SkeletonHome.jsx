@@ -1,5 +1,4 @@
 
-import { Loader } from "rsuite";
 import styles from "./SkeletonHome.module.css";
 import { Grid } from "@mui/material";
 
