@@ -188,7 +188,7 @@ const Features = () => {
                   onClick={handleOpen}
                   style={{ background: "#45A42D", color: "#F9F9F9" }}
                 >
-                  + Añadir Característica
+                  + Añadir Nueva
                 </Button>
               </ButtonToolbar>
             </div>

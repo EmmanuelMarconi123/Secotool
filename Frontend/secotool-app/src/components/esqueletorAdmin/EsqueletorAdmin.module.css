@@ -1,7 +1,7 @@
   
  .elemento {
     width: 100%;
-    background-color: rgb(215, 213, 213); /* Establece el fondo inicial como transparente */
+    background-color: rgb(246, 246, 246); /* Establece el fondo inicial como transparente */
     opacity: 0.7;
     height: 45px;
     box-shadow: 0 2px 4px rgba(206, 205, 205, 0.1);
