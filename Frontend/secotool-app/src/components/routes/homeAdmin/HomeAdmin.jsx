@@ -8,6 +8,7 @@ import FormNewProduct from "../../form/formNewProduct/FormNewProduct";
 import FormEditProduct from "../../form/FormEditProduct";
 import { useAuth } from "../../../contexts/AuthContext";
 import { useGlobal } from "../../../contexts/GlobalContext";
+import EsqueletorAdmin from "../../EsqueletorAdmin/EsqueletorAdmin";
 
 
 const HomeAdmin = () => {
@@ -184,7 +185,9 @@ const HomeAdmin = () => {
                 <span>Nombre</span>
                 <span>Acciones</span>
               </div>
-              {cargando ? <Loader size="md" content='Cargando'/> : renderProductosAdmin}
+              {cargando ? 
+              <EsqueletorAdmin/>
+              : renderProductosAdmin}
               <Pagination
                 totalPosts={products.length}
                 itemsPerPage={10}
