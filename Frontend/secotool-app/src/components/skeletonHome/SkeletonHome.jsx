@@ -9,7 +9,7 @@ const SkeletonHome = () => {
 
     for (let i = 0; i < 10; i++) {
       elementos.push(
-      <Grid item xs={6} md={6} key={i} className={styles.elemento}/>
+      <Grid item xs={5} md={5} key={i} className={styles.elemento} style={{ margin: '5px' }}/>
       );
     }
     return elementos;
@@ -18,7 +18,6 @@ const SkeletonHome = () => {
   return (
     <Grid container className={styles.contenedorCardsSkeleton}>
       {renderDiezElementos()}
-      <Loader size="md" content="Cargando" className={styles.loader} />
     </Grid>
   );
 };
