@@ -1,11 +1,13 @@
-import { Message, Modal, toaster } from "rsuite";
+import { Message, Modal, toaster, Uploader } from "rsuite";
 import styles from "./EditCategoryModal.module.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../contexts/AuthContext";
 import { useGlobal } from "../../contexts/GlobalContext";
 
+
 function EditCategoryModal({ handleClose, open, getData, selectedCategory }) {
+  console.log(selectedCategory)
   const { token } = useAuth();
   const { globalVariable } = useGlobal();
 
@@ -13,7 +15,12 @@ function EditCategoryModal({ handleClose, open, getData, selectedCategory }) {
     name: "",
     description: "",
   });
-  const [currentImage, setCurrentImage] = useState("");
+
+  const [currentImage, setCurrentImage] = useState([]);
+
+  const handleFileChange = (newFileList) => {
+    setCurrentImage(newFileList);
+  };
 
   const handleSubmit = () => {
     editCategoryAdmin();
@@ -27,13 +34,30 @@ function EditCategoryModal({ handleClose, open, getData, selectedCategory }) {
   );
 
   const editCategoryAdmin = async () => {
+    const formData = new FormData
+    
+    const categoryData = {
+      name: currentCategory.name,
+      description: currentCategory.description,
+    }
 
+    formData.append(
+      "category-data",
+      new Blob([JSON.stringify(categoryData)], { type: "application/json" })
+    );
+
+    currentImage.forEach((file) => {
+      formData.append("image", file.blobFile);
+    });
+
+    console.log(formData);
     axios({
       method: "put",
       url: `${globalVariable}/v1/api/categories/admin/${selectedCategory.id}`,
-      data: currentCategory,
+      data: formData,
       headers: {
-        'Authorization': 'Bearer ' + token,
+        Authorization: "Bearer " + token,
+        "Content-Type": "multipart/form-data",
       },
     })
       .then(function (response) {
@@ -47,12 +71,25 @@ function EditCategoryModal({ handleClose, open, getData, selectedCategory }) {
       });
   };
 
+  
   useEffect(() => {
     setCurrentCategory({
       name: selectedCategory.name,
       description: selectedCategory.description,
     });
-    setCurrentImage(selectedCategory.image);
+    if (selectedCategory.image) {
+    // Crear un objeto con las propiedades requeridas
+    const imageObject = {
+      name: selectedCategory.image.id,
+      fileKey: selectedCategory.image.id, // Ajusta esto según la estructura de tu objeto de imagen
+      url: selectedCategory.image.url, // Ajusta esto según la estructura de tu objeto de imagen
+    };
+
+    // Actualiza currentImage con el objeto de imagen
+    setCurrentImage([imageObject]);
+  } else {
+    setCurrentImage([]); // Si no hay imagen, asegúrate de asignar un arreglo vacío
+  }
   }, [selectedCategory]);
 
   return (
@@ -107,40 +144,36 @@ function EditCategoryModal({ handleClose, open, getData, selectedCategory }) {
                 style={{ height: 120, width: 640, padding: 8 }}
               ></textarea>
             </label>
+            <label htmlFor="">
+              Imagenes
+              <Uploader
+                autoUpload={false}
+                draggable
+                multiple={true}
+                className={styles.uploaderEc}
+                listType="picture-text"
+                fileList={currentImage}
+                onChange={handleFileChange}
+              >
+                <div
+                  style={{
+                    height: 54,
+                    width: 640,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 10,
+                    borderRadius: 8,
+                    border: "1px dashed #666",
+                  }}
+                >
+                  <i className="fa-solid fa-cloud-arrow-up"></i>
+                  <span>Subir imagen</span>
+                </div>
+              </Uploader>
+            </label>
           </form>
         </div>
-        {currentImage && (
-          <div
-            style={{
-              height: 54,
-              width: 640,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              border: "none",
-              overflow: "hidden",
-            }}
-          >
-            <img
-              style={{ width: "50%", borderRadius: 8 }}
-              src={currentImage.url}
-              alt=""
-            />
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "8px",
-                cursor: "pointer",
-              }}
-            >
-              <a href={currentImage.url} target="blank">
-                <i className="fa-solid fa-arrow-up-right-from-square"></i>
-              </a>
-            </div>
-          </div>
-        )}
       </Modal.Body>
       <Modal.Footer>
         <div className={styles.buttonsContainer}>
