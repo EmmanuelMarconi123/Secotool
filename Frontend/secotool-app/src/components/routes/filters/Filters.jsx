@@ -13,8 +13,8 @@ const Filters = () => {
   const [filterProducts, setfilterProducts] = useState([]);
   const [filteredProductsF, setFilteredProductsF] = useState([]);
   const { globalVariable } = useGlobal();
-  const params = useParams();
-  console.log(params);
+  const {idCateg} = useParams();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -27,9 +27,25 @@ const Filters = () => {
         console.error("Error fetching products:", error);
       }
     };
-
     fetchData();
   }, []);
+
+  // useEffect(() => {
+  //   // Filtra los productos basados en la categoría seleccionada
+  //   const categoryId = parseInt(idCateg);
+  //   console.log("Valor de params:", categoryId)
+  //   if (categoryId) {
+  //     let filteredProducts = productsF.filter((product) =>
+  //       product.productCategories.some((category) => category.id === categoryId)
+  //     );
+  //     console.log(filterProducts)
+  //     setFilteredProductsF(filteredProducts);
+  //     console.log("Productos filtrados:", filteredProducts); // Agrega este console.log
+  //   } else {
+  //     setFilteredProductsF(productsF)
+  //     console.log("Productos sin filtrar:", filteredProductsF)
+  //   }
+  // }, [idCateg, productsF]);
 
   const isScreenSmall = useMediaQuery("(max-width: 1024px)");
 
@@ -43,18 +59,16 @@ const Filters = () => {
         );
       });
       setFilteredProductsF(filteredProducts);
+      
     } else {
       // Si no hay filtros seleccionados, muestra todos los productos
       setFilteredProductsF(productsF);
     }
-
-    console.log("soy filter Products", filterProducts);
   }, [filterProducts, productsF]);
 
   const updatefilterProducts = (filterProducts) => {
     setfilterProducts(filterProducts);
   };
-  console.log(filteredProductsF);
 
   return (
     <section className={style.sectionFilters}>
@@ -69,7 +83,7 @@ const Filters = () => {
           <>
             <h4>Categorías</h4>
             <hr />
-            <FormFilterDesktop updatefilterProducts={updatefilterProducts} />
+            <FormFilterDesktop updatefilterProducts={updatefilterProducts} selectedCategoryId={idCateg} />
           </>
         ) : (
           <ModalFilters updatefilterProducts={updatefilterProducts} />
