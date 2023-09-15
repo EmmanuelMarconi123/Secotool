@@ -7,26 +7,36 @@ import axios from "axios";
 import { useMediaQuery } from "@react-hook/media-query";
 import { useGlobal } from "../../../contexts/GlobalContext";
 import { useParams } from "react-router-dom";
+import SkeletonCard from "../../skeletonCard/SkeletonCard";
 
 const Filters = () => {
   const [productsF, setProductsF] = useState([]);
   const [filterProducts, setfilterProducts] = useState([]);
   const [filteredProductsF, setFilteredProductsF] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // Estado para el loader
   const { globalVariable } = useGlobal();
   const {idCateg} = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Realiza la solicitud para obtener todos los productos sin filtros
+        const token = localStorage.getItem("tokenUserLog");
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
+        // Realiza la solicitud para obtener todos los productos sin filtros con el encabezado de autorización si existe el token
         const response = await axios.get(
-          `${globalVariable}/v1/api/products/open`
+          `${globalVariable}/v1/api/products/open`,
+          { headers }
         );
+
         setProductsF(response.data);
+        setIsLoading(false); // Cambia isLoadingProducts a false cuando los productos se cargan correctamente
       } catch (error) {
         console.error("Error fetching products:", error);
+        setIsLoading(false); // Cambia isLoadingProducts a false en caso de error
       }
     };
+
     fetchData();
   }, []);
 
@@ -83,7 +93,7 @@ const Filters = () => {
           <>
             <h4>Categorías</h4>
             <hr />
-            <FormFilterDesktop updatefilterProducts={updatefilterProducts} selectedCategoryId={idCateg} />
+            <FormFilterDesktop updatefilterProducts={updatefilterProducts} selectedCategoryId={idCateg} productsLoading={isLoading} />
           </>
         ) : (
           <ModalFilters updatefilterProducts={updatefilterProducts} />
@@ -91,7 +101,11 @@ const Filters = () => {
       </div>
       <div className={style.contenedorCards}>
         <h4 className={style.titleContenedorCards}>Todas las herramientas</h4>
-        <ListProducts products={filteredProductsF} />
+        {isLoading ? (
+          <SkeletonCard /> // Muestra el SkeletonCard mientras se están cargando los productos
+        ) : (
+          <ListProducts products={filteredProductsF} />
+        )}
       </div>
     </section>
   );
