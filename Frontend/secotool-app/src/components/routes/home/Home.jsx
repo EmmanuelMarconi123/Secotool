@@ -6,11 +6,11 @@ import { Loader } from "rsuite";
 import { useEffect, useState } from "react";
 import { useGlobal } from "../../../contexts/GlobalContext";
 import { useAuth } from "../../../contexts/AuthContext";
-import SkeletonHome from "../../SkeletonHome/SkeletonHome";
+import SkeletonCard from "../../skeletonCard/SkeletonCard";
 
 const LoadingIndicator = () => 
 
-<SkeletonHome/>
+<SkeletonCard/>
 {/* <Loader size="md" content="CARGANDO" />; */}
 
 
@@ -31,7 +31,6 @@ const Home = () => {
     status !== statuses.ERROR && products ? (
       <ListProducts products={products} />
     ) : null;
-
   useEffect(() => {
     setProducts(data);
   }, [data]);

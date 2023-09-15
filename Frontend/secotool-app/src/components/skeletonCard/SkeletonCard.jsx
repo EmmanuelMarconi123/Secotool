@@ -1,8 +1,8 @@
 
-import styles from "./SkeletonHome.module.css";
+import styles from "./SkeletonCard.module.css";
 import { Grid } from "@mui/material";
 
-const SkeletonHome = () => {
+const SkeletonCard = () => {
   const renderDiezElementos = () => {
     const elementos = [];
 
@@ -21,4 +21,4 @@ const SkeletonHome = () => {
   );
 };
 
-export default SkeletonHome;
+export default SkeletonCard;
