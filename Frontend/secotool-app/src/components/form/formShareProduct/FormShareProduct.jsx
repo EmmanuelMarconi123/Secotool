@@ -1,47 +1,98 @@
-import { Input } from "rsuite";
 import styles from "./FormShareProduct.module.css";
 import CardProductShare from "../../card/cardProductShare/CardProductShare";
+import { useGlobal } from "../../../contexts/GlobalContext";
+import { useState } from "react";
+import { Checkbox } from "rsuite";
 
 const FormShareProduct = ({ product }) => {
-  let url = "https://rsuitejs.com/components/notification/";
+  const [selectedSocials, setSelectedSocials] = useState([]);
+  const [textareaContent, setTextareaContent] = useState("");
+  const { globalVariable } = useGlobal();
+
+  console.log(product)
+
+
   // if (typeof window === "object") {
   //   url = String(window.location);
   //   console.log(url);
   // }
-  const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
-  const twitterShareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}`;
-  const handleWhatsAppShare = () => {
-    const text = `¡Echa un vistazo a este producto: ${url}`; // Mensaje de WhatsApp
 
-    // Crear una URL con el prefijo "https://wa.me/" y agregar el número de WhatsApp y el mensaje
-    const whatsappLink = `https://wa.me/?text=${encodeURIComponent(text)}`;
+  const toggleSocial = (social) => {
+    if (selectedSocials.includes(social)) {
+      setSelectedSocials(selectedSocials.filter((s) => s !== social));
+    } else {
+      setSelectedSocials([...selectedSocials, social]);
+    }
+  };
 
-    // Abrir el enlace en una nueva ventana o pestaña
-    window.open(whatsappLink, "_blank");
+  const handleShare = () => {
+    // let url = "https://rsuitejs.com/components/notification/";
+    let url = `${globalVariable}/product/${product.id}`;
+
+    selectedSocials.forEach((social) => {
+      if (social === "whatsapp") {
+        const whatsappText = `${textareaContent}\n${url}`;
+        const whatsappLink = `https://wa.me/?text=${encodeURIComponent(
+          whatsappText
+        )}`;
+        window.open(whatsappLink, "_blank");
+      } else if (social === "facebook") {
+        const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+          url
+        )}&quote=${encodeURIComponent(textareaContent)}`;
+        window.open(facebookShareUrl, "FacebookShare", "width=600,height=400");
+      } else if (social === "twitter") {
+        const twitterShareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(
+          url
+        )}&text=${encodeURIComponent(textareaContent)}`;
+        window.open(twitterShareUrl, "TwitterShare", "width=600,height=400");
+      }
+    });
   };
 
   return (
     <form className={styles.formShare}>
       <p>Elije alguna red social</p>
-      <div className={styles.socialIcons}>
-      <a href={facebookShareUrl} target="_blank" rel="noopener noreferrer">
+      <div className={styles.iconsShare}>
+        <div className={styles.icons}>
           <i className="fa-brands fa-facebook"></i>
-        </a>
-        <a href={twitterShareUrl} target="_blank" rel="noopener noreferrer">
+          <Checkbox
+            checked={selectedSocials.includes("facebook")}
+            onChange={() => toggleSocial("facebook")}
+          ></Checkbox>
+        </div>
+        <div className={styles.icons}>
           <i className="fa-brands fa-twitter"></i>
-        </a>
-        <a href="#" onClick={handleWhatsAppShare} rel="noopener noreferrer">
-          <i className="fa-brands fa-whatsapp"></i> {/* Cambio de icono a WhatsApp */}
-        </a>
+          <Checkbox
+            checked={selectedSocials.includes("twitter")}
+            onChange={() => toggleSocial("twitter")}
+          ></Checkbox>
+        </div>
+        <div className={styles.icons}>
+          <i className="fa-brands fa-whatsapp"></i>
+          <Checkbox
+            checked={selectedSocials.includes("whatsapp")}
+            onChange={() => toggleSocial("whatsapp")}
+          ></Checkbox>
+        </div>
       </div>
 
       <div className={styles.boxEndForm}>
         <CardProductShare product={product}></CardProductShare>
-        <div className={styles.inputLink}>
-          <label>URL:</label>
-          <Input readOnly value={url} />
-        </div>
+        <textarea
+          name=""
+          id=""
+          cols="60"
+          rows="10"
+          value={textareaContent}
+          onChange={(e) => setTextareaContent(e.target.value)}
+          style={{ height: 400, padding: 10 }}
+          placeholder="Agrega aquí un mensaje personalizado para acompañar el contenido que deseas compartir"
+        ></textarea>
       </div>
+      <button type="button" onClick={handleShare}>
+        Compartir
+      </button>
     </form>
   );
 };

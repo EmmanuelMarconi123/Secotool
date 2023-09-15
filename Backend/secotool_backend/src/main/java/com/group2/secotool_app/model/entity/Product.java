@@ -10,12 +10,13 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@RequiredArgsConstructor
 @Entity
-@ToString
 @Table(name = "products")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NonNull
     private Long id;
 
     @Column(nullable = false, unique = true)
@@ -26,6 +27,11 @@ public class Product {
 
     @Column(nullable = false)
     private Double price;
+
+    @Column(columnDefinition = "double(2,1) default '0'")
+    private Double averageScore = 0.0;
+
+    private Integer numberOfScores = 0;
 
     @OneToMany(mappedBy = "product", cascade = {
             CascadeType.PERSIST,
@@ -51,5 +57,8 @@ public class Product {
     @JsonIgnore
     private List<User> usersFavorite;
 
-
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "product_id",referencedColumnName = "id")
+    @JsonIgnore
+    private List<Review> productReviews;
 }

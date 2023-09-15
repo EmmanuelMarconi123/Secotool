@@ -81,4 +81,9 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
         user.setFavoritesProducts(favoritesProducts);
         userRepository.save(user);
     }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
 }

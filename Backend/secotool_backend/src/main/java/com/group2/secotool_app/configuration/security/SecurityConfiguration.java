@@ -1,5 +1,6 @@
 package com.group2.secotool_app.configuration.security;
 
+import com.group2.secotool_app.model.entity.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,7 +29,11 @@ public class SecurityConfiguration {
         http
                 .authorizeHttpRequests(authorize ->
                     authorize
-                            .requestMatchers("/v*/api/**",
+                            .requestMatchers("/v1/api/products/open/**",
+                                    "/v1/api/rentals/validate",
+                                    "/v1/api/categories/open/**",
+                                    "/v1/api/features/open/**",
+                                    "/v1/api/politics/open/**",
                                     "/v1/api/auth/**",
                                     "/v2/api-docs",
                                     "/v3/api-docs",
@@ -45,9 +50,32 @@ public class SecurityConfiguration {
                                     "/assets/**",
                                     "/scripts/**",
                                     "/*.js").permitAll()
-                            //.requestMatchers("/v1/api/users/**").hasAnyAuthority(UserRole.ADMIN.name(),UserRole.USER.name())
-                            //.requestMatchers("/v1/api/products/**").hasAuthority(UserRole.USER.name())
-                            //.anyRequest().authenticated()
+                            //products
+                            .requestMatchers("/v1/api/products/admin/**").hasAuthority(UserRole.ADMIN.name())
+
+                            //users
+                            .requestMatchers("/v1/api/users/products/**",
+                                    "/v1/api/users/getMe"
+                            ).hasAnyAuthority(UserRole.ADMIN.name(),UserRole.USER.name())
+
+
+                            //rentals
+                            .requestMatchers("/v1/api/rentals/**"
+                            ).hasAnyAuthority(UserRole.ADMIN.name(),UserRole.USER.name())
+                            .requestMatchers("/v1/api/rentals/admin/**").hasAuthority(UserRole.ADMIN.name())
+
+                            //features
+                            .requestMatchers("/v1/api/features/admin/**").hasAuthority(UserRole.ADMIN.name())
+
+                            //categories
+                            .requestMatchers("/v1/api/categories/admin/**").hasAuthority(UserRole.ADMIN.name())
+
+                            //politics
+                            .requestMatchers("/v1/api/politics/admin/**").hasAuthority(UserRole.ADMIN.name())
+
+                            //reviews
+                            .requestMatchers("/v1/api/reviews/**").hasAnyAuthority(UserRole.USER.name(),UserRole.ADMIN.name())
+                            .anyRequest().authenticated()
                 )
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session ->
@@ -66,9 +94,11 @@ public class SecurityConfiguration {
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
-    CorsConfigurationSource corsConfigurationSource(){
+
+    CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOriginPattern(("*"));
+        // "http://0823grupo2proyectointegrador.s3-website-us-east-1.amazonaws.com/"
+        configuration.addAllowedOriginPattern("*");
         configuration.setAllowedMethods(Arrays.asList("GET","POST","PATCH","PUT","DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setExposedHeaders(Arrays.asList("*"));
@@ -76,4 +106,5 @@ public class SecurityConfiguration {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+
 }

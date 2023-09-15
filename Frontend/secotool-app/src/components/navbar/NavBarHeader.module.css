@@ -47,13 +47,13 @@
   font-size: 16px;
   color: var(--dark);
   text-align: center;
-  padding: 14px 16px;
   text-decoration: none;
 }
 
 .navbarContainer a:hover{
   background-color: var(--color-primary);
   border-radius: 8px;
+  padding: 14px 16px;
 }
 
 .boxButtons {

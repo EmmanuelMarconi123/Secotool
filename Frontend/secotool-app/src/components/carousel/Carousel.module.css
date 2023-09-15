@@ -89,6 +89,7 @@
     .leftColumn img{
         width: 100%;
         height: 100%;
+        border-radius: 4px;
     }
 
     .rightColumn {
@@ -98,21 +99,47 @@
         gap: 8px;
     }
 
+    .rightImgProduct{
+        width: 144px;
+        height: 108px;
+        max-height: 108px;
+        border-radius: 4px;
+    }
+
     .imgProduct {
         max-width: 100%;
         height: 100%;
-        max-height: 640px;
+        max-height: 222px;
     }
 
     .moreImagesContainer{
         display: flex;
-        max-height: 249px;
         gap: 8px;
-        width: 100%;
+        flex-wrap: wrap;
     }
 
     .moreImagesContainer img{
-        width: 332px;
+        width: 133px;
+        height: 108px;
+        border-radius: 4px;
     }
 
+}
+
+@media screen and (min-width: 1440px){
+    .rightImgProduct{
+        width: 312px;
+        height: 234px;
+        max-height: 234px;
+    }
+
+    .imgProduct {
+        height: 480px;
+        max-height: 480px;
+    }
+
+    .moreImagesContainer img{
+        width: 312px;
+        height: 234px;
+    }
 }

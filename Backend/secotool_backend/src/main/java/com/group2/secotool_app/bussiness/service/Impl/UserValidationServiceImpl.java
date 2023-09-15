@@ -35,4 +35,10 @@ public class UserValidationServiceImpl implements IUserValidationService {
         }
         return Optional.empty();
     }
+
+    @Override
+    public void isUsernameAvailable(String username) {
+        if (userService.existsByUsername(username))
+            throw new RuntimeException("username "+ username + " not available");
+    }
 }

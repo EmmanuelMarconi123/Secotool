@@ -12,37 +12,29 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("v1/api/products/features")
+@RequestMapping("/v1/api/features")
 public class FeatureController {
 
     private final IFeatureFacade featureFacade;
 
-    @GetMapping
+    @GetMapping("/open")
     public ResponseEntity<List<FeatureDto>> getAllFeatures(){
         return ResponseEntity.ok(featureFacade.getAllFeatures());
     }
 
-    @PostMapping
+    @PostMapping("/admin")
     public ResponseEntity<String> saveFeature(@RequestBody @Valid FeatureRequestDto featureRequestDto){
         featureFacade.saveFeature(featureRequestDto);
         return ResponseEntity.ok("feature saved successfully");
     }
 
-    // puede ir en el controller de productos
-    /*
-    @PostMapping("/{prodId}/{featureId}")
-    public ResponseEntity<String> associateProductToFeature(@PathVariable("prodId") Long prodId, @PathVariable("featureId") Long featureId){
-        featureFacade.associateProductToFeature(prodId,featureId);
-        return ResponseEntity.ok(String.format("product: %s successfully associated with feature: %s", prodId,featureId));
-    }
-     */
-    @PutMapping("/{id}")
+    @PutMapping("/admin/{id}")
     public ResponseEntity<String> updateFeature(@RequestBody @Valid FeatureRequestDto featureRequestDto, @PathVariable Long id){
         featureFacade.updateFeature(featureRequestDto,id);
         return ResponseEntity.ok(String.format("feature %s successfully updated", id));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/{id}")
     public ResponseEntity<String> deleteFeature(@PathVariable Long id){
         featureFacade.deleteFeature(id);
         return ResponseEntity.ok(String.format("feature %s successfully deleted", id));

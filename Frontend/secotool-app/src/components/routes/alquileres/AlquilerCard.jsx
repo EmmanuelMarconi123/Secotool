@@ -10,9 +10,14 @@ function AlquilerCard(props) {
           className={styles.productImage}
         />
         <div className={styles.infoCard}>
-          <span className={styles.favoritePrice}>{props.alquiler}</span>
+          <span className={styles.status} style={{ color: "red" }}>
+            PENDIENTE
+          </span>
+          <span className={styles.dateRange}>{props.alquiler}</span>
           <span className={styles.productName}>{props.name}</span>
-          <span className={styles.favoritePrice}>${props.price}</span>
+          <span className={styles.favoritePrice}>
+            ${props.price} - reservado el 20/04/23
+          </span>
         </div>
         <div className={styles.buttonsAlquiler}>
           <button>Volver a alquilar</button>

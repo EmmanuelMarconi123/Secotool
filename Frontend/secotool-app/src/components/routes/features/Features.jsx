@@ -7,6 +7,7 @@ import AdminFeatureCard from "../../adminFeatureCard/AdminFeatureCard";
 import EditFeatureModal from "../../editFeatureModal/EditFeatureModal";
 import { useAuth } from "../../../contexts/AuthContext";
 import { Snackbar, Alert } from "@mui/material";
+import { useGlobal } from "../../../contexts/GlobalContext";
 
 // const icons = [
 //   {
@@ -63,6 +64,7 @@ import { Snackbar, Alert } from "@mui/material";
 
 const Features = () => {
   const { token } = useAuth();
+  const { globalVariable } = useGlobal();
   //------------------------------ CONFIG MODALS--------------->
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -97,7 +99,7 @@ const Features = () => {
     if (confirm("¿Está seguro que desea borrar esta característica?"))
       try {
         const response = await fetch(
-          `http://localhost:8080/v1/api/products/features/${id}`,
+          `${globalVariable}/v1/api/products/features/${id}`,
           {
             method: "DELETE",
             headers: {
@@ -120,7 +122,7 @@ const Features = () => {
   const fetchFeaturesAdmin = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8080/v1/api/products/features"
+        `${globalVariable}/v1/api/features/open`
       );
       if (response.ok) {
         const data = await response.json();
@@ -220,13 +222,11 @@ const Features = () => {
         </Alert>
       </Snackbar>
       {/* --------------------------NUEVA CARACTERÍSTICA MODAL--------------------------------> */}
-
       <NewFeatureModal
         handleClose={handleClose}
         open={open}
         getData={() => fetchFeaturesAdmin()}
       />
-
       {/* ------------------------------------------EDITAR PRODUCTO MODAL--------------------------> */}
       <EditFeatureModal
         handleClose={handleCloseEp}

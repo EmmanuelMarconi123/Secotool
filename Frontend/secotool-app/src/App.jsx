@@ -11,15 +11,15 @@ import { GlobalProvider } from "./contexts/GlobalContext";
 function App() {
   return (
     <GlobalProvider>
-      <AuthProvider>
-        <FunctionProvider>
-          <Routes>
-            <Route path="/auth/*" element={<AuthRoutes />} />
-            <Route path="/*" element={<AppRoutes />} />
-            <Route path="/admin/*" element={<AppRoutesAdmin />} />
-          </Routes>
-        </FunctionProvider>
-      </AuthProvider>
+    <AuthProvider>
+      <FunctionProvider>
+        <Routes>
+          <Route path="/auth/*" element={<AuthRoutes />} />
+          <Route path="/*" element={<AppRoutes />} />
+          <Route path="/admin/*" element={<AppRoutesAdmin />} />
+        </Routes>
+      </FunctionProvider>
+    </AuthProvider>
     </GlobalProvider>
   );
 }

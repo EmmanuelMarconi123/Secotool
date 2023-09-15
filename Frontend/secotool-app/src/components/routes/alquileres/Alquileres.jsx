@@ -3,14 +3,16 @@ import { useState, useEffect } from "react";
 import AlquilerCard from "./AlquilerCard";
 import axios from "axios";
 import { useAuth } from "../../../contexts/AuthContext";
+import { useGlobal } from "../../../contexts/GlobalContext";
 
 function Alquileres() {
   const { token } = useAuth();
+  const { globalVariable } = useGlobal();
   console.log(token);
 
   const [alquileres, setAlquileres] = useState([]);
 
-  const apiUrl = "http://localhost:8080/v1/api/users/products/favorites";
+  const apiUrl = `${globalVariable}/v1/api/users/products/alquileres`;
 
   const fetchAlquileres = async () => {
     try {
@@ -31,13 +33,19 @@ function Alquileres() {
   }, []);
 
   return (
-    <div className={styles.favoritesContainer}>
+    <div className={styles.alquileresContainer}>
       <h4>Mis Alquileres</h4>
       <div className={styles.cardFContainer}>
-        {/* {alquileres.map(product => (
-          <AlquilerCard key={product.id} id={product.id} images={product.images[0].url} name={product.name} price={product.price} />
-        ))} */}
-        <AlquilerCard
+        {alquileres.map((product) => (
+          <AlquilerCard
+            key={product.id}
+            id={product.id}
+            images={product.images[0].url}
+            name={product.name}
+            price={product.price}
+          />
+        ))}
+        {/* <AlquilerCard
           id={1}
           images={
             "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF8Z4jSDwUrsWSHfPShgh0o_EYNE0u9YfBPw&usqp=CAU"
@@ -47,7 +55,7 @@ function Alquileres() {
             "Taladro percutor inalámbrico 13mm atornillador 20V Hamilton Ultimate ULT111"
           }
           price={"product.price"}
-        />
+        /> */}
       </div>
     </div>
   );

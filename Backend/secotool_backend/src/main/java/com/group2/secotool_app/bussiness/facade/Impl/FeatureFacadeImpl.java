@@ -4,7 +4,6 @@ import com.group2.secotool_app.bussiness.facade.IFeatureFacade;
 import com.group2.secotool_app.bussiness.mapper.FeatureDtoMapper;
 import com.group2.secotool_app.bussiness.mapper.FeatureMapper;
 import com.group2.secotool_app.bussiness.service.IFeatureService;
-import com.group2.secotool_app.bussiness.service.IProductService;
 import com.group2.secotool_app.model.dto.FeatureDto;
 import com.group2.secotool_app.model.dto.request.FeatureRequestDto;
 import com.group2.secotool_app.model.entity.Feature;
@@ -19,7 +18,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FeatureFacadeImpl implements IFeatureFacade {
     private final IFeatureService featureService;
-    private final IProductService productService;
     private final FeatureDtoMapper featureDtoMapper;
     private final FeatureMapper featureMapper;
     @Override

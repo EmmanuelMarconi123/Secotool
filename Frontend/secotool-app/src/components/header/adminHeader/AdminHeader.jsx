@@ -54,6 +54,15 @@ const AdminHeader = () => {
               <i className="fa-solid fa-tag"></i>
               Categorías
             </NavLink>
+            <NavLink
+              to="/admin/politicas"
+              className={({ isActive }) =>
+                isActive ? styles.navLinkActive : styles.navLink
+              }
+            >
+              <i class="fa-solid fa-file-contract"></i>
+              Politícas
+            </NavLink>
           </div>
           <div>
             <NavLink className={styles.closeSesion} to="/home">

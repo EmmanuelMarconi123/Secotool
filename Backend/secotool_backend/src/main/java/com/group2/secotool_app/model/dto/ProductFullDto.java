@@ -7,10 +7,13 @@ public record ProductFullDto(
         String name,
         String description,
         Double price,
+        Double averageScore,
+        Integer numberOfScores,
         Boolean isFavorite,
         List<ImageDto> images,
         List<FeatureDto> productFeatures,
         List<CategoryDto> productCategories,
-        List<RentDto> productRentals
+        List<RentDto> productRentals,
+        List<ReviewDto> productReviews
 ) {
 }

@@ -1,7 +1,5 @@
 package com.group2.secotool_app.bussiness.service.Impl;
 
-import com.group2.secotool_app.bussiness.mapper.ProductMapper;
-import com.group2.secotool_app.bussiness.service.IProductValidationService;
 import com.group2.secotool_app.model.entity.Image;
 import com.group2.secotool_app.model.entity.Product;
 import com.group2.secotool_app.persistence.ProductRepository;
@@ -67,8 +65,6 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public void updateProduct(Product prod) {
-        if (!existProductById(prod.getId()))
-            throw new RuntimeException("it is not posible to update a product doesn't exists");
         productRepository.deleteAllRelationsAssociatedWithAProductById(prod.getId());
         productRepository.save(prod);
     }
@@ -102,13 +98,28 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public List<Product> getAllProductsByRangeOfDateAvaibleToRent(LocalDate startDate, LocalDate endDate) {
+    public List<Product> getAllProductsByRangeOfDateAvailableToRent(LocalDate startDate, LocalDate endDate) {
         return productRepository.getAllProductsAvaibleToRent(startDate,endDate);
     }
 
     @Override
     public boolean existProductByName(String name) {
         return productRepository.existsByName(name);
+    }
+
+    @Override
+    public void updateAverageAndNumberOfScore(Double score, Long productId) {
+        var prod = findProductById(productId);
+
+        var oldAverageScore = prod.getAverageScore();
+        var oldScores = prod.getNumberOfScores();
+
+        var newScores = oldScores + 1;
+        var totalScore = oldAverageScore * oldScores + score;
+
+        var newAverage = totalScore / newScores;
+
+        productRepository.updateAvarageAndNumberOfScore(newAverage,newScores,productId);
     }
 
 

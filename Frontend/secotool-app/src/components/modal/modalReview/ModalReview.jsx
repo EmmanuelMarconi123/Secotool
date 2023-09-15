@@ -28,6 +28,8 @@ const ModalReview = ({ open, size, handleClose, productId }) => {
       .then(function (response) {
         console.log(response);
         handleClose();
+        setStars(0);
+        setDesc("");
       })
       .catch(function (error) {
         console.log(error);
@@ -49,7 +51,7 @@ const ModalReview = ({ open, size, handleClose, productId }) => {
       dialogClassName={styles.dialogClassName}
     >
       <Modal.Header>
-        <Modal.Title style={{fontWeight:"600", color:"var(--dark)"}}>
+        <Modal.Title style={{ fontWeight: "600", color: "var(--dark)" }}>
           ¡Gracias por tu alquiler!
         </Modal.Title>
       </Modal.Header>
@@ -73,7 +75,11 @@ const ModalReview = ({ open, size, handleClose, productId }) => {
       </Modal.Body>
       <Modal.Footer>
         <div className={styles.footerButtons}>
-          <Button style={{backgroundColor:"#4a6ac9"}} onClick={() => fetchReview()} appearance="primary">
+          <Button
+            style={{ backgroundColor: "#4a6ac9" }}
+            onClick={() => fetchReview()}
+            appearance="primary"
+          >
             Calificar
           </Button>
           <Button onClick={handleClose} appearance="subtle">

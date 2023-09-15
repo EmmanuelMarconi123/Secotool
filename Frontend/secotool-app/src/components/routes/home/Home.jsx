@@ -4,14 +4,26 @@ import ListProducts from "../../list/ListProducts";
 import { useFetch, statuses } from "../../../customHooks/useFetch";
 import { Loader } from "rsuite";
 import { useEffect, useState } from "react";
+import { useGlobal } from "../../../contexts/GlobalContext";
+import { useAuth } from "../../../contexts/AuthContext";
+import SkeletonCard from "../../skeletonCard/SkeletonCard";
 
-const LoadingIndicator = () => <Loader size="md" content="CARGANDO" />;
+const LoadingIndicator = () => 
+
+<SkeletonCard/>
+{/* <Loader size="md" content="CARGANDO" />; */}
+
 
 const NetworkError = () => <p>Network Error</p>;
 
 const Home = () => {
-  const URL_API = "http://localhost:8080/v1/api/products/open";
-  const { data, status } = useFetch(URL_API, {});
+  const { isLoggedIn, token } = useAuth();
+  const { globalVariable } = useGlobal();
+  const URL_API = `${globalVariable}/v1/api/products/open`;
+
+  const fetchOptions = isLoggedIn ? { headers: { Authorization: `Bearer ${token}` } } : {};
+
+  const { data, status } = useFetch(URL_API, fetchOptions);
 
   const [products, setProducts] = useState("");
 
@@ -19,7 +31,6 @@ const Home = () => {
     status !== statuses.ERROR && products ? (
       <ListProducts products={products} />
     ) : null;
-
   useEffect(() => {
     setProducts(data);
   }, [data]);

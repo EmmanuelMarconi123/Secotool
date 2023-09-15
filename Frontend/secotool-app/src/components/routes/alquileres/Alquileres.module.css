@@ -1,5 +1,5 @@
-.favoritesContainer {
-    margin-top: 100px;
+.alquileresContainer {
+    margin-top: 110px;
     margin-bottom: 100px;
 }
 
@@ -9,18 +9,18 @@
     gap: 8px;
 }
 
-.favoritesContainer h4 {
+.alquileresContainer h4 {
     color: #3a3939;
     font-size: 19px;
     font-weight: 600;
 }
 
 @media screen and (max-width: 360px) {
-    .favoritesContainer {
-        margin-top: 10vh;
+    .alquileresContainer {
+        margin-top: 12vh;
     }
 
-    .favoritesContainer h4 {
+    .alquileresContainer h4 {
         color: #3a3939;
         font-size: 16px;
         font-weight: 500;

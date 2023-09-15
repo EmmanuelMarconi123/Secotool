@@ -12,7 +12,6 @@ import java.util.List;
 
 public interface IUserFacade {
     UserGetMeDto findUserById(Long id);
-    UserGetMeDto findUserByUsername(String username);
     UserAuthenticatedResponseDto authenticateUser(UserAuthenticationRequestDto authenticationRequestDto);
     UserAuthenticatedResponseDto registerUser(UserRegistrationRequestDto registerRequestDto);
 

@@ -2,6 +2,8 @@ import { Modal, Uploader } from "rsuite";
 import styles from "./NewCategoryModal.module.css";
 import axios from "axios";
 import { useState } from "react";
+import { useAuth } from "../../contexts/AuthContext";
+import { useGlobal } from "../../contexts/GlobalContext";
 
 function NewCategoryModal({
   open,
@@ -9,6 +11,11 @@ function NewCategoryModal({
   handleNewProductSubmit,
   getData,
 }) {
+  //--------------------------------CONTEXT------------------------->
+  const { token } = useAuth();
+  const { globalVariable } = useGlobal();
+
+  //-------------------------------------------------------
   const [newCategory, setNewCategory] = useState({ name: "", description: "" });
   const [uploadedImages, setUploadedImages] = useState([]); // Estado para las imágenes cargadas
   const handleImageChangeD = (fileList) => {
@@ -45,10 +52,11 @@ function NewCategoryModal({
 
     axios({
       method: "post",
-      url: "http://localhost:8080/v1/api/categories",
+      url: `${globalVariable}/v1/api/categories/admin`,
       data: formData,
       headers: {
         "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`
       },
     })
       .then(function (response) {
