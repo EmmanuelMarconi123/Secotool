@@ -38,7 +38,7 @@ const Home = () => {
   return (
     <section className={styles.sectionBusqueda}>
       <div className={styles.containerBusqueda}>
-        <div className={styles.bgBusqueda}></div>
+        <div className={styles.bgBusqueda}></div>\
         <div className={styles.busquedaItems}>
           <h3 className={styles.titulo}>¿Qué herramienta necesitas?</h3>
           <span className={styles.subtitulo}>
