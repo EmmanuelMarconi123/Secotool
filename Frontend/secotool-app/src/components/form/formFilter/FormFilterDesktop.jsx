@@ -2,13 +2,21 @@ import { useEffect, useState } from "react";
 import style from "./FormFilterDesktop.module.css";
 import axios from "axios";
 import { useGlobal } from "../../../contexts/GlobalContext";
+import { useParams } from "react-router-dom";
+import { Placeholder } from "rsuite";
 
-const FormFilterDesktop = ({ updatefilterProducts }) => {
+const FormFilterDesktop = ({ updatefilterProducts, productsLoading}) => {
   const [categoryData, setCategoryData] = useState([]);
   const { globalVariable } = useGlobal();
+  const [isLoading, setIsLoading] = useState(true); // Estado para el loader
+ 
+  const { idCateg } = useParams();
+  const idParams = parseInt(idCateg)
+  
 
   // Estado para mantener el registro de checkboxes seleccionados
-  const [selectedCategories, setSelectedCategories] = useState([]);
+  // const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState(idParams ? [idParams] : []);
 
   useEffect(() => {
     // Realizar la solicitud Fetch al endpoint usando Axios
@@ -16,16 +24,27 @@ const FormFilterDesktop = ({ updatefilterProducts }) => {
       .get(`${globalVariable}/v1/api/categories/open`)
       .then((response) => {
         setCategoryData(response.data);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching categories:", error);
+        setIsLoading(false);
       });
   }, []);
 
   useEffect(() => {
+    // Este efecto se ejecutará cuando idCateg cambie
+    const idCategValue = parseInt(idCateg);
+    if (!isNaN(idCategValue)) {
+      // Verifica que idCateg sea un número válido
+      setSelectedCategories([idCategValue]);
+    }
+  }, [idCateg]);
+
+  useEffect(() => {
     // Llama a la función de actualización cuando cambie la selección de categorías
     updatefilterProducts(selectedCategories);
-  }, [selectedCategories, updatefilterProducts]);
+  }, [selectedCategories, updatefilterProducts,]);
 
   console.log(selectedCategories);
 
@@ -40,21 +59,33 @@ const FormFilterDesktop = ({ updatefilterProducts }) => {
       );
     }
     updatefilterProducts(selectedCategories);
-  };
+  }
+
+  const placeholders = Array.from({ length: 7 }, (_, index) => (
+    <div key={index} className={style.boxInputCheck}>
+      <Placeholder.Graph width={"100%"} height={20} active />
+    </div>
+  ));
 
   return (
     <form className={style.form}>
-      {categoryData.map((categ) => (
-        <div key={categ.id} className={style.boxInputCheck}>
-          <input
-            id={categ.id}
-            type="checkbox"
-            value={categ.id}
-            onChange={handleCheckboxChange}
-          />
-          <label>{categ.name}</label>
-        </div>
-      ))}
+      {(isLoading || productsLoading) ? (
+        // Muestra los placeholders mientras se están cargando las categorías o los productos
+        placeholders
+      ) : (
+        categoryData.map((categ) => (
+          <div key={categ.id} className={style.boxInputCheck}>
+            <input
+              id={categ.id}
+              type="checkbox"
+              value={categ.id}
+              onChange={handleCheckboxChange}
+              checked={selectedCategories.includes(categ.id)}
+            />
+            <label>{categ.name}</label>
+          </div>
+        ))
+      )}
     </form>
   );
 };
