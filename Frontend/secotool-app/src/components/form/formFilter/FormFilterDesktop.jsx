@@ -61,7 +61,7 @@ const FormFilterDesktop = ({ updatefilterProducts, productsLoading}) => {
     updatefilterProducts(selectedCategories);
   }
 
-  const placeholders = Array.from({ length: categoryData.length }, (_, index) => (
+  const placeholders = Array.from({ length: 7 }, (_, index) => (
     <div key={index} className={style.boxInputCheck}>
       <Placeholder.Graph width={"100%"} height={20} active />
     </div>
