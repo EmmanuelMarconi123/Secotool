@@ -51,6 +51,9 @@ const DropdownProfile = () => {
           <Link to="/favorites">
             <i className="fa-regular fa-heart"></i>Mis favoritos
           </Link>
+          <Link to="/alquileres">
+            <i className="fa-regular fa-calendar-clock"></i>Mis alquileres
+          </Link>
           <Link to="/" onClick={logout}>
             <i className="fa-regular fa-arrow-right-from-bracket"></i> Cerrar
             Sesión
