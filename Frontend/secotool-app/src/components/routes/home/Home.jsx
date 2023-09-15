@@ -6,8 +6,13 @@ import { Loader } from "rsuite";
 import { useEffect, useState } from "react";
 import { useGlobal } from "../../../contexts/GlobalContext";
 import { useAuth } from "../../../contexts/AuthContext";
+import SkeletonCard from "../../skeletonCard/SkeletonCard";
 
-const LoadingIndicator = () => <Loader size="md" content="CARGANDO" />;
+const LoadingIndicator = () => 
+
+<SkeletonCard/>
+{/* <Loader size="md" content="CARGANDO" />; */}
+
 
 const NetworkError = () => <p>Network Error</p>;
 
@@ -26,7 +31,6 @@ const Home = () => {
     status !== statuses.ERROR && products ? (
       <ListProducts products={products} />
     ) : null;
-
   useEffect(() => {
     setProducts(data);
     console.log(fetchOptions)
