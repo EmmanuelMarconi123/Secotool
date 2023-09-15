@@ -33,7 +33,7 @@ function Details() {
   const isScreenSmall = useMediaQuery("(max-width: 767px)");
   const [isSticky, setIsSticky] = useState(false);
   const { globalVariable } = useGlobal();
-  const { token } = useAuth();
+  //const { token } = useAuth();
   const URL_API = `${globalVariable}/v1/api/products/open/${params.id}`;
   const { data, status } = useFetch(URL_API, {});
   const [open, setOpen] = useState(false);
@@ -43,7 +43,7 @@ function Details() {
   const [selectedDateRange, setSelectedDateRange] = useState([]);
   const [dataRentail, setDataRentail] = useState(null);
 
-  const toaster = useToaster();
+ /* const toaster = useToaster();*/
 
   function handleScroll() {
     const scrollPosition = window.scrollY;
@@ -68,15 +68,15 @@ function Details() {
       });
   }
 
-  const message = (
+ /* const message = (
     <Message showIcon type="error" closable>
       No se ha podido alquilar el producto
     </Message>
   );
 
   async function handleRent() {
-    /*const startDate = selectedDateRange[0].toISOString().split("T")[0];
-    const endDate = selectedDateRange[1].toISOString().split("T")[0];*/
+    //const startDate = selectedDateRange[0].toISOString().split("T")[0];
+    //const endDate = selectedDateRange[1].toISOString().split("T")[0];
 
     if (selectedDateRange) {
       const startDate = selectedDateRange[0].toISOString().split("T")[0];
@@ -107,7 +107,7 @@ function Details() {
     } else {
       alert("Debes seleccionar alguna fecha para alquilar el producto");
     }
-  }
+  }*/
 
   const validateRentals = () => {
     if (selectedDateRange.length !== 2) {
@@ -308,13 +308,14 @@ function Details() {
                   )}
                 </div>
               </div>
-              <Button
+              <Link
                 className={styles.buttonCta}
+                to="/rentaldetails"
                 // onClick={() => handleOpen("lg")}
-                onClick={() => handleRent()}
+                //onClick={() => handleRent()}
               >
                 Alquilar
-              </Button>
+              </Link>
               <ModalReview
                 open={open}
                 size={size}
