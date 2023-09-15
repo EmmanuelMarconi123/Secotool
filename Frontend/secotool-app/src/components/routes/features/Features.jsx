@@ -1,7 +1,7 @@
 import styles from "./Features.module.css";
 import { useEffect, useState } from "react";
 import Pagination from "../../pagination/Pagination";
-import { ButtonToolbar, Button} from "rsuite";
+import { ButtonToolbar, Button, Modal} from "rsuite";
 import NewFeatureModal from "../../newFeatureModal/NewFeatureModal";
 import AdminFeatureCard from "../../adminFeatureCard/AdminFeatureCard";
 import EditFeatureModal from "../../editFeatureModal/EditFeatureModal";
@@ -75,11 +75,6 @@ const Features = () => {
   const handleOpenEp = () => setOpenEp(true);
   const handleCloseEp = () => setOpenEp(false);
 
-  //--------------------DELETE ALERT-------------------->
-  const [alertOpen, setAlertOpen] = useState(false);
-  const showDeleteSuccessAlert = () => {
-    setAlertOpen(true);
-  };
 
   //-------------- CONFIGURACION DE LA PAGINACION -------------------->
 
@@ -96,11 +91,28 @@ const Features = () => {
     setSelectedFeature(feature);
   }
 
-  async function deleteFeature(id) {
-    if (confirm("¿Está seguro que desea borrar esta característica?"))
+
+  //------------------------ DELETE CARACT ------------------------------
+
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);//BORRAR Caracteristica
+  const [caracteristicaABorrar, setCaracterisitcaABorrar] = useState({})
+
+  const showDeleteSuccessAlert = () => {
+    setAlertOpen(true);
+  };
+
+  const caractABorrar = (feature)=>{
+    setIsDeleteModalVisible(true)
+    setCaracterisitcaABorrar(feature)
+  }
+
+
+  async function deleteFeature() {
+    setIsDeleteModalVisible(false)
       try {
         const response = await fetch(
-          `${globalVariable}/v1/api/features/admin/${id}`,
+          `${globalVariable}/v1/api/features/admin/${caracteristicaABorrar.id}`,
           {
             method: "DELETE",
             headers: {
@@ -109,7 +121,7 @@ const Features = () => {
           }
         );
         if (response.ok) {
-          console.log(`Se ha borrado el item con id ${id} correctamente`);
+          console.log(`Se ha borrado el item con id ${caracteristicaABorrar.id} correctamente`);
           fetchFeaturesAdmin();
           showDeleteSuccessAlert();
         } else {
@@ -162,7 +174,7 @@ const Features = () => {
       currentPost.map((feature) => (
         <AdminFeatureCard
           key={feature.id}
-          deleteItem={() => deleteFeature(feature.id)}
+          deleteItem={() => caractABorrar(feature)}
           name={feature.name}
           icon={feature.icon}
           editItem={() => handleEdit(feature)}
@@ -222,13 +234,38 @@ const Features = () => {
         </span>
       )}
       {/* -----------------------DELETE ALERT---------------------> */}
+      <Modal
+        open={isDeleteModalVisible}
+        onClose={() => setIsDeleteModalVisible(false)}
+      >
+        <Modal.Header>
+          <Modal.Title>Confirmar eliminación</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          ¿Está seguro que desea borrar la característica: {}?
+        </Modal.Body>
+        <Modal.Footer className={styles.modalButtons}>
+          <button
+            onClick={() => setIsDeleteModalVisible(false)}
+            style={{ backgroundColor: "red", color: "white" }}
+          >
+            Cancelar
+          </button>
+          <button
+            onClick={deleteFeature}
+            style={{ backgroundColor: "green", margin: 10, color: "white" }}
+          >
+            Confirmar
+          </button>
+        </Modal.Footer>
+      </Modal>
       <Snackbar
         open={alertOpen}
         autoHideDuration={3000} // Duración en milisegundos
         onClose={() => setAlertOpen(false)}
       >
         <Alert onClose={() => setAlertOpen(false)} severity="success">
-          Producto eliminado correctamente.
+          Característica eliminada correctamente.
         </Alert>
       </Snackbar>
       {/* --------------------------NUEVA CARACTERÍSTICA MODAL--------------------------------> */}

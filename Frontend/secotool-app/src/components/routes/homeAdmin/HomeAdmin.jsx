@@ -2,7 +2,7 @@ import styles from "./HomeAdmin.module.css";
 import AdminProductCard from "../../adminProductCard/AdminProductCard";
 import { useEffect, useState } from "react";
 import Pagination from "../../pagination/Pagination";
-import { ButtonToolbar, Button, Loader } from "rsuite";
+import { ButtonToolbar, Button, Loader, Modal } from "rsuite";
 import { Alert, Snackbar } from "@mui/material";
 import FormNewProduct from "../../form/formNewProduct/FormNewProduct";
 import FormEditProduct from "../../form/FormEditProduct";
@@ -43,7 +43,7 @@ const HomeAdmin = () => {
   const [open, setOpen] = useState(false); //NEW PRODUCT MODAL
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  
   const [openEp, setOpenEp] = useState(false); // EDIT PRODUCT MODAL
   const [selectedProduct, setSelectedProduct] = useState([]);
   const handleCloseEp = () => setOpenEp(false);
@@ -90,13 +90,23 @@ const HomeAdmin = () => {
   //---------------------------------DELETE PRODUCT------------------------------->
 
   const [alertOpen, setAlertOpen] = useState(false);
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);//BORRAR PRODUCTO
+  const [productoAEliminar, setProductoAEliminar] = useState({})
+
   const showDeleteSuccessAlert = () => {
     setAlertOpen(true);
   };
-  async function deleteProduct(productId) {
+
+  const modalDelete = (product)=>{
+    setIsDeleteModalVisible(true)
+    setProductoAEliminar(product)
+  }
+
+  async function deleteProduct() {
+    setIsDeleteModalVisible(false)
     try {
       const response = await fetch(
-        `${globalVariable}/v1/api/products/admin/${productId}`,
+        `${globalVariable}/v1/api/products/admin/${productoAEliminar.id}`,
         {
           method: "DELETE",
           headers: {
@@ -104,11 +114,11 @@ const HomeAdmin = () => {
           },
         }
       );
-
       if (response.ok) {
-        console.log(`Producto con ID ${productId} eliminado correctamente`);
-        setProducts(products.filter((product) => product.id !== productId));
+        console.log(`Producto con ID ${productoAEliminar.id} eliminado correctamente`);
+        setProducts(products.filter((product) => product.id !== productoAEliminar.id));
         showDeleteSuccessAlert(); // Muestra la alerta de éxito
+        setAlertOpen(true)
       } else {
         throw new Error("Error al eliminar el producto");
       }
@@ -149,7 +159,7 @@ const HomeAdmin = () => {
     currentPost.map((product) => (
       <AdminProductCard
         key={product.id}
-        deleteItem={() => deleteProduct(product.id)}
+        deleteItem={() => modalDelete(product)}
         id={product.id}
         title={product.name}
         editItem={() => handleEditProduct(product.id)}
@@ -211,6 +221,33 @@ const HomeAdmin = () => {
         </span>
       )}
       {/* -----------------------DELETE ALERT---------------------> */}
+
+      <Modal
+        open={isDeleteModalVisible}
+        onClose={() => setIsDeleteModalVisible(false)}
+      >
+        <Modal.Header>
+          <Modal.Title>Confirmar eliminación</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          ¿Está seguro que desea borrar el producto: {productoAEliminar.name}?
+        </Modal.Body>
+        <Modal.Footer className={styles.modalButtons}>
+          <button
+            onClick={() => setIsDeleteModalVisible(false)}
+            style={{ backgroundColor: "red", color: "white" }}
+          >
+            Cancelar
+          </button>
+          <button
+            onClick={deleteProduct}
+            style={{ backgroundColor: "green", margin: 10, color: "white" }}
+          >
+            Confirmar
+          </button>
+        </Modal.Footer>
+      </Modal>
+
       <Snackbar
         open={alertOpen}
         autoHideDuration={3000} // Duración en milisegundos
