@@ -2,13 +2,19 @@ import { useEffect, useState } from "react";
 import style from "./FormFilterDesktop.module.css";
 import axios from "axios";
 import { useGlobal } from "../../../contexts/GlobalContext";
+import { useParams } from "react-router-dom";
 
-const FormFilterDesktop = ({ updatefilterProducts }) => {
+const FormFilterDesktop = ({ updatefilterProducts}) => {
   const [categoryData, setCategoryData] = useState([]);
   const { globalVariable } = useGlobal();
+ 
+  const { idCateg } = useParams();
+  const idParams = parseInt(idCateg)
+  
 
   // Estado para mantener el registro de checkboxes seleccionados
-  const [selectedCategories, setSelectedCategories] = useState([]);
+  // const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState(idParams ? [idParams] : []);
 
   useEffect(() => {
     // Realizar la solicitud Fetch al endpoint usando Axios
@@ -23,9 +29,19 @@ const FormFilterDesktop = ({ updatefilterProducts }) => {
   }, []);
 
   useEffect(() => {
+    // Este efecto se ejecutará cuando idCateg cambie
+    const idCategValue = parseInt(idCateg);
+
+    if (!isNaN(idCategValue)) {
+      // Verifica que idCateg sea un número válido
+      setSelectedCategories([idCategValue]);
+    }
+  }, [idCateg]);
+
+  useEffect(() => {
     // Llama a la función de actualización cuando cambie la selección de categorías
     updatefilterProducts(selectedCategories);
-  }, [selectedCategories, updatefilterProducts]);
+  }, [selectedCategories, updatefilterProducts,]);
 
   console.log(selectedCategories);
 
@@ -40,7 +56,7 @@ const FormFilterDesktop = ({ updatefilterProducts }) => {
       );
     }
     updatefilterProducts(selectedCategories);
-  };
+  }
 
   return (
     <form className={style.form}>
@@ -51,6 +67,7 @@ const FormFilterDesktop = ({ updatefilterProducts }) => {
             type="checkbox"
             value={categ.id}
             onChange={handleCheckboxChange}
+            checked={selectedCategories.includes(categ.id)}
           />
           <label>{categ.name}</label>
         </div>
