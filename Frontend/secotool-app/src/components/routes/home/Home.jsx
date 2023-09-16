@@ -1,20 +1,17 @@
 import styles from "./home.module.css";
 import FormBusqueda from "../../form/formBusqueda/FormBusqueda";
 import ListProducts from "../../list/ListProducts";
-import { useFetch, statuses } from "../../../customHooks/useFetch";
-import { Loader } from "rsuite";
 import { useEffect, useState } from "react";
 import { useGlobal } from "../../../contexts/GlobalContext";
+import SkeletonCard from "../../skeletonCard/SkeletonCard";
 
-const LoadingIndicator = () => <Loader size="md" content="CARGANDO" />;
-
+const LoadingIndicator = () => <SkeletonCard />;
 const NetworkError = () => <p>Network Error</p>;
 
 const Home = () => {
   const { globalVariable } = useGlobal();
   const URL_API = `${globalVariable}/v1/api/products/open`;
-
-  const [products, setProducts] = useState();
+  const [products, setProducts] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -35,9 +32,8 @@ const Home = () => {
 
         const data = await response.json();
         setProducts(data);
-
       } catch (error) {
-        console.log("hola")
+        console.log("hola");
       } finally {
         // Independientemente de si hay un error o no, la carga se detiene
         setLoading(false);
@@ -47,11 +43,9 @@ const Home = () => {
     fetchData();
   }, []);
 
-
-  const ComponentListProducts =
-    products ? (
-      <ListProducts products={products} />
-    ) : null;
+  const ComponentListProducts = products ? (
+    <ListProducts products={products} />
+  ) : null;
 
   return (
     <section className={styles.sectionBusqueda}>
@@ -67,11 +61,7 @@ const Home = () => {
         </div>
       </div>
       <div className={styles.contenedorCards}>
-        {loading ? (
-          <LoadingIndicator />
-        ) : (
-          ComponentListProducts
-        )}
+        {loading ? <LoadingIndicator /> : ComponentListProducts}
         {products === undefined && !loading && <NetworkError />}
       </div>
     </section>

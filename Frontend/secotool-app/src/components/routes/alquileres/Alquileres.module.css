@@ -1,0 +1,28 @@
+.alquileresContainer {
+    margin-top: 110px;
+    margin-bottom: 100px;
+}
+
+.cardFContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.alquileresContainer h4 {
+    color: #3a3939;
+    font-size: 19px;
+    font-weight: 600;
+}
+
+@media screen and (max-width: 360px) {
+    .alquileresContainer {
+        margin-top: 12vh;
+    }
+
+    .alquileresContainer h4 {
+        color: #3a3939;
+        font-size: 16px;
+        font-weight: 500;
+    }
+}
