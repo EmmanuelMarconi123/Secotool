@@ -1,0 +1,14 @@
+.sectionRentalDetails{
+    padding-top: 112px;
+    display: flex;
+    flex-direction: column;
+}
+
+.headRentalDetails{
+    display: flex;
+    flex-direction: column;
+}
+
+.headRentalDetails h3{
+    align-self: center;
+}

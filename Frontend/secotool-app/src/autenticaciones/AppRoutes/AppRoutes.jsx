@@ -8,6 +8,7 @@ import Profile from "../../components/routes/profile/Profile";
 import { useAuth } from "../../contexts/AuthContext";
 import Favorites from "../../components/routes/favorites/Favorites"
 import Alquileres from "../../components/routes/alquileres/Alquileres";
+import RentalDetails from "../../components/routes/rentalDetails/RentalDetails";
 
 const AppRoutes = () => {
   const { isLoggedIn } = useAuth();
@@ -25,6 +26,7 @@ const AppRoutes = () => {
           <Route path="/favorites" element={<Favorites />} />
           <Route path="/alquileres" element={<Alquileres />} />
           {isLoggedIn && <Route path="/profile" element={<Profile />} />}
+          {isLoggedIn && <Route path="/rentaldetails" element={<RentalDetails/>} />}
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </main>
