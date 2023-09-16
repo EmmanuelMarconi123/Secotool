@@ -12,6 +12,7 @@ function FormEditProduct({
 }) {
   const { token } = useAuth();
   const { globalVariable } = useGlobal();
+  console.log(selectedProduct)
 
   //------------------------------INPUTS EDIT-------------------------------->
   const [editedName, setEditedName] = useState();
@@ -19,6 +20,10 @@ function FormEditProduct({
   const [editedPrice, setEditedPrice] = useState();
   const [editedCategories, setEditedCategories] = useState([]);
   const [editedFeatures, setEditedFeatures] = useState([]);
+  //============================= IMAGENES ==================================================>
+  const [editedImages, setEditedImages] = useState(); // Estado para las imagenes cargadas del producto
+  const [deletedImageIds, setDeletedImageIds] = useState([]); //Estado para las imagenes a borrar
+  const [newImages, setNewImages] = useState([]); // Estado para nuevas imagenes del producto
 
   const message = (
     <Message showIcon type="success" closable>
@@ -45,14 +50,23 @@ function FormEditProduct({
       } else {
         setEditedFeatures([]); // Si productFeatures no está definido, asigna un array vacío
       }
+
+      if (selectedProduct.images) {
+        const formattedImages = selectedProduct.images.map((image) => ({
+          name: image.id,
+          fileKey: image.fileKey, // Ajusta esto según la estructura de tu objeto de imagen
+          url: image.url, // Ajusta esto según la estructura de tu objeto de imagen
+        }));
+        setEditedImages(formattedImages);
+      } else {
+        setEditedImages([]);
+      }
     }
+
   }, [selectedProduct]);
   //---------------------------------DATOS------------------------------>
   const [categories, setCategories] = useState([]);
   const [features, setFeatures] = useState([]);
-
-
-  
 
   useEffect(() => {
     async function fetchCategories() {
@@ -117,16 +131,30 @@ function FormEditProduct({
 
   //-------------------------------------------EDITAR---------------------->
   const[isLoading, setIsLoading] = useState(false);
-  const [uploadedImages, setUploadedImages] = useState([]); // Estado para las imágenes cargadas
 
   const handleImageChangeE = (fileList) => {
-    setUploadedImages(fileList);
-    console.log(fileList)
+    // Filtrar las imágenes existentes que han sido eliminadas
+    const deletedImages = editedImages.filter((existingImage) => {
+      const existsInNewImages = fileList.some(
+        (newImage) => newImage.name === existingImage.name
+      );
+      return !existsInNewImages;
+    });
+  
+    // Filtrar las nuevas imágenes cargadas
+    const uploadedImages = fileList.filter((newImage) =>
+      newImage.blobFile instanceof File
+    );
+  
+    setDeletedImageIds(deletedImages.map((image) => image.name));
+    setNewImages(uploadedImages);
   };
 
   const handleUpdateProduct = async (e) => {
     e.preventDefault();
     setIsLoading(true)
+    console.log(deletedImageIds)
+    console.log(newImages)
     const formData = new FormData();
     const updatedProduct = {
       name: editedName,
@@ -135,29 +163,40 @@ function FormEditProduct({
     };
 
     const categoriasId = {
-      idsCategories: editedCategories,
+      idsList: editedCategories,
     };
 
     const featuresId = {
-      idsFeatures: editedFeatures,
+      idsList: editedFeatures,
     };
+
+    const deletedImagesEd = {
+      idsList: deletedImageIds,
+    }
 
     formData.append(
       "product-data",
       new Blob([JSON.stringify(updatedProduct)], { type: "application/json" })
     );
     formData.append(
-      "categories",
+      "id-categories",
       new Blob([JSON.stringify(categoriasId)], { type: "application/json" })
     );
     formData.append(
-      "features",
+      "id-features",
       new Blob([JSON.stringify(featuresId)], { type: "application/json" })
     );
 
-    uploadedImages.forEach((file) => {
+    formData.append(
+      "id-images-delete",
+      new Blob([JSON.stringify(deletedImagesEd)], { type: "application/json" })
+    );
+
+    newImages.forEach((file) => {
       formData.append("images", file.blobFile);
     });
+
+    console.log(formData)
 
     try {
       const response = await fetch(
@@ -185,6 +224,7 @@ function FormEditProduct({
         setIsLoading(false)
         toaster.push(message, { placement: "bottomStart", duration: 5000 });
       } else {
+        setIsLoading(false)
         console.error("Error updating product:", response.statusText);
       }
     } catch (error) {
@@ -254,7 +294,7 @@ function FormEditProduct({
             </label>
             <label htmlFor="">
               Imagenes
-              <Uploader listType="picture-text" autoUpload={false} draggable onChange={handleImageChangeE}>
+              <Uploader multiple listType="picture-text" fileList={editedImages} autoUpload={false} draggable onChange={handleImageChangeE} className={styles.uploaderN}>
                 <div
                   style={{
                     height: 54,
