@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import ListCaracteristicas from "../../list/ListCaracteristicas";
 import styles from "./Details.module.css";
 import {
-  Button,
   DateRangePicker,
   Loader,
   Message,
@@ -99,6 +98,7 @@ function Details() {
           console.log(response);
           handleOpen("lg");
           setSelectedDateRange([]);
+          calculateDisabledDates()
         })
         .catch(function (error) {
           console.log(error);
@@ -150,31 +150,30 @@ function Details() {
       });
   };
 
+  const calculateDisabledDates = () => {
+    let newDisabledDates = [];
+
+    if (status !== statuses.ERROR && data) {
+      console.log(data.productRentals);
+      data.productRentals.forEach((rental) => {
+        const startDate = new Date(
+          rental.rentalStartDate + "T00:00:00-03:00"
+        );
+        const endDate = new Date(rental.rentalEndDate + "T00:00:00-03:00");
+        for (
+          let date = startDate;
+          date <= endDate;
+          date.setDate(date.getDate() + 1)
+        ) {
+          newDisabledDates.push(new Date(date));
+        }
+      });
+      setDisabledDates(newDisabledDates);
+    }
+  };
+
   useEffect(() => {
-    // Función para calcular las fechas deshabilitadas
-    const calculateDisabledDates = () => {
-      let newDisabledDates = [];
-
-      if (status !== statuses.ERROR && data) {
-        console.log(data.productRentals);
-        data.productRentals.forEach((rental) => {
-          const startDate = new Date(
-            rental.rentalStartDate + "T00:00:00-03:00"
-          );
-          const endDate = new Date(rental.rentalEndDate + "T00:00:00-03:00");
-          for (
-            let date = startDate;
-            date <= endDate;
-            date.setDate(date.getDate() + 1)
-          ) {
-            newDisabledDates.push(new Date(date));
-          }
-        });
-        setDisabledDates(newDisabledDates);
-      }
-    };
-
-    calculateDisabledDates();
+      calculateDisabledDates();
   }, [status, data]);
 
   useEffect(() => {
@@ -267,46 +266,55 @@ function Details() {
                     </div>
                   </div>
                 </div>
-                <div className={styles.boxCalendar}>
-                  <span className={styles.titleSm}>Desde - Hasta</span>
-                  {isScreenSmall ? (
-                    <DateRangePicker
-                      appearance="subtle"
-                      placeholder="Seleccione fechas"
-                      showOneCalendar
-                      shouldDisableDate={combine(
-                        (date) =>
-                          disabledDates.some(
-                            (disabledDate) =>
-                              date.getDate() === disabledDate.getDate() &&
-                              date.getMonth() === disabledDate.getMonth() &&
-                              date.getFullYear() === disabledDate.getFullYear()
-                          ),
-                        beforeToday()
-                      )}
-                      value={selectedDateRange}
-                      onChange={setSelectedDateRange}
-                    />
-                  ) : (
-                    <DateRangePicker
-                      appearance="subtle"
-                      placeholder="Seleccione fechas"
-                      shouldDisableDate={combine(
-                        (date) =>
-                          disabledDates.some(
-                            (disabledDate) =>
-                              date.getDate() === disabledDate.getDate() &&
-                              date.getMonth() === disabledDate.getMonth() &&
-                              date.getFullYear() === disabledDate.getFullYear()
-                          ),
-                        beforeToday()
-                      )}
-                      value={selectedDateRange}
-                      onChange={setSelectedDateRange}
-                      className={styles.inputCalendar}
-                    />
-                  )}
-                </div>
+                <form className={styles.boxCalendar} onSubmit={(e) => handleRent(e)}>
+                  <label className={styles.titleSm}>Desde - Hasta</label>
+                    {isScreenSmall ? (
+                      <DateRangePicker
+                        appearance="subtle"
+                        placeholder="Seleccione fechas"
+                        showOneCalendar
+                        shouldDisableDate={combine(
+                          (date) =>
+                            disabledDates.some(
+                              (disabledDate) =>
+                                date.getDate() === disabledDate.getDate() &&
+                                date.getMonth() === disabledDate.getMonth() &&
+                                date.getFullYear() ===
+                                  disabledDate.getFullYear()
+                            ),
+                          beforeToday()
+                        )}
+                        value={selectedDateRange}
+                        onChange={setSelectedDateRange}
+                      />
+                    ) : (
+                      <DateRangePicker
+                        appearance="subtle"
+                        placeholder="Seleccione fechas"
+                        shouldDisableDate={combine(
+                          (date) =>
+                            disabledDates.some(
+                              (disabledDate) =>
+                                date.getDate() === disabledDate.getDate() &&
+                                date.getMonth() === disabledDate.getMonth() &&
+                                date.getFullYear() ===
+                                  disabledDate.getFullYear()
+                            ),
+                          beforeToday()
+                        )}
+                        value={selectedDateRange}
+                        onChange={setSelectedDateRange}
+                        className={styles.inputCalendar}
+                      />
+                    )}
+                  <button
+                    className={styles.buttonCta}
+                    // onClick={() => handleOpen("lg")}
+                    type="submit"
+                  >
+                    Alquilar
+                  </button>
+                </form>
               </div>
               <Link
                 className={styles.buttonCta}
