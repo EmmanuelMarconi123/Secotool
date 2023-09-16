@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid, useMediaQuery } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import styles from "../cardProduct/CardProduct.module.css";
 import { Link } from "react-router-dom";
@@ -12,6 +12,7 @@ function CardProduct({ product }) {
   const { isLoggedIn, token } = useAuth();
   const [isLiked, setIsLiked] = useState(product.isFavorite);
   const { globalVariable } = useGlobal();
+  const isSmallScreen = useMediaQuery("(max-width: 450px)"); //usado en condicional del fontSize del corazon
 
   const url = `${globalVariable}/v1/api/users/products/${product.id}`;
 
@@ -76,6 +77,7 @@ function CardProduct({ product }) {
           <FavoriteIcon
             className={styles.corazon}
             color={isLiked ? "error" : "disabled"}
+            fontSize={isSmallScreen ? "default" : "small"}
             onClick={() => {
               handleLike(product);
             }}

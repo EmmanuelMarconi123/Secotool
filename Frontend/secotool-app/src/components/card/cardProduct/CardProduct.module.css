@@ -1,4 +1,4 @@
-.contenedorGeneral{
+.contenedorGeneral {
   width: 100%;
 }
 
@@ -72,8 +72,8 @@
 .corazon {
   z-index: 1;
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 15px;
+  right: 15px;
   cursor: pointer;
 }
 
@@ -84,16 +84,16 @@
   padding-top: 16px;
 }
 
-.boxScore ul li{
-  width: 8px!important;
+.boxScore ul li {
+  width: 8px !important;
 }
 
-.boxScore ul li div{
-  width: 14px!important;
+.boxScore ul li div {
+  width: 14px !important;
   font-size: 13px;
 }
 
-.boxScore span{
+.boxScore span {
   font-size: 13px;
   padding: 2px 6px;
   border-radius: 10px;
@@ -107,22 +107,22 @@
   .textPriceCard {
     font-size: 19px;
   }
-  .img{
-      max-width: 297.4px;
-      max-height: 222px;
+  .img {
+    max-width: 297.4px;
+    max-height: 222px;
   }
-  .boxScore span{
+  .boxScore span {
     font-size: 16px;
   }
 
-  .boxScore ul li{
-    width: 16px!important;
+  .boxScore ul li {
+    width: 16px !important;
   }
 
-.boxScore ul li div{
-  width: 14px!important;
-  font-size: 16px;
-}
+  .boxScore ul li div {
+    width: 14px !important;
+    font-size: 16px;
+  }
 }
 
 @media screen and (min-width: 1440px) {
@@ -134,8 +134,15 @@
     padding-bottom: 0px;
   }
 
-  .boxScore ul li div{
+  .boxScore ul li div {
     width: auto;
     font-size: 18px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .corazon {
+    top: 5px;
+    right: 5px;
   }
 }

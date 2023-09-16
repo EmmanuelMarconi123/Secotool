@@ -48,10 +48,10 @@ const DropdownProfile = () => {
             <i className="fa-regular fa-user"></i>
             Ver Perfil
           </Link>
-          <Link to="/favorites">
+          <Link to="/favorites" onClick={toggleDropdown}>
             <i className="fa-regular fa-heart"></i>Mis favoritos
           </Link>
-          <Link to="/alquileres">
+          <Link to="/alquileres" onClick={toggleDropdown}>
             <i className="fa-regular fa-calendar-clock"></i>Mis alquileres
           </Link>
           <Link to="/" onClick={logout}>
