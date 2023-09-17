@@ -7,11 +7,7 @@ import com.group2.secotool_app.bussiness.mapper.*;
 import com.group2.secotool_app.bussiness.service.*;
 import com.group2.secotool_app.model.dto.*;
 import com.group2.secotool_app.model.dto.request.IdListRequestDto;
-import com.group2.secotool_app.model.dto.request.ListOfCategoriesIdRequestDto;
-import com.group2.secotool_app.model.dto.request.ListOfFeaturesidRequestDto;
 import com.group2.secotool_app.model.dto.request.ProductRequestDto;
-import com.group2.secotool_app.model.entity.Image;
-import com.group2.secotool_app.model.entity.Product;
 import com.group2.secotool_app.util.CommonUtils;
 import com.group2.secotool_app.util.ProductUtils;
 import com.group2.secotool_app.util.RentUtils;
@@ -92,7 +88,7 @@ public class ProductFacadeImpl implements IProductFacade {
     }
     //se puede refactorizar
     @Override
-    public String save(ProductRequestDto productRequestDto, ListOfCategoriesIdRequestDto listOfCategoriesIdRequestDto, ListOfFeaturesidRequestDto listOfFeaturesidRequestDto, List<MultipartFile> images) {
+    public String save(ProductRequestDto productRequestDto, IdListRequestDto categoriesId, IdListRequestDto featuresId, List<MultipartFile> images) {
         var productName = productRequestDto.name();
         productValidationService.validateProductNameIsNotAvailable(productName);
         fileService.validateFilesAreImages(images);
@@ -102,11 +98,11 @@ public class ProductFacadeImpl implements IProductFacade {
         Long prodId = productService.save(product);
         product.setId(prodId);
 
-        listOfFeaturesidRequestDto.idsFeatures().forEach(id ->
+        featuresId.idsList().forEach(id ->
                 featureFacade.associateProductToFeature(product,id)
         );
 
-        listOfCategoriesIdRequestDto.idsCategories().forEach(id ->
+        categoriesId.idsList().forEach(id ->
                 categoryFacade.associateProductToCategory(product,id)
         );
 
@@ -171,12 +167,12 @@ public class ProductFacadeImpl implements IProductFacade {
     }
 
     @Override
-    public List<ProductDto> getAllProductsAssociateWithACategory(ListOfCategoriesIdRequestDto categoriesId) {
+    public List<ProductDto> getAllProductsAssociateWithACategory(IdListRequestDto categoriesId) {
 
         List<List<ProductDto>> productDtosMatriz = new ArrayList<>();
         List<ProductDto> productDtoList = new ArrayList<>();
 
-        categoriesId.idsCategories().forEach(categoryId -> {
+        categoriesId.idsList().forEach(categoryId -> {
             var prods = productService.getAllProductsAssociateWithACategory(categoryId);
             productDtosMatriz.add(productUtils.productsToProductsDto(prods));
         });

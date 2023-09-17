@@ -4,7 +4,14 @@ import java.time.LocalDate;
 
 public record RentDto(
         Long id,
+        LocalDate rentalDay,
         LocalDate rentalStartDate,
-        LocalDate rentalEndDate
+        LocalDate rentalEndDate,
+        Long totalDays,
+        Double rentalPrice
 ) {
+
+    public int compareTo(RentDto rentDto) {
+        return this.rentalStartDate.compareTo(rentDto.rentalStartDate);
+    }
 }

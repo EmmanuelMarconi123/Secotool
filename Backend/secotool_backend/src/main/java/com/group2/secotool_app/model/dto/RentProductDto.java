@@ -9,5 +9,4 @@ public record RentProductDto(
         Double TotalPrice,
         ProductDto productDto
 ) {
-
 }

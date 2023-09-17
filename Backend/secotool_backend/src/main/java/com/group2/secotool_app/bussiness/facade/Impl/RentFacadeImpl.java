@@ -6,6 +6,7 @@ import com.group2.secotool_app.bussiness.service.IProductValidationService;
 import com.group2.secotool_app.bussiness.service.IRentService;
 import com.group2.secotool_app.bussiness.service.IUserService;
 import com.group2.secotool_app.model.dto.RentValidatedDto;
+import com.group2.secotool_app.model.dto.RentUserDto;
 import com.group2.secotool_app.model.dto.request.RentProductRequestDto;
 import com.group2.secotool_app.model.entity.User;
 import com.group2.secotool_app.util.ProductUtils;
@@ -32,12 +33,10 @@ public class RentFacadeImpl implements IRentFacade {
         var startDate = rangeOfDates.startDate();
         var endDate = rangeOfDates.endDate();
 
-        if (!productValidationService.isProductAvailableToRent(rangeOfDates,prodToRent))
-            throw new RuntimeException(String.format("product %s is not available for rent between %s and %s", prodToRent.getName(), startDate, endDate));
+        productValidationService.isProductAvailableToRent(rangeOfDates,prodToRent);
 
         var totalDays = productUtils.daysQuantity(startDate,endDate);
         var totalPrice = rentUtils.calculateTotalPriceOfRent(totalDays,prodToRent.getPrice());
-
         return new RentValidatedDto(startDate,endDate,totalDays,totalPrice);
     }
 
@@ -48,10 +47,7 @@ public class RentFacadeImpl implements IRentFacade {
         var startDate = rentProductRequestDto.startDate();
         var endDate = rentProductRequestDto.endDate();
 
-        if (!productValidationService.isProductAvailableToRent(rentProductRequestDto,prodToRent))
-            throw new RuntimeException(
-                    String.format("product %s is not available for rent between %s and %s", prodToRent.getName(), startDate, endDate)
-            );
+        productValidationService.isProductAvailableToRent(rentProductRequestDto,prodToRent);
 
         var totalDays = productUtils.daysQuantity(startDate,endDate);
         var totalPrice = rentUtils.calculateTotalPriceOfRent(totalDays,prodToRent.getPrice());
@@ -59,10 +55,11 @@ public class RentFacadeImpl implements IRentFacade {
     }
 
     @Override
-    public List<?> userHistorylOfRentals(Long userId) {
+    public List<RentUserDto> userHistorylOfRentals(Long userId) {
         // que informacion necesitan desde el front?
-        var userRentals = rentService.getUserHistoryOfRentals(new User(userId));
-        return null;
+        var userRentals = rentService.getUserHistoryOfRentals(userId);
+        var rentalsDto = rentUtils.rentalsToUserRentalsDto(userRentals);
+        return rentUtils.sortRentalsByStartDate(rentalsDto);
     }
 
 }

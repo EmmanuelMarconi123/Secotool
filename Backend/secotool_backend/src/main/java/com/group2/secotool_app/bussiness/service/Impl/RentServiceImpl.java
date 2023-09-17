@@ -1,6 +1,7 @@
 package com.group2.secotool_app.bussiness.service.Impl;
 
 import com.group2.secotool_app.bussiness.service.IRentService;
+import com.group2.secotool_app.bussiness.service.IUserService;
 import com.group2.secotool_app.model.entity.Product;
 import com.group2.secotool_app.model.entity.Rent;
 import com.group2.secotool_app.model.entity.User;
@@ -16,6 +17,7 @@ import java.util.List;
 public class RentServiceImpl implements IRentService {
 
     private final RentRepository rentRepository;
+    private final IUserService userService;
 
     @Override
     public void saveRent(Product prodToRent, LocalDate startDate, LocalDate endDate, User user, Long totalDays, Double totalPrice) {
@@ -30,7 +32,9 @@ public class RentServiceImpl implements IRentService {
     }
 
     @Override
-    public List<Rent> getUserHistoryOfRentals(User user) {
-        return user.getRents();
+    public List<Rent> getUserHistoryOfRentals(Long userId) {
+        var user = userService.findUserById(userId);
+        var userRentals = user.getRents();
+        return userRentals;
     }
 }

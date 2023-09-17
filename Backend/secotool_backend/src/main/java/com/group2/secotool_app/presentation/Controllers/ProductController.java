@@ -78,11 +78,10 @@ public class ProductController {
         return ResponseEntity.ok(productFacade.getAllProductsAssociateWithAFeature(featureId));
     }
 
-
     @GetMapping("/open/category")
     public ResponseEntity<List<ProductDto>> filterProductsByCategories(@RequestParam("idCategory") List<Long> categoriesId){
-        ListOfCategoriesIdRequestDto categoriesIdRequestDto = new ListOfCategoriesIdRequestDto(categoriesId);
-        return ResponseEntity.ok(productFacade.getAllProductsAssociateWithACategory(categoriesIdRequestDto));
+        IdListRequestDto idCategories = new IdListRequestDto(categoriesId);
+        return ResponseEntity.ok(productFacade.getAllProductsAssociateWithACategory(idCategories));
     }
 
     @PostMapping("/admin")
@@ -97,15 +96,15 @@ public class ProductController {
                                               @RequestPart("product-data") @Valid
                                               ProductRequestDto productRequestDto,
                                               @RequestPart("categories") @Valid
-                                                  ListOfCategoriesIdRequestDto listOfCategoriesIdRequestDto,
+                                                  IdListRequestDto categoriesId,
                                               @RequestPart("features") @Valid
-                                                  ListOfFeaturesidRequestDto listOfFeaturesidRequestDto,
+                                                  IdListRequestDto featuresId,
                                               @RequestParam("images")
                                               @NotNull(message = "images requerid")
                                               @NotEmpty(message = "list can not be empy")
                                               @Valid
                                               List<MultipartFile> images ){
-        return ResponseEntity.status(201).body(productFacade.save(productRequestDto, listOfCategoriesIdRequestDto, listOfFeaturesidRequestDto,images));
+        return ResponseEntity.status(201).body(productFacade.save(productRequestDto, categoriesId, featuresId,images));
     }
 
     @PutMapping("/admin/{id}")

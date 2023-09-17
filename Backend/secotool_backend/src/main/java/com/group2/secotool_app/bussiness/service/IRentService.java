@@ -10,5 +10,5 @@ import java.util.List;
 public interface IRentService {
     void saveRent(Product prodToRent, LocalDate startDate, LocalDate endDate, User user, Long totalDays, Double totalPrice);
 
-    List<Rent> getUserHistoryOfRentals(User user);
+    List<Rent> getUserHistoryOfRentals(Long userId);
 }

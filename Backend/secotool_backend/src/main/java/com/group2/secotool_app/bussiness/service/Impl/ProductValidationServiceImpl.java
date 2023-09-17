@@ -7,6 +7,8 @@ import com.group2.secotool_app.model.entity.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 @Service
 @RequiredArgsConstructor
 public class ProductValidationServiceImpl implements IProductValidationService {
@@ -20,8 +22,15 @@ public class ProductValidationServiceImpl implements IProductValidationService {
     }
 
     @Override
-    public boolean isProductAvailableToRent(RentProductRequestDto rentProductRequestDto, Product productToRent) {
-        var productsAvailable = productService.getAllProductsByRangeOfDateAvailableToRent(rentProductRequestDto.startDate(),rentProductRequestDto.endDate());
-        return productsAvailable.contains(productToRent);
+    public void isProductAvailableToRent(RentProductRequestDto rentProductRequestDto, Product productToRent) {
+        var startDate = rentProductRequestDto.startDate();
+        var endDate = rentProductRequestDto.endDate();
+        var productsAvailable = productService.getAllProductsByRangeOfDateAvailableToRent(startDate,endDate);
+        if (!startDate.isAfter(LocalDate.now()))
+            throw new RuntimeException("It is not possible to rent a product days before the date");
+        if (!productsAvailable.contains(productToRent))
+            throw new RuntimeException(
+                    String.format("product %s is not available for rent between %s and %s", productToRent.getName(), startDate, endDate)
+            );
     }
 }
