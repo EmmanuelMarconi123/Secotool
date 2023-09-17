@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import ListCaracteristicas from "../../list/ListCaracteristicas";
 import styles from "./Details.module.css";
 import {
-  Button,
   DateRangePicker,
   Loader,
   Message,
@@ -33,7 +32,7 @@ function Details() {
   const isScreenSmall = useMediaQuery("(max-width: 767px)");
   const [isSticky, setIsSticky] = useState(false);
   const { globalVariable } = useGlobal();
-  const { token } = useAuth();
+  //const { token } = useAuth();
   const URL_API = `${globalVariable}/v1/api/products/open/${params.id}`;
   const { data, status } = useFetch(URL_API, {});
   const [open, setOpen] = useState(false);
@@ -43,7 +42,7 @@ function Details() {
   const [selectedDateRange, setSelectedDateRange] = useState([]);
   const [dataRentail, setDataRentail] = useState(null);
 
-  const toaster = useToaster();
+ /* const toaster = useToaster();*/
 
   function handleScroll() {
     const scrollPosition = window.scrollY;
@@ -68,15 +67,15 @@ function Details() {
       });
   }
 
-  const message = (
+ /* const message = (
     <Message showIcon type="error" closable>
       No se ha podido alquilar el producto
     </Message>
   );
 
   async function handleRent() {
-    /*const startDate = selectedDateRange[0].toISOString().split("T")[0];
-    const endDate = selectedDateRange[1].toISOString().split("T")[0];*/
+    //const startDate = selectedDateRange[0].toISOString().split("T")[0];
+    //const endDate = selectedDateRange[1].toISOString().split("T")[0];
 
     if (selectedDateRange) {
       const startDate = selectedDateRange[0].toISOString().split("T")[0];
@@ -99,6 +98,7 @@ function Details() {
           console.log(response);
           handleOpen("lg");
           setSelectedDateRange([]);
+          calculateDisabledDates()
         })
         .catch(function (error) {
           console.log(error);
@@ -107,7 +107,7 @@ function Details() {
     } else {
       alert("Debes seleccionar alguna fecha para alquilar el producto");
     }
-  }
+  }*/
 
   const validateRentals = () => {
     if (selectedDateRange.length !== 2) {
@@ -150,31 +150,30 @@ function Details() {
       });
   };
 
+  const calculateDisabledDates = () => {
+    let newDisabledDates = [];
+
+    if (status !== statuses.ERROR && data) {
+      console.log(data.productRentals);
+      data.productRentals.forEach((rental) => {
+        const startDate = new Date(
+          rental.rentalStartDate + "T00:00:00-03:00"
+        );
+        const endDate = new Date(rental.rentalEndDate + "T00:00:00-03:00");
+        for (
+          let date = startDate;
+          date <= endDate;
+          date.setDate(date.getDate() + 1)
+        ) {
+          newDisabledDates.push(new Date(date));
+        }
+      });
+      setDisabledDates(newDisabledDates);
+    }
+  };
+
   useEffect(() => {
-    // Función para calcular las fechas deshabilitadas
-    const calculateDisabledDates = () => {
-      let newDisabledDates = [];
-
-      if (status !== statuses.ERROR && data) {
-        console.log(data.productRentals);
-        data.productRentals.forEach((rental) => {
-          const startDate = new Date(
-            rental.rentalStartDate + "T00:00:00-03:00"
-          );
-          const endDate = new Date(rental.rentalEndDate + "T00:00:00-03:00");
-          for (
-            let date = startDate;
-            date <= endDate;
-            date.setDate(date.getDate() + 1)
-          ) {
-            newDisabledDates.push(new Date(date));
-          }
-        });
-        setDisabledDates(newDisabledDates);
-      }
-    };
-
-    calculateDisabledDates();
+      calculateDisabledDates();
   }, [status, data]);
 
   useEffect(() => {
@@ -267,54 +266,64 @@ function Details() {
                     </div>
                   </div>
                 </div>
-                <div className={styles.boxCalendar}>
-                  <span className={styles.titleSm}>Desde - Hasta</span>
-                  {isScreenSmall ? (
-                    <DateRangePicker
-                      appearance="subtle"
-                      placeholder="Seleccione fechas"
-                      showOneCalendar
-                      shouldDisableDate={combine(
-                        (date) =>
-                          disabledDates.some(
-                            (disabledDate) =>
-                              date.getDate() === disabledDate.getDate() &&
-                              date.getMonth() === disabledDate.getMonth() &&
-                              date.getFullYear() === disabledDate.getFullYear()
-                          ),
-                        beforeToday()
-                      )}
-                      value={selectedDateRange}
-                      onChange={setSelectedDateRange}
-                    />
-                  ) : (
-                    <DateRangePicker
-                      appearance="subtle"
-                      placeholder="Seleccione fechas"
-                      shouldDisableDate={combine(
-                        (date) =>
-                          disabledDates.some(
-                            (disabledDate) =>
-                              date.getDate() === disabledDate.getDate() &&
-                              date.getMonth() === disabledDate.getMonth() &&
-                              date.getFullYear() === disabledDate.getFullYear()
-                          ),
-                        beforeToday()
-                      )}
-                      value={selectedDateRange}
-                      onChange={setSelectedDateRange}
-                      className={styles.inputCalendar}
-                    />
-                  )}
-                </div>
+                <form className={styles.boxCalendar} onSubmit={(e) => handleRent(e)}>
+                  <label className={styles.titleSm}>Desde - Hasta</label>
+                    {isScreenSmall ? (
+                      <DateRangePicker
+                        appearance="subtle"
+                        placeholder="Seleccione fechas"
+                        showOneCalendar
+                        shouldDisableDate={combine(
+                          (date) =>
+                            disabledDates.some(
+                              (disabledDate) =>
+                                date.getDate() === disabledDate.getDate() &&
+                                date.getMonth() === disabledDate.getMonth() &&
+                                date.getFullYear() ===
+                                  disabledDate.getFullYear()
+                            ),
+                          beforeToday()
+                        )}
+                        value={selectedDateRange}
+                        onChange={setSelectedDateRange}
+                      />
+                    ) : (
+                      <DateRangePicker
+                        appearance="subtle"
+                        placeholder="Seleccione fechas"
+                        shouldDisableDate={combine(
+                          (date) =>
+                            disabledDates.some(
+                              (disabledDate) =>
+                                date.getDate() === disabledDate.getDate() &&
+                                date.getMonth() === disabledDate.getMonth() &&
+                                date.getFullYear() ===
+                                  disabledDate.getFullYear()
+                            ),
+                          beforeToday()
+                        )}
+                        value={selectedDateRange}
+                        onChange={setSelectedDateRange}
+                        className={styles.inputCalendar}
+                      />
+                    )}
+                  <button
+                    className={styles.buttonCta}
+                    // onClick={() => handleOpen("lg")}
+                    type="submit"
+                  >
+                    Alquilar
+                  </button>
+                </form>
               </div>
-              <Button
+              <Link
                 className={styles.buttonCta}
+                to="/rentaldetails"
                 // onClick={() => handleOpen("lg")}
-                onClick={() => handleRent()}
+                //onClick={() => handleRent()}
               >
                 Alquilar
-              </Button>
+              </Link>
               <ModalReview
                 open={open}
                 size={size}

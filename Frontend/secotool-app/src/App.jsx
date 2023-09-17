@@ -1,5 +1,5 @@
-import "./App.css";
 import "./rsuite.less";
+import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import AuthRoutes from "./autenticaciones/AuthRoutes/AuthRoutes";
 import AppRoutes from "./autenticaciones/AppRoutes/AppRoutes";
