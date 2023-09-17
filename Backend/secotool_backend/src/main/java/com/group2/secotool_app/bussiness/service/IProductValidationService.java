@@ -5,5 +5,5 @@ import com.group2.secotool_app.model.entity.Product;
 
 public interface IProductValidationService {
     void validateProductNameIsNotAvailable(String name);
-    boolean isProductAvailableToRent(RentProductRequestDto rentProductRequestDto, Product productToRent);
+    void isProductAvailableToRent(RentProductRequestDto rentProductRequestDto, Product productToRent);
 }
