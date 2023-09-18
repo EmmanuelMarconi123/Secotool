@@ -8,6 +8,7 @@ import ModalEditarPolitica from "./ModalEditarPolitica";
 import axios from "axios";
 import { useAuth } from "../../../contexts/AuthContext";
 import { useGlobal } from "../../../contexts/GlobalContext";
+import EsqueletorAdmin from "../../EsqueletorAdmin/EsqueletorAdmin";
 
 const PoliticsProduct = () => {
   //------------------------------ CONFIG MODALS--------------->
@@ -99,6 +100,7 @@ const PoliticsProduct = () => {
         const data = await response.json();
         console.log("las politicas son ", data);
         setPoliticas(data);
+        setCargando(false)
       } else {
         throw new Error("Error en la solicitud");
       }
@@ -125,6 +127,26 @@ const PoliticsProduct = () => {
     setCurrentPost(politicas.slice(fistPostIndex, lastPostIndex));
   }, [currentPage, politicas]);
 
+
+  //-------------------------------------LOUDER-----------------------------------
+
+  const [cargando, setCargando] = useState(true)
+
+  const renderPoliticas =  politicas.length > 0 ? (
+    currentPost.map((poli) => (
+      <PoliticCard
+        key={poli.id}
+        deleteItem={() => deletePolitic(poli)}
+        name={poli.title}
+        description={poli.description}
+        editItem={() => handleEdit(poli)}
+      />
+    ))
+  ) : (
+    <span className={styles.noProducstMessage}>
+      No se encontraron resultados
+    </span>
+  )
   //---------------------------- COMPONENETE -------------------------------------
 
   return (
@@ -149,21 +171,7 @@ const PoliticsProduct = () => {
                 <span>Descripción</span>
                 <span>Acciones</span>
               </div>
-              {politicas.length > 0 ? (
-                currentPost.map((poli) => (
-                  <PoliticCard
-                    key={poli.id}
-                    deleteItem={() => deletePolitic(poli)}
-                    name={poli.title}
-                    description={poli.description}
-                    editItem={() => handleEdit(poli)}
-                  />
-                ))
-              ) : (
-                <span className={styles.noProducstMessage}>
-                  No se encontraron resultados
-                </span>
-              )}
+              {cargando ? <EsqueletorAdmin/> : renderPoliticas}
               <Pagination
                 totalPosts={politicas.length}
                 itemsPerPage={10}

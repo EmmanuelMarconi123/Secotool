@@ -134,6 +134,8 @@ function NewCategoryModal({
                 autoUpload={false}
                 draggable
                 onChange={handleImageChangeD}
+                listType="picture-text"
+                className={styles.uploaderC}
               >
                 <div
                   style={{

@@ -9,7 +9,10 @@ import org.mapstruct.Mapping;
 public interface RentDtoMapper {
 
     @Mapping(source = "id", target = "id")
+    @Mapping(source = "rentalDay", target = "rentalDay")
     @Mapping(source = "rentalStartDate", target = "rentalStartDate")
     @Mapping(source = "rentalEndDate", target = "rentalEndDate")
+    @Mapping(source = "totalDays", target = "totalDays")
+    @Mapping(source = "rentalPrice", target = "rentalPrice")
     RentDto toRentDto(Rent rent);
 }

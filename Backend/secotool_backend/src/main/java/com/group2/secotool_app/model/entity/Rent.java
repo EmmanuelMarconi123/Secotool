@@ -20,6 +20,8 @@ public class Rent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private LocalDate rentalDay = LocalDate.now();
+
     @Column(nullable = false)
     private LocalDate rentalStartDate;
 
@@ -37,6 +39,7 @@ public class Rent {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private Product product;
+
 
 
 }
