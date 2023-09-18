@@ -3,13 +3,7 @@ import Carousel from "../../carousel/Carousel";
 import { useState, useEffect } from "react";
 import ListCaracteristicas from "../../list/ListCaracteristicas";
 import styles from "./Details.module.css";
-import {
-  DateRangePicker,
-  Loader,
-  Message,
-  Progress,
-  useToaster,
-} from "rsuite";
+import { DateRangePicker, Loader, Message, Progress, useToaster } from "rsuite";
 import { useMediaQuery } from "@react-hook/media-query";
 import { useFetch, statuses } from "../../../customHooks/useFetch";
 import ModalShare from "../../modal/ModalShare";
@@ -32,7 +26,7 @@ function Details() {
   const isScreenSmall = useMediaQuery("(max-width: 767px)");
   const [isSticky, setIsSticky] = useState(false);
   const { globalVariable } = useGlobal();
-  //const { token } = useAuth();
+  const { token } = useAuth();
   const URL_API = `${globalVariable}/v1/api/products/open/${params.id}`;
   const { data, status } = useFetch(URL_API, {});
   const [open, setOpen] = useState(false);
@@ -42,7 +36,7 @@ function Details() {
   const [selectedDateRange, setSelectedDateRange] = useState([]);
   const [dataRentail, setDataRentail] = useState(null);
 
- /* const toaster = useToaster();*/
+  const toaster = useToaster();
 
   function handleScroll() {
     const scrollPosition = window.scrollY;
@@ -67,7 +61,7 @@ function Details() {
       });
   }
 
- /* const message = (
+  const message = (
     <Message showIcon type="error" closable>
       No se ha podido alquilar el producto
     </Message>
@@ -98,7 +92,7 @@ function Details() {
           console.log(response);
           handleOpen("lg");
           setSelectedDateRange([]);
-          calculateDisabledDates()
+          calculateDisabledDates();
         })
         .catch(function (error) {
           console.log(error);
@@ -107,7 +101,7 @@ function Details() {
     } else {
       alert("Debes seleccionar alguna fecha para alquilar el producto");
     }
-  }*/
+  }
 
   const validateRentals = () => {
     if (selectedDateRange.length !== 2) {
@@ -156,9 +150,7 @@ function Details() {
     if (status !== statuses.ERROR && data) {
       console.log(data.productRentals);
       data.productRentals.forEach((rental) => {
-        const startDate = new Date(
-          rental.rentalStartDate + "T00:00:00-03:00"
-        );
+        const startDate = new Date(rental.rentalStartDate + "T00:00:00-03:00");
         const endDate = new Date(rental.rentalEndDate + "T00:00:00-03:00");
         for (
           let date = startDate;
@@ -173,7 +165,7 @@ function Details() {
   };
 
   useEffect(() => {
-      calculateDisabledDates();
+    calculateDisabledDates();
   }, [status, data]);
 
   useEffect(() => {
@@ -266,54 +258,55 @@ function Details() {
                     </div>
                   </div>
                 </div>
-                <form className={styles.boxCalendar} onSubmit={(e) => handleRent(e)}>
+                <form
+                  className={styles.boxCalendar}
+                  onSubmit={(e) => handleRent(e)}
+                >
                   <label className={styles.titleSm}>Desde - Hasta</label>
-                    {isScreenSmall ? (
-                      <DateRangePicker
-                        appearance="subtle"
-                        placeholder="Seleccione fechas"
-                        showOneCalendar
-                        shouldDisableDate={combine(
-                          (date) =>
-                            disabledDates.some(
-                              (disabledDate) =>
-                                date.getDate() === disabledDate.getDate() &&
-                                date.getMonth() === disabledDate.getMonth() &&
-                                date.getFullYear() ===
-                                  disabledDate.getFullYear()
-                            ),
-                          beforeToday()
-                        )}
-                        value={selectedDateRange}
-                        onChange={setSelectedDateRange}
-                      />
-                    ) : (
-                      <DateRangePicker
-                        appearance="subtle"
-                        placeholder="Seleccione fechas"
-                        shouldDisableDate={combine(
-                          (date) =>
-                            disabledDates.some(
-                              (disabledDate) =>
-                                date.getDate() === disabledDate.getDate() &&
-                                date.getMonth() === disabledDate.getMonth() &&
-                                date.getFullYear() ===
-                                  disabledDate.getFullYear()
-                            ),
-                          beforeToday()
-                        )}
-                        value={selectedDateRange}
-                        onChange={setSelectedDateRange}
-                        className={styles.inputCalendar}
-                      />
-                    )}
-                  <button
+                  {isScreenSmall ? (
+                    <DateRangePicker
+                      appearance="subtle"
+                      placeholder="Seleccione fechas"
+                      showOneCalendar
+                      shouldDisableDate={combine(
+                        (date) =>
+                          disabledDates.some(
+                            (disabledDate) =>
+                              date.getDate() === disabledDate.getDate() &&
+                              date.getMonth() === disabledDate.getMonth() &&
+                              date.getFullYear() === disabledDate.getFullYear()
+                          ),
+                        beforeToday()
+                      )}
+                      value={selectedDateRange}
+                      onChange={setSelectedDateRange}
+                    />
+                  ) : (
+                    <DateRangePicker
+                      appearance="subtle"
+                      placeholder="Seleccione fechas"
+                      shouldDisableDate={combine(
+                        (date) =>
+                          disabledDates.some(
+                            (disabledDate) =>
+                              date.getDate() === disabledDate.getDate() &&
+                              date.getMonth() === disabledDate.getMonth() &&
+                              date.getFullYear() === disabledDate.getFullYear()
+                          ),
+                        beforeToday()
+                      )}
+                      value={selectedDateRange}
+                      onChange={setSelectedDateRange}
+                      className={styles.inputCalendar}
+                    />
+                  )}
+                  {/*<button
                     className={styles.buttonCta}
                     // onClick={() => handleOpen("lg")}
                     type="submit"
                   >
                     Alquilar
-                  </button>
+                    </button>*/}
                 </form>
               </div>
               <Link
@@ -434,13 +427,6 @@ function Details() {
         </div>
       </>
     ) : null;
-
-  /*const mockCaracteristicas = [
-    { id: 1, nombre: "Marca Bosh", icono: "fa-regular fa-tag" },
-    { id: 2, nombre: "Color Azúl", icono: "fa-regular fa-palette" },
-    { id: 3, nombre: "Es inalámbrico", icono: "fa-regular fa-plug" },
-    { id: 4, nombre: "Voltaje 220V", icono: "fa-regular fa-bolt" },
-  ];*/
 
   return (
     <div className="d-flex f-dir-colum">
