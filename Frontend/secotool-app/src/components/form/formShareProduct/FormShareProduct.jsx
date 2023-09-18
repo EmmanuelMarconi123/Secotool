@@ -17,7 +17,8 @@ const FormShareProduct = ({ product }) => {
     }
   }
 
-  const handleShare = () => {
+  const handleShare = (e) => {
+    e.preventDefault();
     // let url = "https://rsuitejs.com/components/notification/";
     let url = `${window.location}`;
 
