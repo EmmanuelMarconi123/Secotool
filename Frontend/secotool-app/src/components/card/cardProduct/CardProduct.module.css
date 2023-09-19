@@ -2,7 +2,7 @@
   width: 100%;
 }
 
-.container {
+.containerCard {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -26,24 +26,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 8px 0;
-  padding: 8px;
+  width: 100%;
 }
 
 .imgContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 .img {
   width: 100%;
-  height: 200px;
+  height: 100%;
   object-fit: cover;
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
-  max-width: 120px;
-  max-height: 90px;
+  border-radius: 8px;
+  display: block;
 }
 
 .titleCard {
@@ -106,10 +103,6 @@
   }
   .textPriceCard {
     font-size: 19px;
-  }
-  .img {
-    max-width: 297.4px;
-    max-height: 222px;
   }
   .boxScore span {
     font-size: 16px;

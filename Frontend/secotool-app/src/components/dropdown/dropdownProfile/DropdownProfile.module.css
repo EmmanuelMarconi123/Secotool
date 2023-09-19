@@ -1,7 +1,6 @@
 .dropdown {
   float: left;
   overflow: hidden;
-  
 }
 
 .dropdownContent {
@@ -17,28 +16,28 @@
   width: 250px;
 }
 
-.dropdownContent nav{
-    gap: 16px;
+.dropdownContent nav {
+  gap: 16px;
 }
 
-.dropdownContent nav a{
-    display: flex;
-    align-items: center;
-    color: #747474;
+.dropdownContent nav a {
+  display: flex;
+  align-items: center;
+  color: #747474;
 }
 
-.dropdownContent nav a i{
-    padding-right: 8px;
+.dropdownContent nav a i {
+  padding-right: 8px;
 }
 
-.dropdownContent span{
+.dropdownContent span {
   padding-top: 8px;
   padding-bottom: 24px;
   align-self: center;
   font-weight: 500;
 }
 
-.dropdownContent hr{
+.dropdownContent hr {
   border-color: rgba(197, 197, 197, 30%);
   width: 100%;
   margin: 0;
@@ -51,30 +50,34 @@
   /* left: 30%;*/
 }
 
-@media screen and (min-width: 200px){
+@media screen and (min-width: 200px) {
   .show {
     /* left: 20%;*/
     right: 90px;
+    top: 75px;
   }
 }
 
-@media screen and (min-width: 768px){
+@media screen and (min-width: 768px) {
   .show {
     /*left: 50%; */
+    top: 75px;
     right: 135px;
   }
 }
 
-@media screen and (min-width: 1024px){
+@media screen and (min-width: 1024px) {
   .show {
-   /* left: 65%; */
+    /* left: 65%; */
+    top: 75px;
     right: 100px;
   }
 }
 
-@media screen and (min-width: 1440px){
+@media screen and (min-width: 1440px) {
   .show {
     /* left: 65%; */
     right: 200px;
+    top: 75px;
   }
 }

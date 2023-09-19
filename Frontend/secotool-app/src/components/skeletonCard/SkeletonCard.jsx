@@ -1,5 +1,5 @@
 
-import styles from "./SkeletonCard.module.css";
+import styles from "../skeletonCard/SkeletonCard.module.css";
 import { Grid } from "@mui/material";
 
 const SkeletonCard = () => {

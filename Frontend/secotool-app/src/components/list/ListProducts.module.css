@@ -1,8 +1,8 @@
-.contenedorLista{
+.contenedorLista {
     width: 100%;
-}
-
-.listProducts{
+  }
+  
+  .listProducts {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(5, 1fr);
@@ -10,18 +10,11 @@
     column-gap: 0.5rem;
     justify-items: center;
     align-items: center;
-    
-}
-
-.paginationList{
+  }
+  
+  .paginationList {
     align-self: center;
     padding-bottom: 32px;
-}
-
-@media(min-width: 1440px){
-.listProducts{
-    margin-left: 78px;
-    margin-right: 78px;
-}
-}
+  }
+  
 
