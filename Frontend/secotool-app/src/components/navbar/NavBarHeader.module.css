@@ -48,12 +48,13 @@
   color: var(--dark);
   text-align: center;
   text-decoration: none;
+  padding: 14px 16px;
+
 }
 
 .navbarContainer a:hover{
   background-color: var(--color-primary);
   border-radius: 8px;
-  padding: 14px 16px;
 }
 
 .boxButtons {
