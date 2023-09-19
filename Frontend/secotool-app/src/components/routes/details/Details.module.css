@@ -69,20 +69,20 @@
   padding-bottom: 32px;
 }
 
-.listReviews{
+.listReviews {
   padding-left: 0px;
 }
 
 .buttonCta {
   display: flex;
   justify-content: center;
-  background-color: #4a6ac9!important;
+  background-color: #4a6ac9 !important;
   border: none;
-  color: var(--white)!important;
+  color: var(--white) !important;
   border-radius: 8px;
   cursor: pointer;
-  padding-top: 12px!important;
-  padding-bottom: 12px!important;
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
   width: 100%;
   font-size: 16px;
   margin-top: 24px;
@@ -98,7 +98,6 @@
   .containerVal {
     gap: 16px;
   }
-
 }
 
 @media screen and (min-width: 1440px) {
@@ -143,5 +142,9 @@
 
   .boxShareProduct i {
     font-size: 27px;
+  }
+
+  .boxShareProduct h1 {
+    margin-top: 0px;
   }
 }
