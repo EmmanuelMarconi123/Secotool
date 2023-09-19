@@ -15,7 +15,7 @@ const Filters = () => {
   const [filteredProductsF, setFilteredProductsF] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // Estado para el loader
   const { globalVariable } = useGlobal();
-  const {idCateg} = useParams();
+  const { idCateg } = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,7 +57,7 @@ const Filters = () => {
   //   }
   // }, [idCateg, productsF]);
 
-  const isScreenSmall = useMediaQuery("(max-width: 1024px)");
+  const isScreenSmall = useMediaQuery("(max-width: 1023px)");
 
   useEffect(() => {
     // Filtra los productos basados en los filtros seleccionados
@@ -69,7 +69,6 @@ const Filters = () => {
         );
       });
       setFilteredProductsF(filteredProducts);
-      
     } else {
       // Si no hay filtros seleccionados, muestra todos los productos
       setFilteredProductsF(productsF);
@@ -93,7 +92,11 @@ const Filters = () => {
           <>
             <h4>Categorías</h4>
             <hr />
-            <FormFilterDesktop updatefilterProducts={updatefilterProducts} selectedCategoryId={idCateg} productsLoading={isLoading} />
+            <FormFilterDesktop
+              updatefilterProducts={updatefilterProducts}
+              selectedCategoryId={idCateg}
+              productsLoading={isLoading}
+            />
           </>
         ) : (
           <ModalFilters updatefilterProducts={updatefilterProducts} />
