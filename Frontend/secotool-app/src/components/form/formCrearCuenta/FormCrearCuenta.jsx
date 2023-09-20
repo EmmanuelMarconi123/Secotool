@@ -1,5 +1,5 @@
 import TextField from "@mui/material/TextField";
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, IconButton, InputAdornment } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import styles from "./FormCrearCuenta.module.css";
@@ -8,6 +8,8 @@ import { useState } from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
 import { useGlobal } from "../../../contexts/GlobalContext";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 const FormCrearCuenta = () => {
   const { globalVariable } = useGlobal();
@@ -18,6 +20,8 @@ const FormCrearCuenta = () => {
     email: "",
     password: "",
   };
+
+  const [showPassword, setShowPassword] = useState(false);
 
   //vaidaciones de los campos usando YUP
   const navigate = useNavigate();
@@ -127,7 +131,7 @@ const FormCrearCuenta = () => {
           <Grid item xs={12} md={12}>
             <TextField
               fullWidth
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               id="outlined-basic"
               name="password"
               label="Contraseña"
@@ -139,6 +143,18 @@ const FormCrearCuenta = () => {
               helperText={
                 touched.password && errors.password ? errors.password : ""
               }
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setShowPassword(!showPassword)}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
           </Grid>
           <Button

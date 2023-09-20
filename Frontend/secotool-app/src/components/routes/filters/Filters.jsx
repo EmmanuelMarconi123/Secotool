@@ -8,6 +8,7 @@ import { useMediaQuery } from "@react-hook/media-query";
 import { useGlobal } from "../../../contexts/GlobalContext";
 import { useParams } from "react-router-dom";
 import SkeletonCard from "../../skeletonCard/SkeletonCard";
+import { Grid } from "@mui/material";
 
 const Filters = () => {
   const [productsF, setProductsF] = useState([]);

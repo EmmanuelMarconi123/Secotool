@@ -1,0 +1,28 @@
+.seccionCatego{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #4a6ac9ae;
+    
+}
+
+.cardCatego{
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px;
+    text-align: center;
+    color: white; /* Cambia el color del texto a blanco o el color deseado */
+    padding: 20px;
+    margin: 5px;
+    width: 100%;
+    position: relative;
+    backdrop-filter: blur(5px);
+
+}
+
+@media (min-width: 376px) {
+    .cardContainer {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr); /* Dos columnas */
+      gap: 20px; /* Espacio entre las categorías */
+    }}
