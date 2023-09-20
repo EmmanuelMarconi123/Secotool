@@ -107,6 +107,10 @@ header {
   font-weight: 300;
 }
 
+.font-bold {
+  font-weight: 600;
+}
+
 /*Spacings*/
 .pt-24 {
   padding-top: 24px;
@@ -126,6 +130,10 @@ header {
 
 .pt-large {
   padding-top: 88px;
+}
+
+.jc-space-bw{
+  justify-content: space-between;
 }
 
 /*React suite styles*/

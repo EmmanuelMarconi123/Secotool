@@ -16,7 +16,19 @@
     width: 100%;
 }
 
+.boxMsj{
+    z-index: 1;
+    display: flex;
+    align-self: center;
+}
+
 /*Breakpoints*/
+@media screen and (min-width: 768px) {
+    .boxMsj{
+        width: 610px;
+        text-align: center;
+    }
+}
 @media screen and (min-width: 1024px) {
     .sectionLogin form{
         align-self: center;

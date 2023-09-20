@@ -1,12 +1,11 @@
 .headerDefault {
   background-color: var(--color-primary);
-  /*position: fixed;
-  width: 100%;
-  z-index: 1000;*/
   position: fixed;
   top: 0;
   width: 100%;
   z-index: 1000;
+  display: flex;
+  flex-direction: column;
 }
 
 .headerDefault .leftNavbar {
