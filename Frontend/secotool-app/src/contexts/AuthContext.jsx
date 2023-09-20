@@ -8,6 +8,14 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
   const [user, setUser] = useState({});
   const TOKEN_KEY = "tokenUserLog";
+  
+  const tokenHaExpirado = (token) => {
+    const tokenDecodificado = jwtDecode(token);
+    console.log("Hola soy el token decodificado:", tokenDecodificado)
+    const fechaExpiracion = tokenDecodificado.exp * 1000; // Convertir la fecha de expiración a milisegundos
+    console.log("Hola soy la fecha de expiracion:", fechaExpiracion)
+    return Date.now() >= fechaExpiracion;
+  };
 
   useEffect(() => {
     const storedToken = localStorage.getItem(TOKEN_KEY);
@@ -28,11 +36,6 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const tokenHaExpirado = (token) => {
-    const tokenDecodificado = jwtDecode(token);
-    const fechaExpiracion = tokenDecodificado.exp * 86400000; // Convertir la fecha de expiración a milisegundos
-    return Date.now() >= fechaExpiracion;
-  };
 
   const login = (token) => {
     localStorage.setItem("tokenUserLog", token);
