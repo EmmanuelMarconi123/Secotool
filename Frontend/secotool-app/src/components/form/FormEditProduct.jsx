@@ -272,6 +272,7 @@ function FormEditProduct({
                 value={editedCategories}
                 placeholder="Seleccionar categoria"
                 onChange={(selectedCategoryIds) => setEditedCategories([...selectedCategoryIds])}
+                className={styles.customInput}
               />
             </label>
             <label htmlFor="">
@@ -282,6 +283,7 @@ function FormEditProduct({
                 data={features}
                 placeholder="Seleccionar caracteristica"
                 onChange={(selectedFeatureIds) => setEditedFeatures([...selectedFeatureIds])}
+                className={styles.customInput}
               />
             </label>
             <label htmlFor="">
@@ -304,7 +306,7 @@ function FormEditProduct({
                     justifyContent: "center",
                     gap: 10,
                     borderRadius: 8,
-                    border: "1px dashed #666",
+                    border: "1px dashed var(--darkGrey)",
                   }}
                 >
                   <i className="fa-solid fa-cloud-arrow-up"></i>
