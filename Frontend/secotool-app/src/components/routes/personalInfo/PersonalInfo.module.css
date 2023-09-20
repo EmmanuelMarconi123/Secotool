@@ -28,6 +28,20 @@
     font-size: 13px;
 }
 
+.formPersonalInfo{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+}
+
+.selectForm{
+    height: 5vh;
+    border-radius: 6px;
+    background: none;
+}
+
 @media screen and (min-width: 1024px) {
     .sectionPersonalInfo{
         width: 50%;
