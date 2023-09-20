@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import jwtDecode from "jwt-decode";
 
 const AuthContext = createContext();
 
@@ -6,12 +7,19 @@ export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [token, setToken] = useState(null);
   const [user, setUser] = useState({});
+  const TOKEN_KEY = "tokenUserLog";
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("tokenUserLog");
+    const storedToken = localStorage.getItem(TOKEN_KEY);
     if (storedToken) {
-      setToken(storedToken);
-      setIsLoggedIn(true);
+      if (tokenHaExpirado(storedToken)) {
+        // El token ha expirado, por lo que cerramos sesión
+        logout();
+      } else {
+        // El token aún es válido
+        setToken(storedToken);
+        setIsLoggedIn(true);
+      }
     }
 
     const storedUser = localStorage.getItem("user");
@@ -19,6 +27,12 @@ export const AuthProvider = ({ children }) => {
       setUser(JSON.parse(storedUser));
     }
   }, []);
+
+  const tokenHaExpirado = (token) => {
+    const tokenDecodificado = jwtDecode(token);
+    const fechaExpiracion = tokenDecodificado.exp * 86400000; // Convertir la fecha de expiración a milisegundos
+    return Date.now() >= fechaExpiracion;
+  };
 
   const login = (token) => {
     localStorage.setItem("tokenUserLog", token);

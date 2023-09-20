@@ -40,23 +40,6 @@ const Filters = () => {
     fetchData();
   }, []);
 
-  // useEffect(() => {
-  //   // Filtra los productos basados en la categoría seleccionada
-  //   const categoryId = parseInt(idCateg);
-  //   console.log("Valor de params:", categoryId)
-  //   if (categoryId) {
-  //     let filteredProducts = productsF.filter((product) =>
-  //       product.productCategories.some((category) => category.id === categoryId)
-  //     );
-  //     console.log(filterProducts)
-  //     setFilteredProductsF(filteredProducts);
-  //     console.log("Productos filtrados:", filteredProducts); // Agrega este console.log
-  //   } else {
-  //     setFilteredProductsF(productsF)
-  //     console.log("Productos sin filtrar:", filteredProductsF)
-  //   }
-  // }, [idCateg, productsF]);
-
   const isScreenSmall = useMediaQuery("(max-width: 1024px)");
 
   useEffect(() => {
@@ -96,7 +79,7 @@ const Filters = () => {
             <FormFilterDesktop updatefilterProducts={updatefilterProducts} selectedCategoryId={idCateg} productsLoading={isLoading} />
           </>
         ) : (
-          <ModalFilters updatefilterProducts={updatefilterProducts} />
+          <ModalFilters updatefilterProducts={updatefilterProducts} productos={productsF} />
         )}
       </div>
       <div className={style.contenedorCards}>
