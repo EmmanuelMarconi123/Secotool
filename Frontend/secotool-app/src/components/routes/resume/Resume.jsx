@@ -22,6 +22,7 @@ const Resume = ({ productData }) => {
 
   useEffect(() => {
     getPolitics();
+    window.scrollTo(0, 0);
   }, []);
 
   return (

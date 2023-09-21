@@ -1,13 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useFunction } from "../../../contexts/FunctionsContext";
 import styles from "./PersonalInfo.module.css";
 
-const PersonalInfo = () => {
+const PersonalInfo = ({documento, setDocumento}) => {
   const { user } = useFunction();
-  const [dni, setDni] = useState("");
 
   useEffect(() => {
-    console.log("soy user por context", user);
+    window.scrollTo(0, 0);
   }, []);
 
   return (
@@ -40,11 +39,11 @@ const PersonalInfo = () => {
             <option value="CI">CI</option>
           </select>
           <input
-            type="number"
+            type="text"
             placeholder="Numero de documento"
             className={styles.inputForm}
-            value={dni}
-            onChange={(e) => setDni(e.target.value)}
+            value={documento}
+            onChange={(e) => setDocumento(e.target.value)}
           />
         </form>
       </div>
