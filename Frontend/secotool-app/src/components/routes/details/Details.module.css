@@ -89,6 +89,23 @@
   margin-bottom: 24px;
 }
 
+.buttonCtaDisabled {
+  display: flex;
+  justify-content: center;
+  background-color: #4a6ac9!important;
+  border: none;
+  color: var(--white)!important;
+  border-radius: 8px;
+  cursor: pointer;
+  padding-top: 12px!important;
+  padding-bottom: 12px!important;
+  width: 100%;
+  font-size: 16px;
+  margin-top: 24px;
+  margin-bottom: 24px;
+  opacity: 0.6;
+}
+
 @media screen and (min-width: 768px) {
   .boxInfoProduct {
     margin-bottom: 24px;
