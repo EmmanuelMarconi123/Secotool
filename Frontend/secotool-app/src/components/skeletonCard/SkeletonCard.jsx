@@ -8,7 +8,7 @@ const SkeletonCard = () => {
 
     for (let i = 0; i < 10; i++) {
       elementos.push(
-      <Grid item xs={5} md={5} key={i} className={styles.elemento} style={{ margin: '5px' }}/>
+      <Grid item xs={5} md={5} key={i} className={styles.elemento} style={{ gap: '5px' }}/>
       );
     }
     return elementos;

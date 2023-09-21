@@ -251,37 +251,39 @@ function FormEditProduct({
               <input
                 type="text"
                 value={editedName}
+                placeholder="Nombre del producto"
                 onChange={(event) => setEditedName(event.target.value)}
               />
             </label>
             <label htmlFor="editDescription">
-              Descripcion
+            Descripción
               <textarea
                 cols="30"
                 rows="10"
                 value={editedDescription}
+                placeholder="Ingrese una descripción de hasta 255 caracteres"
                 onChange={(event) => setEditedDescription(event.target.value)}
                 style={{ height: 120, width: 640, padding: 8 }}
               ></textarea>
             </label>
             <label htmlFor="">
-              Categorias
+            Categorías
               <TagPicker
                 style={{ width: 640 }}
                 data={categories || []}
                 value={editedCategories}
-                placeholder="Seleccionar categoria"
+                placeholder="Seleccionar categorías"
                 onChange={(selectedCategoryIds) => setEditedCategories([...selectedCategoryIds])}
                 className={styles.customInput}
               />
             </label>
             <label htmlFor="">
-              Caracteristicas
+            Características
               <TagPicker
                 style={{ width: 640 }}
                 value={editedFeatures}
                 data={features}
-                placeholder="Seleccionar caracteristica"
+                placeholder="Seleccionar características"
                 onChange={(selectedFeatureIds) => setEditedFeatures([...selectedFeatureIds])}
                 className={styles.customInput}
               />
@@ -295,7 +297,7 @@ function FormEditProduct({
               />
             </label>
             <label htmlFor="">
-              Imagenes
+            Imágenes
               <Uploader multiple listType="picture-text" fileList={editedImages} autoUpload={false} draggable onChange={handleImageChangeE} className={styles.uploaderN}>
                 <div
                   style={{

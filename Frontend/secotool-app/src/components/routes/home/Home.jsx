@@ -4,7 +4,6 @@ import ListProducts from "../../list/ListProducts";
 import { useEffect, useState } from "react";
 import { useGlobal } from "../../../contexts/GlobalContext";
 import SkeletonCard from "../../skeletonCard/SkeletonCard";
-// import CategoriasHome from '../../seccionCategorias/CategoriasHome'
 
 const LoadingIndicator = () => <SkeletonCard />;
 const NetworkError = () => <p>Network Error</p>;
