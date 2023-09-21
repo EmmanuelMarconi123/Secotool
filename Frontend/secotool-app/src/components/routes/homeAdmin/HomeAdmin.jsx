@@ -10,7 +10,6 @@ import { useAuth } from "../../../contexts/AuthContext";
 import { useGlobal } from "../../../contexts/GlobalContext";
 import EsqueletorAdmin from "../../EsqueletorAdmin/EsqueletorAdmin";
 
-
 const HomeAdmin = () => {
   //----------------------------TRAE TODOS LOS PRODUCTOS----------------------------->
   const { token } = useAuth();
@@ -26,7 +25,7 @@ const HomeAdmin = () => {
       if (response.ok) {
         const data = await response.json();
         setProducts(data);
-        setCargando(false)
+        setCargando(false);
       } else {
         throw new Error("Error en la solicitud");
       }
@@ -43,7 +42,7 @@ const HomeAdmin = () => {
   const [open, setOpen] = useState(false); //NEW PRODUCT MODAL
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  
+
   const [openEp, setOpenEp] = useState(false); // EDIT PRODUCT MODAL
   const [selectedProduct, setSelectedProduct] = useState([]);
   const handleCloseEp = () => setOpenEp(false);
@@ -90,20 +89,20 @@ const HomeAdmin = () => {
   //---------------------------------DELETE PRODUCT------------------------------->
 
   const [alertOpen, setAlertOpen] = useState(false);
-  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);//BORRAR PRODUCTO
-  const [productoAEliminar, setProductoAEliminar] = useState({})
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false); //BORRAR PRODUCTO
+  const [productoAEliminar, setProductoAEliminar] = useState({});
 
   const showDeleteSuccessAlert = () => {
     setAlertOpen(true);
   };
 
-  const modalDelete = (product)=>{
-    setIsDeleteModalVisible(true)
-    setProductoAEliminar(product)
-  }
+  const modalDelete = (product) => {
+    setIsDeleteModalVisible(true);
+    setProductoAEliminar(product);
+  };
 
   async function deleteProduct() {
-    setIsDeleteModalVisible(false)
+    setIsDeleteModalVisible(false);
     try {
       const response = await fetch(
         `${globalVariable}/v1/api/products/admin/${productoAEliminar.id}`,
@@ -115,10 +114,14 @@ const HomeAdmin = () => {
         }
       );
       if (response.ok) {
-        console.log(`Producto con ID ${productoAEliminar.id} eliminado correctamente`);
-        setProducts(products.filter((product) => product.id !== productoAEliminar.id));
+        console.log(
+          `Producto con ID ${productoAEliminar.id} eliminado correctamente`
+        );
+        setProducts(
+          products.filter((product) => product.id !== productoAEliminar.id)
+        );
         showDeleteSuccessAlert(); // Muestra la alerta de éxito
-        setAlertOpen(true)
+        setAlertOpen(true);
       } else {
         throw new Error("Error al eliminar el producto");
       }
@@ -153,23 +156,24 @@ const HomeAdmin = () => {
 
   //---------------------------------- LOUDER ---------------------------------
 
-  const [cargando, setCargando] = useState(true)
+  const [cargando, setCargando] = useState(true);
 
-  const renderProductosAdmin = products.length > 0 ? (
-    currentPost.map((product) => (
-      <AdminProductCard
-        key={product.id}
-        deleteItem={() => modalDelete(product)}
-        id={product.id}
-        title={product.name}
-        editItem={() => handleEditProduct(product.id)}
-      />
-    ))
-  ) : (
-    <span className={styles.noProducstMessage}>
-      No se encontraron resultados
-    </span>
-  )
+  const renderProductosAdmin =
+    products.length > 0 ? (
+      currentPost.map((product) => (
+        <AdminProductCard
+          key={product.id}
+          deleteItem={() => modalDelete(product)}
+          id={product.id}
+          title={product.name}
+          editItem={() => handleEditProduct(product.id)}
+        />
+      ))
+    ) : (
+      <span className={styles.noProducstMessage}>
+        No se encontraron resultados
+      </span>
+    );
 
   //---------------------------------- COMPONENTE ---------------------------------
 
@@ -195,9 +199,7 @@ const HomeAdmin = () => {
                 <span>Nombre</span>
                 <span>Acciones</span>
               </div>
-              {cargando ? 
-              <EsqueletorAdmin/>
-              : renderProductosAdmin}
+              {cargando ? <EsqueletorAdmin /> : renderProductosAdmin}
               <Pagination
                 totalPosts={products.length}
                 itemsPerPage={10}
