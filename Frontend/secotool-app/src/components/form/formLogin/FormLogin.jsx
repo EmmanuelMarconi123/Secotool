@@ -8,11 +8,10 @@ import { useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../../contexts/AuthContext";
 import { useGlobal } from "../../../contexts/GlobalContext";
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 const FormLogin = () => {
-
   const { login, userLog } = useAuth();
   const { globalVariable } = useGlobal();
 
@@ -24,37 +23,33 @@ const FormLogin = () => {
 
   const navigate = useNavigate();
   const [mensajeError, setMensajeError] = useState(false);
-  const [tipoDeMensaje, setTipoDeMensaje] = useState('')
+  const [tipoDeMensaje, setTipoDeMensaje] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-
 
   // formulario que se ejecuta cuando se hace click en el boton de iniciar sesion
   const sendForm = async (values) => {
     try {
-      const response = await axios.post(
-        `${globalVariable}/v1/api/auth/login`,
-        {
-          username: values.email,
-          password: values.password,
-        }
-      );
-      console.log('aca va la data', response.data);
+      const response = await axios.post(`${globalVariable}/v1/api/auth/login`, {
+        username: values.email,
+        password: values.password,
+      });
+      // console.log('aca va la data', response.data);
       if (response.data.jwt) {
         login(response.data.jwt);
         userLog(response.data.userInfo);
         setMensajeError(false);
         navigate("/home");
-      } else{
+      } else {
         setMensajeError(true);
       }
     } catch (error) {
       setMensajeError(true);
-      if (error.response.data.startsWith('user')) {
-        setTipoDeMensaje('Este email no es correcto')
-      }else if(error.response.data.startsWith('Bad')){
-        setTipoDeMensaje('Tu contraseña no es correcta')
-      }else{
-        setTipoDeMensaje('Algo salio mal, intenta mas tarde')
+      if (error.response.data.startsWith("user")) {
+        setTipoDeMensaje("Este email no es correcto");
+      } else if (error.response.data.startsWith("Bad")) {
+        setTipoDeMensaje("Tu contraseña no es correcta");
+      } else {
+        setTipoDeMensaje("Algo salio mal, intenta mas tarde");
       }
       console.log(error);
     }
@@ -101,7 +96,7 @@ const FormLogin = () => {
         <Grid item xs={12} md={12}>
           <TextField
             fullWidth
-            type={showPassword ? 'text' : 'password'}
+            type={showPassword ? "text" : "password"}
             id="outlined-basic"
             name="password"
             label="Contraseña"
@@ -127,25 +122,19 @@ const FormLogin = () => {
             }}
           />
         </Grid>
-        <Button
-          className={styles.btnLogin}
-          variant="contained"
-          type="submit"
-        >
+        <Button className={styles.btnLogin} variant="contained" type="submit">
           Iniciar Sesión
         </Button>
         <NavLink to="/auth/crearCuenta" className={styles.customLink}>
-        <Button
+          <Button
             style={{ borderColor: "#4a6ac9", color: "#4a6ac9" }}
             variant="outlined"
           >
             Crear Cuenta
           </Button>
         </NavLink>
-        
-        {mensajeError === true ? (
-          tipoDeMensaje
-        ) : null}
+
+        {mensajeError === true ? tipoDeMensaje : null}
       </Grid>
     </form>
   );

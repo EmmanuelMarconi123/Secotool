@@ -7,6 +7,7 @@ export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [token, setToken] = useState(null);
   const [user, setUser] = useState({});
+  const [upDateUser, setUpDateuser] = useState({})
   const TOKEN_KEY = "tokenUserLog";
   
   const tokenHaExpirado = (token) => {
@@ -57,7 +58,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout, token, userLog, user }}>
+    <AuthContext.Provider value={{ isLoggedIn, login, logout, token, userLog, user, upDateUser, setUpDateuser }}>
       {children}
     </AuthContext.Provider>
   );
