@@ -199,7 +199,7 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
     }
 
     if (description.length < 20) {
-      setDescriptionError("La descripcion debe contender más de 20 caracteres");
+      setDescriptionError("La descripción debe contender más de 20 caracteres");
       return;
     } else {
       setDescriptionError("");
