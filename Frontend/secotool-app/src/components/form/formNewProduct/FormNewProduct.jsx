@@ -127,7 +127,7 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
     setRemainingCharacters(255 - newText.length);
 
     // Validación de la descripción (sin caracteres especiales)
-    const specialCharactersRegex = /[.,?<>{}[\]/\\'"!@#$%^&*()_+=|:;~`]/;
+    const specialCharactersRegex = /[<>{}[\]/\\@#^&*|~]/;
     if (specialCharactersRegex.test(newText)) {
       setDescriptionError(
         "La descripción no puede contener caracteres especiales"
@@ -141,7 +141,7 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
     const newName = e.target.value;
 
     // Validación del nombre (sin caracteres especiales) en tiempo real
-    const specialCharactersRegex = /[.,?<>{}[\]/\\'"!@#$%^&*()_+=|:;~`]/;
+    const specialCharactersRegex = /[.,?<>{}[\]/\\'"!@#$%^&*()_+=|:;~]/;
     if (specialCharactersRegex.test(newName)) {
       setNameError("El nombre no puede contener caracteres especiales");
     } else {
@@ -244,11 +244,11 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
       new Blob([JSON.stringify(productData)], { type: "application/json" })
     );
     formData.append(
-      "categories",
+      "id-categories",
       new Blob([JSON.stringify(categories)], { type: "application/json" })
     );
     formData.append(
-      "features",
+      "id-features",
       new Blob([JSON.stringify(features)], { type: "application/json" })
     );
     //-----------------------APPENDS------------------>
