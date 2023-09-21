@@ -1,12 +1,13 @@
 .contenedorCardsSkeleton {
   display: flex;
-  align-items: center;
-  justify-content: center;
   position: relative;
+  justify-content: center;
+  gap: 8px;
+  max-width: 100%;
 }
 
 .elemento {
-  width: 100%;
+  max-width: 100%;
   background-color: rgb(
     255,
     255,
