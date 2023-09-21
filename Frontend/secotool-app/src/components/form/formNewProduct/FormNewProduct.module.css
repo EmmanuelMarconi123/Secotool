@@ -49,3 +49,12 @@
 .uploaderN {
   width: 99%;
 }
+
+.customInput {
+  border: 1px solid var(--darkGrey); /* Establece el estilo de borde aquí */
+}
+
+.errorMessage {
+  color: red;
+  font-size: 15px;
+}

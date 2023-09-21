@@ -15,7 +15,7 @@ const Filters = () => {
   const [filteredProductsF, setFilteredProductsF] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // Estado para el loader
   const { globalVariable } = useGlobal();
-  const {idCateg} = useParams();
+  const { idCateg } = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,23 +40,6 @@ const Filters = () => {
     fetchData();
   }, []);
 
-  // useEffect(() => {
-  //   // Filtra los productos basados en la categoría seleccionada
-  //   const categoryId = parseInt(idCateg);
-  //   console.log("Valor de params:", categoryId)
-  //   if (categoryId) {
-  //     let filteredProducts = productsF.filter((product) =>
-  //       product.productCategories.some((category) => category.id === categoryId)
-  //     );
-  //     console.log(filterProducts)
-  //     setFilteredProductsF(filteredProducts);
-  //     console.log("Productos filtrados:", filteredProducts); // Agrega este console.log
-  //   } else {
-  //     setFilteredProductsF(productsF)
-  //     console.log("Productos sin filtrar:", filteredProductsF)
-  //   }
-  // }, [idCateg, productsF]);
-
   const isScreenSmall = useMediaQuery("(max-width: 1024px)");
 
   useEffect(() => {
@@ -69,7 +52,6 @@ const Filters = () => {
         );
       });
       setFilteredProductsF(filteredProducts);
-      
     } else {
       // Si no hay filtros seleccionados, muestra todos los productos
       setFilteredProductsF(productsF);
@@ -93,10 +75,14 @@ const Filters = () => {
           <>
             <h4>Categorías</h4>
             <hr />
-            <FormFilterDesktop updatefilterProducts={updatefilterProducts} selectedCategoryId={idCateg} productsLoading={isLoading} />
+            <FormFilterDesktop
+              updatefilterProducts={updatefilterProducts}
+              selectedCategoryId={idCateg}
+              productsLoading={isLoading}
+            />
           </>
         ) : (
-          <ModalFilters updatefilterProducts={updatefilterProducts} />
+          <ModalFilters updatefilterProducts={updatefilterProducts} productos={productsF} />
         )}
       </div>
       <div className={style.contenedorCards}>
