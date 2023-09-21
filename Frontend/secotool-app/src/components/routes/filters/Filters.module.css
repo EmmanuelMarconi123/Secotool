@@ -2,7 +2,6 @@
   margin-top: 92px;
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
 .boxHeader {
@@ -35,20 +34,20 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: start;
-    gap: 40px;
+    gap: 32px;
   }
 
   .boxHeader {
-    /* width: 30%; */
+    width: 25%;
     flex-direction: column;
     align-items: flex-start;
     padding-bottom: 40px;
-    padding-top: 40px;
+    padding-top: 54px;
   }
 
   .contenedorCards {
-    /* width: 70%; */
-    padding-top: 32px;
+    width: 75%;
+    padding-top: 48px;
   }
 
   .titleContenedorCards {
