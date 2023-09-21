@@ -85,7 +85,7 @@ function CardProduct({ product }) {
       ) : null}
 
       <Link to={"/product/" + product.id} key={product.id}>
-        <Grid container className={styles.containerCard} xs={12} md={12}>
+        <Grid item className={styles.containerCard} xs={12} md={12}>
           <Grid container className={styles.card}>
             {/* Contenedor de imagen */}
             <Grid item xs={12} md={6} className={styles.imgContainer}>

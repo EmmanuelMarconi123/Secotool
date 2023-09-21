@@ -4,6 +4,7 @@ import ListProducts from "../../list/ListProducts";
 import { useEffect, useState } from "react";
 import { useGlobal } from "../../../contexts/GlobalContext";
 import SkeletonCard from "../../skeletonCard/SkeletonCard";
+import CategoriasHome from '../../seccionCategorias/CategoriasHome'
 
 const LoadingIndicator = () => <SkeletonCard />;
 const NetworkError = () => <p>Network Error</p>;
@@ -49,6 +50,7 @@ const Home = () => {
   ) : null;
 
   return (
+    <>
     <section className={styles.sectionBusqueda}>
       <div className={styles.containerBusqueda}>
         <div className={styles.bgBusqueda}></div>
@@ -66,6 +68,10 @@ const Home = () => {
         {products === undefined && !loading && <NetworkError />}
       </div>
     </section>
+    {/* <section>
+      <CategoriasHome></CategoriasHome>
+    </section> */}
+    </>
   );
 };
 
