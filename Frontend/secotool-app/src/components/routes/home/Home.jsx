@@ -22,6 +22,7 @@ const Home = () => {
         const fetchOptions = {
           headers: {
             Authorization: storedToken ? `Bearer ${storedToken}` : "", // Solo se incluye si hay un token
+            "Cache-Control": "no-cache"
           },
         };
 
