@@ -22,7 +22,7 @@ function Alquileres() {
         },
       });
       setAlquileres(response.data);
-      console.log(response);
+      console.log(response.data);
     } catch (error) {
       console.error("Error al obtener los favoritos:", error);
     }
@@ -40,7 +40,7 @@ function Alquileres() {
           <AlquilerCard
             key={product.rentalData.id}
             productId={product.productId}
-            // productImage={product.image}
+            productImage={product.productImage[0].url}
             productName={product.productName}
             rentalDay={product.rentalData.rentalDay}
             rentalStart={product.rentalData.rentalStartDate}
