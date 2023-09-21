@@ -108,7 +108,7 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
   const [idsCategories, setIdsCategories] = useState(); //Agarra las categorias
   const [idsFeatures, setIdsFeatures] = useState([]);
 
-  const [remainingCharacters, setRemainingCharacters] = useState(255); //contador de caracteres
+  const [remainingCharacters, setRemainingCharacters] = useState(0); //contador de caracteres
 
   //================================ERROR'S===============================>
 
@@ -124,8 +124,14 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
   const handleDescriptionChange = (e) => {
     const newText = e.target.value;
     setDescription(newText);
-    setRemainingCharacters(255 - newText.length);
+  
+    // Calcula los caracteres escritos
+    const charactersWritten = newText.length;
 
+  
+    // Actualiza el estado de caracteres restantes
+    setRemainingCharacters(charactersWritten);
+  
     // Validación de la descripción (sin caracteres especiales)
     const specialCharactersRegex = /[<>{}[\]/\\@#^&*|~]/;
     if (specialCharactersRegex.test(newText)) {
@@ -278,6 +284,7 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
         setUploadedImages([]);
         setIdsCategories([]);
         setIdsFeatures([]);
+        setRemainingCharacters(0)
         toaster.push(message, { placement: "bottomStart", duration: 5000 });
         console.log(response);
       })
@@ -303,7 +310,7 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
             onSubmit={handleNewProductSubmit}
           >
             <label htmlFor="">
-              Nombre del producto
+            Nombre del producto
               <input
                 type="text"
                 name="name"
@@ -316,12 +323,12 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
               )}
             </label>
             <label htmlFor="">
-              Descripcion
+            Descripción
               <textarea
                 cols="30"
                 rows="10"
                 name="description"
-                placeholder="Ingrese una descripcion de hasta 255 caracteres"
+                placeholder="Ingrese una descripción de hasta 255 caracteres"
                 maxLength={255}
                 value={description}
                 onChange={handleDescriptionChange}
@@ -343,13 +350,13 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
               )}
             </label>
             <label htmlFor="">
-              Categorias
+            Categorías
               <TagPicker
                 data={categories}
                 style={{ width: 640 }}
                 value={idsCategories}
                 onChange={handleOptionChange}
-                placeholder="Seleccionar categorias"
+                placeholder="Seleccionar categorías"
                 className={styles.customInput}
               />
               {categoriesError && (
@@ -357,11 +364,11 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
               )}
             </label>
             <label htmlFor="">
-              Caracteristicas
+            Características
               <TagPicker
                 style={{ width: 640 }}
                 data={features}
-                placeholder="Seleccionar caracteristicas"
+                placeholder="Seleccionar características"
                 onChange={handleOptionChangeF}
                 className={styles.customInput}
               />
@@ -383,7 +390,7 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
               )}
             </label>
             <label htmlFor="">
-              Imagenes
+            Imágenes
               <Uploader
                 autoUpload={false}
                 draggable
