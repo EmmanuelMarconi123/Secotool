@@ -24,6 +24,7 @@ const FormLogin = () => {
 
   const navigate = useNavigate();
   const [mensajeError, setMensajeError] = useState(false);
+  const [tipoDeMensaje, setTipoDeMensaje] = useState('')
   const [showPassword, setShowPassword] = useState(false);
 
 
@@ -37,18 +38,25 @@ const FormLogin = () => {
           password: values.password,
         }
       );
-      console.log(response.data);
+      console.log('aca va la data', response.data);
       if (response.data.jwt) {
         login(response.data.jwt);
         userLog(response.data.userInfo);
         setMensajeError(false);
         navigate("/home");
-      } else {
+      } else{
         setMensajeError(true);
       }
     } catch (error) {
       setMensajeError(true);
-      // console.log(error);
+      if (error.response.data.startsWith('user')) {
+        setTipoDeMensaje('Este email no es correcto')
+      }else if(error.response.data.startsWith('Bad')){
+        setTipoDeMensaje('Tu contraseña no es correcta')
+      }else{
+        setTipoDeMensaje('Algo salio mal, intenta mas tarde')
+      }
+      console.log(error);
     }
   };
 
@@ -134,8 +142,9 @@ const FormLogin = () => {
             Crear Cuenta
           </Button>
         </NavLink>
+        
         {mensajeError === true ? (
-          <h5>Tu usuario o contraseña no es correcta.</h5>
+          tipoDeMensaje
         ) : null}
       </Grid>
     </form>

@@ -13,8 +13,9 @@ const Confirmacion = () => {
       <Link to={'/auth/login'}>
       <Button variant="contained" className={styles.btnSuccess}>Iniciar Sesión</Button>
       </Link>
+      <Button variant="outlined" className={styles.btnReenviar}> Volver a Enviar Email</Button>
     </div>
   );
-};
+};2
 
 export default Confirmacion;

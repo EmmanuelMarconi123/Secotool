@@ -26,6 +26,7 @@ const FormCrearCuenta = () => {
   //vaidaciones de los campos usando YUP
   const navigate = useNavigate();
   const [mensajeError, setMensajeError] = useState(false);
+  const [tipoError, setTipoError] = useState('')
 
   const validationSchema = Yup.object({
     name: Yup.string()
@@ -71,7 +72,12 @@ const FormCrearCuenta = () => {
         } catch (error) {
           setMensajeError(true);
           console.error("Error al crear el usuario:", error);
-          // Maneja el error aquí
+          if (error.response.data.startsWith('username')) {
+            setTipoError('Este email ya existe, intenta con uno nuevo')
+          }else{
+            setTipoError('Algo salio mal, intenta mas tarde')
+          }
+        
         }
       },
       validationSchema: validationSchema,
@@ -173,7 +179,7 @@ const FormCrearCuenta = () => {
             </Button>
           </NavLink>
           {mensajeError === true ? (
-            <h5>Hubo un error. Intentalo más tarde.</h5>
+            tipoError
           ) : null}
         </Grid>
       </form>
