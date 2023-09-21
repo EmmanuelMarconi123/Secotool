@@ -40,7 +40,7 @@ const Filters = () => {
     fetchData();
   }, []);
 
-  const isScreenSmall = useMediaQuery("(max-width: 1024px)");
+  const isScreenSmall = useMediaQuery("(max-width: 1023px)");
 
   useEffect(() => {
     // Filtra los productos basados en los filtros seleccionados
@@ -98,3 +98,4 @@ const Filters = () => {
 };
 
 export default Filters;
+

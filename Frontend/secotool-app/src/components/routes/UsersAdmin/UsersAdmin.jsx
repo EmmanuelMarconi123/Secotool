@@ -86,7 +86,7 @@ const UsersAdmin = () => {
               <div className={styles.tableHeader}>
                 <span>ID</span>
                 <span>Nombre</span>
-                <span>Permisos admin</span>
+                <span>Acciones</span>
               </div>
              {cargando ? <EsqueletorAdmin/> : renderUsers}
               <Pagination

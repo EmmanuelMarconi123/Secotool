@@ -21,14 +21,14 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
     setUploadedImages([]);
     setIdsCategories([]);
     setIdsFeatures([]);
-    
+
     // Eliminar mensajes de error
     setNameError("");
     setDescriptionError("");
     setPriceError("");
     setCategoriesError("");
     // Agrega más líneas si tienes otros mensajes de error
-    
+
     // Cerrar el modal
     handleClose();
   };
@@ -108,7 +108,7 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
   const [idsCategories, setIdsCategories] = useState(); //Agarra las categorias
   const [idsFeatures, setIdsFeatures] = useState([]);
 
-  const [remainingCharacters, setRemainingCharacters] = useState(255); //contador de caracteres
+  const [remainingCharacters, setRemainingCharacters] = useState(0); //contador de caracteres
 
   //================================ERROR'S===============================>
 
@@ -124,10 +124,15 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
   const handleDescriptionChange = (e) => {
     const newText = e.target.value;
     setDescription(newText);
-    setRemainingCharacters(255 - newText.length);
+
+    // Calcula los caracteres escritos
+    const charactersWritten = newText.length;
+
+    // Actualiza el estado de caracteres restantes
+    setRemainingCharacters(charactersWritten);
 
     // Validación de la descripción (sin caracteres especiales)
-    const specialCharactersRegex = /[.,?<>{}[\]/\\'"!@#$%^&*()_+=|:;~`]/;
+    const specialCharactersRegex = /[<>{}[\]/\\@#^&*|~]/;
     if (specialCharactersRegex.test(newText)) {
       setDescriptionError(
         "La descripción no puede contener caracteres especiales"
@@ -141,7 +146,7 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
     const newName = e.target.value;
 
     // Validación del nombre (sin caracteres especiales) en tiempo real
-    const specialCharactersRegex = /[.,?<>{}[\]/\\'"!@#$%^&*()_+=|:;~`]/;
+    const specialCharactersRegex = /[.,?<>{}[\]/\\'"!@#$%^&*()_+=|:;~]/;
     if (specialCharactersRegex.test(newName)) {
       setNameError("El nombre no puede contener caracteres especiales");
     } else {
@@ -187,14 +192,14 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
 
     //======================== VALIDACIONES ====================>
     if (name.length < 8) {
-      setNameError("El nombre debe ser valido");
+      setNameError("El nombre debe contener más de 8 caracteres");
       return;
     } else {
       setNameError("");
     }
 
     if (description.length < 20) {
-      setDescriptionError("La descripcion debe ser valida");
+      setDescriptionError("La descripción debe contender más de 20 caracteres");
       return;
     } else {
       setDescriptionError("");
@@ -244,11 +249,11 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
       new Blob([JSON.stringify(productData)], { type: "application/json" })
     );
     formData.append(
-      "categories",
+      "id-categories",
       new Blob([JSON.stringify(categories)], { type: "application/json" })
     );
     formData.append(
-      "features",
+      "id-features",
       new Blob([JSON.stringify(features)], { type: "application/json" })
     );
     //-----------------------APPENDS------------------>
@@ -278,6 +283,7 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
         setUploadedImages([]);
         setIdsCategories([]);
         setIdsFeatures([]);
+        setRemainingCharacters(0);
         toaster.push(message, { placement: "bottomStart", duration: 5000 });
         console.log(response);
       })
@@ -307,7 +313,7 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
               <input
                 type="text"
                 name="name"
-                placeholder="Nombre del producto"
+                placeholder="Ingrese nombre del producto"
                 value={name}
                 onChange={handleNameChange}
               />
@@ -316,12 +322,12 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
               )}
             </label>
             <label htmlFor="">
-              Descripcion
+              Descripción
               <textarea
                 cols="30"
                 rows="10"
                 name="description"
-                placeholder="Ingrese una descripcion de hasta 255 caracteres"
+                placeholder="Ingrese una descripción de hasta 255 caracteres"
                 maxLength={255}
                 value={description}
                 onChange={handleDescriptionChange}
@@ -343,13 +349,13 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
               )}
             </label>
             <label htmlFor="">
-              Categorias
+              Categorías
               <TagPicker
                 data={categories}
                 style={{ width: 640 }}
                 value={idsCategories}
                 onChange={handleOptionChange}
-                placeholder="Seleccionar categorias"
+                placeholder="Seleccionar categorías"
                 className={styles.customInput}
               />
               {categoriesError && (
@@ -357,11 +363,11 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
               )}
             </label>
             <label htmlFor="">
-              Caracteristicas
+              Características
               <TagPicker
                 style={{ width: 640 }}
                 data={features}
-                placeholder="Seleccionar caracteristicas"
+                placeholder="Seleccionar características"
                 onChange={handleOptionChangeF}
                 className={styles.customInput}
               />
@@ -383,7 +389,7 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
               )}
             </label>
             <label htmlFor="">
-              Imagenes
+              Imágenes
               <Uploader
                 autoUpload={false}
                 draggable
@@ -407,7 +413,9 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
                   <span>Subir imagen</span>
                 </div>
               </Uploader>
-              {imagesError && <div className={styles.errorMessage}>{imagesError}</div>}
+              {imagesError && (
+                <div className={styles.errorMessage}>{imagesError}</div>
+              )}
             </label>
             <div className={styles.labelSeparator}></div>
             <Button

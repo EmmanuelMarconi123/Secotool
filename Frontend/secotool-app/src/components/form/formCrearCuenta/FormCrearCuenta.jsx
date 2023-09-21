@@ -1,5 +1,5 @@
 import TextField from "@mui/material/TextField";
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, IconButton, InputAdornment } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import styles from "./FormCrearCuenta.module.css";
@@ -8,9 +8,13 @@ import { useState } from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
 import { useGlobal } from "../../../contexts/GlobalContext";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { useAuth } from "../../../contexts/AuthContext";
 
 const FormCrearCuenta = () => {
   const { globalVariable } = useGlobal();
+  const { setUpDateuser } = useAuth();
   //en estos initial values se me van a guardar luego lo que el usuario escriba en los inputs
   const initialValues = {
     name: "",
@@ -19,9 +23,12 @@ const FormCrearCuenta = () => {
     password: "",
   };
 
+  const [showPassword, setShowPassword] = useState(false);
+
   //vaidaciones de los campos usando YUP
   const navigate = useNavigate();
   const [mensajeError, setMensajeError] = useState(false);
+  const [tipoError, setTipoError] = useState("");
 
   const validationSchema = Yup.object({
     name: Yup.string()
@@ -47,6 +54,7 @@ const FormCrearCuenta = () => {
     useFormik({
       initialValues: initialValues,
       onSubmit: async (values) => {
+        setUpDateuser(values);
         try {
           setMensajeError(false);
           // console.log(values);
@@ -61,13 +69,17 @@ const FormCrearCuenta = () => {
           );
 
           if (response.status === 200) {
-            console.log(response);
+            // console.log(response.data);
             navigate("/auth/confirmacionNuevoUsuario");
           }
         } catch (error) {
           setMensajeError(true);
           console.error("Error al crear el usuario:", error);
-          // Maneja el error aquí
+          if (error.response.data.startsWith("username")) {
+            setTipoError("Este email ya existe, intenta con uno nuevo");
+          } else {
+            setTipoError("Algo salio mal, intenta mas tarde");
+          }
         }
       },
       validationSchema: validationSchema,
@@ -127,7 +139,7 @@ const FormCrearCuenta = () => {
           <Grid item xs={12} md={12}>
             <TextField
               fullWidth
-              type="password"
+              type={showPassword ? "text" : "password"}
               id="outlined-basic"
               name="password"
               label="Contraseña"
@@ -139,6 +151,22 @@ const FormCrearCuenta = () => {
               helperText={
                 touched.password && errors.password ? errors.password : ""
               }
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setShowPassword(!showPassword)}
+                      edge="end"
+                    >
+                      {showPassword ? (
+                        <VisibilityOffIcon />
+                      ) : (
+                        <VisibilityIcon />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
           </Grid>
           <Button
@@ -156,9 +184,7 @@ const FormCrearCuenta = () => {
               Iniciar Sesión
             </Button>
           </NavLink>
-          {mensajeError === true ? (
-            <h5>Hubo un error. Intentalo más tarde.</h5>
-          ) : null}
+          {mensajeError === true ? tipoError : null}
         </Grid>
       </form>
     </>
