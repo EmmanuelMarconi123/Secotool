@@ -60,7 +60,7 @@ public class UserFacadeImpl implements IUserFacade {
     @Override
     public UserAuthenticatedResponseDto registerUser(UserRegistrationRequestDto registerRequestDto) {
         userValidationService.isUsernameAvailable(registerRequestDto.username());
-        emailFacade.sendEmail(registerRequestDto);
+        emailFacade.singUpNotification(registerRequestDto);
         var mappedUser = userMapper.toUser(registerRequestDto);
         mappedUser.setUserRole(UserRole.USER);
         var userId = userService.saveUser(mappedUser);
@@ -103,6 +103,16 @@ public class UserFacadeImpl implements IUserFacade {
         User user = userService.findUserById(userId);
         var favorites = user.getFavoritesProducts();
         return productUtils.productsToProductsDto(favorites);
+    }
+
+    @Override
+    public void updateUserDni(String dni, Long userId) {
+        userService.updateUserDni(dni,userId);
+    }
+
+    @Override
+    public void resendEmail(UserAuthenticationRequestDto userAuthenticationRequest) {
+
     }
 
 }

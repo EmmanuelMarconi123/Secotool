@@ -23,4 +23,8 @@ public interface IUserFacade {
     void removeProductToFavorite(Long productId, Long userId);
 
     List<ProductDto> getAllFavoritesProducts(Long userId);
+
+    void updateUserDni(String dni, Long userId);
+
+    void resendEmail(UserAuthenticationRequestDto userAuthenticationRequest);
 }

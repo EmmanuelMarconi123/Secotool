@@ -23,4 +23,5 @@ public interface IUserService {
 
     boolean existsByUsername(String username);
 
+    void updateUserDni(String dni, Long userId);
 }
