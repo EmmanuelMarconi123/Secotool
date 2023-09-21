@@ -2,8 +2,10 @@ package com.group2.secotool_app.presentation.Controllers;
 
 import com.group2.secotool_app.bussiness.facade.IUserFacade;
 import com.group2.secotool_app.model.dto.UserAuthenticatedResponseDto;
+import com.group2.secotool_app.model.dto.request.ResendRegistrationEmailRequestDto;
 import com.group2.secotool_app.model.dto.request.UserAuthenticationRequestDto;
 import com.group2.secotool_app.model.dto.request.UserRegistrationRequestDto;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +25,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/resend_email")
-    public ResponseEntity<String> resendEmail(@RequestBody @Valid UserAuthenticationRequestDto authenticationRequest){
-        userFacade.resendEmail(authenticationRequest);
+    public ResponseEntity<String> resendEmail(@RequestBody @Valid ResendRegistrationEmailRequestDto resendRegistrationEmailRequestDto) throws MessagingException {
+        userFacade.resendEmail(resendRegistrationEmailRequestDto);
         return ResponseEntity.ok("email successfully sent");
     }
 

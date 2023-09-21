@@ -62,6 +62,7 @@ public class UserController {
         userFacade.updateUserDni(userRequestDto.dni(),userId);
         return ResponseEntity.ok(String.format("dni of user %s successfully changed",userId));
     }
+
     @DeleteMapping("/products/{productId}")
     public ResponseEntity<String> removeProductToFavorite(@PathVariable("productId") Long productId){
         Long userId = Long.parseLong((String) SecurityContextHolder.getContext().getAuthentication().getCredentials());

@@ -2,10 +2,16 @@ package com.group2.secotool_app.bussiness.facade.Impl;
 
 import com.group2.secotool_app.bussiness.facade.IEmailFacade;
 import com.group2.secotool_app.bussiness.service.IEmailService;
+import com.group2.secotool_app.model.dto.request.ResendRegistrationEmailRequestDto;
 import com.group2.secotool_app.model.dto.request.UserRegistrationRequestDto;
 import com.group2.secotool_app.model.entity.Product;
 import com.group2.secotool_app.model.entity.User;
+import jakarta.activation.DataHandler;
+import jakarta.activation.DataSource;
+import jakarta.activation.FileDataSource;
 import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeBodyPart;
+import jakarta.mail.internet.MimeMultipart;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -26,9 +32,10 @@ public class EmailFacade implements IEmailFacade {
 
     @Override
     public void rentalNotification(Product product, User user, LocalDate startDate, LocalDate endDate, Double totalPrice) throws MessagingException {
-        var name = product.getName();
-        name = name.substring(0, 1).toUpperCase() + name.substring(1);
-        String body = String.format("<html>" +
+        var subject = "¡Tu solicitud de alquiler esta confirmada!";
+        var name = product.getName().substring(0, 1).toUpperCase() + product.getName().substring(1);
+        String body = String.format(
+                "<html>" +
                 "<body>" +
                 "<p style='margin: 0;'>¡Gracias por elegirnos, %s!</p>" +
                 "<p style='font-weight: bold'>" +
@@ -46,7 +53,64 @@ public class EmailFacade implements IEmailFacade {
                 "</body>" +
                 "</html>",name,product.getName(),startDate,endDate,totalPrice);
 
-        emailService.sendHtmlEmail(user.getUsername(), "¡Tu solicitud de alquiler esta confirmada!", body);
+        //contenido del mensaje completo (html + imagenes que se utilizan dentro del html)
+        MimeMultipart messageContent = new MimeMultipart("related");
+
+        //html
+        MimeBodyPart html = new MimeBodyPart();
+        html.setContent(body, "text/html");
+
+        // company logo
+        MimeBodyPart image = new MimeBodyPart();
+        DataSource logo = new FileDataSource("logo.png");
+        image.setDataHandler(new DataHandler(logo));
+        image.setHeader("Content-ID", "<image>");
+
+
+        // se agrega el contenido al contenedor del mensaje
+        messageContent.addBodyPart(html);
+        messageContent.addBodyPart(image);
+
+        emailService.sendHtmlEmail(user.getUsername(), subject, body, messageContent);
+    }
+
+    @Override
+    public void singUpNotification(ResendRegistrationEmailRequestDto registrationEmailRequestDto) throws MessagingException {
+        var firstname = registrationEmailRequestDto.firstName().substring(0, 1).toUpperCase() + registrationEmailRequestDto.firstName().substring(1);
+        var lastname = registrationEmailRequestDto.lastName().substring(0, 1).toUpperCase() + registrationEmailRequestDto.lastName().substring(1);;
+        var username = registrationEmailRequestDto.username().substring(0, 1).toUpperCase() + registrationEmailRequestDto.username().substring(1);;;
+        var subject = "¡regristro exitoso!";
+
+        var body = "<html><body style='font-family: 'Poppins', sans-serif; background-color: rgb(234, 234, 234); display: flex; justify-content: center; margin: 0px;'><div style='display: flex; flex-direction: column; background-color: rgb(247, 249, 251); max-width: 100%; height: 100vh; justify-content: space-between;'><div><div style='height: 100px; background-color: rgb(61, 61, 61); display: flex; align-items: center;'><img src='cid:white-logo' alt=' style='width: 400px; padding-left: 16px; max-width: 100%;' /></div><div style='padding-left: 16px; padding-right: 16px; padding-top: 32px; color: #3d3d3d;'><p style='margin-bottom: 0'>Hola <span>"+firstname +" "+ lastname +"</span>.</p><p style='margin-bottom: 0'>¡Tu cuenta en SecoTool fue creada exitosamente!</p><p>El email con el que creaste la cuenta fue <strong>"+username+"</strong>.</p><p style='margin-bottom: 0'>Puedes hacer clic<strong><a style='color: #6d6de1; text-decoration: underline;' href='#'>aquí</a></strong> para iniciar sesión y realizar el alquiler de las mejores herramientas que SecoTool tiene para ofrecerte.</p></div></div><div style='padding-top: 40px; padding-left: 16px; padding-bottom: 16px;'><img src='cid:logo' alt='Logo SecoTool' /><p style='font-size: 13px; margin: 0px; color: #939393'>Construye fácil y rápido</p><span style='font-size: 13px; color: #6d6de1'><a href='mailto:secotool@gmail.com'>secotool@gmail.com</a></span></div></div></body></html>";
+
+        System.out.println(body);
+
+        //contenido del mensaje completo (html + imagenes que se utilizan dentro del html)
+        MimeMultipart messageContent = new MimeMultipart("related");
+
+        //html
+        MimeBodyPart html = new MimeBodyPart();
+        html.setContent(body, "text/html");
+
+        // company black logo
+        MimeBodyPart image = new MimeBodyPart();
+        DataSource logo = new FileDataSource("logo.png");
+        image.setDataHandler(new DataHandler(logo));
+        image.setHeader("Content-ID", "<logo>");
+
+        // company white logo
+        MimeBodyPart image2 = new MimeBodyPart();
+        DataSource whiteLogo = new FileDataSource("logo-white.png");
+        image2.setDataHandler(new DataHandler(whiteLogo));
+        image2.setHeader("Content-ID", "<white-logo>");
+
+        // se agrega el contenido al contenedor del mensaje
+        messageContent.addBodyPart(html);
+        messageContent.addBodyPart(image);
+        messageContent.addBodyPart(image2);
+
+        emailService.sendHtmlEmail(registrationEmailRequestDto.username(), subject,body, messageContent);
+
     }
 
 }

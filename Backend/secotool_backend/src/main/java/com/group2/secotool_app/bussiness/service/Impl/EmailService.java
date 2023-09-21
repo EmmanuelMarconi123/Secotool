@@ -29,28 +29,16 @@ public class EmailService implements IEmailService {
     }
 
     @Override
-    public void sendHtmlEmail(String to, String subject, String body) throws MessagingException {
+    public void sendHtmlEmail(String to, String subject, String body, MimeMultipart messageContent) throws MessagingException {
 
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message,true);
+
         mimeMessageHelper.setTo(to);
         mimeMessageHelper.setSubject(subject);
 
-        //html
-        MimeMultipart multipart = new MimeMultipart("related");
-        MimeBodyPart html = new MimeBodyPart();
-        html.setContent(body, "text/html");
-        multipart.addBodyPart(html);
+        message.setContent(messageContent);
 
-
-        //company logo
-        MimeBodyPart image = new MimeBodyPart();
-        DataSource logo = new FileDataSource("logo.png");
-        image.setDataHandler(new DataHandler(logo));
-        image.setHeader("Content-ID", "<image>");
-
-        multipart.addBodyPart(image);
-        message.setContent(multipart);
         javaMailSender.send(message);
     }
 
