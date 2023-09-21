@@ -25,20 +25,24 @@
 }
 
 .boxControlsCarousel{
-    width: calc(100% - 64px);
+    width: calc(100% - 94px);
     position: absolute;
     display: flex;
     justify-content: space-between;
-    top: 318px;
+    /*top: 318px;*/
+    top: 363px;
 }
 
 .boxControlsCarousel button{
-    background-color: transparent;
+    background-color: var(--dark);
+    color: var(--white);
+    border-radius: 100%;
     border: none;
+    padding: 4px 10px;
 }
 
 .boxControlsCarousel button i{
-    font-size: 23px;
+    font-size: 16px;
 }
 
 .containerCarousel{
@@ -47,7 +51,7 @@
 
 .indicadorImg{
     align-self: end;
-    background-color: var(--dark);
+    background-color: #8e8e93;
     color: aliceblue;
     border-radius: 12px;
     padding: 4px 8px;

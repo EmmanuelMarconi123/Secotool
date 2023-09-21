@@ -12,7 +12,7 @@ function Alquileres() {
 
   const [alquileres, setAlquileres] = useState([]);
 
-  const apiUrl = `${globalVariable}/v1/api/users/products/alquileres`;
+  const apiUrl = `${globalVariable}/v1/api/rentals/historical`;
 
   const fetchAlquileres = async () => {
     try {
@@ -21,8 +21,8 @@ function Alquileres() {
           Authorization: `Bearer ${token}`,
         },
       });
-
       setAlquileres(response.data);
+      console.log(response);
     } catch (error) {
       console.error("Error al obtener los favoritos:", error);
     }
@@ -38,24 +38,16 @@ function Alquileres() {
       <div className={styles.cardFContainer}>
         {alquileres.map((product) => (
           <AlquilerCard
-            key={product.id}
-            id={product.id}
-            images={product.images[0].url}
-            name={product.name}
-            price={product.price}
+            key={product.rentalData.id}
+            productId={product.productId}
+            // productImage={product.image}
+            productName={product.productName}
+            rentalDay={product.rentalData.rentalDay}
+            rentalStart={product.rentalData.rentalStartDate}
+            rentalEnd={product.rentalData.rentalEndDate}
+            total={product.rentalData.rentalPrice}
           />
         ))}
-        {/* <AlquilerCard
-          id={1}
-          images={
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF8Z4jSDwUrsWSHfPShgh0o_EYNE0u9YfBPw&usqp=CAU"
-          }
-          alquiler={"del 20/04/2023 al 21/04/2023"}
-          name={
-            "Taladro percutor inalámbrico 13mm atornillador 20V Hamilton Ultimate ULT111"
-          }
-          price={"product.price"}
-        /> */}
       </div>
     </div>
   );

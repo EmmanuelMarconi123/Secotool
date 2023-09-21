@@ -242,7 +242,7 @@ const Features = () => {
           <Modal.Title>Confirmar eliminación</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          ¿Está seguro que desea borrar la característica: {}?
+          ¿Está seguro que desea borrar la característica: {caracteristicaABorrar.name}?
         </Modal.Body>
         <Modal.Footer className={styles.modalButtons}>
           <button

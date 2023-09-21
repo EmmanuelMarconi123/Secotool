@@ -13,6 +13,26 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
   const { token } = useAuth();
   const { globalVariable } = useGlobal();
 
+  const handleCloseModal = () => {
+    // Restablecer todos los estados del formulario a sus valores iniciales
+    setName("");
+    setDescription("");
+    setPrice("");
+    setUploadedImages([]);
+    setIdsCategories([]);
+    setIdsFeatures([]);
+    
+    // Eliminar mensajes de error
+    setNameError("");
+    setDescriptionError("");
+    setPriceError("");
+    setCategoriesError("");
+    // Agrega más líneas si tienes otros mensajes de error
+    
+    // Cerrar el modal
+    handleClose();
+  };
+
   const message = (
     <Message showIcon type="success" closable>
       El producto se ha creado exitosamente
@@ -54,14 +74,11 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
   useEffect(() => {
     async function fetchFeatures() {
       try {
-        const response = await fetch(
-          `${globalVariable}/v1/api/features/open`,
-          {
-            headers: {
-              Authorization: "Bearer " + token,
-            },
-          }
-        );
+        const response = await fetch(`${globalVariable}/v1/api/features/open`, {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        });
         if (response.ok) {
           const data = await response.json();
           const transformedData = data.map((category) => ({
@@ -91,6 +108,62 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
   const [idsCategories, setIdsCategories] = useState(); //Agarra las categorias
   const [idsFeatures, setIdsFeatures] = useState([]);
 
+  const [remainingCharacters, setRemainingCharacters] = useState(255); //contador de caracteres
+
+  //================================ERROR'S===============================>
+
+  const [nameError, setNameError] = useState("");
+  const [descriptionError, setDescriptionError] = useState("");
+  const [categoriesError, setCategoriesError] = useState("");
+  const [featuresError, setFeaturesError] = useState("");
+  const [priceError, setPriceError] = useState("");
+  const [imagesError, setImagesError] = useState("");
+
+  //================================== HANDLE'S=========================>
+
+  const handleDescriptionChange = (e) => {
+    const newText = e.target.value;
+    setDescription(newText);
+    setRemainingCharacters(255 - newText.length);
+
+    // Validación de la descripción (sin caracteres especiales)
+    const specialCharactersRegex = /[.,?<>{}[\]/\\'"!@#$%^&*()_+=|:;~`]/;
+    if (specialCharactersRegex.test(newText)) {
+      setDescriptionError(
+        "La descripción no puede contener caracteres especiales"
+      );
+    } else {
+      setDescriptionError(""); // Limpiar el mensaje de error si no hay errores
+    }
+  };
+
+  const handleNameChange = (e) => {
+    const newName = e.target.value;
+
+    // Validación del nombre (sin caracteres especiales) en tiempo real
+    const specialCharactersRegex = /[.,?<>{}[\]/\\'"!@#$%^&*()_+=|:;~`]/;
+    if (specialCharactersRegex.test(newName)) {
+      setNameError("El nombre no puede contener caracteres especiales");
+    } else {
+      setNameError(""); // Limpiar el mensaje de error si no hay errores
+    }
+
+    setName(newName);
+  };
+
+  const handlePriceChange = (e) => {
+    const newPrice = e.target.value;
+
+    // Validación de que el precio solo contenga números en tiempo real
+    if (!/^\d+$/.test(newPrice)) {
+      setPriceError("El precio solo puede contener números");
+    } else {
+      setPriceError(""); // Limpiar el mensaje de error si no hay errores
+    }
+
+    setPrice(newPrice);
+  };
+
   const handleOptionChange = (newSelectedOptions) => {
     console.log(newSelectedOptions);
     setIdsCategories(newSelectedOptions);
@@ -108,8 +181,48 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
     console.log(fileList);
   };
 
+  //================================================ POST NEW PRODUCT ===========================>
   const handleNewProductSubmit = async (e) => {
     e.preventDefault();
+
+    //======================== VALIDACIONES ====================>
+    if (name.length < 8) {
+      setNameError("El nombre debe ser valido");
+      return;
+    } else {
+      setNameError("");
+    }
+
+    if (description.length < 20) {
+      setDescriptionError("La descripcion debe ser valida");
+      return;
+    } else {
+      setDescriptionError("");
+    }
+
+    if (idsCategories.length === 0) {
+      setCategoriesError("Debes seleccionar al menos una categoría");
+      return; // No continua con el envío del formulario
+    } else {
+      setCategoriesError(""); // Limpiar el mensaje de error si no hay errores
+    }
+
+    if (idsFeatures.length === 0) {
+      setFeaturesError("Debes seleccionar al menos una caracteristica");
+      return; // No continua con el envío del formulario
+    } else {
+      setFeaturesError(""); // Limpiar el mensaje de error si no hay errores
+    }
+
+    if (uploadedImages.length === 0) {
+      setImagesError("Debes cargar al menos una imagen");
+      return; // No continua con el envío del formulario
+    } else {
+      setImagesError(""); // Limpiar el mensaje de error si no hay errores
+    }
+
+    //=========================== POST ==================>
+
     setIsLoading(true);
     const formData = new FormData(); //Creando el form DATA
 
@@ -119,12 +232,12 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
       price: price,
     };
 
-    const categoriasId = {
-      idsCategories: idsCategories,
+    const categories = {
+      idsList: idsCategories,
     };
 
-    const featuresId = {
-      idsFeatures: idsFeatures,
+    const features = {
+      idsList: idsFeatures,
     };
     formData.append(
       "product-data",
@@ -132,11 +245,11 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
     );
     formData.append(
       "categories",
-      new Blob([JSON.stringify(categoriasId)], { type: "application/json" })
+      new Blob([JSON.stringify(categories)], { type: "application/json" })
     );
     formData.append(
       "features",
-      new Blob([JSON.stringify(featuresId)], { type: "application/json" })
+      new Blob([JSON.stringify(features)], { type: "application/json" })
     );
     //-----------------------APPENDS------------------>
     uploadedImages.forEach((file) => {
@@ -170,13 +283,14 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
       })
       .catch(function (response) {
         //handle error
+        setIsLoading(false);
         console.log(response);
       });
   };
 
   /*Aqui va el formulario para agregar un nuevo producto como admin*/
   return (
-    <Modal size="md" open={open} onClose={handleClose} overflow={false}>
+    <Modal size="md" open={open} onClose={handleCloseModal} overflow={false}>
       <Modal.Header>
         <Modal.Title style={{ textAlign: "center", fontSize: 23 }}>
           Nuevo Producto
@@ -193,9 +307,13 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
               <input
                 type="text"
                 name="name"
+                placeholder="Nombre del producto"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={handleNameChange}
               />
+              {nameError && (
+                <div className={styles.errorMessage}>{nameError}</div>
+              )}
             </label>
             <label htmlFor="">
               Descripcion
@@ -203,10 +321,26 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
                 cols="30"
                 rows="10"
                 name="description"
+                placeholder="Ingrese una descripcion de hasta 255 caracteres"
+                maxLength={255}
                 value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                onChange={handleDescriptionChange}
                 style={{ height: 120, width: 640, padding: 8 }}
               ></textarea>
+              <div
+                id="char-count"
+                style={{
+                  display: "flex",
+                  alignSelf: "flex-end",
+                  paddingRight: 10,
+                  height: 5,
+                }}
+              >
+                {remainingCharacters}/{255}
+              </div>
+              {descriptionError && (
+                <div className={styles.errorMessage}>{descriptionError}</div>
+              )}
             </label>
             <label htmlFor="">
               Categorias
@@ -216,7 +350,11 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
                 value={idsCategories}
                 onChange={handleOptionChange}
                 placeholder="Seleccionar categorias"
+                className={styles.customInput}
               />
+              {categoriesError && (
+                <div className={styles.errorMessage}>{categoriesError}</div>
+              )}
             </label>
             <label htmlFor="">
               Caracteristicas
@@ -225,16 +363,24 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
                 data={features}
                 placeholder="Seleccionar caracteristicas"
                 onChange={handleOptionChangeF}
+                className={styles.customInput}
               />
+              {featuresError && (
+                <div className={styles.errorMessage}>{featuresError}</div>
+              )}
             </label>
             <label htmlFor="">
               Precio
               <input
                 type="text"
                 name="price"
+                placeholder="Precio"
                 value={price}
-                onChange={(e) => setPrice(e.target.value)}
+                onChange={handlePriceChange}
               />
+              {priceError && (
+                <div className={styles.errorMessage}>{priceError}</div>
+              )}
             </label>
             <label htmlFor="">
               Imagenes
@@ -254,13 +400,14 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
                     justifyContent: "center",
                     gap: 10,
                     borderRadius: 8,
-                    border: "1px dashed #666",
+                    border: "1px dashed var(--darkGrey)",
                   }}
                 >
                   <i className="fa-solid fa-cloud-arrow-up"></i>
                   <span>Subir imagen</span>
                 </div>
               </Uploader>
+              {imagesError && <div className={styles.errorMessage}>{imagesError}</div>}
             </label>
             <div className={styles.labelSeparator}></div>
             <Button

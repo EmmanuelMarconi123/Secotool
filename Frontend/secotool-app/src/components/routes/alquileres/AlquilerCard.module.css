@@ -26,7 +26,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   line-height: 1.5;
-  height: 48px;
+  /* height: 48px; */
 }
 
 .favoritePrice {
@@ -60,6 +60,10 @@
   width: 100%;
 }
 
+.buttonDisabled{
+  opacity: 0.5;
+}
+
 .buttonsAlquiler :nth-child(1) {
   background-color: #3a3939;
   color: white;
@@ -73,6 +77,14 @@
 .buttonsAlquiler button {
   width: 100%;
   font-size: 13px;
+}
+
+.linkProduct{
+  width: 100%;
+  font-size: 13px;
+  border-radius: 4px;
+  padding: 12px 36px;
+  text-align: center;
 }
 
 .status {
@@ -111,6 +123,10 @@
     font-size: 13px;
   }
 
+  .linkProduct{
+    font-size: 13px;
+  }
+
   .dateRange {
     font-size: 13px;
   }
@@ -123,6 +139,10 @@
   }
 
   .buttonsAlquiler button {
+    font-size: 16px;
+  }
+
+  .linkProduct{
     font-size: 16px;
   }
 
@@ -148,6 +168,10 @@
   }
 
   .buttonsAlquiler button {
+    font-size: 16px;
+  }
+
+  .linkProduct{
     font-size: 16px;
   }
 
