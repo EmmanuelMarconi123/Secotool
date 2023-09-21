@@ -1,29 +1,89 @@
 import styles from "./AlquilerCard.module.css";
+import ModalReview from "../../modal/modalReview/ModalReview";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
-function AlquilerCard(props) {
+function AlquilerCard({productId,productImage,productName,rentalDay,rentalStart,rentalEnd,total}) {
+  const [open, setOpen] = useState(false);
+  const [size, setSize] = useState();
+  const [state, setState] = useState("");
+
+  const status = () => {
+    const today = new Date().toISOString().split("T")[0];
+
+    switch (true) {
+      case rentalStart > today:
+        setState("PENDIENTE");
+        break;
+
+      case rentalStart <= today && rentalEnd >= today:
+        setState("EN CURSO");
+        break;
+
+      case rentalEnd < today:
+        setState("FINALIZADO");
+        break;
+
+      default:
+        return <span>No se ha podido determinar el estado</span>;
+    }
+  };
+
+  const textColor = (state) => {
+    if (state === 'PENDIENTE') {
+        return 'red';
+    }else if( state === 'EN CURSO'){
+      return 'orange'
+    }
+    return 'green';
+}
+
+  const handleOpen = (value) => {
+    setSize(value);
+    setOpen(true);
+  };
+
+  const handleClose = () => setOpen(false);
+
+  useEffect(() => {
+    status();
+  }, []);
+
   return (
     <>
       <div className={styles.cardFavorite}>
         <img
-          src={props.images}
-          alt={props.name}
+          src={productImage}
+          alt={productName}
           className={styles.productImage}
         />
         <div className={styles.infoCard}>
-          <span className={styles.status} style={{ color: "red" }}>
-            PENDIENTE
-          </span>
-          <span className={styles.dateRange}>{props.alquiler}</span>
-          <span className={styles.productName}>{props.name}</span>
+          <span className={styles.status} style={{color: textColor(state)}}>{state}</span>
+          <span className={styles.dateRange}>Del {rentalStart} al {rentalEnd}</span>
+          <span className={styles.productName}>{productName}</span>
           <span className={styles.favoritePrice}>
-            ${props.price} - reservado el 20/04/23
+            ${total} - Reservado el {rentalDay}
           </span>
         </div>
         <div className={styles.buttonsAlquiler}>
-          <button>Volver a alquilar</button>
-          <button>Valorar</button>
+          <Link className={styles.linkProduct} to={`/product/${productId}`}>
+            Volver a alquilar
+          </Link>
+          <button
+            disabled={state == "PENDIENTE" ? true : false}
+            className={state == "PENDIENTE" ? `${styles.buttonDisabled}` : ""}
+            onClick={() => handleOpen("lg")}
+          >
+            Valorar
+          </button>
         </div>
       </div>
+      <ModalReview
+        open={open}
+        size={size}
+        handleClose={handleClose}
+        productId={productId}
+      />
     </>
   );
 }
