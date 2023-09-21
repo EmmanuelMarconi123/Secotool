@@ -86,4 +86,9 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
     public boolean existsByUsername(String username) {
         return userRepository.existsByUsername(username);
     }
+
+    @Override
+    public void updateUserDni(String dni, Long userId) {
+        userRepository.updateUserDni(dni,userId);
+    }
 }

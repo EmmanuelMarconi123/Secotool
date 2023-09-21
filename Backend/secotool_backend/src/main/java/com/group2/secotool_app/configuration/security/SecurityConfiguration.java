@@ -54,14 +54,11 @@ public class SecurityConfiguration {
                             .requestMatchers("/v1/api/products/admin/**").hasAuthority(UserRole.ADMIN.name())
 
                             //users
-                            .requestMatchers("/v1/api/users/products/**",
-                                    "/v1/api/users/getMe"
-                            ).hasAnyAuthority(UserRole.ADMIN.name(),UserRole.USER.name())
-
+                            .requestMatchers("/v1/api/users/products/**","/v1/api/users/update/**").hasAnyAuthority(UserRole.ADMIN.name(),UserRole.USER.name())
+                            .requestMatchers("/v1/api/users/admin/**").hasAuthority(UserRole.ADMIN.name())
 
                             //rentals
-                            .requestMatchers("/v1/api/rentals/**"
-                            ).hasAnyAuthority(UserRole.ADMIN.name(),UserRole.USER.name())
+                            .requestMatchers("/v1/api/rentals/**").hasAnyAuthority(UserRole.ADMIN.name(),UserRole.USER.name())
                             .requestMatchers("/v1/api/rentals/admin/**").hasAuthority(UserRole.ADMIN.name())
 
                             //features

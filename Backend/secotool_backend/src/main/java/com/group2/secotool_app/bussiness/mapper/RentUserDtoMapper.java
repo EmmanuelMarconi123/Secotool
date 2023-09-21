@@ -9,6 +9,7 @@ import org.mapstruct.Mapping;
 public interface RentUserDtoMapper {
     @Mapping(source = "rent.product.id", target = "productId")
     @Mapping(source = "rent.product.name", target = "productName")
+    @Mapping(source = "rent.product.images", target = "productImage")
     @Mapping(source = "rent", target = "rentalData")
     RentUserDto toUserRentDto (Rent rent);
 }

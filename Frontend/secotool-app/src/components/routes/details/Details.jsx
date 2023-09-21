@@ -10,7 +10,6 @@ import ModalShare from "../../modal/ModalShare";
 import ListPoliticas from "../../list/listPoliticas/ListPoliticas";
 import FormVal from "../../form/formValoraciones/formVal";
 import CardReview from "../../card/cardReview/CardReview";
-import ModalReview from "../../modal/modalReview/ModalReview";
 import { useGlobal } from "../../../contexts/GlobalContext";
 import { useAuth } from "../../../contexts/AuthContext";
 import axios from "axios";
@@ -29,14 +28,26 @@ function Details() {
   const { token } = useAuth();
   const URL_API = `${globalVariable}/v1/api/products/open/${params.id}`;
   const { data, status } = useFetch(URL_API, {});
-  const [open, setOpen] = useState(false);
-  const [size, setSize] = useState();
   const [policies, setPolicies] = useState();
   const [disabledDates, setDisabledDates] = useState([]);
   const [selectedDateRange, setSelectedDateRange] = useState([]);
   const [dataRentail, setDataRentail] = useState(null);
+  const [isValidDate, setIsValidDate] = useState(false);
 
   const toaster = useToaster();
+
+  const messageDateError = (
+    <Message showIcon type="error" closable>
+      No se ha podido seleccionar la fecha correctamente, por favor intentelo de nuevo.
+    </Message>
+  );
+
+  const messageDateLength = (
+    <Message showIcon type="error" closable>
+      Por favor seleccione una fecha de inicio y una fecha de fin.
+    </Message>
+  );
+
 
   function handleScroll() {
     const scrollPosition = window.scrollY;
@@ -61,54 +72,15 @@ function Details() {
       });
   }
 
-  const message = (
-    <Message showIcon type="error" closable>
-      No se ha podido alquilar el producto
-    </Message>
-  );
-
-  async function handleRent() {
-    //const startDate = selectedDateRange[0].toISOString().split("T")[0];
-    //const endDate = selectedDateRange[1].toISOString().split("T")[0];
-
-    if (selectedDateRange) {
-      const startDate = selectedDateRange[0].toISOString().split("T")[0];
-      const endDate = selectedDateRange[1].toISOString().split("T")[0];
-      await axios
-        .post(
-          `${globalVariable}/v1/api/rentals`,
-          {
-            productId: params.id,
-            startDate: startDate,
-            endDate: endDate,
-          },
-          {
-            headers: {
-              Authorization: "Bearer " + token,
-            },
-          }
-        )
-        .then(function (response) {
-          console.log(response);
-          handleOpen("lg");
-          setSelectedDateRange([]);
-          calculateDisabledDates();
-        })
-        .catch(function (error) {
-          console.log(error);
-          toaster.push(message, { placement: "bottomStart", duration: 5000 });
-        });
-    } else {
-      alert("Debes seleccionar alguna fecha para alquilar el producto");
-    }
-  }
-
   const validateRentals = () => {
     if (selectedDateRange.length !== 2) {
       // Maneja el caso en el que el rango de fechas no esté seleccionado correctamente
       console.error("El rango de fechas no está seleccionado correctamente");
+      toaster.push(messageDateLength, { placement: "bottomStart", duration: 5000 });
+
       return;
     }
+
 
     const startDate = selectedDateRange[0].toISOString().split("T")[0];
     const endDate = selectedDateRange[1].toISOString().split("T")[0];
@@ -119,10 +91,12 @@ function Details() {
       endDate,
     };
 
+
     fetch(`${globalVariable}/v1/api/rentals/validate`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        // Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(requestData),
     })
@@ -137,10 +111,12 @@ function Details() {
         // Procesa la respuesta exitosa
         console.log("Respuesta exitosa:", responseData);
         setDataRentail(responseData);
+        setIsValidDate(true)
       })
       .catch((error) => {
         // Maneja errores de la solicitud
         console.error("Error en la solicitud:", error);
+        toaster.push(messageDateError, { placement: "bottomStart", duration: 5000 });
       });
   };
 
@@ -175,18 +151,14 @@ function Details() {
     };
   }, []);
 
-  const handleOpen = (value) => {
-    setSize(value);
-    setOpen(true);
-  };
-  const handleClose = () => setOpen(false);
-
   useEffect(() => {
     getPolitics();
   }, []);
 
   useEffect(() => {
-    if (selectedDateRange) validateRentals();
+    if (selectedDateRange != null && selectedDateRange.length != 0)
+      validateRentals();
+    console.log(selectedDateRange)
   }, [selectedDateRange]);
 
   const ComponentDetailProduct =
@@ -258,10 +230,7 @@ function Details() {
                     </div>
                   </div>
                 </div>
-                <form
-                  className={styles.boxCalendar}
-                  onSubmit={(e) => handleRent(e)}
-                >
+                <form className={styles.boxCalendar}>
                   <label className={styles.titleSm}>Desde - Hasta</label>
                   {isScreenSmall ? (
                     <DateRangePicker
@@ -280,6 +249,7 @@ function Details() {
                       )}
                       value={selectedDateRange}
                       onChange={setSelectedDateRange}
+                      onClean={()=> setIsValidDate(false)}
                     />
                   ) : (
                     <DateRangePicker
@@ -298,31 +268,24 @@ function Details() {
                       value={selectedDateRange}
                       onChange={setSelectedDateRange}
                       className={styles.inputCalendar}
+                      onClean={()=> setIsValidDate(false)}
                     />
                   )}
-                  {/*<button
-                    className={styles.buttonCta}
-                    // onClick={() => handleOpen("lg")}
-                    type="submit"
-                  >
-                    Alquilar
-                    </button>*/}
                 </form>
               </div>
-              <Link
-                className={styles.buttonCta}
-                to="/rentaldetails"
-                // onClick={() => handleOpen("lg")}
-                //onClick={() => handleRent()}
-              >
-                Alquilar
-              </Link>
-              <ModalReview
-                open={open}
-                size={size}
-                handleClose={handleClose}
-                productId={params.id}
-              />
+              {!isValidDate ? (
+                <button href="" className={styles.buttonCtaDisabled} disabled>
+                  Alquilar
+                </button>
+              ) : (
+                <Link
+                  className={styles.buttonCta}
+                  to={!token ? "/auth/login" :"/rentaldetails"}
+                  state={{ dataRentail: dataRentail, productData: data }}
+                >
+                  Alquilar
+                </Link>
+              )}
             </div>
           </div>
           <div className={styles.boxList}>

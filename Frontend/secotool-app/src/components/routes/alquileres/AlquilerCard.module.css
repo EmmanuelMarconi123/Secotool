@@ -133,9 +133,16 @@
 }
 
 @media screen and (min-width: 1024px) {
+  .productImage {
+    width: 25%;
+    height: 202.5px;
+    max-width: 200px;
+  }
+  
   .buttonsAlquiler {
     align-items: flex-end;
     width: 30%;
+    max-width: 320px;
   }
 
   .buttonsAlquiler button {
@@ -155,6 +162,7 @@
   .productImage {
     width: 25%;
     height: 202.5px;
+    max-width: 200px;
   }
 
   .infoCard {
