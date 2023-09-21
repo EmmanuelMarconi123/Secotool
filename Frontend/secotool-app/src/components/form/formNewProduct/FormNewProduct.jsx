@@ -21,14 +21,14 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
     setUploadedImages([]);
     setIdsCategories([]);
     setIdsFeatures([]);
-    
+
     // Eliminar mensajes de error
     setNameError("");
     setDescriptionError("");
     setPriceError("");
     setCategoriesError("");
     // Agrega más líneas si tienes otros mensajes de error
-    
+
     // Cerrar el modal
     handleClose();
   };
@@ -124,14 +124,13 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
   const handleDescriptionChange = (e) => {
     const newText = e.target.value;
     setDescription(newText);
-  
+
     // Calcula los caracteres escritos
     const charactersWritten = newText.length;
 
-  
     // Actualiza el estado de caracteres restantes
     setRemainingCharacters(charactersWritten);
-  
+
     // Validación de la descripción (sin caracteres especiales)
     const specialCharactersRegex = /[<>{}[\]/\\@#^&*|~]/;
     if (specialCharactersRegex.test(newText)) {
@@ -193,14 +192,14 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
 
     //======================== VALIDACIONES ====================>
     if (name.length < 8) {
-      setNameError("El nombre debe ser valido");
+      setNameError("El nombre debe contener más de 8 caracteres");
       return;
     } else {
       setNameError("");
     }
 
     if (description.length < 20) {
-      setDescriptionError("La descripcion debe ser valida");
+      setDescriptionError("La descripcion debe contender más de 20 caracteres");
       return;
     } else {
       setDescriptionError("");
@@ -284,7 +283,7 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
         setUploadedImages([]);
         setIdsCategories([]);
         setIdsFeatures([]);
-        setRemainingCharacters(0)
+        setRemainingCharacters(0);
         toaster.push(message, { placement: "bottomStart", duration: 5000 });
         console.log(response);
       })
@@ -310,11 +309,11 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
             onSubmit={handleNewProductSubmit}
           >
             <label htmlFor="">
-            Nombre del producto
+              Nombre del producto
               <input
                 type="text"
                 name="name"
-                placeholder="Nombre del producto"
+                placeholder="Ingrese nombre del producto"
                 value={name}
                 onChange={handleNameChange}
               />
@@ -323,7 +322,7 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
               )}
             </label>
             <label htmlFor="">
-            Descripción
+              Descripción
               <textarea
                 cols="30"
                 rows="10"
@@ -350,7 +349,7 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
               )}
             </label>
             <label htmlFor="">
-            Categorías
+              Categorías
               <TagPicker
                 data={categories}
                 style={{ width: 640 }}
@@ -364,7 +363,7 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
               )}
             </label>
             <label htmlFor="">
-            Características
+              Características
               <TagPicker
                 style={{ width: 640 }}
                 data={features}
@@ -390,7 +389,7 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
               )}
             </label>
             <label htmlFor="">
-            Imágenes
+              Imágenes
               <Uploader
                 autoUpload={false}
                 draggable
@@ -414,7 +413,9 @@ function FormNewProduct({ open, handleClose, onProductCreated }) {
                   <span>Subir imagen</span>
                 </div>
               </Uploader>
-              {imagesError && <div className={styles.errorMessage}>{imagesError}</div>}
+              {imagesError && (
+                <div className={styles.errorMessage}>{imagesError}</div>
+              )}
             </label>
             <div className={styles.labelSeparator}></div>
             <Button
