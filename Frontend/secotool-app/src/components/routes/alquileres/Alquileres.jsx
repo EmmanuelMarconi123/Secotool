@@ -1,18 +1,26 @@
 import styles from "./Alquileres.module.css";
 import { useState, useEffect } from "react";
-import AlquilerCard from "./AlquilerCard";
 import axios from "axios";
 import { useAuth } from "../../../contexts/AuthContext";
 import { useGlobal } from "../../../contexts/GlobalContext";
+import ListAlquileres from "./ListAlquileres";
+import SkeletonFavoritesAlquileres from "../../skeletonFavoritesAlquileres/SkeletonFavoritesAlquileres";
+
+const LoadingIndicator = () => <SkeletonFavoritesAlquileres />;
+const NetworkError = () => <p>Network Error</p>;
 
 function Alquileres() {
   const { token } = useAuth();
   const { globalVariable } = useGlobal();
-  console.log(token);
 
   const [alquileres, setAlquileres] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const apiUrl = `${globalVariable}/v1/api/rentals/historical`;
+
+  const ComponentListAlquileres = alquileres ? (
+    <ListAlquileres alquileres={alquileres} />
+  ) : null;
 
   const fetchAlquileres = async () => {
     try {
@@ -25,6 +33,8 @@ function Alquileres() {
       console.log(response.data);
     } catch (error) {
       console.error("Error al obtener los favoritos:", error);
+    }finally{
+      setLoading(false);
     }
   };
 
@@ -36,18 +46,8 @@ function Alquileres() {
     <div className={styles.alquileresContainer}>
       <h4>Mis Alquileres</h4>
       <div className={styles.cardFContainer}>
-        {alquileres.map((product) => (
-          <AlquilerCard
-            key={product.rentalData.id}
-            productId={product.productId}
-            productImage={product.productImage[0].url}
-            productName={product.productName}
-            rentalDay={product.rentalData.rentalDay}
-            rentalStart={product.rentalData.rentalStartDate}
-            rentalEnd={product.rentalData.rentalEndDate}
-            total={product.rentalData.rentalPrice}
-          />
-        ))}
+        {loading ? <LoadingIndicator /> : ComponentListAlquileres}
+        {alquileres === undefined && !loading && <NetworkError />}
       </div>
     </div>
   );
