@@ -53,8 +53,17 @@
   justify-content: space-between;
 }
 
+.boxShareProduct button{
+  font-size: 13px;
+}
+
+.boxShareProduct h1{
+  margin: 0px;
+}
+
 .boxShareProduct i {
-  font-size: 19px;
+  padding-left: 4px;
+  font-size: 13px;
 }
 
 .sectionPoliticas h4 {
@@ -115,6 +124,20 @@
   .containerVal {
     gap: 16px;
   }
+
+  .boxShareProduct {
+    padding-top: 16px;
+    padding-bottom: 8px;
+  }
+
+  .boxShareProduct button{
+    font-size: 16px;
+  }
+
+  .boxShareProduct i {
+    padding-left: 8px;
+    font-size: 16px;
+  }
 }
 
 @media screen and (min-width: 1440px) {
@@ -157,8 +180,9 @@
     width: 27%;
   }
 
-  .boxShareProduct i {
-    font-size: 27px;
+  .boxShareProduct {
+    padding-top: 0px;
+    padding-bottom: 16px;
   }
 
   .boxShareProduct h1 {

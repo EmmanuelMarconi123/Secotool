@@ -15,7 +15,7 @@ const ModalShare = ({ product }) => {
   return (
     <>
       <Button size="lg" onClick={() => handleOpen("lg")}>
-        <i className="fa-regular fa-share-nodes"></i>
+      Compartir <i className="fa-regular fa-share-nodes"></i>
       </Button>
 
       <Modal
