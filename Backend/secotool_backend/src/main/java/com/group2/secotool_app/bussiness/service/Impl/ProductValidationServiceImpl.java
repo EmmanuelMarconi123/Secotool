@@ -26,7 +26,7 @@ public class ProductValidationServiceImpl implements IProductValidationService {
         var startDate = rentProductRequestDto.startDate();
         var endDate = rentProductRequestDto.endDate();
         var productsAvailable = productService.getAllProductsByRangeOfDateAvailableToRent(startDate,endDate);
-        if (!startDate.isAfter(LocalDate.now()))
+        if (startDate.isBefore(LocalDate.now()))
             throw new RuntimeException("It is not possible to rent a product days before the date");
         if (!productsAvailable.contains(productToRent))
             throw new RuntimeException(
