@@ -60,7 +60,7 @@ public class UserFacadeImpl implements IUserFacade {
     }
 
     @Override
-    public void registerUser(UserRegistrationRequestDto registerRequestDto) {
+    public void registerUser(UserRegistrationRequestDto registerRequestDto) throws MessagingException {
         userValidationService.isUsernameAvailable(registerRequestDto.username());
         var mappedUser = userMapper.toUser(registerRequestDto);
         mappedUser.setUserRole(UserRole.USER);

@@ -25,9 +25,8 @@ public class EmailFacade implements IEmailFacade {
 
 
     @Override
-    public void singUpNotification(UserRegistrationRequestDto user) {
-        String emailBody = String.format("Hola %s %s: Hemos terminado de crear su cuenta de secotool Puede utilizar %s para iniciar sesión en nuestro sitio, .Haga click en el siguiente enlace para acceder. http://127.0.0.1:5173/auth/login",user.firstName(),user.lastName(),user.username());
-        emailService.sendSimpleEmail(user.username(),"registro existoso secotool",emailBody);
+    public void singUpNotification(UserRegistrationRequestDto user) throws MessagingException {
+        singUpNotification(new ResendRegistrationEmailRequestDto(user.firstName(),user.lastName(),user.username()));
     }
 
     @Override
@@ -77,11 +76,11 @@ public class EmailFacade implements IEmailFacade {
     @Override
     public void singUpNotification(ResendRegistrationEmailRequestDto registrationEmailRequestDto) throws MessagingException {
         var firstname = registrationEmailRequestDto.firstName().substring(0, 1).toUpperCase() + registrationEmailRequestDto.firstName().substring(1);
-        var lastname = registrationEmailRequestDto.lastName().substring(0, 1).toUpperCase() + registrationEmailRequestDto.lastName().substring(1);;
-        var username = registrationEmailRequestDto.username().substring(0, 1).toUpperCase() + registrationEmailRequestDto.username().substring(1);;;
+        var lastname = registrationEmailRequestDto.lastName().substring(0, 1).toUpperCase() + registrationEmailRequestDto.lastName().substring(1);
+        var username = registrationEmailRequestDto.username();
         var subject = "¡regristro exitoso!";
 
-        var body = "<html><body style='font-family: 'Poppins', sans-serif; background-color: rgb(234, 234, 234); display: flex; justify-content: center; margin: 0px;'><div style='display: flex; flex-direction: column; background-color: rgb(247, 249, 251); max-width: 100%; height: 100vh; justify-content: space-between;'><div><div style='height: 100px; background-color: rgb(61, 61, 61); display: flex; align-items: center;'><img src='https://0823grupo2proyectointegrador.s3.amazonaws.com/logo-white.png' alt=' style='width: 400px; padding-left: 16px; max-width: 100%;' /></div><div style='padding-left: 16px; padding-right: 16px; padding-top: 32px; color: #3d3d3d;'><p style='margin-bottom: 0'>Hola <span>"+firstname +" "+ lastname +"</span>.</p><p style='margin-bottom: 0'>¡Tu cuenta en SecoTool fue creada exitosamente!</p><p>El email con el que creaste la cuenta fue <strong>"+username+"</strong>.</p><p style='margin-bottom: 0'>Puedes hacer clic<strong><a style='color: #6d6de1; text-decoration: underline;' href='#'>aquí</a></strong> para iniciar sesión y realizar el alquiler de las mejores herramientas que SecoTool tiene para ofrecerte.</p></div></div><div style='padding-top: 40px; padding-left: 16px; padding-bottom: 16px;'><img src='https://0823grupo2proyectointegrador.s3.amazonaws.com/logo.png' alt='Logo SecoTool' /><p style='font-size: 13px; margin: 0px; color: #939393'>Construye fácil y rápido</p><span style='font-size: 13px; color: #6d6de1'><a href='mailto:secotool@gmail.com'>secotool@gmail.com</a></span></div></div></body></html>";
+        var body = "<html><body style='font-family: 'Poppins', sans-serif; background-color: rgb(234, 234, 234); display: flex; justify-content: center; margin: 0px;'><div style = display: flex; flex-direction: column; background-color: rgb(247, 249, 251); max-width: 100%; height: 100vh; justify-content: space-between; '><div> <div style= height: 70px; background-color: rgb(61, 61, 61); display: flex; padding-left: 16px;'><img src='https://0823grupo2proyectointegrador.s3.amazonaws.com/logo-white.png' alt=' style='width: 400px; padding-left: 16px; max-width: 100%;' /></div><div style='padding-left: 16px; padding-right: 16px; padding-top: 32px; color: #3d3d3d;'><p style='margin-bottom: 0'>Hola <span>"+firstname +" "+ lastname +"</span>.</p><p style='margin-bottom: 0'>¡Tu cuenta en SecoTool fue creada exitosamente!</p><p>El email con el que creaste la cuenta fue <strong>"+username+"</strong>.</p><p style='margin-bottom: 0'>Puedes hacer clic<strong><a style='color: #6d6de1; text-decoration: underline;' href='#'>aquí</a></strong> para iniciar sesión y realizar el alquiler de las mejores herramientas que SecoTool tiene para ofrecerte.</p></div></div><div style='padding-top: 40px; padding-left: 16px; padding-bottom: 16px;'><img src='https://0823grupo2proyectointegrador.s3.amazonaws.com/logo.png' alt='Logo SecoTool' /><p style='font-size: 13px; margin: 0px; color: #939393'>Construye fácil y rápido</p><span style='font-size: 13px; color: #6d6de1'><a href='mailto:secotool@gmail.com'>secotool@gmail.com</a></span></div></div></body></html>";
 
         System.out.println(body);
 
@@ -106,11 +105,10 @@ public class EmailFacade implements IEmailFacade {
 
         // se agrega el contenido al contenedor del mensaje
         messageContent.addBodyPart(html);
-        //messageContent.addBodyPart(image);
+        // messageContent.addBodyPart(image);
         //messageContent.addBodyPart(image2);
 
         emailService.sendHtmlEmail(registrationEmailRequestDto.username(), subject,body, messageContent);
-
     }
 
 }

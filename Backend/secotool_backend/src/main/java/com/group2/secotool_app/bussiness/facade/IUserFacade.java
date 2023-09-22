@@ -15,7 +15,7 @@ import java.util.List;
 public interface IUserFacade {
     UserGetMeDto findUserById(Long id);
     UserAuthenticatedResponseDto authenticateUser(UserAuthenticationRequestDto authenticationRequestDto);
-    void registerUser(UserRegistrationRequestDto registerRequestDto);
+    void registerUser(UserRegistrationRequestDto registerRequestDto) throws MessagingException;
     List<UserDto> getAllUsers();
     void changeUserRole(Long userId, UserRole userRole);
 

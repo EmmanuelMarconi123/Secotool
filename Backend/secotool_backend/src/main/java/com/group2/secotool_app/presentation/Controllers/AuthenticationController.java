@@ -31,7 +31,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/singup")
-    public ResponseEntity<String> registerNewUser(@RequestBody @Valid UserRegistrationRequestDto registrationRequestDto) {
+    public ResponseEntity<String> registerNewUser(@RequestBody @Valid UserRegistrationRequestDto registrationRequestDto) throws MessagingException {
         userFacade.registerUser(registrationRequestDto);
         return ResponseEntity.ok("user successfully registered");
     }
