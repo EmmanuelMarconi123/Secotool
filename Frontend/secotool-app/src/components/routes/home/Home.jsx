@@ -21,6 +21,7 @@ const Home = () => {
         const fetchOptions = {
           headers: {
             Authorization: storedToken ? `Bearer ${storedToken}` : "", // Solo se incluye si hay un token
+            "Cache-Control": "no-cache"
           },
         };
 
@@ -48,6 +49,7 @@ const Home = () => {
   ) : null;
 
   return (
+    <>
     <section className={styles.sectionBusqueda}>
       <div className={styles.containerBusqueda}>
         <div className={styles.bgBusqueda}></div>
@@ -65,6 +67,10 @@ const Home = () => {
         {products === undefined && !loading && <NetworkError />}
       </div>
     </section>
+    {/* <section>
+      <CategoriasHome></CategoriasHome>
+    </section> */}
+    </>
   );
 };
 

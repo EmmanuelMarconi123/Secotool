@@ -12,6 +12,7 @@ import com.group2.secotool_app.model.dto.ProductDto;
 import com.group2.secotool_app.model.dto.UserAuthenticatedResponseDto;
 import com.group2.secotool_app.model.dto.UserDto;
 import com.group2.secotool_app.model.dto.UserGetMeDto;
+import com.group2.secotool_app.model.dto.request.ResendRegistrationEmailRequestDto;
 import com.group2.secotool_app.model.dto.request.UserAuthenticationRequestDto;
 import com.group2.secotool_app.model.dto.request.UserRegistrationRequestDto;
 import com.group2.secotool_app.model.entity.Product;
@@ -19,6 +20,7 @@ import com.group2.secotool_app.model.entity.User;
 import com.group2.secotool_app.model.entity.UserRole;
 import com.group2.secotool_app.util.JwtUtils;
 import com.group2.secotool_app.util.ProductUtils;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -58,16 +60,12 @@ public class UserFacadeImpl implements IUserFacade {
     }
 
     @Override
-    public UserAuthenticatedResponseDto registerUser(UserRegistrationRequestDto registerRequestDto) {
+    public void registerUser(UserRegistrationRequestDto registerRequestDto) {
         userValidationService.isUsernameAvailable(registerRequestDto.username());
-        emailFacade.sendEmail(registerRequestDto);
         var mappedUser = userMapper.toUser(registerRequestDto);
         mappedUser.setUserRole(UserRole.USER);
-        var userId = userService.saveUser(mappedUser);
-        Map extraClaims = new HashMap<String,Object>();
-        extraClaims.put("id",userId);
-        String jwt = jwtUtils.generateToken(mappedUser,extraClaims);
-        return new UserAuthenticatedResponseDto(jwt, userDtoMapper.toUserDto(mappedUser));
+        userService.saveUser(mappedUser);
+        emailFacade.singUpNotification(registerRequestDto);
     }
 
     @Override
@@ -103,6 +101,16 @@ public class UserFacadeImpl implements IUserFacade {
         User user = userService.findUserById(userId);
         var favorites = user.getFavoritesProducts();
         return productUtils.productsToProductsDto(favorites);
+    }
+
+    @Override
+    public void updateUserDni(String dni, Long userId) {
+        userService.updateUserDni(dni,userId);
+    }
+
+    @Override
+    public void resendEmail(ResendRegistrationEmailRequestDto registrationEmailRequestDto) throws MessagingException {
+        emailFacade.singUpNotification(registrationEmailRequestDto);
     }
 
 }

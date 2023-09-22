@@ -146,7 +146,7 @@ function NewCategoryModal({
                     justifyContent: "center",
                     gap: 10,
                     borderRadius: 8,
-                    border: "1px dashed #666",
+                    border: "1px dashed var(--darkGrey)",
                   }}
                 >
                   <i className="fa-solid fa-cloud-arrow-up"></i>

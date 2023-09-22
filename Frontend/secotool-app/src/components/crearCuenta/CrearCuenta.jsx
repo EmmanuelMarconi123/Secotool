@@ -9,6 +9,7 @@ const CrearCuenta = () => {
       <div className={styles.bgCrearCuenta}></div>
       <HeaderAuth/>
       <FormCrearCuenta/>
+      
     </section>
   );
 };

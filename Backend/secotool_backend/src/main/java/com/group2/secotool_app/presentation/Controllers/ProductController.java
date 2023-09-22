@@ -95,9 +95,9 @@ public class ProductController {
     public ResponseEntity<String> saveProduct(@Parameter(description = "")
                                               @RequestPart("product-data") @Valid
                                               ProductRequestDto productRequestDto,
-                                              @RequestPart("categories") @Valid
+                                              @RequestPart("id-categories") @Valid
                                                   IdListRequestDto categoriesId,
-                                              @RequestPart("features") @Valid
+                                              @RequestPart("id-features") @Valid
                                                   IdListRequestDto featuresId,
                                               @RequestParam("images")
                                               @NotNull(message = "images requerid")

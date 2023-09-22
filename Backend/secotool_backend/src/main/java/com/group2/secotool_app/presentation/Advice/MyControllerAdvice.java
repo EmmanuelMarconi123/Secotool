@@ -1,5 +1,6 @@
 package com.group2.secotool_app.presentation.Advice;
 
+import jakarta.mail.MessagingException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -20,6 +21,7 @@ public class MyControllerAdvice extends ResponseEntityExceptionHandler {
     public ResponseEntity<String> handleRuntimeException(RuntimeException runtimeException){
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(runtimeException.getMessage());
     }
+
 /*
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
@@ -27,6 +29,13 @@ public class MyControllerAdvice extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: one of the fields already exists");
     }
 */
+
+    @ExceptionHandler(MessagingException.class)
+    public String handleMessagingException(MessagingException exception){
+        System.out.println(exception.getCause());
+        System.out.println(exception.getMessage());
+        return "error en el envio del email";
+    }
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         Map<String,Object> clientErrors = new HashMap<>();

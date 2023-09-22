@@ -1,18 +1,26 @@
 import styles from "./Alquileres.module.css";
 import { useState, useEffect } from "react";
-import AlquilerCard from "./AlquilerCard";
 import axios from "axios";
 import { useAuth } from "../../../contexts/AuthContext";
 import { useGlobal } from "../../../contexts/GlobalContext";
+import ListAlquileres from "./ListAlquileres";
+import SkeletonFavoritesAlquileres from "../../skeletonFavoritesAlquileres/SkeletonFavoritesAlquileres";
+
+const LoadingIndicator = () => <SkeletonFavoritesAlquileres />;
+const NetworkError = () => <p>Network Error</p>;
 
 function Alquileres() {
   const { token } = useAuth();
   const { globalVariable } = useGlobal();
-  console.log(token);
 
   const [alquileres, setAlquileres] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const apiUrl = `${globalVariable}/v1/api/users/products/alquileres`;
+  const apiUrl = `${globalVariable}/v1/api/rentals/historical`;
+
+  const ComponentListAlquileres = alquileres ? (
+    <ListAlquileres alquileres={alquileres} />
+  ) : null;
 
   const fetchAlquileres = async () => {
     try {
@@ -21,10 +29,12 @@ function Alquileres() {
           Authorization: `Bearer ${token}`,
         },
       });
-
       setAlquileres(response.data);
+      console.log(response.data);
     } catch (error) {
       console.error("Error al obtener los favoritos:", error);
+    }finally{
+      setLoading(false);
     }
   };
 
@@ -36,26 +46,8 @@ function Alquileres() {
     <div className={styles.alquileresContainer}>
       <h4>Mis Alquileres</h4>
       <div className={styles.cardFContainer}>
-        {alquileres.map((product) => (
-          <AlquilerCard
-            key={product.id}
-            id={product.id}
-            images={product.images[0].url}
-            name={product.name}
-            price={product.price}
-          />
-        ))}
-        {/* <AlquilerCard
-          id={1}
-          images={
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF8Z4jSDwUrsWSHfPShgh0o_EYNE0u9YfBPw&usqp=CAU"
-          }
-          alquiler={"del 20/04/2023 al 21/04/2023"}
-          name={
-            "Taladro percutor inalámbrico 13mm atornillador 20V Hamilton Ultimate ULT111"
-          }
-          price={"product.price"}
-        /> */}
+        {loading ? <LoadingIndicator /> : ComponentListAlquileres}
+        {alquileres === undefined && !loading && <NetworkError />}
       </div>
     </div>
   );
