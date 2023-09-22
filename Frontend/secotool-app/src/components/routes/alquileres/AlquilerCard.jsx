@@ -13,7 +13,7 @@ function AlquilerCard({productId,productImage,productName,rentalDay,rentalStart,
 
     switch (true) {
       case rentalStart > today:
-        setState("PENDIENTE");
+        setState("CONFIRMADO");
         break;
 
       case rentalStart <= today && rentalEnd >= today:
@@ -30,12 +30,12 @@ function AlquilerCard({productId,productImage,productName,rentalDay,rentalStart,
   };
 
   const textColor = (state) => {
-    if (state === 'PENDIENTE') {
-        return 'red';
+    if (state === 'CONFIRMADO') {
+        return '#4a6ac9';
     }else if( state === 'EN CURSO'){
-      return 'orange'
+      return 'green'
     }
-    return 'green';
+    return 'red';
 }
 
   const handleOpen = (value) => {
@@ -70,8 +70,8 @@ function AlquilerCard({productId,productImage,productName,rentalDay,rentalStart,
             Volver a alquilar
           </Link>
           <button
-            disabled={state == "PENDIENTE" ? true : false}
-            className={state == "PENDIENTE" ? `${styles.buttonDisabled}` : ""}
+            disabled={state == "CONFIRMADO" ? true : false}
+            className={state == "CONFIRMADO" ? `${styles.buttonDisabled}` : ""}
             onClick={() => handleOpen("lg")}
           >
             Valorar
