@@ -11,7 +11,7 @@ import { useGlobal } from "../../../contexts/GlobalContext";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
-const FormLogin = () => {
+const FormLogin = ({locationData}) => {
   const { login, userLog } = useAuth();
   const { globalVariable } = useGlobal();
 
@@ -38,7 +38,11 @@ const FormLogin = () => {
         login(response.data.jwt);
         userLog(response.data.userInfo);
         setMensajeError(false);
-        navigate("/home");
+        if(locationData !== undefined) {
+          navigate(`/product/${locationData.productData.id}`)
+        }else{
+          navigate("/home");
+        }
       } else {
         setMensajeError(true);
       }

@@ -1,8 +1,12 @@
+import { useLocation } from "react-router-dom";
 import FormLogin from "../form/formLogin/FormLogin";
 import HeaderAuth from "../header/headerAuth/HeaderAuth";
 import styles from "../logIn/Login.module.css";
 
 const Login = () => {
+
+  const locationData = useLocation()
+
   return (
     <section className={styles.sectionLogin + " spacing-grid"}>
       <div className={styles.bgLogin}></div>
@@ -13,7 +17,7 @@ const Login = () => {
           En caso de que no estés logueado deberás registrarte.
         </p>
       </div>
-      <FormLogin />
+      <FormLogin locationData={locationData.state ? locationData.state : undefined} />
     </section>
   );
 };
