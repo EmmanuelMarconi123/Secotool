@@ -15,13 +15,14 @@ const RentalDetails = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [productData, setProductData] = useState({});
   const [dataRentail, setDataRentail] = useState({});
+  const [documento, setDocumento] = useState("");
   const toaster = useToaster();
   const location = useLocation();
-  const {globalVariable} = useGlobal();
-  const {token} = useAuth();
-  const navigate = useNavigate()
+  const { globalVariable } = useGlobal();
+  const { token } = useAuth();
+  const navigate = useNavigate();
 
-    const messageErr = (
+  const messageErr = (
     <Message showIcon type="error" closable>
       No se ha podido alquilar el producto
     </Message>
@@ -29,13 +30,34 @@ const RentalDetails = () => {
 
   const messageConfirmRent = (
     <Message showIcon type="success" closable>
-      El producto se reservó correctamente. Puede chequear todas sus reservas en la sección Mis Alquileres.
+      El producto se reservó correctamente. Puede chequear todas sus reservas en
+      la sección Mis Alquileres.
     </Message>
   );
 
   async function handleRent() {
-    console.log(dataRentail.startDate)
-    console.log(dataRentail.endDate)
+    if (documento !== "") {
+      await axios
+        .put(
+          `${globalVariable}/v1/api/users/update/dni`,
+          {
+            "dni": documento,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        )
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      console.log(documento)
+    }
+
     if (dataRentail.startDate && dataRentail.endDate) {
       const startDate = dataRentail.startDate;
       const endDate = dataRentail.endDate;
@@ -55,12 +77,18 @@ const RentalDetails = () => {
         )
         .then(function (response) {
           console.log(response);
-          navigate(`/product/${productData.id}`)
-          toaster.push(messageConfirmRent, { placement: "bottomStart", duration: 5000 });
+          navigate(`/product/${productData.id}`);
+          toaster.push(messageConfirmRent, {
+            placement: "bottomStart",
+            duration: 5000,
+          });
         })
         .catch(function (error) {
           console.log(error);
-          toaster.push(messageErr, { placement: "bottomStart", duration: 5000 });
+          toaster.push(messageErr, {
+            placement: "bottomStart",
+            duration: 5000,
+          });
         });
     } else {
       alert("Debes seleccionar alguna fecha para alquilar el producto");
@@ -162,10 +190,14 @@ const RentalDetails = () => {
           {currentStep === 0 ? (
             <Resume className={styles.boxResume} productData={productData} />
           ) : currentStep === 1 ? (
-            <PersonalInfo className={styles.boxPersonalInfo}></PersonalInfo>
+            <PersonalInfo
+              documento={documento}
+              setDocumento={setDocumento}
+              className={styles.boxPersonalInfo}
+            ></PersonalInfo>
           ) : (
             <div>
-              <Confirm productName={productData.name}/>
+              <Confirm productName={productData.name} />
               <div className={styles.boxPriceDetails}>
                 <h4>Detalles del precio</h4>
                 <div className="d-flex jc-space-bw">
@@ -187,7 +219,10 @@ const RentalDetails = () => {
         </div>
       )}
       <div className={styles.boxButtons}>
-        <Link className={styles.btnCta} onClick={currentStep === 2 ? ()=>handleRent() : onNext}>
+        <Link
+          className={styles.btnCta}
+          onClick={currentStep === 2 ? () => handleRent() : onNext}
+        >
           {currentStep === 2 ? "Confirmar alquiler" : "Continuar"}
         </Link>
         {currentStep === 0 ? (

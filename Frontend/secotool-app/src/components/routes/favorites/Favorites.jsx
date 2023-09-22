@@ -1,17 +1,22 @@
 import styles from "./Favorites.module.css";
 import { useState, useEffect } from "react";
-import FavoriteCard from './FavoriteCard'
-import axios from 'axios'
+import axios from "axios";
 import { useAuth } from "../../../contexts/AuthContext";
 import { useGlobal } from "../../../contexts/GlobalContext";
+import ListFavorites from "./ListFavorites";
+import SkeletonFavoritesAlquileres from "../../skeletonFavoritesAlquileres/SkeletonFavoritesAlquileres";
+
+const LoadingIndicator = () => <SkeletonFavoritesAlquileres />;
+const NetworkError = () => <p>Network Error</p>;
 
 function Favorites() {
-
   const { token } = useAuth();
-  console.log(token)
+  console.log(token);
 
   const [favorites, setFavorites] = useState([]);
   const { globalVariable } = useGlobal();
+  const [loading, setLoading] = useState(true);
+
 
   const apiUrl = `${globalVariable}/v1/api/users/products/favorites`;
 
@@ -26,37 +31,26 @@ function Favorites() {
       setFavorites(response.data);
     } catch (error) {
       console.error("Error al obtener los favoritos:", error);
+    }finally {
+      // Independientemente de si hay un error o no, la carga se detiene
+      setLoading(false);
     }
   };
+
+  const ComponentListFavorites = favorites ? (
+    <ListFavorites favorites={favorites} fetchFavorites={fetchFavorites}/>
+  ) : null;
 
   useEffect(() => {
-    fetchFavorites()
+    fetchFavorites();
   }, []);
-
-
-  const handleDeleteFavorite = async (productId) => {
-    const apiUrlDelete = `${globalVariable}/v1/api/users/products/${productId}`;
-
-    try {
-      await axios.delete(apiUrlDelete, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      fetchFavorites()
-    } catch (error) {
-      console.error(`Error al eliminar el producto ${productId}:`, error);
-    }
-  };
-
 
   return (
     <section className={styles.favoritesContainer}>
       <h4>Mis Favoritos</h4>
       <div className={styles.cardFContainer}>
-        {favorites.map(product => (
-          <FavoriteCard key={product.id} id={product.id} images={product.images[0].url} name={product.name} price={product.price} deleteItem={() => handleDeleteFavorite(product.id)}/>
-        ))}
+        {loading ? <LoadingIndicator /> : ComponentListFavorites}
+        {favorites === undefined && !loading && <NetworkError />}
       </div>
     </section>
   );

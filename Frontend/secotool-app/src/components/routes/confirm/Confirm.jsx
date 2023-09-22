@@ -1,8 +1,13 @@
+import { useEffect } from "react";
 import { useFunction } from "../../../contexts/FunctionsContext";
 import styles from "./Confirm.module.css";
 
 const Confirm = () => {
   const { user } = useFunction();
+
+  useEffect(()=>{
+    window.scrollTo(0, 0);
+  },[])
 
   return (
     <div className={styles.boxConfirm}>
