@@ -7,7 +7,6 @@ import com.group2.secotool_app.model.dto.request.UserAuthenticationRequestDto;
 import com.group2.secotool_app.model.dto.request.UserRegistrationRequestDto;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,17 +23,17 @@ public class AuthenticationController {
         return ResponseEntity.ok(userFacade.authenticateUser(authenticationRequest));
     }
 
+    //enviar email de forma asincrona
     @PostMapping("/resend_email")
     public ResponseEntity<String> resendEmail(@RequestBody @Valid ResendRegistrationEmailRequestDto resendRegistrationEmailRequestDto) throws MessagingException {
         userFacade.resendEmail(resendRegistrationEmailRequestDto);
         return ResponseEntity.ok("email successfully sent");
     }
 
-
     @PostMapping("/singup")
-    public ResponseEntity<?> registerNewUser(@RequestBody @Valid UserRegistrationRequestDto registrationRequestDto) {
-        return ResponseEntity.ok(userFacade.registerUser(registrationRequestDto));
+    public ResponseEntity<String> registerNewUser(@RequestBody @Valid UserRegistrationRequestDto registrationRequestDto) {
+        userFacade.registerUser(registrationRequestDto);
+        return ResponseEntity.ok("user successfully registered");
     }
-
 
 }

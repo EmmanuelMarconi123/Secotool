@@ -32,7 +32,7 @@ const Confirmacion = () => {
       })
       .catch((error) => {
         setMensaje(true);
-        setTipoMensaje("Ocurrio un error al enviar el mensaje nuevamente");
+        setTipoMensaje("Ocurrio un error al enviar el email nuevamente");
         console.error("Error al realizar la solicitud:", error);
       });
   };
@@ -45,13 +45,13 @@ const Confirmacion = () => {
       />
       <h1 className={styles.text}>Tu cuenta fue creada exitosamente!</h1>
       <p className={styles.text}>
-        Te llegará un correo electronico con la confirmación
+        Te llegará un email con la confirmación
       </p>
       <Link to={"/auth/login"}>
         <button className={styles.btnSuccess}>Iniciar Sesión</button>
       </Link>
       <button onClick={handleReenviar} className={styles.btnReenviar}>
-        Volver a Enviar Email
+        Volver a enviar email
       </button>
       {mensaje ? <p className={tipoMensaje.startsWith('Ocurrio') ? styles.mensajeErrorRed : styles.mensajeErrorGreen}>{tipoMensaje}</p> : null}
 

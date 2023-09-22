@@ -18,11 +18,12 @@
 
 .noFavorites{
     width: 100%;
-    height: 80vh;
+    height: 50vh;
     display: flex;
     align-items: center;
     justify-content: center;
 }
+
 
 @media screen and (max-width: 360px) {
     .favoritesContainer {

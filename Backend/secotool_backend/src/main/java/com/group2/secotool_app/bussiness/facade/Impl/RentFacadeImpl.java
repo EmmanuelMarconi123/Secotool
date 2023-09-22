@@ -55,8 +55,8 @@ public class RentFacadeImpl implements IRentFacade {
         var totalDays = productUtils.daysQuantity(startDate,endDate);
         var totalPrice = rentUtils.calculateTotalPriceOfRent(totalDays,prodToRent.getPrice());
 
-        emailFacade.rentalNotification(prodToRent,user,startDate,endDate,totalPrice);
         rentService.saveRent(prodToRent, startDate, endDate, user, totalDays, totalPrice);
+        emailFacade.rentalNotification(prodToRent,user,startDate,endDate,totalPrice);
     }
 
     @Override
