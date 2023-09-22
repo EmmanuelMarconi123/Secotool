@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useGlobal } from "../../contexts/GlobalContext";
 import CardCategory from "../card/cardCategory/CardCategory";
-
 const ListCategorias = ({onCategoryClick}) => {
   const [categorias, setCategorias] = useState([]);
   const { globalVariable } = useGlobal();
@@ -12,7 +11,6 @@ const ListCategorias = ({onCategoryClick}) => {
   const handleCategoryClick = () => {
     onCategoryClick();
   };
-
 
   useEffect(() => {
     const fetchCategorias = async () => {

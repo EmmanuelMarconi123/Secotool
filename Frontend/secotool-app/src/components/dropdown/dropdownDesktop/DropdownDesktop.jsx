@@ -21,7 +21,6 @@ const DropdownDesktop = () => {
     setDropdownOpen(false);
   };
 
-
   useEffect(() => {
     document.addEventListener("click", closeDropdown);
     return () => {
