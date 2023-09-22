@@ -21,7 +21,6 @@ const ListProducts = ({ products }) => {
           currentPost*/
           currentPost.map((product) => (
             <Grid
-              className={style.contenedorCard}
               container
               key={product.id ? product.id : product.productDto.id}
             >
