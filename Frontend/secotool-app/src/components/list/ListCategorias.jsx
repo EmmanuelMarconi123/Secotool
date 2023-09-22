@@ -3,6 +3,7 @@ import style from "./ListCategorias.module.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useGlobal } from "../../contexts/GlobalContext";
+import CardCategory from "../card/cardCategory/CardCategory";
 const ListCategorias = () => {
   const [categorias, setCategorias] = useState([]);
   const { globalVariable } = useGlobal();
@@ -27,7 +28,15 @@ const ListCategorias = () => {
       <ul className={style.listCategorias}>
         {categorias.map((categ) => (
           <li key={categ.id}>
-            <Link to={`/allProducts/${categ.id}`}>{categ.name}</Link>
+            <Link
+              to={`/allProducts/${categ.id}`}
+              className={style.containerCardLink}
+            >
+              <CardCategory
+                categoryImg={categ.image.url}
+                categoryName={categ.name}
+              />
+            </Link>
           </li>
         ))}
       </ul>
