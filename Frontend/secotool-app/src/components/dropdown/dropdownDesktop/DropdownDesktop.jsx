@@ -17,6 +17,10 @@ const DropdownDesktop = () => {
     }
   };
 
+  const closeDropdownCategory = () => {
+    setDropdownOpen(false);
+  };
+
   useEffect(() => {
     document.addEventListener("click", closeDropdown);
     return () => {
@@ -42,7 +46,7 @@ const DropdownDesktop = () => {
           </Link>
         </div>
         <div className="spacing-grid">
-          <ListCategorias></ListCategorias>
+          <ListCategorias onCategoryClick={closeDropdownCategory}/>
         </div>
       </div>
     </div>
