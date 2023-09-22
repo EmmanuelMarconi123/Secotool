@@ -22,7 +22,8 @@
 
 .btnSuccess {
   width: 250px;
-  background-color: #f1cf24;
+  background-color: #4A6AC9;
+  color: white;
   border-radius: 8px;
   margin-top: 10px;
 }
@@ -30,12 +31,16 @@
 .btnReenviar {
   width: 250px;
   margin-top: 15px;
-  background-color: #f1cf24;
+  background-color: #4A6AC9;
+  color: white;
   border-radius: 8px;
 }
 
-.mensajeError {
+.mensajeErrorRed {
   color: red;
+}
+.mensajeErrorGreen{
+  color: green;
 }
 
 /*Breakpoints*/
