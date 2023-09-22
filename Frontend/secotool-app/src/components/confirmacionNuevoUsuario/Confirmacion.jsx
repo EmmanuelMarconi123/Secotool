@@ -53,7 +53,8 @@ const Confirmacion = () => {
       <button onClick={handleReenviar} className={styles.btnReenviar}>
         Volver a Enviar Email
       </button>
-      {mensaje ? <p className={`${mensaje ? styles.mensajeErrorRed : styles.mensajeErrorGreen}`}>{tipoMensaje}</p> : null}
+      {mensaje ? <p className={tipoMensaje.startsWith('Ocurrio') ? styles.mensajeErrorRed : styles.mensajeErrorGreen}>{tipoMensaje}</p> : null}
+
     </div>
   );
 };
