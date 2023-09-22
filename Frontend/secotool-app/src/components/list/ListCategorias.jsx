@@ -4,9 +4,15 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useGlobal } from "../../contexts/GlobalContext";
 import CardCategory from "../card/cardCategory/CardCategory";
-const ListCategorias = () => {
+
+const ListCategorias = ({onCategoryClick}) => {
   const [categorias, setCategorias] = useState([]);
   const { globalVariable } = useGlobal();
+
+  const handleCategoryClick = () => {
+    onCategoryClick();
+  };
+
 
   useEffect(() => {
     const fetchCategorias = async () => {
@@ -31,6 +37,7 @@ const ListCategorias = () => {
             <Link
               to={`/allProducts/${categ.id}`}
               className={style.containerCardLink}
+              onClick={handleCategoryClick}
             >
               <CardCategory
                 categoryImg={categ.image.url}
