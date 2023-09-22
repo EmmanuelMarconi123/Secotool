@@ -1,7 +1,14 @@
 import { useState } from "react";
-import { Modal, Button } from "rsuite";
+import { Modal, Button, Whisper, Tooltip } from "rsuite";
 import FormShareProduct from "../form/formShareProduct/FormShareProduct";
 import styles from "./ModalShare.module.css";
+
+const tooltip = (
+  <Tooltip>
+    Compartir
+  </Tooltip>
+);
+
 
 const ModalShare = ({ product }) => {
   const [open, setOpen] = useState(false);
@@ -14,9 +21,11 @@ const ModalShare = ({ product }) => {
 
   return (
     <>
-      <Button size="lg" onClick={() => handleOpen("lg")}>
-      Compartir <i className="fa-regular fa-share-nodes"></i>
+    <Whisper placement="top" controlId="control-id-hover" trigger="hover" speaker={tooltip}>
+    <Button size="lg" onClick={() => handleOpen("lg")}>
+      <i className="fa-regular fa-share-nodes"></i>
       </Button>
+    </Whisper>
 
       <Modal
         overflow={false}
