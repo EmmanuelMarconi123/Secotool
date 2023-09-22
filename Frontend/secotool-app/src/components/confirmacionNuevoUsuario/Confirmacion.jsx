@@ -13,10 +13,9 @@ const Confirmacion = () => {
 
   const apiUrl = `${globalVariable}/v1/api/auth/resend_email`;
   const requestData = {
-    username: upDateUser.email,
-    password: upDateUser.password,
-    lastname: upDateUser.lastname,
-    name: upDateUser.name,
+    "firstName": upDateUser.name,
+    "lastName": upDateUser.lastname,
+    "username": upDateUser.email
   };
 
   console.log("datos usuario recien creado", upDateUser);
@@ -54,7 +53,7 @@ const Confirmacion = () => {
       <button onClick={handleReenviar} className={styles.btnReenviar}>
         Volver a Enviar Email
       </button>
-      {mensaje ? <p className={styles.mensajeError}>{tipoMensaje}</p> : null}
+      {mensaje ? <p className={`${mensaje ? styles.mensajeErrorRed : styles.mensajeErrorGreen}`}>{tipoMensaje}</p> : null}
     </div>
   );
 };
