@@ -66,7 +66,7 @@ const ListFavorites = ({ favorites, fetchFavorites }) => {
         ))
       ) : (
         <span className={styles.noFavorites}>
-          ¡No tenes productos favoritos!
+          ¡Aun no tenes productos favoritos!
         </span>
       )}
     </>

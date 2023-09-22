@@ -15,7 +15,7 @@ const ListAlquileres = ({ alquileres }) => {
           rentalEnd={product.rentalData.rentalEndDate}
           total={product.rentalData.rentalPrice}
         />
-      )) : <span className={styles.noAlquileres}>¡No tenes alquileres!</span>}
+      )) : <span className={styles.noAlquileres}>¡Aun tenes alquileres!</span>}
     </>
   );
 };
