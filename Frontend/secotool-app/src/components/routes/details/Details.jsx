@@ -8,11 +8,11 @@ import { useMediaQuery } from "@react-hook/media-query";
 import { useFetch, statuses } from "../../../customHooks/useFetch";
 import ModalShare from "../../modal/ModalShare";
 import ListPoliticas from "../../list/listPoliticas/ListPoliticas";
-import FormVal from "../../form/formValoraciones/formVal";
 import CardReview from "../../card/cardReview/CardReview";
 import { useGlobal } from "../../../contexts/GlobalContext";
 import { useAuth } from "../../../contexts/AuthContext";
 import axios from "axios";
+import FormVal from "../../form/formValoraciones/FormVal";
 
 const LoadingIndicator = () => <Loader size="md" content="CARGANDO" />;
 
@@ -28,7 +28,7 @@ function Details() {
   const { token } = useAuth();
   const URL_API = `${globalVariable}/v1/api/products/open/${params.id}`;
   const { data, status } = useFetch(URL_API, {});
-  const [policies, setPolicies] = useState();
+  const [policies, setPolicies] = useState([]);
   const [disabledDates, setDisabledDates] = useState([]);
   const [selectedDateRange, setSelectedDateRange] = useState([]);
   const [dataRentail, setDataRentail] = useState(null);
