@@ -12,7 +12,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { useAuth } from "../../../contexts/AuthContext";
 
-const FormCrearCuenta = () => {
+const FormCrearCuenta = ({locationData}) => {
   const { globalVariable } = useGlobal();
   const { setUpDateuser } = useAuth();
   //en estos initial values se me van a guardar luego lo que el usuario escriba en los inputs
@@ -70,7 +70,7 @@ const FormCrearCuenta = () => {
 
           if (response.status === 200) {
             // console.log(response.data);
-            navigate("/auth/confirmacionNuevoUsuario");
+            navigate("/auth/confirmacionNuevoUsuario", {state: locationData.state});
           }
         } catch (error) {
           setMensajeError(true);
@@ -93,7 +93,7 @@ const FormCrearCuenta = () => {
             <TextField
               fullWidth
               type="text"
-              id="outlined-basic"
+              // id="outlined-basic"
               name="name"
               label="Nombre"
               variant="outlined"
@@ -108,7 +108,7 @@ const FormCrearCuenta = () => {
             <TextField
               fullWidth
               type="text"
-              id="outlined-basic"
+              // id="outlined-basic"
               name="lastname"
               label="Apellido"
               variant="outlined"
@@ -125,7 +125,7 @@ const FormCrearCuenta = () => {
             <TextField
               fullWidth
               type="email"
-              id="outlined-basic"
+              // id="outlined-basic"
               name="email"
               label="Email"
               variant="outlined"
@@ -140,7 +140,7 @@ const FormCrearCuenta = () => {
             <TextField
               fullWidth
               type={showPassword ? "text" : "password"}
-              id="outlined-basic"
+              // id="outlined-basic"
               name="password"
               label="Contraseña"
               variant="outlined"

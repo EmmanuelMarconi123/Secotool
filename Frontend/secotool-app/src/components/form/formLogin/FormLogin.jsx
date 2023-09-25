@@ -39,7 +39,7 @@ const FormLogin = ({locationData}) => {
         userLog(response.data.userInfo);
         setMensajeError(false);
         if(locationData !== undefined) {
-          navigate(`/product/${locationData.productData.id}`)
+          navigate(`/product/${locationData.state.productData.id}`, {state: locationData.state})
         }else{
           navigate("/home");
         }
@@ -86,7 +86,7 @@ const FormLogin = ({locationData}) => {
           <TextField
             fullWidth // Ocupa el ancho completo disponible en su contenedor.
             type="email"
-            id="outlined-basic"
+            // id="outlined-basic"
             name="email"
             label="Email"
             variant="outlined"
@@ -101,7 +101,7 @@ const FormLogin = ({locationData}) => {
           <TextField
             fullWidth
             type={showPassword ? "text" : "password"}
-            id="outlined-basic"
+            // id="outlined-basic"
             name="password"
             label="Contraseña"
             variant="outlined"
@@ -129,7 +129,7 @@ const FormLogin = ({locationData}) => {
         <Button className={styles.btnLogin} variant="contained" type="submit">
           Iniciar Sesión
         </Button>
-        <NavLink to="/auth/crearCuenta" className={styles.customLink}>
+        <NavLink to="/auth/crearCuenta" state={locationData ? locationData.state : null} className={styles.customLink}>
           <Button
             style={{ borderColor: "#4a6ac9", color: "#4a6ac9" }}
             variant="outlined"

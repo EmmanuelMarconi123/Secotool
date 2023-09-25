@@ -112,7 +112,6 @@ const FormBusqueda = ({ products, setProducts }) => {
             <DateRangePicker
               showOneCalendar={screenSize < 768 ? true : false}
               character=" hasta "
-              caretAs="none"
               style={{
                 border: "none",
                 display: "flex",
