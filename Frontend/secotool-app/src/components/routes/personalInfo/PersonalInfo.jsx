@@ -30,7 +30,7 @@ const PersonalInfo = ({documento, setDocumento}) => {
       </div>
 
       <div>
-        <h4>Información de personal</h4>
+        <h4>Información personal</h4>
         <form action="" className={styles.formPersonalInfo}>
           <select name="" id="" className={styles.selectForm}>
             <option value="DNI">DNI</option>
