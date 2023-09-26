@@ -47,7 +47,7 @@ const Confirmacion = ({locationData}) => {
       <p className={styles.text}>
         Te llegará un email con la confirmación
       </p>
-      <Link to={"/auth/login"} state={locationData.state}>
+      <Link to={"/auth/login"} state={locationData !== undefined ? locationData.state : undefined}>
         <button className={styles.btnSuccess}>Iniciar Sesión</button>
       </Link>
       <button onClick={handleReenviar} className={styles.btnReenviar}>
