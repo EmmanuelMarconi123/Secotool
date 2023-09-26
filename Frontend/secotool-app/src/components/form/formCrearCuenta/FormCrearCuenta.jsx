@@ -57,7 +57,7 @@ const FormCrearCuenta = ({locationData}) => {
         setUpDateuser(values);
         try {
           setMensajeError(false);
-          // console.log(values);
+          console.log(values);
           const response = await axios.post(
             `${globalVariable}/v1/api/auth/singup`,
             {
@@ -68,9 +68,12 @@ const FormCrearCuenta = ({locationData}) => {
             }
           );
 
-          if (response.status === 200) {
-            // console.log(response.data);
+          if (response.status === 200 && locationData !== undefined) {
+            console.log(response.data);
+            console.log(locationData)
             navigate("/auth/confirmacionNuevoUsuario", {state: locationData.state});
+          }else{
+            navigate("/auth/confirmacionNuevoUsuario");
           }
         } catch (error) {
           setMensajeError(true);
