@@ -148,7 +148,7 @@ public class ProductFacadeImpl implements IProductFacade {
         var prodsAvailable = productService.getAllProductsByRangeOfDateAvailableToRent(startDate,endDate);
         var prodsAvailableDto = productUtils.productsToProductsDto(prodsAvailable);
 
-        if (productName == null) {
+        if (productName == null || productName.equals("")) {
             prodsAvailableDto.forEach(productDto -> {
                 var totalPrice = rentUtils.calculateTotalPriceOfRent(totalDays,productDto.price());
                 response.add(new RentProductDto(startDate,endDate,totalDays,totalPrice,productDto));
