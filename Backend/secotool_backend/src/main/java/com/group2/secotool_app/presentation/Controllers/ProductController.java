@@ -33,7 +33,6 @@ public class ProductController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",description = "list of products")
     })
-
     public ResponseEntity<List<ProductDto>> getAllProducts(){
         return ResponseEntity.ok(productFacade.getAllProducts());
     }
@@ -48,14 +47,14 @@ public class ProductController {
         return ResponseEntity.ok(productFacade.findProductById(id));
     }
 
+    @Operation(summary = "returns a list of all products available to be rented by date range and optionally by product name")
     @GetMapping("/open/rentals")
-    public ResponseEntity<List<RentProductDto>> getAllProductsByRangeOfDateAvailableToRent(@RequestParam("startDate") LocalDate startDate, @RequestParam("endDate") LocalDate endDate , @RequestParam("productName") String productName){
-        return ResponseEntity.ok(productFacade.getAllProductsByRangeOfDateAvaibleToRent(startDate,endDate,productName));
+    public ResponseEntity<List<RentProductDto>> getAllProductsByRangeOfDateAvailableToRent(@RequestParam("startDate") LocalDate startDate, @RequestParam("endDate") LocalDate endDate , @RequestParam(value = "productName",required = false) String productName){
+        return ResponseEntity.ok(productFacade.getAllProductsByRangeOfDateAvailableToRent(startDate,endDate,productName));
     }
 
-
     @GetMapping("/open/random")
-    @Operation(summary = "return ten random products")
+    @Operation(summary = "returns ten random products")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",description = "list of random products")
     })
@@ -64,21 +63,23 @@ public class ProductController {
     }
 
     @GetMapping("/open/paginate/{page}")
-    @Operation(summary = "return a list of ten products according to the specified index. 0 = first 10 products 1 = second 10 products")
+    @Operation(summary = "returns a list of ten products according to the specified index. 0 = first 10 products 1 = second 10 products")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",description = "page of required products")
     })
-
     public ResponseEntity<List<ProductDto>> productPaginationTenByTen(@Parameter(description = "index of products needed")@PathVariable int page){
         return ResponseEntity.ok(productFacade.paginateProducts(page));
     }
 
+
     @GetMapping("/open/feature/{featureId}")
+    @Operation(summary = "returns a list of products that are associated with the feature id that is passed by url")
     public ResponseEntity<List<ProductDto>> getAllProductsAssociateWithAFeature(@PathVariable Long featureId){
         return ResponseEntity.ok(productFacade.getAllProductsAssociateWithAFeature(featureId));
     }
 
     @GetMapping("/open/category")
+    @Operation(summary = "returns a list of products that are associated with the ids of features that are passed through the url parameters")
     public ResponseEntity<List<ProductDto>> filterProductsByCategories(@RequestParam("idCategory") List<Long> categoriesId){
         IdListRequestDto idCategories = new IdListRequestDto(categoriesId);
         return ResponseEntity.ok(productFacade.getAllProductsAssociateWithACategory(idCategories));
@@ -91,7 +92,6 @@ public class ProductController {
             @ApiResponse(responseCode = "400",description = "invalid body fields"),
             @ApiResponse(responseCode = "406",description = "product name already exists on database")
     })
-
     public ResponseEntity<String> saveProduct(@Parameter(description = "")
                                               @RequestPart("product-data") @Valid
                                               ProductRequestDto productRequestDto,
@@ -108,6 +108,7 @@ public class ProductController {
     }
 
     @PutMapping("/admin/{id}")
+    @Operation(summary = "update a product saved on database")
     public ResponseEntity<?> updateProduct(@PathVariable Long id ,
                                            @RequestPart("product-data") @Valid
                                                ProductRequestDto productRequestDto,

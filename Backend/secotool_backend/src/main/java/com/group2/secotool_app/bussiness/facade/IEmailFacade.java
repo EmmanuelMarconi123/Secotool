@@ -5,11 +5,14 @@ import com.group2.secotool_app.model.dto.request.UserRegistrationRequestDto;
 import com.group2.secotool_app.model.entity.Product;
 import com.group2.secotool_app.model.entity.User;
 import jakarta.mail.MessagingException;
+import org.springframework.scheduling.annotation.Async;
 
 import java.time.LocalDate;
 
 public interface IEmailFacade {
     void singUpNotification(UserRegistrationRequestDto user) throws MessagingException;
+    @Async
     void rentalNotification(Product product, User user, LocalDate startDate, LocalDate endDate, Double totalPrice) throws MessagingException;
+    @Async
     void singUpNotification(ResendRegistrationEmailRequestDto registrationEmailRequestDto) throws MessagingException;
 }

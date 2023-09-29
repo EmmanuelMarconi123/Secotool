@@ -141,14 +141,14 @@ public class ProductFacadeImpl implements IProductFacade {
     }
 
     @Override
-    public List<RentProductDto> getAllProductsByRangeOfDateAvaibleToRent(LocalDate startDate, LocalDate endDate, String productName) {
+    public List<RentProductDto> getAllProductsByRangeOfDateAvailableToRent(LocalDate startDate, LocalDate endDate, String productName) {
 
         var totalDays = productUtils.daysQuantity(startDate,endDate);
         List<RentProductDto> response = new ArrayList<>();
         var prodsAvailable = productService.getAllProductsByRangeOfDateAvailableToRent(startDate,endDate);
         var prodsAvailableDto = productUtils.productsToProductsDto(prodsAvailable);
 
-        if (productName.equals("")) {
+        if (productName == null) {
             prodsAvailableDto.forEach(productDto -> {
                 var totalPrice = rentUtils.calculateTotalPriceOfRent(totalDays,productDto.price());
                 response.add(new RentProductDto(startDate,endDate,totalDays,totalPrice,productDto));
@@ -183,6 +183,7 @@ public class ProductFacadeImpl implements IProductFacade {
         );
 
         return productUtils.removeDuplicated(productDtoList);
+
     }
 
 

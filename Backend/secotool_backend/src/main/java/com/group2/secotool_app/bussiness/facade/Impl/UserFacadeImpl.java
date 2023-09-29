@@ -81,7 +81,6 @@ public class UserFacadeImpl implements IUserFacade {
         userService.changeUserRole(userId, userRole);
     }
 
-    //implementar la logica para agregar productos a favoritos
     @Override
     public void addProductToFavorite(Long productId, Long userId) {
         var product = productService.findProductById(productId);

@@ -30,5 +30,5 @@ public interface IProductFacade {
 
     List<ProductDto> getAllProductsAssociateWithAFeature(Long featureId);
 
-    List<RentProductDto> getAllProductsByRangeOfDateAvaibleToRent(LocalDate startDate, LocalDate endDate, String productName);
+    List<RentProductDto> getAllProductsByRangeOfDateAvailableToRent(LocalDate startDate, LocalDate endDate, String productName);
 }

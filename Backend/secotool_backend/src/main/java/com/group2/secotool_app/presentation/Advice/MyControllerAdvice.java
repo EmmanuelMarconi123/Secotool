@@ -31,11 +31,12 @@ public class MyControllerAdvice extends ResponseEntityExceptionHandler {
 */
 
     @ExceptionHandler(MessagingException.class)
-    public String handleMessagingException(MessagingException exception){
+    public void handleMessagingException(MessagingException exception){
         System.out.println(exception.getCause());
         System.out.println(exception.getMessage());
-        return "error en el envio del email";
+        System.out.println("manejando MessagingException");
     }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         Map<String,Object> clientErrors = new HashMap<>();

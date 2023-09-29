@@ -67,7 +67,7 @@ public class UserController {
     public ResponseEntity<String> removeProductToFavorite(@PathVariable("productId") Long productId){
         Long userId = Long.parseLong((String) SecurityContextHolder.getContext().getAuthentication().getCredentials());
         userFacade.removeProductToFavorite(productId,userId);
-        return ResponseEntity.ok(String.format("product: %s added to favorites",productId));
+        return ResponseEntity.ok(String.format("product: %s removed from favorites",productId));
     }
 
 }
