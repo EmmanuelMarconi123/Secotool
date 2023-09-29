@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import Carousel from "../../carousel/Carousel";
 import { useState, useEffect } from "react";
 import ListCaracteristicas from "../../list/ListCaracteristicas";
@@ -8,11 +8,11 @@ import { useMediaQuery } from "@react-hook/media-query";
 import { useFetch, statuses } from "../../../customHooks/useFetch";
 import ModalShare from "../../modal/ModalShare";
 import ListPoliticas from "../../list/listPoliticas/ListPoliticas";
-import FormVal from "../../form/formValoraciones/formVal";
 import CardReview from "../../card/cardReview/CardReview";
 import { useGlobal } from "../../../contexts/GlobalContext";
 import { useAuth } from "../../../contexts/AuthContext";
 import axios from "axios";
+import FormVal from "../../form/formValoraciones/FormVal";
 
 const LoadingIndicator = () => <Loader size="md" content="CARGANDO" />;
 
@@ -21,6 +21,9 @@ const NetworkError = () => <p>Network Error</p>;
 const { beforeToday, combine } = DateRangePicker;
 
 function Details() {
+
+  const locationData = useLocation()
+
   const params = useParams();
   const isScreenSmall = useMediaQuery("(max-width: 767px)");
   const [isSticky, setIsSticky] = useState(false);
@@ -28,11 +31,15 @@ function Details() {
   const { token } = useAuth();
   const URL_API = `${globalVariable}/v1/api/products/open/${params.id}`;
   const { data, status } = useFetch(URL_API, {});
-  const [policies, setPolicies] = useState();
+  const [policies, setPolicies] = useState([]);
   const [disabledDates, setDisabledDates] = useState([]);
-  const [selectedDateRange, setSelectedDateRange] = useState([]);
+  const [selectedDateRange, setSelectedDateRange] = useState(locationData.state !== null ? [new Date(locationData.state.dates[0]),new Date(locationData.state.dates[1])] : []);
   const [dataRentail, setDataRentail] = useState(null);
   const [isValidDate, setIsValidDate] = useState(false);
+
+  useEffect(() => {
+    console.log(locationData.state)
+  },[])
 
   const toaster = useToaster();
 
@@ -156,10 +163,10 @@ function Details() {
   }, []);
 
   useEffect(() => {
-    if (selectedDateRange != null && selectedDateRange.length != 0)
+    if (selectedDateRange != null && selectedDateRange.length != 0 && data)
       validateRentals();
     console.log(selectedDateRange)
-  }, [selectedDateRange]);
+  }, [selectedDateRange,data]);
 
   const ComponentDetailProduct =
     status !== statuses.ERROR && data ? (
@@ -281,7 +288,7 @@ function Details() {
                 <Link
                   className={styles.buttonCta}
                   to={!token ? "/auth/login" :"/rentaldetails"}
-                  state={{ dataRentail: dataRentail, productData: data }}
+                  state={{ dataRentail: dataRentail, productData: data, dates: selectedDateRange }}
                 >
                   Alquilar
                 </Link>

@@ -31,17 +31,16 @@ const NavBarHeader = () => {
       ) : (
         <>
           <div className={styles.navbarContainer}>
-            <Link to="/home">
-              <a>Inicio</a>
-            </Link>
+            <Link to="/home">Inicio</Link>
             <DropdownDesktop />
           </div>
           <div className={styles.boxButtons}>
-            {user.userRole && isLoggedIn ? (
-              <Link to="/admin/home">
-                <button className="button-primary-transparent button-small">
-                  Panel admin
-                </button>
+            {user.userRole === "ADMIN" && isLoggedIn ? (
+              <Link
+                to="/admin/home"
+                className="button-primary-transparent button-small"
+              >
+                Panel admin
               </Link>
             ) : (
               <span></span>
@@ -50,16 +49,15 @@ const NavBarHeader = () => {
               <DropdownProfile />
             ) : (
               <>
-                <Link to="/auth/crearCuenta">
-                  <button className="button-primary-transparent button-small">
-                    Crear Cuenta
-                  </button>
+                <Link
+                  to="/auth/crearCuenta"
+                  className="button-primary-transparent button-small"
+                >
+                  Crear Cuenta
                 </Link>
-                <Link to="/auth/login">
-                  <button className="button-transparent">
-                    <i className="fa-regular fa-right-to-bracket"></i>Iniciar
-                    Sesión
-                  </button>
+                <Link to="/auth/login" className="button-transparent">
+                  <i className="fa-regular fa-right-to-bracket"></i>Iniciar
+                  Sesión
                 </Link>
               </>
             )}

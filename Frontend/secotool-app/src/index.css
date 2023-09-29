@@ -159,10 +159,10 @@ header {
   border-radius: 8px;
 }
 
-.rs-picker-has-value.rs-picker-cleanable .rs-picker-toggle.rs-btn, .rs-picker-toggle-wrapper .rs-picker-toggle.rs-btn {
-  border: none;
-  padding-left: 0px;
-}
+  .rs-picker-has-value.rs-picker-cleanable .rs-picker-toggle.rs-btn, .rs-picker-toggle-wrapper .rs-picker-toggle.rs-btn {
+    border: none;
+    padding-left: 0px;
+  }
 
 .rs-picker-has-value .rs-btn .rs-picker-toggle-value, .rs-picker-has-value .rs-picker-toggle .rs-picker-toggle-value{
   color: var(--dark) !important;
@@ -170,6 +170,18 @@ header {
 
 .rs-picker-toggle .rs-picker-toggle-placeholder{
   padding-left: 8px;
+}
+
+.rs-input-group .rs-picker-toggle-caret{
+  display: none !important;
+}
+
+.rs-input-group .rs-picker-toggle-textbox{
+  padding: 0 !important;
+}
+
+.rs-input-group .rs-picker-toggle-placeholder{
+  padding: 0 !important;
 }
 
 /*Calendar*/

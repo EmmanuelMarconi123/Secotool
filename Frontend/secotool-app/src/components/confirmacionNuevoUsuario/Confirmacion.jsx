@@ -5,7 +5,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 
-const Confirmacion = () => {
+const Confirmacion = ({locationData}) => {
   const { globalVariable } = useGlobal();
   const { upDateUser } = useAuth();
   const [mensaje, setMensaje] = useState(false);
@@ -47,7 +47,7 @@ const Confirmacion = () => {
       <p className={styles.text}>
         Te llegará un email con la confirmación
       </p>
-      <Link to={"/auth/login"}>
+      <Link to={"/auth/login"} state={locationData !== undefined ? locationData.state : undefined}>
         <button className={styles.btnSuccess}>Iniciar Sesión</button>
       </Link>
       <button onClick={handleReenviar} className={styles.btnReenviar}>
